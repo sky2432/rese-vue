@@ -33,7 +33,7 @@
             <v-card-action>
               <div style="text-align: center">
                 <!-- :disabled="!valid" -->
-                <v-btn color="amber" @click="$router.push('/home')">
+                <v-btn color="amber" @click="$router.push('/')">
                   ログイン
                 </v-btn>
               </div>
@@ -65,7 +65,7 @@ export default {
 
 <style scoped>
 .main {
-  height: calc(100vh - 56px);
+  height: calc(100vh - 64px);
 }
 
 ::v-deep .v-main__wrap {

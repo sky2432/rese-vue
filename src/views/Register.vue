@@ -79,7 +79,7 @@ export default {
 
 <style scoped>
 .main {
-  height: calc(100vh - 56px);
+  height: calc(100vh - 64px);
 }
 
 ::v-deep .v-main__wrap {

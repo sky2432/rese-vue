@@ -12,14 +12,14 @@
       >
         <v-card-title>
           <div >
-            会員登録ありがとうございます
+            予約ありがとうございます
           </div>
         </v-card-title>
         <v-card-text> </v-card-text>
         <v-card-action>
           <div style="text-align: center">
-            <v-btn color="amber" @click="$router.push('/login')">
-              ログインする
+            <v-btn color="amber" @click="$router.push('/')">
+              戻る
             </v-btn>
           </div>
         </v-card-action>

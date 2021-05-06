@@ -1,13 +1,13 @@
 <template>
   <v-app-bar app class="amber">
-    <div class="header-logo d-flex ml-5">
-      <v-icon
-        class="mdi mdi-silverware-variant mr-1 "
-        color="white"
-        large
-      ></v-icon>
-      <h1 class="header-txt">Rese</h1>
-    </div>
+    <v-container>
+      <div class="header-logo d-flex" @click="$router.push('/topPage')">
+        <v-icon class="mr-1 " color="white" large
+          >mdi-silverware-variant</v-icon
+        >
+        <h1 class="header-txt">Rese</h1>
+      </div>
+    </v-container>
   </v-app-bar>
 </template>
 
@@ -16,5 +16,7 @@ export default {};
 </script>
 
 <style scoped>
-
+.header-logo {
+  cursor: pointer;
+}
 </style>

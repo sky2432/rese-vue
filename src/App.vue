@@ -12,7 +12,7 @@ export default {
   },
 
    watch: {
-      '$route' (routeInstance, from) {
+      '$route' (routeInstance) {
           this.createTitleDesc(routeInstance);
       }
   },
@@ -25,7 +25,7 @@ export default {
         document.title = setTitle;
       } else {
         document.title = "Rese";
-      };
+      }
       if (routeInstance.meta.desc) {
         var setDesc = routeInstance.meta.desc + " | MIYACHIN VUE";
         document
@@ -218,8 +218,6 @@ li {
 }
 
 #background {
-  height: 100vh;
-  width: 100vw;
   background-color: aliceblue;
 }
 </style>
