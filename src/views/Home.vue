@@ -1,19 +1,16 @@
 <template>
   <div>
-    <v-app-bar app class="amber">
+    <v-app-bar app class="amber" light>
       <v-container>
         <v-row class="align-center">
-          <v-col>
-            <div class="header-logo d-flex" @click="$router.push('/topPage')">
-              <v-icon
-                class="mdi mdi-silverware-variant mr-1 "
-                color="white"
-                large
-              ></v-icon>
-              <h1 class="header-txt">Rese</h1>
+          <v-col cols="4">
+            <div class="header-logo d-flex">
+              <v-icon class="mr-1" large>mdi-silverware-variant</v-icon>
+              <h1 class="header-txt" @click="$router.push('/topPage')">Rese</h1>
             </div>
           </v-col>
-          <v-col>
+          <v-spacer></v-spacer>
+          <v-col cols="8">
             <v-row>
               <v-col class="px-0" cols="3">
                 <v-select
@@ -21,7 +18,7 @@
                   :items="areaItems"
                   class="rounded-r-0"
                   solo
-                  dense　
+                  dense
                   hide-details
                 ></v-select>
               </v-col>
@@ -35,7 +32,7 @@
                   hide-details
                 ></v-select>
               </v-col>
-              <v-col class="px-0" cols="6">
+              <v-col class="px-0" cols="4">
                 <v-text-field
                   label="Search..."
                   class="rounded-l-0"
@@ -44,6 +41,12 @@
                   dense
                   hide-details
                 ></v-text-field>
+              </v-col>
+              <v-col cols="2" class="align-self-center mypage">
+                <v-btn text @click="moveUserMypage">
+                  <v-icon>mdi-account</v-icon>
+                  マイページ
+                </v-btn>
               </v-col>
             </v-row>
           </v-col>
@@ -81,21 +84,15 @@
                 #東京都＃寿司
               </v-card-subtitle>
               <v-card-actions class="d-flex justify-space-between">
-                <v-btn color="amber" class="white--text" @click="showShopDeatail(n)">詳しく見る </v-btn>
+                <v-btn
+                  color="amber"
+                  class="white--text"
+                  @click="showShopDeatail(n)"
+                  >詳しく見る
+                </v-btn>
                 <v-btn text icon>
-                  <v-icon
-                    v-if="heratOutline"
-                    @click="changeHeartIcon"
-                    class="mdi mdi-heart-outline"
-                    large
-                  ></v-icon>
-                  <v-icon
-                    v-if="heart"
-                    @click="changeHeartIcon"
-                    class="mdi mdi-heart"
-                    color="red"
-                    large
-                  ></v-icon>
+                  <v-icon v-if="heratOutline" large>mdi-heart-outline</v-icon>
+                  <v-icon v-if="heart" color="red" large>mdi-heart</v-icon>
                 </v-btn>
               </v-card-actions>
             </v-card>
@@ -139,12 +136,21 @@ export default {
         },
       });
     },
+
+    moveUserMypage() {
+      this.$router.push({
+        name: "Mypage",
+        params: {
+          id: 1,
+        },
+      });
+    },
   },
 };
 </script>
 
 <style scoped>
-.header-logo {
+.header-txt {
   cursor: pointer;
 }
 </style>

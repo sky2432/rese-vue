@@ -1,5 +1,5 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue from "vue";
+import VueRouter from "vue-router";
 import Register from "../views/Register.vue";
 import Thanks from "../views/Thanks.vue";
 import Login from "../views/Login.vue";
@@ -7,8 +7,9 @@ import Home from "../views/Home.vue";
 import Detail from "../views/Detail.vue";
 import Done from "../views/Done.vue";
 import TopPage from "../views/TopPage.vue";
+import Mypage from "../views/Mypage.vue";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
@@ -54,12 +55,19 @@ const routes = [
     component: Done,
     meta: { title: "予約完了", desc: "予約完了ページです。" },
   },
+  {
+    path: "/mypage/:id",
+    name: "Mypage",
+    component: Mypage,
+    props: true,
+    meta: { title: "マイページ", desc: "マイページです。" },
+  },
 ];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;
