@@ -2,23 +2,19 @@ import Repository from "./Repository";
 
 const resource = "/users";
 export default {
-  getUser() {
-    return Repository.get(`${resource}`);
-  },
-
-  showUser(id) {
-    return Repository.get(`${resource}/${id}`);
+  showUser(user_id) {
+    return Repository.get(`${resource}/${user_id}`);
   },
 
   createUser(payload) {
     return Repository.post(`${resource}`, payload);
   },
 
-  updateUser(id, payload) {
-    return Repository.put(`${resource}/${id}`, payload);
+  updateUser(user_id, payload) {
+    return Repository.put(`${resource}/${user_id}`, payload);
   },
 
-  deleteUser(payload) {
-    return Repository.post(`${resource}/delete`, payload);
+  deleteUser(user_id) {
+    return Repository.delete(`${resource}/${user_id}`);
   },
 };
