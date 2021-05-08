@@ -8,59 +8,93 @@ import Detail from "../views/Detail.vue";
 import Done from "../views/Done.vue";
 import TopPage from "../views/TopPage.vue";
 import Mypage from "../views/Mypage.vue";
+import store from "../store/index";
+
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/topPage",
+    path: "/",
     name: "TopPage",
     component: TopPage,
-    meta: { title: "トップページ", desc: "トップページです。" },
+    meta: {
+      title: "トップページ",
+      desc: "トップページです。",
+    },
   },
   {
     path: "/register",
     name: "Register",
     component: Register,
-    meta: { title: "会員登録", desc: "会員登録ページです。" },
+    meta: {
+      title: "会員登録",
+      desc: "会員登録ページです。",
+    },
   },
   {
     path: "/thanks",
     name: "Thanks",
     component: Thanks,
-    meta: { title: "会員登録完了", desc: "会員登録完了ページです。" },
+    meta: {
+      title: "会員登録完了",
+      desc: "会員登録完了ページです。",
+    },
   },
   {
     path: "/login",
     name: "Login",
     component: Login,
-    meta: { title: "ログイン", desc: "ログインページです。" },
+    meta: {
+      title: "ログイン",
+      desc: "ログインページです。",
+    },
   },
   {
-    path: "/",
+    path: "/home",
     name: "Home",
     component: Home,
-    meta: { title: "ホーム", desc: "飲食店一覧ページです。" },
+    meta: {
+      requiresAuth: true,
+      title: "ホーム",
+      desc: "飲食店一覧ページです。",
+    },
   },
   {
     path: "/detail/:id",
     name: "Detail",
     component: Detail,
     props: true,
-    meta: { title: "店舗詳細", desc: "店舗詳細ページです。" },
+    meta: {
+      requiresAuth: true,
+      title: "店舗詳細",
+      desc: "店舗詳細ページです。",
+    },
   },
   {
     path: "/done",
     name: "Done",
     component: Done,
-    meta: { title: "予約完了", desc: "予約完了ページです。" },
+    meta: {
+      requiresAuth: true,
+      title: "予約完了",
+      desc: "予約完了ページです。",
+    },
   },
   {
     path: "/mypage/:id",
     name: "Mypage",
     component: Mypage,
     props: true,
-    meta: { title: "マイページ", desc: "マイページです。" },
+    meta: {
+      requiresAuth: true,
+      title: "マイページ",
+      desc: "マイページです。",
+    },
+  },
+  {
+    path: "*",
+    redirect: "/",
   },
 ];
 
@@ -68,6 +102,21 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (
+    to.matched.some((record) => record.meta.requiresAuth) &&
+    !store.state.auth
+  ) {
+    next({
+      path: "/",
+      query: {
+        redirect: to.fullPath,
+      },
+    });
+  }
+  next();
 });
 
 export default router;

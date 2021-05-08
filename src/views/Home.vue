@@ -6,7 +6,7 @@
           <v-col cols="4">
             <div class="header-logo d-flex">
               <v-icon class="mr-1" large>mdi-silverware-variant</v-icon>
-              <h1 class="header-txt" @click="$router.push('/topPage')">Rese</h1>
+              <h1 class="header-txt" @click="$router.push('/')">Rese</h1>
             </div>
           </v-col>
           <v-spacer></v-spacer>
@@ -43,10 +43,28 @@
                 ></v-text-field>
               </v-col>
               <v-col cols="2" class="align-self-center mypage">
-                <v-btn text @click="moveUserMypage">
-                  <v-icon>mdi-account</v-icon>
-                  マイページ
-                </v-btn>
+                <v-menu offset-y>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn class="white" dark v-bind="attrs" v-on="on">
+                      <span class="amber--text">{{ user.name }}</span>
+                      <v-icon color="amber">mdi-menu-down</v-icon>
+                    </v-btn>
+                  </template>
+                  <v-list>
+                    <v-list-item class="menu-item">
+                      <v-list-item-title @click="moveUserMypage"
+                        ><v-icon>mdi-account</v-icon
+                        >マイページ</v-list-item-title
+                      >
+                    </v-list-item>
+                    <v-list-item class="menu-item">
+                      <v-list-item-title @click="logout"
+                        ><v-icon>mdi-logout</v-icon
+                        >ログアウト</v-list-item-title
+                      >
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
               </v-col>
             </v-row>
           </v-col>
@@ -104,6 +122,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -122,6 +141,11 @@ export default {
       heart: false,
     };
   },
+
+  computed: {
+    ...mapState(["user"]),
+  },
+
   methods: {
     changeHeartIcon() {
       this.heratOutline = !this.heratOutline;
@@ -145,6 +169,10 @@ export default {
         },
       });
     },
+
+    logout() {
+      this.$store.dispatch("logout");
+    }
   },
 };
 </script>
@@ -152,5 +180,14 @@ export default {
 <style scoped>
 .header-txt {
   cursor: pointer;
+}
+
+.menu-item {
+  cursor: pointer;
+  transition: all 1;
+}
+
+.menu-item:hover {
+  opacity: 0.5;
 }
 </style>

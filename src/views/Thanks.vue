@@ -11,27 +11,22 @@
         width="600px"
       >
         <v-card-title>
-          <div >
+          <div>
             会員登録ありがとうございます
           </div>
         </v-card-title>
-        <v-card-text> </v-card-text>
-        <v-card-action>
-          <div style="text-align: center">
-            <v-btn color="amber" @click="$router.push('/login')">
-              ログインする
-            </v-btn>
-          </div>
-        </v-card-action>
+        <div style="text-align: center">
+          <v-btn color="amber" @click="$router.push('/login')">
+            ログインする
+          </v-btn>
+        </div>
       </v-card>
     </v-main>
   </div>
 </template>
 
 <script>
-export default {
-  
-};
+export default {};
 </script>
 
 <style scoped>

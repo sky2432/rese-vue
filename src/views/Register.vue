@@ -39,14 +39,11 @@
               prepend-icon="mdi-key"
               required
             ></v-text-field>
-            <v-card-action>
-              <div style="text-align: center">
-                <!-- :disabled="!valid" -->
-                <v-btn color="amber" @click="$router.push('/thanks')">
-                  登録
-                </v-btn>
-              </div>
-            </v-card-action>
+            <div style="text-align: center">
+              <v-btn color="amber" :disabled="!valid" @click="register">
+                登録
+              </v-btn>
+            </div>
           </v-form>
         </v-card-text>
       </v-card>
@@ -55,25 +52,45 @@
 </template>
 
 <script>
+import usersRepository from "../repositories/usersRepository.js";
+
 export default {
-  data: () => ({
-    valid: false,
-    name: "",
-    email: "",
-    password: "",
-    nameRules: [
-      (v) => !!v || "名前を入力してください",
-      (v) => v.length <= 10 || "名前は10文字以下です",
-    ],
-    emailRules: [
-      (v) => !!v || "メールアドレスを入力してくだい",
-      (v) => /.+@.+/.test(v) || "正しいメールアドレスの形式で入力してください",
-    ],
-    passwordRules: [
-      (v) => !!v || "パスワードを入力してください",
-      (v) => v.length >= 4  || "パスワードは4文字以上です"
-    ],
-  }),
+  data() {
+    return {
+      valid: false,
+      name: "",
+      email: "",
+      password: "",
+      nameRules: [
+        (v) => !!v || "名前を入力してください",
+        (v) => v.length <= 10 || "名前は10文字以下です",
+      ],
+      emailRules: [
+        (v) => !!v || "メールアドレスを入力してくだい",
+        (v) =>
+          /.+@.+/.test(v) || "正しいメールアドレスの形式で入力してください",
+      ],
+      passwordRules: [
+        (v) => !!v || "パスワードを入力してください",
+        (v) => v.length >= 4 || "パスワードは4文字以上です",
+      ],
+    };
+  },
+
+  methods: {
+    async register() {
+      const sendData = {
+        name: this.name,
+        email: this.email,
+        password: this.password,
+        role: "user",
+      };
+      const resData = await usersRepository.createUser(sendData);
+      console.log(resData);
+
+      this.$router.replace("/thanks");
+    },
+  },
 };
 </script>
 

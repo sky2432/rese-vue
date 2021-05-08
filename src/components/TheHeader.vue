@@ -5,7 +5,7 @@
         <v-icon class="mr-1 " large
           >mdi-silverware-variant</v-icon
         >
-        <h1 class="header-txt" @click="$router.push('/topPage')">Rese</h1>
+        <h1 class="header-txt" @click="$router.push('/')">Rese</h1>
       </div>
     </v-container>
   </v-app-bar>

@@ -30,14 +30,11 @@
               prepend-icon="mdi-key"
               required
             ></v-text-field>
-            <v-card-action>
-              <div style="text-align: center">
-                <!-- :disabled="!valid" -->
-                <v-btn color="amber" @click="$router.push('/')">
-                  ログイン
-                </v-btn>
-              </div>
-            </v-card-action>
+            <div style="text-align: center">
+              <v-btn color="amber" :disabled="!valid" @click="login">
+                ログイン
+              </v-btn>
+            </div>
           </v-form>
         </v-card-text>
       </v-card>
@@ -47,19 +44,31 @@
 
 <script>
 export default {
-  data: () => ({
-    valid: false,
-    email: "",
-    password: "",
-    emailRules: [
-      (v) => !!v || "メールアドレスを入力してくだい",
-      (v) => /.+@.+/.test(v) || "正しいメールアドレスの形式で入力してください",
-    ],
-    passwordRules: [
-      (v) => !!v || "パスワードを入力してください",
-      (v) => v.length >= 4  || "パスワードは4文字以上です"
-    ],
-  }),
+  data() {
+    return {
+      valid: false,
+      email: "",
+      password: "",
+      emailRules: [
+        (v) => !!v || "メールアドレスを入力してくだい",
+        (v) =>
+          /.+@.+/.test(v) || "正しいメールアドレスの形式で入力してください",
+      ],
+      passwordRules: [
+        (v) => !!v || "パスワードを入力してください",
+        (v) => v.length >= 4 || "パスワードは4文字以上です",
+      ],
+    };
+  },
+  methods: {
+    login() {
+      const sendData = {
+        email: this.email,
+        password: this.password,
+      };
+      this.$store.dispatch("login", sendData);
+    },
+  },
 };
 </script>
 

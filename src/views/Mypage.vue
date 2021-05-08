@@ -4,7 +4,7 @@
       <v-container>
         <div class="header-logo d-flex">
           <v-icon class="mr-1 " large>mdi-silverware-variant</v-icon>
-          <h1 class="header-txt" @click="$router.push('/')">Rese</h1>
+          <h1 class="header-txt" @click="$router.push('/home')">Rese</h1>
         </div>
       </v-container>
 
