@@ -75,13 +75,10 @@
     <v-main>
       <v-container class="mt-2">
         <v-row>
-          <v-col v-for="n in 24" :key="n" cols="3">
+          <v-col v-for="shop in shops" :key="shop.id" cols="3">
             <v-card height="300">
-              <v-img
-                height="125"
-                src="https://coachtech-matter.s3-ap-northeast-1.amazonaws.com/image/sushi.jpg"
-              ></v-img>
-              <v-card-title>仙人</v-card-title>
+              <v-img height="125" :src="shop.image_url"></v-img>
+              <v-card-title>{{ shop.name }}</v-card-title>
               <v-card-text>
                 <v-row align="center" class="mx-0">
                   <v-rating
@@ -99,18 +96,21 @@
                 </v-row>
               </v-card-text>
               <v-card-subtitle class="py-1">
-                #東京都＃寿司
+                #{{ shop.area.name }}＃{{ shop.genre.name }}
               </v-card-subtitle>
               <v-card-actions class="d-flex justify-space-between">
                 <v-btn
                   color="amber"
                   class="white--text"
-                  @click="showShopDeatail(n)"
+                  @click="showShopDeatail(shop.id)"
                   >詳しく見る
                 </v-btn>
                 <v-btn text icon>
-                  <v-icon v-if="heratOutline" large>mdi-heart-outline</v-icon>
-                  <v-icon v-if="heart" color="red" large>mdi-heart</v-icon>
+                  <v-icon large color="red" @click="changeFavorite(shop.id)">{{
+                    showHeart(shop.id)
+                  }}</v-icon>
+                  <!-- <v-icon v-if="heratOutline" large>mdi-heart-outline</v-icon>
+                  <v-icon v-if="heart" color="red" large>mdi-heart</v-icon> -->
                 </v-btn>
               </v-card-actions>
             </v-card>
@@ -123,33 +123,104 @@
 
 <script>
 import { mapState } from "vuex";
+import shopsRepository from "../repositories/shopsRepository.js";
+import favoritesRepository from "../repositories/favoritesRepository";
+
 export default {
   data() {
     return {
       areaSelected: "All area",
-      areaItems: ["All area", "東京都", "大阪府", "福岡県"],
+      areaItems: ["All area"],
       genreSelected: "All genre",
-      genreItems: [
-        "All genre",
-        "寿司",
-        "焼肉",
-        "居酒屋",
-        "イタリアン",
-        "ラーメン",
-      ],
-      heratOutline: true,
-      heart: false,
+      genreItems: ["All genre"],
+      shops: [],
+      favorites: [],
     };
   },
 
   computed: {
     ...mapState(["user"]),
+
+    showHeart() {
+      return function(shop_id) {
+        for (let i in this.favorites) {
+          if (shop_id === this.favorites[i].shop_id) {
+            return "mdi-heart";
+          }
+        }
+        return "mdi-heart-outline";
+      };
+    },
+  },
+
+  created() {
+    this.getShops();
+    this.showFavorites();
   },
 
   methods: {
-    changeHeartIcon() {
-      this.heratOutline = !this.heratOutline;
-      this.heart = !this.heart;
+    checkFavorite(shop_id) {
+      for (let i in this.favorites) {
+        if (shop_id === this.favorites[i].shop_id) {
+          const sendData = {
+            exsist: true,
+            favorite_id: this.favorites[i].id,
+          };
+          return sendData;
+        }
+      }
+      const sendData = {
+        exsist: false
+      };
+      return sendData;
+    },
+
+    async changeFavorite(shop_id) {
+      const result = this.checkFavorite(shop_id);
+      if (result.exsist === false) {
+        const sendData = {
+          user_id: this.user.id,
+        };
+        const resData = await favoritesRepository.addFavorite(
+          shop_id,
+          sendData
+        );
+        // console.log(resData);
+      } else if (result.exsist === true) {
+        const sendData = {
+          user_id: this.user.id,
+          favorite_id: result.favorite_id
+        };
+        const resData = await favoritesRepository.deleteFavorite(
+          shop_id,
+          sendData
+        );
+        // console.log(resData);
+      }
+      this.showFavorites();
+    },
+
+    async showFavorites() {
+      const resData = await favoritesRepository.showFavorites(this.user.id);
+      this.favorites = resData.data.data;
+    },
+
+    async getShops() {
+      const resData = await shopsRepository.getShops();
+      // console.log(resData);
+      const data = resData.data.data;
+      this.shops = data;
+      this.createSerchItems(data, "areaItems", "area");
+      this.createSerchItems(data, "genreItems", "genre");
+    },
+
+    createSerchItems(data, items, name) {
+      for (let i in data) {
+        let result = this[items].includes(data[i][name].name);
+        if (result === false) {
+          this[items].push(data[i][name].name);
+        }
+      }
     },
 
     showShopDeatail(shopId) {
@@ -172,7 +243,7 @@ export default {
 
     logout() {
       this.$store.dispatch("logout");
-    }
+    },
   },
 };
 </script>
