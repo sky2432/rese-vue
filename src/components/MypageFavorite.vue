@@ -1,13 +1,10 @@
 <template>
   <div>
     <v-row>
-      <v-col v-for="n in 24" :key="n" cols="3">
+      <v-col v-for="shop in shops" :key="shop.id" cols="4">
         <v-card height="300">
-          <v-img
-            height="125"
-            src="https://coachtech-matter.s3-ap-northeast-1.amazonaws.com/image/sushi.jpg"
-          ></v-img>
-          <v-card-title>仙人</v-card-title>
+          <v-img height="125" :src="shop.image_url"></v-img>
+          <v-card-title>{{ shop.name }}</v-card-title>
           <v-card-text>
             <v-row align="center" class="mx-0">
               <v-rating
@@ -25,21 +22,17 @@
             </v-row>
           </v-card-text>
           <v-card-subtitle class="py-1">
-            #東京都＃寿司
+            #{{ shop.area.name }}#{{ shop.genre.name }}
           </v-card-subtitle>
           <v-card-actions class="d-flex justify-space-between">
-            <v-btn color="amber" class="white--text" @click="showShopDeatail(n)"
+            <v-btn color="amber" class="white--text" @click="showShopDeatail(shop.id)"
               >詳しく見る
             </v-btn>
             <v-btn text icon>
-              <v-icon v-if="heratOutline" @click="changeHeartIcon" large
-                >mdi-heart-outline</v-icon
-              >
               <v-icon
-                v-if="heart"
-                @click="changeHeartIcon"
-                class="mdi "
                 color="red"
+                large
+                @click="deleteFavorite(shop.id, shop.favorite.id)"
                 >mdi-heart</v-icon
               >
             </v-btn>
@@ -51,24 +44,44 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+import favoritesRepository from "../repositories/favoritesRepository.js";
+
 export default {
   data() {
     return {
-      heratOutline: true,
-      heart: false,
+      shops: [],
     };
   },
+
+  computed: {
+    ...mapState(["user"]),
+  },
+
+  created() {
+    this.showFavorites();
+  },
+
   methods: {
-    changeHeartIcon() {
-      this.heratOutline = !this.heratOutline;
-      this.heart = !this.heart;
+    async showFavorites() {
+      const resData = await favoritesRepository.showFavorites(this.user.id);
+      this.shops = resData.data.data;
     },
 
-    showShopDeatail(shopId) {
+    async deleteFavorite(shop_id, favorite_id) {
+      const sendData = {
+        user_id: this.user.id,
+        favorite_id: favorite_id,
+      };
+      await favoritesRepository.deleteFavorite(shop_id, sendData);
+      this.showFavorites();
+    },
+
+    showShopDeatail(shop_id) {
       this.$router.push({
         name: "Detail",
         params: {
-          id: shopId,
+          shop_id: shop_id,
         },
       });
     },

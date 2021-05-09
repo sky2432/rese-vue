@@ -1,7 +1,7 @@
 import Repository from "./Repository";
 
-const resource = "/reservation";
-const resource2 = "/reservations";
+const resource = "reservations";
+const resource2 = "reservation";
 export default {
   showUserReservations(user_id) {
     return Repository.get(`users/${user_id}/${resource}`);

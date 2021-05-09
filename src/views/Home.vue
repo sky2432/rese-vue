@@ -109,8 +109,6 @@
                   <v-icon large color="red" @click="changeFavorite(shop.id)">{{
                     showHeart(shop.id)
                   }}</v-icon>
-                  <!-- <v-icon v-if="heratOutline" large>mdi-heart-outline</v-icon>
-                  <v-icon v-if="heart" color="red" large>mdi-heart</v-icon> -->
                 </v-btn>
               </v-card-actions>
             </v-card>
@@ -144,7 +142,7 @@ export default {
     showHeart() {
       return function(shop_id) {
         for (let i in this.favorites) {
-          if (shop_id === this.favorites[i].shop_id) {
+          if (shop_id === this.favorites[i].id) {
             return "mdi-heart";
           }
         }
@@ -161,10 +159,10 @@ export default {
   methods: {
     checkFavorite(shop_id) {
       for (let i in this.favorites) {
-        if (shop_id === this.favorites[i].shop_id) {
+        if (shop_id === this.favorites[i].id) {
           const sendData = {
             exsist: true,
-            favorite_id: this.favorites[i].id,
+            favorite_id: this.favorites[i].favorite.id,
           };
           return sendData;
         }
@@ -203,6 +201,7 @@ export default {
     async showFavorites() {
       const resData = await favoritesRepository.showFavorites(this.user.id);
       this.favorites = resData.data.data;
+      // console.log(resData);
     },
 
     async getShops() {
@@ -223,11 +222,11 @@ export default {
       }
     },
 
-    showShopDeatail(shopId) {
+    showShopDeatail(shop_id) {
       this.$router.push({
         name: "Detail",
         params: {
-          id: shopId,
+          shop_id: shop_id,
         },
       });
     },
@@ -236,7 +235,7 @@ export default {
       this.$router.push({
         name: "Mypage",
         params: {
-          id: 1,
+          id: this.user.id,
         },
       });
     },

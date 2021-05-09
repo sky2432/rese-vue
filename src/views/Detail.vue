@@ -9,16 +9,14 @@
               <v-btn @click="$router.push('/home')">
                 <v-icon>mdi-chevron-left</v-icon>
               </v-btn>
-              <h1 class="ml-5">仙人</h1>
+              <h1 class="ml-5">{{ shop.name }}</h1>
             </div>
-            <v-img
-              class="mt-5"
-              src="https://coachtech-matter.s3-ap-northeast-1.amazonaws.com/image/sushi.jpg"
-            >
-            </v-img>
-            <p class="mt-5">地域：東京<br />ジャンル：寿司</p>
+            <v-img class="mt-5" :src="shop.image_url"> </v-img>
+            <p class="mt-5" v-if="shop">
+              エリア：{{ shop.area.name }}<br />ジャンル：{{ shop.genre.name }}
+            </p>
             <p>
-              料理長厳選の食材から作る寿司を用いたコースをぜひお楽しみください。食材・味・価格、お客様の満足度を徹底的に追及したお店です。特別な日のお食事、ビジネス接待まで気軽に使用することができます。
+              {{ shop.overview }}
             </p>
           </v-col>
           <v-col cols="6" class="amber pa-5">
@@ -61,6 +59,8 @@
               ></v-select>
               <v-select
                 :items="numbers"
+                item-text="state"
+                item-value="abbr"
                 v-model="number"
                 label="人数を選択"
                 prepend-icon="mdi-account"
@@ -76,7 +76,7 @@
                         店舗名
                       </th>
                       <td class="text-left">
-                        仙人
+                        {{ shop.name }}
                       </td>
                     </tr>
                     <tr>
@@ -100,7 +100,7 @@
                         人数
                       </th>
                       <td class="text-left">
-                        {{ number }}
+                        {{ number }}<span v-if="number">名</span>
                       </td>
                     </tr>
                   </tbody>
@@ -108,7 +108,7 @@
               </v-simple-table>
             </div>
             <div class="mt-5" style="text-align: center">
-              <v-btn @click="$router.push('/done')">予約</v-btn>
+              <v-btn @click="createReservation">予約</v-btn>
             </div>
           </v-col>
         </v-row>
@@ -118,15 +118,19 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+import shopsRepository from "../repositories/shopsRepository.js";
+import reservationsRepository from "../repositories/reservationsRepository";
 export default {
   props: {
-    id: {
+    shop_id: {
       type: Number,
       require: true,
     },
   },
   data() {
     return {
+      shop: "",
       menu: false,
       date: "",
       today: new Date().toISOString().slice(0, 10),
@@ -159,18 +163,47 @@ export default {
         "23:30",
       ],
       numbers: [
-        "1人",
-        "2人",
-        "3人",
-        "4人",
-        "5人",
-        "6人",
-        "7人",
-        "8人",
-        "9人",
-        "10人",
+        { state: "1名", abbr: 1 },
+        { state: "2名", abbr: 2 },
+        { state: "3名", abbr: 3 },
+        { state: "4名", abbr: 4 },
+        { state: "5名", abbr: 5 },
+        { state: "6名", abbr: 6 },
+        { state: "7名", abbr: 7 },
+        { state: "8名", abbr: 8 },
+        { state: "9名", abbr: 9 },
+        { state: "10名", abbr: 10 },
       ],
     };
+  },
+
+  computed: {
+    ...mapState(["user"]),
+  },
+
+  created() {
+    this.showShop();
+  },
+
+  methods: {
+    async showShop() {
+      const resData = await shopsRepository.showShop(this.shop_id);
+      this.shop = resData.data.data;
+    },
+
+    async createReservation() {
+      const sendData = {
+        user_id: this.user.id,
+        visited_on: `${this.date} ${this.time}`,
+        number_of_visiters: this.number,
+      };
+      const resData = await reservationsRepository.createReservation(
+        this.shop.id,
+        sendData
+      );
+      console.log(resData);
+      this.$router.push("/done");
+    },
   },
 };
 </script>
