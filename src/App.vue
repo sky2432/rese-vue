@@ -19,7 +19,6 @@ export default {
 
   methods: {
     createTitleDesc: function(routeInstance) {
-      // タイトルを設定
       if (routeInstance.meta.title) {
         var setTitle = routeInstance.meta.title + " | Rese";
         document.title = setTitle;
@@ -41,7 +40,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 html,
 body,
 div,
@@ -219,5 +218,16 @@ li {
 
 #background {
   background-color: aliceblue;
+}
+
+.wrapper {
+  height: calc(100vh - 64px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  font-size: 2rem;
 }
 </style>

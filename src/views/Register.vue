@@ -1,58 +1,86 @@
 <template>
   <div>
     <TheHeader></TheHeader>
-    <v-main class="d-flex align-center justify-center main">
-      <v-card
-        class="white pa-5"
-        elevation="2"
-        outlined
-        shaped
-        tile
-        width="600px"
-      >
-        <v-card-title>
-          Registration
-        </v-card-title>
-        <v-card-text>
-          <v-form v-model="valid">
-            <v-text-field
-              v-model="name"
-              :rules="nameRules"
-              :counter="10"
-              label="Name"
-              prepend-icon="mdi-account"
-              required
-            ></v-text-field>
 
-            <v-text-field
-              v-model="email"
-              :rules="emailRules"
-              label="Email"
-              prepend-icon="mdi-email"
-              required
-            ></v-text-field>
+    <v-main>
+      <div class="wrapper">
+        <v-card
+          class="white pa-5"
+          elevation="2"
+          outlined
+          shaped
+          tile
+          width="600px"
+        >
+          <v-card-title>
+            Registration
+          </v-card-title>
+          <v-card-text>
+            <validation-observer ref="observer" v-slot="{ invalid }">
+              <v-form v-model="valid">
+                <validation-provider
+                  v-slot="{ errors }"
+                  name="Name"
+                  rules="required|max:10"
+                >
+                  <v-text-field
+                    v-model="name"
+                    :counter="10"
+                    :error-messages="errors"
+                    label="Name"
+                    prepend-icon="mdi-account"
+                    required
+                  ></v-text-field>
+                </validation-provider>
 
-            <v-text-field
-              v-model="password"
-              :rules="passwordRules"
-              label="Password"
-              prepend-icon="mdi-key"
-              required
-            ></v-text-field>
-            <div style="text-align: center">
-              <v-btn color="amber" :disabled="!valid" @click="register">
-                登録
-              </v-btn>
-            </div>
-          </v-form>
-        </v-card-text>
-      </v-card>
+                <validation-provider
+                  v-slot="{ errors }"
+                  name="E-mail"
+                  rules="required|email"
+                >
+                  <v-text-field
+                    v-model="email"
+                    :error-messages="errors"
+                    label="E-mail"
+                    prepend-icon="mdi-email"
+                    required
+                  ></v-text-field>
+                </validation-provider>
+
+                <validation-provider
+                  v-slot="{ errors }"
+                  name="Password"
+                  rules="required|min:4"
+                >
+                  <v-text-field
+                    v-model="password"
+                    :error-messages="errors"
+                    label="Password"
+                    :type="showPassword ? 'text' : 'password'"
+                    :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                    @click:append="showPassword = !showPassword"
+                    prepend-icon="mdi-key"
+                    required
+                  ></v-text-field>
+                </validation-provider>
+
+                <div style="text-align: center">
+                  <v-btn color="amber" :disabled="invalid" @click="register">
+                    登録
+                  </v-btn>
+                </div>
+              </v-form>
+            </validation-observer>
+          </v-card-text>
+        </v-card>
+      </div>
     </v-main>
   </div>
 </template>
 
 <script>
 import usersRepository from "../repositories/usersRepository.js";
+import "../plugins/veeValidate.js";
 
 export default {
   data() {
@@ -61,19 +89,7 @@ export default {
       name: "",
       email: "",
       password: "",
-      nameRules: [
-        (v) => !!v || "名前を入力してください",
-        (v) => v.length <= 10 || "名前は10文字以下です",
-      ],
-      emailRules: [
-        (v) => !!v || "メールアドレスを入力してくだい",
-        (v) =>
-          /.+@.+/.test(v) || "正しいメールアドレスの形式で入力してください",
-      ],
-      passwordRules: [
-        (v) => !!v || "パスワードを入力してください",
-        (v) => v.length >= 4 || "パスワードは4文字以上です",
-      ],
+      showPassword: false,
     };
   },
 
@@ -93,13 +109,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.main {
-  height: calc(100vh - 64px);
-}
-
-::v-deep .v-main__wrap {
-  flex: 0;
-}
-</style>

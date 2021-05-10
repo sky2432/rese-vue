@@ -19,97 +19,152 @@
               {{ shop.overview }}
             </p>
           </v-col>
-          <v-col cols="6" class="amber pa-5">
-            <h1 class="white--text">予約</h1>
-            <div class="mt-5">
-              <v-menu
-                ref="menu"
-                v-model="menu"
-                :close-on-content-click="false"
-                :return-value.sync="date"
-                transition="scale-transition"
-                offset-y
-                min-width="auto"
-              >
-                <template #activator="{ on, attrs }">
-                  <v-text-field
-                    v-model="date"
-                    label="日付を選択"
-                    prepend-icon="mdi-calendar"
-                    readonly
-                    v-bind="attrs"
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker v-model="date" no-title scrollable :min="today">
+          <v-col cols="6">
+            <v-card class="card">
+              <v-card-title class="amber">予約</v-card-title>
+              <validation-observer ref="observer" v-slot="{ invalid }">
+                <v-form v-model="valid">
+                  <v-card-text class="mt-5 px-5">
+                    <v-menu
+                      ref="menu"
+                      v-model="menu"
+                      :close-on-content-click="false"
+                      :return-value.sync="date"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto"
+                    >
+                      <template #activator="{ on }">
+                        <validation-provider
+                          v-slot="{ errors }"
+                          name="日付"
+                          rules="selectRequired"
+                        >
+                          <v-text-field
+                            v-model="date"
+                            label="日付を選択"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            v-on="on"
+                            :error-messages="errors"
+                          ></v-text-field>
+                        </validation-provider>
+                      </template>
+                      <v-date-picker
+                        v-model="date"
+                        no-title
+                        scrollable
+                        :min="today"
+                      >
+                        <v-spacer></v-spacer>
+                        <v-btn text color="primary" @click="menu = false">
+                          キャンセル
+                        </v-btn>
+                        <v-btn
+                          text
+                          color="primary"
+                          @click="$refs.menu.save(date)"
+                        >
+                          選択
+                        </v-btn>
+                      </v-date-picker>
+                    </v-menu>
+
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="時刻"
+                      rules="selectRequired"
+                    >
+                      <v-select
+                        :items="items"
+                        v-model="time"
+                        label="時刻を選択"
+                        prepend-icon="mdi-clock-time-eight-outline"
+                        :error-messages="errors"
+                      ></v-select>
+                    </validation-provider>
+
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="人数"
+                      rules="selectRequired"
+                    >
+                      <v-select
+                        :items="numbers"
+                        item-text="state"
+                        item-value="abbr"
+                        v-model="number"
+                        label="人数を選択"
+                        prepend-icon="mdi-account"
+                        :error-messages="errors"
+                      ></v-select>
+                    </validation-provider>
+                  </v-card-text>
+
+                  <v-card-actions class="justify-center pb-5">
+                    <v-btn @click="dialog = true" :disabled="invalid"
+                      >予約</v-btn
+                    >
+                  </v-card-actions>
+                </v-form>
+              </validation-observer>
+            </v-card>
+
+            <v-dialog v-model="dialog" width="500" persistent>
+              <v-card>
+                <v-card-title class="amber">
+                  予約内容の確認
+                </v-card-title>
+                <v-card-text class="pt-5 pb-0">
+                  <v-simple-table>
+                    <template v-slot:default>
+                      <tbody>
+                        <tr class="table-line">
+                          <th class="text-left">
+                            店舗名
+                          </th>
+                          <td class="text-left">
+                            {{ shop.name }}
+                          </td>
+                        </tr>
+                        <tr class="table-line">
+                          <th class="text-left">
+                            日付
+                          </th>
+                          <td class="text-left">
+                            {{ date }}
+                          </td>
+                        </tr>
+                        <tr class="table-line">
+                          <th class="text-left">
+                            時刻
+                          </th>
+                          <td class="text-left">
+                            {{ time }}
+                          </td>
+                        </tr>
+                        <tr class="table-line">
+                          <th class="text-left">
+                            人数
+                          </th>
+                          <td class="text-left">
+                            {{ number }}<span v-if="number">名</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </template>
+                  </v-simple-table>
+                </v-card-text>
+
+                <v-divider></v-divider>
+
+                <v-card-actions class="pb-6">
                   <v-spacer></v-spacer>
-                  <v-btn text color="primary" @click="menu = false">
-                    Cancel
-                  </v-btn>
-                  <v-btn text color="primary" @click="$refs.menu.save(date)">
-                    OK
-                  </v-btn>
-                </v-date-picker>
-              </v-menu>
-              <v-select
-                :items="items"
-                v-model="time"
-                label="時刻を選択"
-                prepend-icon="mdi-clock-time-eight-outline"
-              ></v-select>
-              <v-select
-                :items="numbers"
-                item-text="state"
-                item-value="abbr"
-                v-model="number"
-                label="人数を選択"
-                prepend-icon="mdi-account"
-              ></v-select>
-            </div>
-            <div>
-              <p>予約内容</p>
-              <v-simple-table>
-                <template v-slot:default>
-                  <tbody>
-                    <tr>
-                      <th class="text-left">
-                        店舗名
-                      </th>
-                      <td class="text-left">
-                        {{ shop.name }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <th class="text-left">
-                        日付
-                      </th>
-                      <td class="text-left">
-                        {{ date }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <th class="text-left">
-                        時刻
-                      </th>
-                      <td class="text-left">
-                        {{ time }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <th class="text-left">
-                        人数
-                      </th>
-                      <td class="text-left">
-                        {{ number }}<span v-if="number">名</span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </template>
-              </v-simple-table>
-            </div>
-            <div class="mt-5" style="text-align: center">
-              <v-btn @click="createReservation">予約</v-btn>
-            </div>
+                  <v-btn color="red" dark @click="dialog = false">キャンセル</v-btn>
+                  <v-btn color="amber" dark @click="createReservation">予約</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </v-col>
         </v-row>
       </v-container>
@@ -121,6 +176,8 @@
 import { mapState } from "vuex";
 import shopsRepository from "../repositories/shopsRepository.js";
 import reservationsRepository from "../repositories/reservationsRepository";
+import "../plugins/veeValidate.js";
+
 export default {
   props: {
     shop_id: {
@@ -130,6 +187,8 @@ export default {
   },
   data() {
     return {
+      valid: false,
+      dialog: false,
       shop: "",
       menu: false,
       date: "",
@@ -201,11 +260,19 @@ export default {
         this.shop.id,
         sendData
       );
-      console.log(resData);
+      // console.log(resData);
       this.$router.push("/done");
     },
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.card {
+  margin-top: 68px;
+}
+
+.table-line {
+  line-height: 50px;
+}
+</style>

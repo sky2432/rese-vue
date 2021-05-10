@@ -77,7 +77,9 @@
         <v-row>
           <v-col v-for="shop in shops" :key="shop.id" cols="3">
             <v-card height="300">
-              <v-img height="125" :src="shop.image_url"></v-img>
+              <v-hover>
+                <v-img height="125" :src="shop.image_url"></v-img>
+              </v-hover>
               <v-card-title>{{ shop.name }}</v-card-title>
               <v-card-text>
                 <v-row align="center" class="mx-0">
@@ -98,13 +100,15 @@
               <v-card-subtitle class="py-1">
                 #{{ shop.area.name }}＃{{ shop.genre.name }}
               </v-card-subtitle>
-              <v-card-actions class="d-flex justify-space-between">
+              <v-card-actions>
                 <v-btn
                   color="amber"
-                  class="white--text"
                   @click="showShopDeatail(shop.id)"
-                  >詳しく見る
+                  rounded
+                  dark
+                  >詳細
                 </v-btn>
+                <v-spacer></v-spacer>
                 <v-btn text icon>
                   <v-icon large color="red" @click="changeFavorite(shop.id)">{{
                     showHeart(shop.id)
@@ -168,7 +172,7 @@ export default {
         }
       }
       const sendData = {
-        exsist: false
+        exsist: false,
       };
       return sendData;
     },
@@ -187,7 +191,7 @@ export default {
       } else if (result.exsist === true) {
         const sendData = {
           user_id: this.user.id,
-          favorite_id: result.favorite_id
+          favorite_id: result.favorite_id,
         };
         const resData = await favoritesRepository.deleteFavorite(
           shop_id,

@@ -29,6 +29,7 @@
 <script>
 import MypageFavorite from "../components/MypageFavorite.vue";
 import MypageReservation from "../components/MypageReservation";
+
 export default {
   components: {
     MypageFavorite,
@@ -47,8 +48,6 @@ export default {
       currentComponent: MypageFavorite,
     };
   },
-
-  methods: {},
 };
 </script>
 

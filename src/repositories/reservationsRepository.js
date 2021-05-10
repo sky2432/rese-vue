@@ -15,11 +15,18 @@ export default {
     return Repository.post(`shops/${shop_id}/${resource2}`, payload);
   },
 
-  updateReservation(shop_id, payload) {
-    return Repository.put(`shops/${shop_id}/${resource2}`, payload);
+  updateReservation(shop_id, reservation_id, payload) {
+    return Repository.put(
+      `shops/${shop_id}/${resource2}/${reservation_id}`,
+      payload
+    );
   },
 
-  deleteReservation(shop_id, payload) {
-    return Repository.delete(`shops/${shop_id}/${resource2}`, payload);
+  deleteReservation(shop_id, reservation_id, payload) {
+    return Repository.request({
+      method: "delete",
+      url: `shops/${shop_id}/${resource2}/${reservation_id}`,
+      data: payload,
+    });
   },
 };
