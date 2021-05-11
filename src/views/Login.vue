@@ -19,7 +19,8 @@
               <v-form v-model="valid">
                 <validation-provider
                   v-slot="{ errors }"
-                  name="E-mail"
+                  name="メールアドレス"
+                  vid="email"
                   rules="required|email"
                 >
                   <v-text-field
@@ -33,7 +34,8 @@
 
                 <validation-provider
                   v-slot="{ errors }"
-                  name="Password"
+                  name="パスワード"
+                  vid="password"
                   rules="required|min:4"
                 >
                   <v-text-field
@@ -64,6 +66,7 @@
 
 <script>
 import "../plugins/veeValidate.js";
+import authRepository from "../repositories/authRepository";
 
 export default {
   data() {
@@ -80,7 +83,13 @@ export default {
         email: this.email,
         password: this.password,
       };
-      this.$store.dispatch("login", sendData);
+      authRepository
+        .confirm(sendData)
+        .then(() => this.$store.dispatch("login", sendData))
+        .catch((e) => {
+          console.log(e);
+          this.$refs.observer.setErrors(e.response.data.errors);
+        });
     },
   },
 };

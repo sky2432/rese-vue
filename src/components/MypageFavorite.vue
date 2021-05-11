@@ -25,8 +25,8 @@
             #{{ shop.area.name }}#{{ shop.genre.name }}
           </v-card-subtitle>
           <v-card-actions class="d-flex justify-space-between">
-            <v-btn color="amber" class="white--text" @click="showShopDeatail(shop.id)"
-              >詳しく見る
+            <v-btn color="amber" dark rounded @click="showShopDeatail(shop.id)"
+              >詳細
             </v-btn>
             <v-btn text icon>
               <v-icon

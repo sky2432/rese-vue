@@ -21,6 +21,9 @@ export default new Vuex.Store({
     user(state, payload) {
       state.user = payload;
     },
+    updateUser(state, payload) {
+      state.user = payload;
+    },
   },
 
   actions: {
@@ -30,7 +33,6 @@ export default new Vuex.Store({
         password: password,
       };
       const resData = await authRepository.login(sendData);
-      console.log(resData);
 
       if (resData.data.auth === true) {
         commit("auth", resData.data.auth);

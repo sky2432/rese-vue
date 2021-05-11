@@ -42,6 +42,7 @@
                   hide-details
                 ></v-text-field>
               </v-col>
+
               <v-col cols="2" class="align-self-center mypage">
                 <v-menu offset-y>
                   <template v-slot:activator="{ on, attrs }">
@@ -50,19 +51,37 @@
                       <v-icon color="amber">mdi-menu-down</v-icon>
                     </v-btn>
                   </template>
-                  <v-list>
-                    <v-list-item class="menu-item">
-                      <v-list-item-title @click="moveUserMypage"
-                        ><v-icon>mdi-account</v-icon
-                        >マイページ</v-list-item-title
+                  <v-list nav dense>
+                    <v-list-item-group color="primary">
+                      <v-list-item class="menu-item" @click="moveUserMypage">
+                        <v-list-item-icon class="mr-2">
+                          <v-icon>mdi-account</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                          <v-list-item-title>マイページ</v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                      <v-list-item
+                        class="menu-item"
+                        @click="$router.push('/setting')"
                       >
-                    </v-list-item>
-                    <v-list-item class="menu-item">
-                      <v-list-item-title @click="logout"
-                        ><v-icon>mdi-logout</v-icon
-                        >ログアウト</v-list-item-title
-                      >
-                    </v-list-item>
+                        <v-list-item-icon class="mr-2">
+                          <v-icon>mdi-cog</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                          <v-list-item-title>設定</v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item class="menu-item" @click="logout">
+                        <v-list-item-icon class="mr-2">
+                          <v-icon>mdi-logout</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                          <v-list-item-title>ログアウト</v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-list-item-group>
                   </v-list>
                 </v-menu>
               </v-col>
@@ -256,12 +275,12 @@ export default {
   cursor: pointer;
 }
 
-.menu-item {
+/* .menu-item {
   cursor: pointer;
   transition: all 1;
 }
 
 .menu-item:hover {
   opacity: 0.5;
-}
+} */
 </style>

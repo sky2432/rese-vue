@@ -1,8 +1,8 @@
 <template>
   <div>
     <TheHeader></TheHeader>
-    <div class="wrapper">
-      <v-main>
+    <v-main>
+      <div class="wrapper">
         <div class="text-center">
           <h1>Rese</h1>
           <div class="mt-5">
@@ -14,15 +14,8 @@
             >
           </div>
         </div>
-      </v-main>
-    </div>
+      </div>
+    </v-main>
   </div>
 </template>
 
-<script>
-export default {};
-</script>
-
-<style scoped>
-
-</style>

@@ -14,6 +14,10 @@ export default {
     return Repository.put(`${resource}/${user_id}`, payload);
   },
 
+  updatePassword(user_id, payload) {
+    return Repository.put(`${resource}/${user_id}/password`, payload);
+  },
+
   deleteUser(user_id) {
     return Repository.delete(`${resource}/${user_id}`);
   },

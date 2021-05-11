@@ -6,15 +6,15 @@
 
 <script>
 export default {
-   mounted(){
-      var routeInstance = this.$route;
-      this.createTitleDesc(routeInstance);
+  mounted() {
+    var routeInstance = this.$route;
+    this.createTitleDesc(routeInstance);
   },
 
-   watch: {
-      '$route' (routeInstance) {
-          this.createTitleDesc(routeInstance);
-      }
+  watch: {
+    $route(routeInstance) {
+      this.createTitleDesc(routeInstance);
+    },
   },
 
   methods: {
@@ -229,5 +229,17 @@ li {
 
 h1 {
   font-size: 2rem;
+}
+
+.setting-card {
+  height: 400px;
+}
+
+.setting-content {
+  height: 100%;
+  /* width: 100%; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

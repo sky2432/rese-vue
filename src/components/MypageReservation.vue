@@ -36,17 +36,19 @@
             </v-col>
 
             <v-col cols="4" class="d-flex justify-center align-center col">
-              <v-card-actions class="d-flex flex-column">
+              <v-card-actions class="flex-column">
                 <v-btn
                   @click="showUpdateDisplay(shop)"
                   color="amber"
-                  class="white--text mt-2"
+                  class="white--text"
+                  width="100"
                   >変更
                 </v-btn>
                 <v-btn
                   color="red"
-                  class="white--text mt-2"
+                  class="white--text mt-2 ml-0"
                   @click="deleteReservation(shop.id, shop.reservation.id)"
+                  width="100"
                   >キャンセル
                 </v-btn>
               </v-card-actions>
@@ -56,8 +58,8 @@
       </v-col>
 
       <!-- ダイアログ -->
-      <v-dialog v-model="dialog" width="500" persistent>
-        <v-card :loading="loading">
+      <v-dialog v-model="updateDialog" width="500" persistent>
+        <v-card>
           <v-card-title class="headline amber">
             予約変更
           </v-card-title>
@@ -86,10 +88,10 @@
                 <v-date-picker v-model="date" no-title scrollable :min="today">
                   <v-spacer></v-spacer>
                   <v-btn text color="primary" @click="menu = false">
-                    Cancel
+                    キャンセル
                   </v-btn>
                   <v-btn text color="primary" @click="$refs.menu.save(date)">
-                    OK
+                    選択
                   </v-btn>
                 </v-date-picker>
               </v-menu>
@@ -108,8 +110,35 @@
                 prepend-icon="mdi-account"
               ></v-select>
             </div>
-            <div>
-              <p>予約内容の確認</p>
+          </v-card-text>
+
+          <v-divider></v-divider>
+
+          <v-card-actions class="pb-6">
+            <v-spacer></v-spacer>
+            <v-btn
+              color="red"
+              class="white--text"
+              @click="updateDialog = false"
+            >
+              キャンセル
+            </v-btn>
+            <v-btn
+              color="amber"
+              class="white--text"
+              @click="confirmDialog = true"
+            >
+              確認
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+
+        <v-dialog v-model="confirmDialog" width="500" persistent>
+          <v-card :loading="loading">
+            <v-card-title class="amber">
+              変更内容の確認
+            </v-card-title>
+            <v-card-text class="pt-5 pb-0">
               <v-simple-table>
                 <template v-slot:default>
                   <tbody>
@@ -118,7 +147,7 @@
                         店舗名
                       </th>
                       <td class="text-left">
-                        {{ shopName }}
+                        {{ updateShop.name }}
                       </td>
                     </tr>
                     <tr class="table-line">
@@ -148,30 +177,28 @@
                   </tbody>
                 </template>
               </v-simple-table>
-            </div>
-          </v-card-text>
+            </v-card-text>
 
-          <v-divider></v-divider>
+            <v-divider></v-divider>
 
-          <v-card-actions class="pb-6">
-            <v-spacer></v-spacer>
-            <v-btn color="red" class="white--text" @click="dialog = false">
-              キャンセル
-            </v-btn>
-            <v-btn color="amber" class="white--text" @click="updateReservation">
-              変更
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-
+            <v-card-actions class="pb-6">
+              <v-spacer></v-spacer>
+              <v-btn color="red" dark @click="confirmDialog = false"
+                >キャンセル</v-btn
+              >
+              <v-btn color="amber" dark @click="updateReservation">変更</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-dialog>
-      <v-dialog v-model="confirmDialog" max-width="500px">
+
+      <v-dialog v-model="messageDialog" max-width="500px">
         <v-card>
           <v-card-title class="justify-center">
             予約を変更しました
           </v-card-title>
           <v-card-actions class="justify-center">
-            <v-btn color="amber" @click="confirmDialog = false">
+            <v-btn color="amber" @click="messageDialog = false">
               閉じる
             </v-btn>
           </v-card-actions>
@@ -189,13 +216,12 @@ export default {
   data() {
     return {
       shops: [],
-      dialog: false,
+      updateDialog: false,
       confirmDialog: false,
+      messageDialog: false,
       loading: false,
       menu: false,
-      reservationId: "",
-      shopName: "",
-      shopId: "",
+      updateShop: "",
       date: "",
       time: "",
       number: "",
@@ -258,21 +284,32 @@ export default {
         number_of_visiters: this.number,
       };
       const resData = await reservationsRepository.updateReservation(
-        this.shopId,
-        this.reservationId,
+        this.updateShop.id,
+        this.updateShop.reservation.id,
         sendData
       );
       this.loading = false;
-      this.dialog = false;
-      this.confirmDialog = true;
+      this.changeDialog();
+      this.resetUpdateData();
       this.showReservations();
     },
 
+    changeDialog() {
+      this.updateDialog = false;
+      this.confirmDialog = false;
+      this.messageDialog = true;
+    },
+
+    resetUpdateData() {
+      this.updateShop = "";
+      this.date = "";
+      this.time = "";
+      this.number = "";
+    },
+
     showUpdateDisplay(shop) {
-      this.dialog = true;
-      this.reservationId = shop.reservation.id;
-      this.shopId = shop.id;
-      this.shopName = shop.name;
+      this.updateDialog = true;
+      this.updateShop = shop;
       this.date = shop.reservation.visited_on.substr(0, 10);
       this.time = shop.reservation.visited_on.substr(11, 5);
       this.number = shop.reservation.number_of_visiters;

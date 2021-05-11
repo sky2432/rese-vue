@@ -8,6 +8,7 @@ import Detail from "../views/Detail.vue";
 import Done from "../views/Done.vue";
 import TopPage from "../views/TopPage.vue";
 import Mypage from "../views/Mypage.vue";
+import Setting from "../views/Setting.vue";
 import store from "../store/index";
 
 
@@ -90,6 +91,17 @@ const routes = [
       requiresAuth: true,
       title: "マイページ",
       desc: "マイページです。",
+    },
+  },
+  {
+    path: "/setting",
+    name: "Setting",
+    component: Setting,
+    props: true,
+    meta: {
+      requiresAuth: true,
+      title: "設定ページ",
+      desc: "設定ぺーじです。",
     },
   },
   {

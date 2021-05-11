@@ -20,7 +20,7 @@
               <v-form v-model="valid">
                 <validation-provider
                   v-slot="{ errors }"
-                  name="Name"
+                  name="名前"
                   rules="required|max:10"
                 >
                   <v-text-field
@@ -35,8 +35,9 @@
 
                 <validation-provider
                   v-slot="{ errors }"
-                  name="E-mail"
+                  name="メールアドレス"
                   rules="required|email"
+                  vid="email"
                 >
                   <v-text-field
                     v-model="email"
@@ -49,7 +50,7 @@
 
                 <validation-provider
                   v-slot="{ errors }"
-                  name="Password"
+                  name="パスワード"
                   rules="required|min:4"
                 >
                   <v-text-field
@@ -64,11 +65,11 @@
                   ></v-text-field>
                 </validation-provider>
 
-                <div style="text-align: center">
+                <v-card-actions class="justify-ceter">
                   <v-btn color="amber" :disabled="invalid" @click="register">
                     登録
                   </v-btn>
-                </div>
+                </v-card-actions>
               </v-form>
             </validation-observer>
           </v-card-text>
@@ -94,17 +95,23 @@ export default {
   },
 
   methods: {
-    async register() {
+    register() {
       const sendData = {
         name: this.name,
         email: this.email,
         password: this.password,
         role: "user",
       };
-      const resData = await usersRepository.createUser(sendData);
-      console.log(resData);
-
-      this.$router.replace("/thanks");
+      usersRepository
+        .createUser(sendData)
+        .then((response) => {
+          console.log(response);
+          this.$router.replace("/thanks");
+        })
+        .catch((e) => {
+          console.log(e);
+          this.$refs.observer.setErrors(e.response.data.errors);
+        });
     },
   },
 };
