@@ -83,10 +83,9 @@ const routes = [
     },
   },
   {
-    path: "/mypage/:id",
+    path: "/mypage",
     name: "Mypage",
     component: Mypage,
-    props: true,
     meta: {
       requiresAuth: true,
       title: "マイページ",

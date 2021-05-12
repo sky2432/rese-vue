@@ -8,7 +8,7 @@
           <v-card-text>
             <v-row align="center" class="mx-0">
               <v-rating
-                :value="4.5"
+                :value="shop.evaluation"
                 color="amber"
                 dense
                 half-increments
@@ -16,8 +16,11 @@
                 size="14"
               ></v-rating>
 
-              <div class="grey--text ml-4">
-                4.5 (413)
+              <div class="ml-1">
+                {{ shop.evaluation
+                }}<span class="grey--text ml-2"
+                  >({{ shop.evaluation_count }}件)</span
+                >
               </div>
             </v-row>
           </v-card-text>

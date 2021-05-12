@@ -12,6 +12,23 @@
               <h1 class="ml-5">{{ shop.name }}</h1>
             </div>
             <v-img class="mt-5" :src="shop.image_url"> </v-img>
+            <v-row align="center" class="mx-0 mt-5">
+              <v-rating
+                :value="shop.evaluation"
+                color="amber"
+                dense
+                half-increments
+                readonly
+                size="14"
+              ></v-rating>
+
+              <div class="ml-1">
+                {{ shop.evaluation
+                }}<span class="grey--text ml-2"
+                  >({{ shop.evaluation_count }}件)</span
+                >
+              </div>
+            </v-row>
             <p class="mt-5" v-if="shop">
               エリア：{{ shop.area.name }}<br />ジャンル：{{ shop.genre.name }}
             </p>
@@ -160,8 +177,12 @@
 
                 <v-card-actions class="pb-6">
                   <v-spacer></v-spacer>
-                  <v-btn color="red" dark @click="dialog = false">キャンセル</v-btn>
-                  <v-btn color="amber" dark @click="createReservation">予約</v-btn>
+                  <v-btn color="red" dark @click="dialog = false"
+                    >キャンセル</v-btn
+                  >
+                  <v-btn color="amber" dark @click="createReservation"
+                    >予約</v-btn
+                  >
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -177,6 +198,7 @@ import { mapState } from "vuex";
 import shopsRepository from "../repositories/shopsRepository.js";
 import reservationsRepository from "../repositories/reservationsRepository";
 import "../plugins/veeValidate.js";
+import config from "../config/config.js";
 
 export default {
   props: {
@@ -192,47 +214,11 @@ export default {
       shop: "",
       menu: false,
       date: "",
-      today: new Date().toISOString().slice(0, 10),
       time: "",
       number: "",
-      items: [
-        "12:00",
-        "12:30",
-        "13:00",
-        "13:30",
-        "14:00",
-        "14:30",
-        "15:00",
-        "15:30",
-        "16:00",
-        "16:30",
-        "17:00",
-        "17:30",
-        "18:00",
-        "18:30",
-        "19:00",
-        "19:30",
-        "20:00",
-        "20:30",
-        "21:00",
-        "21:30",
-        "22:00",
-        "22:30",
-        "23:00",
-        "23:30",
-      ],
-      numbers: [
-        { state: "1名", abbr: 1 },
-        { state: "2名", abbr: 2 },
-        { state: "3名", abbr: 3 },
-        { state: "4名", abbr: 4 },
-        { state: "5名", abbr: 5 },
-        { state: "6名", abbr: 6 },
-        { state: "7名", abbr: 7 },
-        { state: "8名", abbr: 8 },
-        { state: "9名", abbr: 9 },
-        { state: "10名", abbr: 10 },
-      ],
+      today: config.today,
+      items: config.items,
+      numbers: config.numbers,
     };
   },
 
@@ -260,7 +246,6 @@ export default {
         this.shop.id,
         sendData
       );
-      // console.log(resData);
       this.$router.push("/done");
     },
   },

@@ -10,19 +10,21 @@
             <v-col cols="4"></v-col>
             <v-col cols="4" class="col">
               <v-card-title>{{ shop.name }}</v-card-title>
-
               <v-card-text>
                 <v-row align="center" class="mx-0">
                   <v-rating
-                    :value="4.5"
+                    :value="shop.evaluation"
                     color="amber"
                     dense
-                    half-increments
                     readonly
                     size="14"
                   ></v-rating>
-                  <div class="grey--text ml-4">
-                    4.5 (413)
+
+                  <div class="ml-1">
+                    {{ shop.evaluation
+                    }}<span class="grey--text ml-2"
+                      >({{ shop.evaluation_count }}件)</span
+                    >
                   </div>
                 </v-row>
               </v-card-text>
@@ -30,8 +32,8 @@
                 #{{ shop.area.name }}＃{{ shop.genre.name }}
               </v-card-subtitle>
               <v-card-text class="mt-6">
-                <p>予約日時：{{ shop.reservation.visited_on }}</p>
-                <p>人数：{{ shop.reservation.number_of_visiters }}</p>
+                <p>来店日時：{{ shop.reservation.visited_on }}</p>
+                <p>来店人数：{{ shop.reservation.number_of_visiters }}</p>
               </v-card-text>
             </v-col>
 
@@ -51,11 +53,72 @@
                   width="100"
                   >キャンセル
                 </v-btn>
+                <v-btn
+                  v-if="showAddEvaluation(shop.evaluations)"
+                  color="amber"
+                  class="white--text mt-2 ml-0"
+                  width="100"
+                  @click="showEvaluateDisplay(shop)"
+                  >評価
+                </v-btn>
+                <v-btn
+                  v-if="showEditEvaluation(shop.evaluations)"
+                  color="amber"
+                  class="white--text mt-2 ml-0"
+                  width="100"
+                  @click="showEditEvaluateDisplay(shop.evaluations)"
+                  >評価を編集
+                </v-btn>
               </v-card-actions>
             </v-col>
           </v-row>
         </v-card>
       </v-col>
+
+      <v-dialog v-model="evaluateDialog" max-width="500px">
+        <v-card>
+          <v-card-title class="amber">
+            評価
+          </v-card-title>
+          <v-card-text class="text-center mt-4">
+            <v-rating
+              v-model="evaluation"
+              half-increments
+              hover
+              color="amber"
+            ></v-rating>
+          </v-card-text>
+          <v-card-actions class="justify-center">
+            <v-btn color="amber" @click="createEvaluation">
+              投稿
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog v-model="editEvaluateDialog" max-width="500px">
+        <v-card>
+          <v-card-title class="amber">
+            評価を編集
+          </v-card-title>
+          <v-card-text class="text-center mt-4">
+            <v-rating
+              v-model="updatedEvaluation"
+              half-increments
+              hover
+              color="amber"
+            ></v-rating>
+          </v-card-text>
+          <v-card-actions class="justify-center">
+            <v-btn color="red" @click="deleteEvaluation">
+              削除
+            </v-btn>
+            <v-btn color="amber" @click="updateEvaluation">
+              更新
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
 
       <!-- ダイアログ -->
       <v-dialog v-model="updateDialog" width="500" persistent>
@@ -211,11 +274,20 @@
 <script>
 import { mapState } from "vuex";
 import reservationsRepository from "../repositories/reservationsRepository.js";
+import evaluationsRepository from "../repositories/evaluationsRepository";
+import config from "../config/config.js";
+
 
 export default {
   data() {
     return {
+      editEvaluateDialog: false,
+      updatedEvaluation: 0,
+      updateEvaluateData: "",
+      evaluation: 0,
+      evaluateShop: "",
       shops: [],
+      evaluateDialog: false,
       updateDialog: false,
       confirmDialog: false,
       messageDialog: false,
@@ -225,50 +297,31 @@ export default {
       date: "",
       time: "",
       number: "",
-      today: new Date().toISOString().slice(0, 10),
-      items: [
-        "12:00",
-        "12:30",
-        "13:00",
-        "13:30",
-        "14:00",
-        "14:30",
-        "15:00",
-        "15:30",
-        "16:00",
-        "16:30",
-        "17:00",
-        "17:30",
-        "18:00",
-        "18:30",
-        "19:00",
-        "19:30",
-        "20:00",
-        "20:30",
-        "21:00",
-        "21:30",
-        "22:00",
-        "22:30",
-        "23:00",
-        "23:30",
-      ],
-      numbers: [
-        { state: "1名", abbr: 1 },
-        { state: "2名", abbr: 2 },
-        { state: "3名", abbr: 3 },
-        { state: "4名", abbr: 4 },
-        { state: "5名", abbr: 5 },
-        { state: "6名", abbr: 6 },
-        { state: "7名", abbr: 7 },
-        { state: "8名", abbr: 8 },
-        { state: "9名", abbr: 9 },
-        { state: "10名", abbr: 10 },
-      ],
+      today: config.today,
+      items: config.items,
+      numbers: config.numbers,
     };
   },
 
   computed: {
     ...mapState(["user"]),
+
+    showEditEvaluation() {
+      return function(evaluations) {
+        return this.isExisitUserEvaluation(evaluations);
+      };
+    },
+
+    showAddEvaluation() {
+      return function(evaluations) {
+        const result = this.isExisitUserEvaluation(evaluations);
+        if (result === true) {
+          return false;
+        } else {
+          return true;
+        }
+      };
+    },
   },
 
   created() {
@@ -276,6 +329,75 @@ export default {
   },
 
   methods: {
+    async deleteEvaluation() {
+      this.editEvaluateDialog = false;
+      const sendData = {
+        user_id: this.user.id,
+      };
+      const resData = await evaluationsRepository.deleteEvaluation(
+        this.updateEvaluateData.shop_id,
+        this.updateEvaluateData.id,
+        sendData
+      );
+      console.log(resData);
+      this.showReservations();
+    },
+
+    showEditEvaluateDisplay(evaluations) {
+      this.editEvaluateDialog = true;
+      for (let i in evaluations) {
+        if (this.user.id === evaluations[i].user_id) {
+          this.updatedEvaluation = evaluations[i].evaluation;
+          this.updateEvaluateData = evaluations[i];
+          console.log(this.updateEvaluateData);
+        }
+      }
+    },
+
+    async updateEvaluation() {
+      this.editEvaluateDialog = false;
+      const sendData = {
+        user_id: this.user.id,
+        evaluation: this.updatedEvaluation,
+      };
+      const resData = await evaluationsRepository.updateEvaluation(
+        this.updateEvaluateData.shop_id,
+        this.updateEvaluateData.id,
+        sendData
+      );
+      // console.log(resData);
+      this.showReservations();
+    },
+
+    isExisitUserEvaluation(evaluations) {
+      for (let i in evaluations) {
+        if (this.user.id === evaluations[i].user_id) {
+          return true;
+        }
+      }
+      return false;
+    },
+
+    showEvaluateDisplay(shop) {
+      this.evaluateDialog = true;
+      this.evaluateShop = shop;
+      this.evaluation = 0;
+    },
+
+    async createEvaluation() {
+      this.evaluateDialog = false;
+      const sendData = {
+        user_id: this.user.id,
+        evaluation: this.evaluation,
+      };
+      const resData = await evaluationsRepository.createEvaluation(
+        this.evaluateShop.id,
+        sendData
+      );
+      // console.log(resData);
+      this.showReservations();
+    },
+
     async updateReservation() {
       this.loading = true;
       const sendData = {
@@ -320,6 +442,7 @@ export default {
         this.user.id
       );
       this.shops = resData.data.data;
+      console.log(resData);
     },
 
     async deleteReservation(shop_id, reservation_id) {

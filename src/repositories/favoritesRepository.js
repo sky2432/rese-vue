@@ -5,7 +5,7 @@ export default {
   showFavorites(user_id) {
     return Repository.get(`users/${user_id}/favorites`);
   },
-
+ 
   addFavorite(shop_id, payload) {
     return Repository.put(`shops/${shop_id}/${resource}`, payload);
   },

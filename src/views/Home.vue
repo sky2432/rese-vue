@@ -53,7 +53,7 @@
                   </template>
                   <v-list nav dense>
                     <v-list-item-group color="primary">
-                      <v-list-item class="menu-item" @click="moveUserMypage">
+                      <v-list-item class="menu-item" @click="$router.push('mypage')">
                         <v-list-item-icon class="mr-2">
                           <v-icon>mdi-account</v-icon>
                         </v-list-item-icon>
@@ -103,7 +103,7 @@
               <v-card-text>
                 <v-row align="center" class="mx-0">
                   <v-rating
-                    :value="4.5"
+                    :value="shop.evaluation"
                     color="amber"
                     dense
                     half-increments
@@ -111,8 +111,11 @@
                     size="14"
                   ></v-rating>
 
-                  <div class="grey--text ml-4">
-                    4.5 (413)
+                  <div class="ml-1">
+                    {{ shop.evaluation
+                    }}<span class="grey--text ml-2"
+                      >({{ shop.evaluation_count }}件)</span
+                    >
                   </div>
                 </v-row>
               </v-card-text>
@@ -130,7 +133,7 @@
                 <v-spacer></v-spacer>
                 <v-btn text icon>
                   <v-icon large color="red" @click="changeFavorite(shop.id)">{{
-                    showHeart(shop.id)
+                    showFavoriteIcon(shop.id)
                   }}</v-icon>
                 </v-btn>
               </v-card-actions>
@@ -162,14 +165,14 @@ export default {
   computed: {
     ...mapState(["user"]),
 
-    showHeart() {
+    showFavoriteIcon() {
       return function(shop_id) {
-        for (let i in this.favorites) {
-          if (shop_id === this.favorites[i].id) {
-            return "mdi-heart";
-          }
+        const result = this.isFavorite(shop_id);
+        if (result === true) {
+          return "mdi-heart";
+        } else {
+          return "mdi-heart-outline";
         }
-        return "mdi-heart-outline";
       };
     },
   },
@@ -180,56 +183,60 @@ export default {
   },
 
   methods: {
-    checkFavorite(shop_id) {
-      for (let i in this.favorites) {
-        if (shop_id === this.favorites[i].id) {
-          const sendData = {
-            exsist: true,
-            favorite_id: this.favorites[i].favorite.id,
-          };
-          return sendData;
-        }
+    changeFavorite(shop_id) {
+      const result = this.isFavorite(shop_id);
+      if (result === false) {
+        this.addFavorite(shop_id);
+      } else if (result === true) {
+        this.deleteFavorite(shop_id);
       }
-      const sendData = {
-        exsist: false,
-      };
-      return sendData;
     },
 
-    async changeFavorite(shop_id) {
-      const result = this.checkFavorite(shop_id);
-      if (result.exsist === false) {
-        const sendData = {
-          user_id: this.user.id,
-        };
-        const resData = await favoritesRepository.addFavorite(
-          shop_id,
-          sendData
-        );
-        // console.log(resData);
-      } else if (result.exsist === true) {
-        const sendData = {
-          user_id: this.user.id,
-          favorite_id: result.favorite_id,
-        };
-        const resData = await favoritesRepository.deleteFavorite(
-          shop_id,
-          sendData
-        );
-        // console.log(resData);
+    isFavorite(shop_id) {
+      for (let i in this.favorites) {
+        if (shop_id === this.favorites[i].id) {
+          return true;
+        }
       }
+      return false;
+    },
+
+    async addFavorite(shop_id) {
+      const sendData = {
+        user_id: this.user.id,
+      };
+      await favoritesRepository.addFavorite(shop_id, sendData);
       this.showFavorites();
+    },
+
+    async deleteFavorite(shop_id) {
+      const favoriteId = this.getFavoriteId(shop_id);
+      const sendData = {
+        user_id: this.user.id,
+        favorite_id: favoriteId,
+      };
+      await favoritesRepository.deleteFavorite(
+        shop_id,
+        sendData
+      );
+      this.showFavorites();
+    },
+
+    getFavoriteId(shop_id) {
+      for (let i in this.favorites) {
+        if (shop_id === this.favorites[i].id) {
+          return this.favorites[i].favorite.id;
+        }
+      }
     },
 
     async showFavorites() {
       const resData = await favoritesRepository.showFavorites(this.user.id);
       this.favorites = resData.data.data;
-      // console.log(resData);
     },
 
     async getShops() {
       const resData = await shopsRepository.getShops();
-      // console.log(resData);
       const data = resData.data.data;
       this.shops = data;
       this.createSerchItems(data, "areaItems", "area");
@@ -254,15 +261,6 @@ export default {
       });
     },
 
-    moveUserMypage() {
-      this.$router.push({
-        name: "Mypage",
-        params: {
-          id: this.user.id,
-        },
-      });
-    },
-
     logout() {
       this.$store.dispatch("logout");
     },
@@ -274,13 +272,4 @@ export default {
 .header-txt {
   cursor: pointer;
 }
-
-/* .menu-item {
-  cursor: pointer;
-  transition: all 1;
-}
-
-.menu-item:hover {
-  opacity: 0.5;
-} */
 </style>
