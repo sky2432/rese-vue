@@ -75,59 +75,6 @@
         </v-card>
       </v-col>
 
-      <v-dialog
-        v-model="showEvaluationDialog"
-        :retain-focus="false"
-        max-width="500px"
-      >
-        <v-card>
-          <v-card-title class="amber">
-            評価
-          </v-card-title>
-          <v-card-text class="text-center mt-4">
-            <v-rating
-              v-model="evaluation"
-              half-increments
-              hover
-              color="amber"
-            ></v-rating>
-          </v-card-text>
-          <v-card-actions class="justify-center">
-            <v-btn color="amber" @click="createEvaluation">
-              投稿
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
-      <v-dialog
-        v-model="showDialogEditEvaluation"
-        :retain-focus="false"
-        max-width="500px"
-      >
-        <v-card>
-          <v-card-title class="amber">
-            評価を編集
-          </v-card-title>
-          <v-card-text class="text-center mt-4">
-            <v-rating
-              v-model="updatedEvaluation"
-              half-increments
-              hover
-              color="amber"
-            ></v-rating>
-          </v-card-text>
-          <v-card-actions class="justify-center">
-            <v-btn color="red" @click="deleteEvaluation">
-              削除
-            </v-btn>
-            <v-btn color="amber" @click="updateEvaluation">
-              更新
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
       <v-dialog v-model="showDialogUpdateReservation" width="500" persistent>
         <v-card>
           <v-card-title class="headline amber">
@@ -279,14 +226,62 @@
         </v-dialog>
       </v-dialog>
 
-      <v-dialog v-model="showDoneMsgDialog" max-width="500px">
+      <MessageDialog ref="messageDialog">
+        <template #message>予約を変更しました</template>
+      </MessageDialog>
+
+      <v-dialog
+        v-model="showEvaluationDialog"
+        :retain-focus="false"
+        max-width="500px"
+      >
         <v-card>
-          <v-card-title class="justify-center">
-            予約を変更しました
+          <v-card-title class="amber">
+            評価
+            <v-spacer></v-spacer>
+            <v-btn icon @click="showEvaluationDialog = false"><v-icon>mdi-window-close</v-icon></v-btn>
           </v-card-title>
+          <v-card-text class="text-center mt-4">
+            <v-rating
+              v-model="evaluation"
+              half-increments
+              hover
+              color="amber"
+            ></v-rating>
+          </v-card-text>
           <v-card-actions class="justify-center">
-            <v-btn color="amber" @click="showDoneMsgDialog = false">
-              閉じる
+            <v-btn color="amber" @click="createEvaluation">
+              投稿
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog
+        v-model="showDialogEditEvaluation"
+        :retain-focus="false"
+        max-width="500px"
+      >
+        <v-card>
+          <v-card-title class="amber">
+            評価を編集
+            <v-spacer></v-spacer>
+            <v-btn icon @click="showDialogEditEvaluation = false"><v-icon>mdi-window-close</v-icon></v-btn>
+          </v-card-title>
+          <v-card-text class="text-center mt-4">
+            <v-rating
+              v-model="updatedEvaluation"
+              half-increments
+              hover
+              color="amber"
+            ></v-rating>
+          </v-card-text>
+          <v-card-actions class="justify-center">
+            <v-btn color="red" @click="deleteEvaluation">
+              削除
+            </v-btn>
+            <v-btn color="amber" @click="updateEvaluation">
+              更新
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -296,12 +291,17 @@
 </template>
 
 <script>
+import MessageDialog from "../components/MessageDialog";
 import { mapState } from "vuex";
 import reservationsRepository from "../repositories/reservationsRepository.js";
 import evaluationsRepository from "../repositories/evaluationsRepository";
 import config from "../config/config.js";
 
 export default {
+  components: {
+    MessageDialog,
+  },
+
   data() {
     return {
       shops: [],
@@ -316,7 +316,6 @@ export default {
       showEvaluationDialog: false,
       showDialogUpdateReservation: false,
       showDialogConfirmReservation: false,
-      showDoneMsgDialog: false,
       showdatePickerMenu: false,
       updateLoading: false,
       today: config.today,
@@ -442,7 +441,7 @@ export default {
     changeDialog() {
       this.showDialogUpdateReservation = false;
       this.showDialogConfirmReservation = false;
-      this.showDoneMsgDialog = true;
+      this.$refs.messageDialog.changeShowMessageDialog();
     },
 
     resetUpdateData() {
@@ -476,7 +475,9 @@ export default {
     },
 
     async getUserReservations() {
-      const resData =  await reservationsRepository.getUserReservations(this.user.id);
+      const resData = await reservationsRepository.getUserReservations(
+        this.user.id
+      );
       this.shops = resData.data.data;
     },
   },

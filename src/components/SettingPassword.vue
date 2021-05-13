@@ -52,29 +52,25 @@
           </v-form>
         </validation-observer>
 
-        <v-dialog v-model="showDoneMsgDialog" max-width="500px">
-          <v-card>
-            <v-card-title class="justify-center">
-              パスワードを更新しました
-            </v-card-title>
-            <v-card-actions class="justify-center">
-              <v-btn color="amber" @click="showDoneMsgDialog = false">
-                閉じる
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+        <MessageDialog ref="messageDialog">
+          <template #message>パスワードを更新しました</template>
+        </MessageDialog>
       </div>
     </v-card>
   </div>
 </template>
 
 <script>
+import MessageDialog from "../components/MessageDialog";
 import { mapState } from "vuex";
 import "../plugins/veeValidate.js";
 import usersRepository from "../repositories/usersRepository";
 
 export default {
+  components: {
+    MessageDialog,
+  },
+
   data() {
     return {
       password: "",
@@ -82,7 +78,6 @@ export default {
       formValid: false,
       showPassword: false,
       showNewPassword: false,
-      showDoneMsgDialog: false,
     };
   },
 
@@ -99,16 +94,16 @@ export default {
       usersRepository
         .updatePassword(this.user.id, sendData)
         .then(() => {
-          this.showDoneMsgDialog = true;
-          this.resetData();
+          this.resetPasswordForm();
           this.$refs.observer.reset();
+          this.$refs.messageDialog.changeShowMessageDialog();
         })
         .catch((e) => {
           this.$refs.observer.setErrors(e.response.data.errors);
         });
     },
 
-    resetData() {
+    resetPasswordForm() {
       this.password = "";
       this.newPassword = "";
     },
@@ -116,4 +111,3 @@ export default {
 };
 </script>
 
-<style></style>
