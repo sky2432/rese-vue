@@ -6,7 +6,7 @@ export default {
     return Repository.get(resource);
   },
 
-  showShop(shop_id) {
+  getShop(shop_id) {
     return Repository.get(`${resource}/${shop_id}`);
   },
 

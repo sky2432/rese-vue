@@ -14,8 +14,8 @@
             <v-row>
               <v-col class="px-0" cols="3">
                 <v-select
-                  v-model="areaSelected"
-                  :items="areaItems"
+                  v-model="selectedArea"
+                  :items="areaOptions"
                   class="rounded-r-0"
                   solo
                   dense
@@ -24,8 +24,8 @@
               </v-col>
               <v-col class="px-0" cols="3">
                 <v-select
-                  v-model="genreSelected"
-                  :items="genreItems"
+                  v-model="selectedGenre"
+                  :items="genreOptions"
                   class="rounded-0"
                   solo
                   dense
@@ -53,7 +53,10 @@
                   </template>
                   <v-list nav dense>
                     <v-list-item-group color="primary">
-                      <v-list-item class="menu-item" @click="$router.push('mypage')">
+                      <v-list-item
+                        class="menu-item"
+                        @click="$router.push('mypage')"
+                      >
                         <v-list-item-icon class="mr-2">
                           <v-icon>mdi-account</v-icon>
                         </v-list-item-icon>
@@ -125,7 +128,7 @@
               <v-card-actions>
                 <v-btn
                   color="amber"
-                  @click="showShopDeatail(shop.id)"
+                  @click="moveShopDeatail(shop.id)"
                   rounded
                   dark
                   >詳細
@@ -153,12 +156,14 @@ import favoritesRepository from "../repositories/favoritesRepository";
 export default {
   data() {
     return {
-      areaSelected: "All area",
-      areaItems: ["All area"],
-      genreSelected: "All genre",
-      genreItems: ["All genre"],
       shops: [],
       favorites: [],
+      areaOptions: ["All area"],
+      genreOptions: ["All genre"],
+      selectedArea: "All area",
+      selectedGenre: "All genre",
+      favoriteIcon: "mdi-heart",
+      notFavoriteIcon: "mdi-heart-outline",
     };
   },
 
@@ -166,12 +171,12 @@ export default {
     ...mapState(["user"]),
 
     showFavoriteIcon() {
-      return function(shop_id) {
-        const result = this.isFavorite(shop_id);
+      return function(shopId) {
+        const result = this.isFavorite(shopId);
         if (result === true) {
-          return "mdi-heart";
+          return this.favoriteIcon;
         } else {
-          return "mdi-heart-outline";
+          return this.notFavoriteIcon;
         }
       };
     },
@@ -179,86 +184,83 @@ export default {
 
   created() {
     this.getShops();
-    this.showFavorites();
+    this.getUserFavorites();
+  },
+
+  mounted: function() {
+    // ブラウザのコンソールにルート要素を表示します。
+    console.log(this.$el);
   },
 
   methods: {
-    changeFavorite(shop_id) {
-      const result = this.isFavorite(shop_id);
+    changeFavorite(shopId) {
+      const result = this.isFavorite(shopId);
       if (result === false) {
-        this.addFavorite(shop_id);
+        this.addFavorite(shopId);
       } else if (result === true) {
-        this.deleteFavorite(shop_id);
+        this.removeFavorite(shopId);
       }
     },
 
-    isFavorite(shop_id) {
+    isFavorite(shopId) {
       for (let i in this.favorites) {
-        if (shop_id === this.favorites[i].id) {
+        if (shopId === this.favorites[i].id) {
           return true;
         }
       }
       return false;
     },
 
-    async addFavorite(shop_id) {
+    async addFavorite(shopId) {
       const sendData = {
         user_id: this.user.id,
       };
-      await favoritesRepository.addFavorite(shop_id, sendData);
-      this.showFavorites();
+      await favoritesRepository.addFavorite(shopId, sendData);
+      this.getUserFavorites();
     },
 
-    async deleteFavorite(shop_id) {
-      const favoriteId = this.getFavoriteId(shop_id);
+    async removeFavorite(shopId) {
+      const favoriteId = this.getFavoriteId(shopId);
       const sendData = {
         user_id: this.user.id,
         favorite_id: favoriteId,
       };
-      await favoritesRepository.deleteFavorite(
-        shop_id,
-        sendData
-      );
-      this.showFavorites();
+      await favoritesRepository.removeFavorite(shopId, sendData);
+      this.getUserFavorites();
     },
 
-    getFavoriteId(shop_id) {
+    getFavoriteId(shopId) {
       for (let i in this.favorites) {
-        if (shop_id === this.favorites[i].id) {
+        if (shopId === this.favorites[i].id) {
           return this.favorites[i].favorite.id;
         }
       }
     },
 
-    async showFavorites() {
-      const resData = await favoritesRepository.showFavorites(this.user.id);
+    async getUserFavorites() {
+      const resData = await favoritesRepository.getUserFavorites(this.user.id);
       this.favorites = resData.data.data;
     },
 
     async getShops() {
       const resData = await shopsRepository.getShops();
-      const data = resData.data.data;
-      this.shops = data;
-      this.createSerchItems(data, "areaItems", "area");
-      this.createSerchItems(data, "genreItems", "genre");
+      const shops = resData.data.data;
+      this.shops = shops;
+      this.createSerchOptions(shops, "areaOptions", "area");
+      this.createSerchOptions(shops, "genreOptions", "genre");
     },
 
-    createSerchItems(data, items, name) {
-      for (let i in data) {
-        let result = this[items].includes(data[i][name].name);
+    createSerchOptions(shops, options, itemName) {
+      for (let i in shops) {
+        let result = this[options].includes(shops[i][itemName].name);
         if (result === false) {
-          this[items].push(data[i][name].name);
+          this[options].push(shops[i][itemName].name);
         }
       }
     },
 
-    showShopDeatail(shop_id) {
-      this.$router.push({
-        name: "Detail",
-        params: {
-          shop_id: shop_id,
-        },
-      });
+    moveShopDeatail(shopId) {
+      this.$helpers.$_movePageWithPram("Detail", "shopId", shopId);
     },
 
     logout() {

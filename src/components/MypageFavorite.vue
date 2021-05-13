@@ -28,14 +28,14 @@
             #{{ shop.area.name }}#{{ shop.genre.name }}
           </v-card-subtitle>
           <v-card-actions class="d-flex justify-space-between">
-            <v-btn color="amber" dark rounded @click="showShopDeatail(shop.id)"
+            <v-btn color="amber" dark rounded @click="moveShopDeatail(shop.id)"
               >詳細
             </v-btn>
             <v-btn text icon>
               <v-icon
                 color="red"
                 large
-                @click="deleteFavorite(shop.id, shop.favorite.id)"
+                @click="removeFavorite(shop.id, shop.favorite.id)"
                 >mdi-heart</v-icon
               >
             </v-btn>
@@ -62,31 +62,26 @@ export default {
   },
 
   created() {
-    this.showFavorites();
+    this.getUserFavorites();
   },
 
   methods: {
-    async showFavorites() {
-      const resData = await favoritesRepository.showFavorites(this.user.id);
+    async getUserFavorites() {
+      const resData = await favoritesRepository.getUserFavorites(this.user.id);
       this.shops = resData.data.data;
     },
 
-    async deleteFavorite(shop_id, favorite_id) {
+    async removeFavorite(shopId, favoriteId) {
       const sendData = {
         user_id: this.user.id,
-        favorite_id: favorite_id,
+        favorite_id: favoriteId,
       };
-      await favoritesRepository.deleteFavorite(shop_id, sendData);
-      this.showFavorites();
+      await favoritesRepository.removeFavorite(shopId, sendData);
+      this.getUserFavorites();
     },
 
-    showShopDeatail(shop_id) {
-      this.$router.push({
-        name: "Detail",
-        params: {
-          shop_id: shop_id,
-        },
-      });
+    moveShopDeatail(shopId) {
+      this.$helpers.$_movePageWithPram("Detail", "shopId", shopId);
     },
   },
 };

@@ -1,7 +1,6 @@
 <template>
   <div>
     <TheHeader></TheHeader>
-
     <v-main>
       <div class="wrapper">
         <v-card
@@ -17,7 +16,7 @@
           </v-card-title>
           <v-card-text>
             <validation-observer ref="observer" v-slot="{ invalid }">
-              <v-form v-model="valid">
+              <v-form v-model="formValid">
                 <validation-provider
                   v-slot="{ errors }"
                   name="名前"
@@ -86,10 +85,10 @@ import "../plugins/veeValidate.js";
 export default {
   data() {
     return {
-      valid: false,
       name: "",
       email: "",
       password: "",
+      formValid: false,
       showPassword: false,
     };
   },

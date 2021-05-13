@@ -40,13 +40,13 @@
             <v-card class="card">
               <v-card-title class="amber">予約</v-card-title>
               <validation-observer ref="observer" v-slot="{ invalid }">
-                <v-form v-model="valid">
+                <v-form v-model="formValid">
                   <v-card-text class="mt-5 px-5">
                     <v-menu
-                      ref="menu"
-                      v-model="menu"
+                      ref="datePickerMenu"
+                      v-model="showdatePickerMenu"
                       :close-on-content-click="false"
-                      :return-value.sync="date"
+                      :return-value.sync="visitsDate"
                       transition="scale-transition"
                       offset-y
                       min-width="auto"
@@ -58,7 +58,7 @@
                           rules="selectRequired"
                         >
                           <v-text-field
-                            v-model="date"
+                            v-model="visitsDate"
                             label="日付を選択"
                             prepend-icon="mdi-calendar"
                             readonly
@@ -68,19 +68,19 @@
                         </validation-provider>
                       </template>
                       <v-date-picker
-                        v-model="date"
+                        v-model="visitsDate"
                         no-title
                         scrollable
                         :min="today"
                       >
                         <v-spacer></v-spacer>
-                        <v-btn text color="primary" @click="menu = false">
+                        <v-btn text color="primary" @click="showdatePickerMenu = false">
                           キャンセル
                         </v-btn>
                         <v-btn
                           text
                           color="primary"
-                          @click="$refs.menu.save(date)"
+                          @click="$refs.datePickerMenu.save(visitsDate)"
                         >
                           選択
                         </v-btn>
@@ -93,8 +93,8 @@
                       rules="selectRequired"
                     >
                       <v-select
-                        :items="items"
-                        v-model="time"
+                        :items="timeOptions"
+                        v-model="visitsTime"
                         label="時刻を選択"
                         prepend-icon="mdi-clock-time-eight-outline"
                         :error-messages="errors"
@@ -107,10 +107,10 @@
                       rules="selectRequired"
                     >
                       <v-select
-                        :items="numbers"
+                        :items="numberOptions"
                         item-text="state"
                         item-value="abbr"
-                        v-model="number"
+                        v-model="visitsNumber"
                         label="人数を選択"
                         prepend-icon="mdi-account"
                         :error-messages="errors"
@@ -119,7 +119,9 @@
                   </v-card-text>
 
                   <v-card-actions class="justify-center pb-5">
-                    <v-btn @click="dialog = true" :disabled="invalid"
+                    <v-btn
+                      @click="showReservationDialog = true"
+                      :disabled="invalid"
                       >予約</v-btn
                     >
                   </v-card-actions>
@@ -127,7 +129,7 @@
               </validation-observer>
             </v-card>
 
-            <v-dialog v-model="dialog" width="500" persistent>
+            <v-dialog v-model="showReservationDialog" width="500" persistent>
               <v-card>
                 <v-card-title class="amber">
                   予約内容の確認
@@ -149,7 +151,7 @@
                             日付
                           </th>
                           <td class="text-left">
-                            {{ date }}
+                            {{ visitsDate }}
                           </td>
                         </tr>
                         <tr class="table-line">
@@ -157,7 +159,7 @@
                             時刻
                           </th>
                           <td class="text-left">
-                            {{ time }}
+                            {{ visitsTime }}
                           </td>
                         </tr>
                         <tr class="table-line">
@@ -165,7 +167,7 @@
                             人数
                           </th>
                           <td class="text-left">
-                            {{ number }}<span v-if="number">名</span>
+                            {{ visitsNumber }}<span v-if="visitsNumber">名</span>
                           </td>
                         </tr>
                       </tbody>
@@ -177,7 +179,7 @@
 
                 <v-card-actions class="pb-6">
                   <v-spacer></v-spacer>
-                  <v-btn color="red" dark @click="dialog = false"
+                  <v-btn color="red" dark @click="showReservationDialog = false"
                     >キャンセル</v-btn
                   >
                   <v-btn color="amber" dark @click="createReservation"
@@ -202,23 +204,23 @@ import config from "../config/config.js";
 
 export default {
   props: {
-    shop_id: {
+    shopId: {
       type: Number,
       require: true,
     },
   },
   data() {
     return {
-      valid: false,
-      dialog: false,
       shop: "",
-      menu: false,
-      date: "",
-      time: "",
-      number: "",
+      visitsDate: "",
+      visitsTime: "",
+      visitsNumber: "",
+      formValid: false,
+      showdatePickerMenu: false,
+      showReservationDialog: false,
       today: config.today,
-      items: config.items,
-      numbers: config.numbers,
+      timeOptions: config.timeOptions,
+      numberOptions: config.numberOptions,
     };
   },
 
@@ -227,25 +229,22 @@ export default {
   },
 
   created() {
-    this.showShop();
+    this.getShop();
   },
 
   methods: {
-    async showShop() {
-      const resData = await shopsRepository.showShop(this.shop_id);
+    async getShop() {
+      const resData = await shopsRepository.getShop(this.shopId);
       this.shop = resData.data.data;
     },
 
     async createReservation() {
       const sendData = {
         user_id: this.user.id,
-        visited_on: `${this.date} ${this.time}`,
-        number_of_visiters: this.number,
+        visited_on: `${this.visitsDate} ${this.visitsTime}`,
+        number_of_visiters: this.visitsNumber,
       };
-      const resData = await reservationsRepository.createReservation(
-        this.shop.id,
-        sendData
-      );
+      await reservationsRepository.createReservation(this.shop.id, sendData);
       this.$router.push("/done");
     },
   },

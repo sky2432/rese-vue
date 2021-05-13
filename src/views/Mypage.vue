@@ -45,7 +45,7 @@ export default {
 
   data() {
     return {
-      currentComponent: MypageFavorite,
+      currentComponent: MypageReservation,
     };
   },
 };

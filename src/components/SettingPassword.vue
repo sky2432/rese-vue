@@ -7,7 +7,7 @@
           v-slot="{ invalid }"
           style="width: 80%;"
         >
-          <v-form v-model="valid">
+          <v-form v-model="formValid">
             <validation-provider
               v-slot="{ errors }"
               name="現在のパスワード"
@@ -52,13 +52,13 @@
           </v-form>
         </validation-observer>
 
-        <v-dialog v-model="dialog" max-width="500px">
+        <v-dialog v-model="showDoneMsgDialog" max-width="500px">
           <v-card>
             <v-card-title class="justify-center">
               パスワードを更新しました
             </v-card-title>
             <v-card-actions class="justify-center">
-              <v-btn color="amber" @click="dialog = false">
+              <v-btn color="amber" @click="showDoneMsgDialog = false">
                 閉じる
               </v-btn>
             </v-card-actions>
@@ -77,12 +77,12 @@ import usersRepository from "../repositories/usersRepository";
 export default {
   data() {
     return {
-      dialog: false,
-      valid: false,
-      showPassword: false,
-      showNewPassword: false,
       password: "",
       newPassword: "",
+      formValid: false,
+      showPassword: false,
+      showNewPassword: false,
+      showDoneMsgDialog: false,
     };
   },
 
@@ -98,14 +98,12 @@ export default {
       };
       usersRepository
         .updatePassword(this.user.id, sendData)
-        .then((response) => {
-          console.log(response);
-          this.dialog = true;
+        .then(() => {
+          this.showDoneMsgDialog = true;
           this.resetData();
           this.$refs.observer.reset();
         })
         .catch((e) => {
-          console.log(e);
           this.$refs.observer.setErrors(e.response.data.errors);
         });
     },

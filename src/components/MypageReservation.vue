@@ -40,7 +40,7 @@
             <v-col cols="4" class="d-flex justify-center align-center col">
               <v-card-actions class="flex-column">
                 <v-btn
-                  @click="showUpdateDisplay(shop)"
+                  @click="displayDialogUpdateReservation(shop)"
                   color="amber"
                   class="white--text"
                   width="100"
@@ -54,19 +54,19 @@
                   >キャンセル
                 </v-btn>
                 <v-btn
-                  v-if="showAddEvaluation(shop.evaluations)"
+                  v-if="showAddEvaluationButton(shop.evaluations)"
                   color="amber"
                   class="white--text mt-2 ml-0"
                   width="100"
-                  @click="showEvaluateDisplay(shop)"
+                  @click="displayEvaluationDialog(shop)"
                   >評価
                 </v-btn>
                 <v-btn
-                  v-if="showEditEvaluation(shop.evaluations)"
+                  v-if="showEditEvaluationButton(shop.evaluations)"
                   color="amber"
                   class="white--text mt-2 ml-0"
                   width="100"
-                  @click="showEditEvaluateDisplay(shop.evaluations)"
+                  @click="displayDialogEditEvaluation(shop.evaluations)"
                   >評価を編集
                 </v-btn>
               </v-card-actions>
@@ -75,7 +75,11 @@
         </v-card>
       </v-col>
 
-      <v-dialog v-model="evaluateDialog" max-width="500px">
+      <v-dialog
+        v-model="showEvaluationDialog"
+        :retain-focus="false"
+        max-width="500px"
+      >
         <v-card>
           <v-card-title class="amber">
             評価
@@ -96,7 +100,11 @@
         </v-card>
       </v-dialog>
 
-      <v-dialog v-model="editEvaluateDialog" max-width="500px">
+      <v-dialog
+        v-model="showDialogEditEvaluation"
+        :retain-focus="false"
+        max-width="500px"
+      >
         <v-card>
           <v-card-title class="amber">
             評価を編集
@@ -120,8 +128,7 @@
         </v-card>
       </v-dialog>
 
-      <!-- ダイアログ -->
-      <v-dialog v-model="updateDialog" width="500" persistent>
+      <v-dialog v-model="showDialogUpdateReservation" width="500" persistent>
         <v-card>
           <v-card-title class="headline amber">
             予約変更
@@ -130,17 +137,17 @@
           <v-card-text class="pb-0">
             <div class="mt-5">
               <v-menu
-                ref="menu"
-                v-model="menu"
+                ref="datePickerMenu"
+                v-model="showdatePickerMenu"
                 :close-on-content-click="false"
-                :return-value.sync="date"
+                :return-value.sync="visitsDate"
                 transition="scale-transition"
                 offset-y
                 min-width="auto"
               >
                 <template #activator="{ on, attrs }">
                   <v-text-field
-                    v-model="date"
+                    v-model="visitsDate"
                     label="日付を選択"
                     prepend-icon="mdi-calendar"
                     readonly
@@ -148,27 +155,41 @@
                     v-on="on"
                   ></v-text-field>
                 </template>
-                <v-date-picker v-model="date" no-title scrollable :min="today">
+                <v-date-picker
+                  :value="visitsDate"
+                  @input="visitsDate = $event"
+                  no-title
+                  scrollable
+                  :min="today"
+                >
                   <v-spacer></v-spacer>
-                  <v-btn text color="primary" @click="menu = false">
+                  <v-btn
+                    text
+                    color="primary"
+                    @click="showdatePickerMenu = false"
+                  >
                     キャンセル
                   </v-btn>
-                  <v-btn text color="primary" @click="$refs.menu.save(date)">
+                  <v-btn
+                    text
+                    color="primary"
+                    @click="$refs.datePickerMenu.save(visitsDate)"
+                  >
                     選択
                   </v-btn>
                 </v-date-picker>
               </v-menu>
               <v-select
-                :items="items"
-                v-model="time"
+                :items="timeOptions"
+                v-model="visitsTime"
                 label="時刻を選択"
                 prepend-icon="mdi-clock-time-eight-outline"
               ></v-select>
               <v-select
-                :items="numbers"
+                :items="numberOptions"
                 item-text="state"
                 item-value="abbr"
-                v-model="number"
+                v-model="visitsNumber"
                 label="人数を選択"
                 prepend-icon="mdi-account"
               ></v-select>
@@ -182,22 +203,22 @@
             <v-btn
               color="red"
               class="white--text"
-              @click="updateDialog = false"
+              @click="showDialogUpdateReservation = false"
             >
               キャンセル
             </v-btn>
             <v-btn
               color="amber"
               class="white--text"
-              @click="confirmDialog = true"
+              @click="showDialogConfirmReservation = true"
             >
               確認
             </v-btn>
           </v-card-actions>
         </v-card>
 
-        <v-dialog v-model="confirmDialog" width="500" persistent>
-          <v-card :loading="loading">
+        <v-dialog v-model="showDialogConfirmReservation" width="500" persistent>
+          <v-card :loading="updateLoading">
             <v-card-title class="amber">
               変更内容の確認
             </v-card-title>
@@ -210,7 +231,7 @@
                         店舗名
                       </th>
                       <td class="text-left">
-                        {{ updateShop.name }}
+                        {{ selectedShop.name }}
                       </td>
                     </tr>
                     <tr class="table-line">
@@ -218,7 +239,7 @@
                         日付
                       </th>
                       <td class="text-left">
-                        {{ date }}
+                        {{ visitsDate }}
                       </td>
                     </tr>
                     <tr class="table-line">
@@ -226,7 +247,7 @@
                         時刻
                       </th>
                       <td class="text-left">
-                        {{ time }}
+                        {{ visitsTime }}
                       </td>
                     </tr>
                     <tr class="table-line">
@@ -234,7 +255,7 @@
                         人数
                       </th>
                       <td class="text-left">
-                        {{ number }}<span v-if="number">名</span>
+                        {{ visitsNumber }}<span v-if="visitsNumber">名</span>
                       </td>
                     </tr>
                   </tbody>
@@ -246,7 +267,10 @@
 
             <v-card-actions class="pb-6">
               <v-spacer></v-spacer>
-              <v-btn color="red" dark @click="confirmDialog = false"
+              <v-btn
+                color="red"
+                dark
+                @click="showDialogConfirmReservation = false"
                 >キャンセル</v-btn
               >
               <v-btn color="amber" dark @click="updateReservation">変更</v-btn>
@@ -255,13 +279,13 @@
         </v-dialog>
       </v-dialog>
 
-      <v-dialog v-model="messageDialog" max-width="500px">
+      <v-dialog v-model="showDoneMsgDialog" max-width="500px">
         <v-card>
           <v-card-title class="justify-center">
             予約を変更しました
           </v-card-title>
           <v-card-actions class="justify-center">
-            <v-btn color="amber" @click="messageDialog = false">
+            <v-btn color="amber" @click="showDoneMsgDialog = false">
               閉じる
             </v-btn>
           </v-card-actions>
@@ -277,44 +301,42 @@ import reservationsRepository from "../repositories/reservationsRepository.js";
 import evaluationsRepository from "../repositories/evaluationsRepository";
 import config from "../config/config.js";
 
-
 export default {
   data() {
     return {
-      editEvaluateDialog: false,
-      updatedEvaluation: 0,
-      updateEvaluateData: "",
-      evaluation: 0,
-      evaluateShop: "",
       shops: [],
-      evaluateDialog: false,
-      updateDialog: false,
-      confirmDialog: false,
-      messageDialog: false,
-      loading: false,
-      menu: false,
-      updateShop: "",
-      date: "",
-      time: "",
-      number: "",
+      selectedShop: "",
+      selectedEvaluation: "",
+      evaluation: 0,
+      updatedEvaluation: 0,
+      visitsDate: "",
+      visitsTime: "",
+      visitsNumber: "",
+      showDialogEditEvaluation: false,
+      showEvaluationDialog: false,
+      showDialogUpdateReservation: false,
+      showDialogConfirmReservation: false,
+      showDoneMsgDialog: false,
+      showdatePickerMenu: false,
+      updateLoading: false,
       today: config.today,
-      items: config.items,
-      numbers: config.numbers,
+      timeOptions: config.timeOptions,
+      numberOptions: config.numberOptions,
     };
   },
 
   computed: {
     ...mapState(["user"]),
 
-    showEditEvaluation() {
+    showEditEvaluationButton() {
       return function(evaluations) {
-        return this.isExisitUserEvaluation(evaluations);
+        return this.exisitsUserEvaluation(evaluations);
       };
     },
 
-    showAddEvaluation() {
+    showAddEvaluationButton() {
       return function(evaluations) {
-        const result = this.isExisitUserEvaluation(evaluations);
+        const result = this.exisitsUserEvaluation(evaluations);
         if (result === true) {
           return false;
         } else {
@@ -325,51 +347,52 @@ export default {
   },
 
   created() {
-    this.showReservations();
+    this.getUserReservations();
   },
 
   methods: {
     async deleteEvaluation() {
-      this.editEvaluateDialog = false;
+      this.showDialogEditEvaluation = false;
       const sendData = {
         user_id: this.user.id,
       };
-      const resData = await evaluationsRepository.deleteEvaluation(
-        this.updateEvaluateData.shop_id,
-        this.updateEvaluateData.id,
+      await evaluationsRepository.deleteEvaluation(
+        this.selectedEvaluation.shop_id,
+        this.selectedEvaluation.id,
         sendData
       );
-      console.log(resData);
-      this.showReservations();
+      this.getUserReservations();
     },
 
-    showEditEvaluateDisplay(evaluations) {
-      this.editEvaluateDialog = true;
+    displayDialogEditEvaluation(evaluations) {
+      this.showDialogEditEvaluation = true;
+      this.serchUserEvaluation(evaluations);
+    },
+
+    serchUserEvaluation(evaluations) {
       for (let i in evaluations) {
         if (this.user.id === evaluations[i].user_id) {
           this.updatedEvaluation = evaluations[i].evaluation;
-          this.updateEvaluateData = evaluations[i];
-          console.log(this.updateEvaluateData);
+          this.selectedEvaluation = evaluations[i];
         }
       }
     },
 
     async updateEvaluation() {
-      this.editEvaluateDialog = false;
+      this.showDialogEditEvaluation = false;
       const sendData = {
         user_id: this.user.id,
         evaluation: this.updatedEvaluation,
       };
-      const resData = await evaluationsRepository.updateEvaluation(
-        this.updateEvaluateData.shop_id,
-        this.updateEvaluateData.id,
+      await evaluationsRepository.updateEvaluation(
+        this.selectedEvaluation.shop_id,
+        this.selectedEvaluation.id,
         sendData
       );
-      // console.log(resData);
-      this.showReservations();
+      this.getUserReservations();
     },
 
-    isExisitUserEvaluation(evaluations) {
+    exisitsUserEvaluation(evaluations) {
       for (let i in evaluations) {
         if (this.user.id === evaluations[i].user_id) {
           return true;
@@ -378,92 +401,83 @@ export default {
       return false;
     },
 
-    showEvaluateDisplay(shop) {
-      this.evaluateDialog = true;
-      this.evaluateShop = shop;
+    displayEvaluationDialog(shop) {
+      this.showEvaluationDialog = true;
+      this.selectedShop = shop;
       this.evaluation = 0;
     },
 
     async createEvaluation() {
-      this.evaluateDialog = false;
+      this.showEvaluationDialog = false;
       const sendData = {
         user_id: this.user.id,
         evaluation: this.evaluation,
       };
-      const resData = await evaluationsRepository.createEvaluation(
-        this.evaluateShop.id,
+      await evaluationsRepository.createEvaluation(
+        this.selectedShop.id,
         sendData
       );
-      // console.log(resData);
-      this.showReservations();
+      this.selectedShop = "";
+      this.getUserReservations();
     },
 
     async updateReservation() {
-      this.loading = true;
+      this.updateLoading = true;
       const sendData = {
         user_id: this.user.id,
-        visited_on: `${this.date} ${this.time}`,
-        number_of_visiters: this.number,
+        visited_on: `${this.visitsDate} ${this.visitsTime}`,
+        number_of_visiters: this.visitsNumber,
       };
-      const resData = await reservationsRepository.updateReservation(
-        this.updateShop.id,
-        this.updateShop.reservation.id,
+      await reservationsRepository.updateReservation(
+        this.selectedShop.id,
+        this.selectedShop.reservation.id,
         sendData
       );
-      this.loading = false;
+      this.updateLoading = false;
       this.changeDialog();
       this.resetUpdateData();
-      this.showReservations();
+      this.getUserReservations();
     },
 
     changeDialog() {
-      this.updateDialog = false;
-      this.confirmDialog = false;
-      this.messageDialog = true;
+      this.showDialogUpdateReservation = false;
+      this.showDialogConfirmReservation = false;
+      this.showDoneMsgDialog = true;
     },
 
     resetUpdateData() {
-      this.updateShop = "";
-      this.date = "";
-      this.time = "";
-      this.number = "";
+      (this.selectedShop = ""), (this.visitsDate = "");
+      this.visitsTime = "";
+      this.visitsNumber = "";
     },
 
-    showUpdateDisplay(shop) {
-      this.updateDialog = true;
-      this.updateShop = shop;
-      this.date = shop.reservation.visited_on.substr(0, 10);
-      this.time = shop.reservation.visited_on.substr(11, 5);
-      this.number = shop.reservation.number_of_visiters;
+    displayDialogUpdateReservation(shop) {
+      this.showDialogUpdateReservation = true;
+      this.setReservationUpdateData(shop);
     },
 
-    async showReservations() {
-      const resData = await reservationsRepository.showUserReservations(
-        this.user.id
-      );
-      this.shops = resData.data.data;
-      console.log(resData);
+    setReservationUpdateData(shop) {
+      this.selectedShop = shop;
+      this.visitsDate = shop.reservation.visited_on.substr(0, 10);
+      this.visitsTime = shop.reservation.visited_on.substr(11, 5);
+      this.visitsNumber = shop.reservation.number_of_visiters;
     },
 
     async deleteReservation(shop_id, reservation_id) {
       const sendData = {
         user_id: this.user.id,
       };
-      const resData = await reservationsRepository.deleteReservation(
+      await reservationsRepository.deleteReservation(
         shop_id,
         reservation_id,
         sendData
       );
-      this.showReservations();
+      this.getUserReservations();
     },
 
-    showShopDeatail(shopId) {
-      this.$router.push({
-        name: "Detail",
-        params: {
-          id: shopId,
-        },
-      });
+    async getUserReservations() {
+      const resData =  await reservationsRepository.getUserReservations(this.user.id);
+      this.shops = resData.data.data;
     },
   },
 };

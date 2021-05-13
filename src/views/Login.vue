@@ -16,7 +16,7 @@
           </v-card-title>
           <v-card-text>
             <validation-observer ref="observer" v-slot="{ invalid }">
-              <v-form v-model="valid">
+              <v-form v-model="formValid">
                 <validation-provider
                   v-slot="{ errors }"
                   name="メールアドレス"
@@ -71,9 +71,9 @@ import authRepository from "../repositories/authRepository";
 export default {
   data() {
     return {
-      valid: false,
       email: "",
       password: "",
+      formValid: false,
       showPassword: false,
     };
   },

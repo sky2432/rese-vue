@@ -7,7 +7,7 @@
           v-slot="{ invalid }"
           style="width: 80%;"
         >
-          <v-form v-model="valid">
+          <v-form v-model="formValid">
             <validation-provider
               v-slot="{ errors }"
               name="名前"
@@ -46,13 +46,13 @@
           </v-form>
         </validation-observer>
 
-        <v-dialog v-model="dialog" max-width="500px">
+        <v-dialog v-model="showDoneMsgDialog" max-width="500px">
         <v-card>
           <v-card-title class="justify-center">
             名前・メールアドレスを更新しました
           </v-card-title>
           <v-card-actions class="justify-center">
-            <v-btn color="amber" @click="dialog = false">
+            <v-btn color="amber" @click="showDoneMsgDialog = false">
               閉じる
             </v-btn>
           </v-card-actions>
@@ -71,11 +71,11 @@ import usersRepository from "../repositories/usersRepository";
 export default {
   data() {
     return {
-      dialog: false,
-      valid: false,
-      showPassword: false,
       name: "",
       email: "",
+      formValid: false,
+      showPassword: false,
+      showDoneMsgDialog: false,
     };
   },
 
@@ -101,13 +101,11 @@ export default {
       usersRepository
         .updateUser(this.user.id, sendData)
         .then((response) => {
-          console.log(response);
           this.$store.commit("updateUser", response.data.data);
           this.getUserData();
-          this.dialog = true;
+          this.showDoneMsgDialog = true;
         })
         .catch((e) => {
-          console.log(e);
           this.$refs.observer.setErrors(e.response.data.errors);
         });
     },

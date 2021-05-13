@@ -1,6 +1,6 @@
 export default Object.freeze({
   today: new Date().toISOString().slice(0, 10),
-  items: [
+  timeOptions: [
     "10:00",
     "10:30",
     "11:00",
@@ -30,7 +30,7 @@ export default Object.freeze({
     "23:00",
     "23:30",
   ],
-  numbers: [
+  numberOptions: [
     { state: "1名", abbr: 1 },
     { state: "2名", abbr: 2 },
     { state: "3名", abbr: 3 },
