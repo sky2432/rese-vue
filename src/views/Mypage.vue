@@ -1,14 +1,7 @@
 <template>
   <div>
-    <v-app-bar app color="amber" light flat>
-      <v-container>
-        <div class="header-logo d-flex">
-          <v-icon class="mr-1 " large>mdi-silverware-variant</v-icon>
-          <h1 class="header-txt" @click="$router.push('/home')">Rese</h1>
-        </div>
-      </v-container>
-
-      <template v-slot:extension>
+    <TheHomeHeader :showTab="true">
+      <template #tab>
         <v-tabs centered slider-color="grey">
           <v-tab @click="currentComponent = 'MypageFavorite'">お気に入り</v-tab>
           <v-tab @click="currentComponent = 'MypageReservation'"
@@ -16,7 +9,7 @@
           >
         </v-tabs>
       </template>
-    </v-app-bar>
+    </TheHomeHeader>
 
     <v-main>
       <v-container>
@@ -36,23 +29,10 @@ export default {
     MypageReservation,
   },
 
-  props: {
-    id: {
-      type: Number,
-      require: true,
-    },
-  },
-
   data() {
     return {
-      currentComponent: MypageReservation,
+      currentComponent: MypageFavorite,
     };
   },
 };
 </script>
-
-<style scoped>
-.header-txt {
-  cursor: pointer;
-}
-</style>

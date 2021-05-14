@@ -209,6 +209,7 @@ export default {
       require: true,
     },
   },
+
   data() {
     return {
       shop: "",
@@ -241,10 +242,11 @@ export default {
     async createReservation() {
       const sendData = {
         user_id: this.user.id,
+        shop_id: this.shop.id,
         visited_on: `${this.visitsDate} ${this.visitsTime}`,
         number_of_visiters: this.visitsNumber,
       };
-      await reservationsRepository.createReservation(this.shop.id, sendData);
+      await reservationsRepository.createReservation(sendData);
       this.$router.push("/done");
     },
   },

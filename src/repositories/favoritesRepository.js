@@ -1,20 +1,16 @@
 import Repository from "./Repository";
 
-const resource = "favorite";
+const resource = "shops/favorite";
 export default {
-  getUserFavorites(user_id) {
-    return Repository.get(`users/${user_id}/favorites`);
+  getUserFavorites(userId) {
+    return Repository.get(`users/${userId}/favorites`);
   },
 
-  addFavorite(shop_id, payload) {
-    return Repository.put(`shops/${shop_id}/${resource}`, payload);
+  addFavorite(payload) {
+    return Repository.post(`${resource}`, payload);
   },
 
-  removeFavorite(shop_id, payload) {
-    return Repository.request({
-      method: "delete",
-      url: `shops/${shop_id}/${resource}`,
-      data: payload,
-    });
+  removeFavorite(favoriteId) {
+    return Repository.delete(`${resource}/${favoriteId}`);
   },
 };

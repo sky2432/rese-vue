@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import TheHeader from "./components/TheHeader.vue";
+import TheHomeHeader from "./components/TheHomeHeader.vue";
 import helpers from "./helpers/helper";
 
 const plugin = {
@@ -15,6 +16,7 @@ const plugin = {
 Vue.use(plugin);
 
 Vue.component("TheHeader", TheHeader);
+Vue.component("TheHomeHeader", TheHomeHeader);
 
 Vue.config.productionTip = false
 

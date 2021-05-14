@@ -1,6 +1,7 @@
 <template>
   <div>
-    <theHeader></theHeader>
+    <TheHomeHeader></TheHomeHeader>
+
     <v-main>
       <div class="wrapper">
         <v-container>
@@ -12,7 +13,9 @@
                   <v-list-item-group color="primary" v-model="selectedItem">
                     <v-list-item @click="currentComponent = 'SettingNameEmail'">
                       <v-list-item-content>
-                        <v-list-item-title>名前・メールアドレス</v-list-item-title>
+                        <v-list-item-title
+                          >名前・メールアドレス</v-list-item-title
+                        >
                       </v-list-item-content>
                     </v-list-item>
                     <v-list-item @click="currentComponent = 'SettingPassword'">
@@ -20,7 +23,9 @@
                         <v-list-item-title>パスワード</v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
-                    <v-list-item @click="currentComponent = 'SettingDeleteUser'">
+                    <v-list-item
+                      @click="currentComponent = 'SettingDeleteUser'"
+                    >
                       <v-list-item-content>
                         <v-list-item-title>アカウント削除</v-list-item-title>
                       </v-list-item-content>
@@ -61,4 +66,3 @@ export default {
 };
 </script>
 
-<style></style>

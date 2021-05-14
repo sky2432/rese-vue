@@ -49,7 +49,7 @@
                 <v-btn
                   color="red"
                   class="white--text mt-2 ml-0"
-                  @click="deleteReservation(shop.id, shop.reservation.id)"
+                  @click="deleteReservation(shop.reservation.id)"
                   width="100"
                   >キャンセル
                 </v-btn>
@@ -239,7 +239,9 @@
           <v-card-title class="amber">
             評価
             <v-spacer></v-spacer>
-            <v-btn icon @click="showEvaluationDialog = false"><v-icon>mdi-window-close</v-icon></v-btn>
+            <v-btn icon @click="showEvaluationDialog = false"
+              ><v-icon>mdi-window-close</v-icon></v-btn
+            >
           </v-card-title>
           <v-card-text class="text-center mt-4">
             <v-rating
@@ -250,7 +252,11 @@
             ></v-rating>
           </v-card-text>
           <v-card-actions class="justify-center">
-            <v-btn color="amber" @click="createEvaluation">
+            <v-btn
+              color="amber"
+              @click="createEvaluation"
+              :disabled="isEvaluated"
+            >
               投稿
             </v-btn>
           </v-card-actions>
@@ -266,7 +272,9 @@
           <v-card-title class="amber">
             評価を編集
             <v-spacer></v-spacer>
-            <v-btn icon @click="showDialogEditEvaluation = false"><v-icon>mdi-window-close</v-icon></v-btn>
+            <v-btn icon @click="showDialogEditEvaluation = false"
+              ><v-icon>mdi-window-close</v-icon></v-btn
+            >
           </v-card-title>
           <v-card-text class="text-center mt-4">
             <v-rating
@@ -291,11 +299,12 @@
 </template>
 
 <script>
-import MessageDialog from "../components/MessageDialog";
 import { mapState } from "vuex";
+import MessageDialog from "../components/MessageDialog";
 import reservationsRepository from "../repositories/reservationsRepository.js";
 import evaluationsRepository from "../repositories/evaluationsRepository";
 import config from "../config/config.js";
+import "../plugins/veeValidate.js";
 
 export default {
   components: {
@@ -327,6 +336,14 @@ export default {
   computed: {
     ...mapState(["user"]),
 
+    isEvaluated() {
+      if (this.evaluation > 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+
     showEditEvaluationButton() {
       return function(evaluations) {
         return this.exisitsUserEvaluation(evaluations);
@@ -352,14 +369,7 @@ export default {
   methods: {
     async deleteEvaluation() {
       this.showDialogEditEvaluation = false;
-      const sendData = {
-        user_id: this.user.id,
-      };
-      await evaluationsRepository.deleteEvaluation(
-        this.selectedEvaluation.shop_id,
-        this.selectedEvaluation.id,
-        sendData
-      );
+      await evaluationsRepository.deleteEvaluation(this.selectedEvaluation.id);
       this.getUserReservations();
     },
 
@@ -380,11 +390,9 @@ export default {
     async updateEvaluation() {
       this.showDialogEditEvaluation = false;
       const sendData = {
-        user_id: this.user.id,
         evaluation: this.updatedEvaluation,
       };
       await evaluationsRepository.updateEvaluation(
-        this.selectedEvaluation.shop_id,
         this.selectedEvaluation.id,
         sendData
       );
@@ -410,12 +418,10 @@ export default {
       this.showEvaluationDialog = false;
       const sendData = {
         user_id: this.user.id,
+        shop_id: this.selectedShop.id,
         evaluation: this.evaluation,
       };
-      await evaluationsRepository.createEvaluation(
-        this.selectedShop.id,
-        sendData
-      );
+      await evaluationsRepository.createEvaluation(sendData);
       this.selectedShop = "";
       this.getUserReservations();
     },
@@ -423,12 +429,10 @@ export default {
     async updateReservation() {
       this.updateLoading = true;
       const sendData = {
-        user_id: this.user.id,
         visited_on: `${this.visitsDate} ${this.visitsTime}`,
         number_of_visiters: this.visitsNumber,
       };
       await reservationsRepository.updateReservation(
-        this.selectedShop.id,
         this.selectedShop.reservation.id,
         sendData
       );
@@ -462,15 +466,8 @@ export default {
       this.visitsNumber = shop.reservation.number_of_visiters;
     },
 
-    async deleteReservation(shop_id, reservation_id) {
-      const sendData = {
-        user_id: this.user.id,
-      };
-      await reservationsRepository.deleteReservation(
-        shop_id,
-        reservation_id,
-        sendData
-      );
+    async deleteReservation(reservation_id) {
+      await reservationsRepository.deleteReservation(reservation_id);
       this.getUserReservations();
     },
 

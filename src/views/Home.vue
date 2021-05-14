@@ -1,98 +1,41 @@
 <template>
   <div>
-    <v-app-bar app class="amber" light>
-      <v-container>
-        <v-row class="align-center">
-          <v-col cols="4">
-            <div class="header-logo d-flex">
-              <v-icon class="mr-1" large>mdi-silverware-variant</v-icon>
-              <h1 class="header-txt" @click="$router.push('/')">Rese</h1>
-            </div>
+    <TheHomeHeader>
+      <template #search>
+        <v-row>
+          <v-col class="px-0" cols="3">
+            <v-select
+              v-model="selectedArea"
+              :items="areaOptions"
+              class="rounded-r-0"
+              solo
+              dense
+              hide-details
+            ></v-select>
           </v-col>
-          <v-spacer></v-spacer>
-          <v-col cols="8">
-            <v-row>
-              <v-col class="px-0" cols="3">
-                <v-select
-                  v-model="selectedArea"
-                  :items="areaOptions"
-                  class="rounded-r-0"
-                  solo
-                  dense
-                  hide-details
-                ></v-select>
-              </v-col>
-              <v-col class="px-0" cols="3">
-                <v-select
-                  v-model="selectedGenre"
-                  :items="genreOptions"
-                  class="rounded-0"
-                  solo
-                  dense
-                  hide-details
-                ></v-select>
-              </v-col>
-              <v-col class="px-0" cols="4">
-                <v-text-field
-                  label="Search..."
-                  class="rounded-l-0"
-                  prepend-inner-icon="mdi-magnify"
-                  solo
-                  dense
-                  hide-details
-                ></v-text-field>
-              </v-col>
-
-              <v-col cols="2" class="align-self-center mypage">
-                <v-menu offset-y>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn class="white" dark v-bind="attrs" v-on="on">
-                      <span class="amber--text">{{ user.name }}</span>
-                      <v-icon color="amber">mdi-menu-down</v-icon>
-                    </v-btn>
-                  </template>
-                  <v-list nav dense>
-                    <v-list-item-group color="primary">
-                      <v-list-item
-                        class="menu-item"
-                        @click="$router.push('mypage')"
-                      >
-                        <v-list-item-icon class="mr-2">
-                          <v-icon>mdi-account</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                          <v-list-item-title>マイページ</v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-                      <v-list-item
-                        class="menu-item"
-                        @click="$router.push('/setting')"
-                      >
-                        <v-list-item-icon class="mr-2">
-                          <v-icon>mdi-cog</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                          <v-list-item-title>設定</v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-
-                      <v-list-item class="menu-item" @click="logout">
-                        <v-list-item-icon class="mr-2">
-                          <v-icon>mdi-logout</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                          <v-list-item-title>ログアウト</v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-                    </v-list-item-group>
-                  </v-list>
-                </v-menu>
-              </v-col>
-            </v-row>
+          <v-col class="px-0" cols="3">
+            <v-select
+              v-model="selectedGenre"
+              :items="genreOptions"
+              class="rounded-0"
+              solo
+              dense
+              hide-details
+            ></v-select>
+          </v-col>
+          <v-col class="px-0" cols="6">
+            <v-text-field
+              label="Search..."
+              class="rounded-l-0"
+              prepend-inner-icon="mdi-magnify"
+              solo
+              dense
+              hide-details
+            ></v-text-field>
           </v-col>
         </v-row>
-      </v-container>
-    </v-app-bar>
+      </template>
+    </TheHomeHeader>
 
     <v-main>
       <v-container class="mt-2">
@@ -187,11 +130,6 @@ export default {
     this.getUserFavorites();
   },
 
-  mounted: function() {
-    // ブラウザのコンソールにルート要素を表示します。
-    console.log(this.$el);
-  },
-
   methods: {
     changeFavorite(shopId) {
       const result = this.isFavorite(shopId);
@@ -214,18 +152,15 @@ export default {
     async addFavorite(shopId) {
       const sendData = {
         user_id: this.user.id,
+        shop_id: shopId,
       };
-      await favoritesRepository.addFavorite(shopId, sendData);
+      await favoritesRepository.addFavorite(sendData);
       this.getUserFavorites();
     },
 
     async removeFavorite(shopId) {
       const favoriteId = this.getFavoriteId(shopId);
-      const sendData = {
-        user_id: this.user.id,
-        favorite_id: favoriteId,
-      };
-      await favoritesRepository.removeFavorite(shopId, sendData);
+      await favoritesRepository.removeFavorite(favoriteId);
       this.getUserFavorites();
     },
 

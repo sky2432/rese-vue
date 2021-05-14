@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row>
-      <v-col v-for="shop in shops" :key="shop.id" cols="4">
+      <v-col v-for="shop in shops" :key="shop.id" cols="3">
         <v-card height="300">
           <v-img height="125" :src="shop.image_url"></v-img>
           <v-card-title>{{ shop.name }}</v-card-title>
@@ -35,7 +35,7 @@
               <v-icon
                 color="red"
                 large
-                @click="removeFavorite(shop.id, shop.favorite.id)"
+                @click="removeFavorite(shop.favorite.id)"
                 >mdi-heart</v-icon
               >
             </v-btn>
@@ -69,14 +69,11 @@ export default {
     async getUserFavorites() {
       const resData = await favoritesRepository.getUserFavorites(this.user.id);
       this.shops = resData.data.data;
+      console.log(resData);
     },
 
-    async removeFavorite(shopId, favoriteId) {
-      const sendData = {
-        user_id: this.user.id,
-        favorite_id: favoriteId,
-      };
-      await favoritesRepository.removeFavorite(shopId, sendData);
+     async removeFavorite(favoriteId) {
+      await favoritesRepository.removeFavorite(favoriteId);
       this.getUserFavorites();
     },
 
@@ -86,5 +83,3 @@ export default {
   },
 };
 </script>
-
-<style></style>
