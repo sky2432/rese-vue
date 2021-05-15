@@ -1,6 +1,9 @@
 <template>
   <div>
-    <v-row class="mt-1">
+    <div class="wrapper" v-if="loading">
+      <v-progress-circular indeterminate color="amber"></v-progress-circular>
+    </div>
+    <v-row v-if="loaded" class="mt-1">
       <v-col v-for="shop in shops" :key="shop.reservation.id" cols="12">
         <v-card height="300" class="card">
           <v-row class="row">
@@ -18,6 +21,7 @@
                     dense
                     readonly
                     size="14"
+                    half-increments
                   ></v-rating>
 
                   <div class="ml-1">
@@ -34,6 +38,7 @@
               <v-card-text class="mt-6">
                 <p>来店日時：{{ shop.reservation.visited_on }}</p>
                 <p>来店人数：{{ shop.reservation.number_of_visiters }}</p>
+                {{ shop.reservation.id }}
               </v-card-text>
             </v-col>
 
@@ -49,7 +54,7 @@
                 <v-btn
                   color="red"
                   class="white--text mt-2 ml-0"
-                  @click="deleteReservation(shop.reservation.id)"
+                  @click="displayCancelDialog(shop.reservation)"
                   width="100"
                   >キャンセル
                 </v-btn>
@@ -74,6 +79,29 @@
           </v-row>
         </v-card>
       </v-col>
+
+      <v-dialog
+        v-model="showDialogConfirmCancelReservation"
+        max-width="500px"
+        :retain-focus="false"
+      >
+        <v-card>
+          <v-card-title class="justify-center">
+            本当にキャンセルしますか？
+          </v-card-title>
+          <v-card-actions class="justify-center">
+            <v-btn
+              color="amber"
+              @click="showDialogConfirmCancelReservation = false"
+            >
+              いいえ
+            </v-btn>
+            <v-btn color="red" @click="deleteReservation">
+              はい
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
 
       <v-dialog v-model="showDialogUpdateReservation" width="500" persistent>
         <v-card>
@@ -316,6 +344,7 @@ export default {
       shops: [],
       selectedShop: "",
       selectedEvaluation: "",
+      slectedReservation: "",
       evaluation: 0,
       updatedEvaluation: 0,
       visitsDate: "",
@@ -325,11 +354,14 @@ export default {
       showEvaluationDialog: false,
       showDialogUpdateReservation: false,
       showDialogConfirmReservation: false,
+      showDialogConfirmCancelReservation: false,
       showdatePickerMenu: false,
       updateLoading: false,
       today: config.today,
       timeOptions: config.timeOptions,
       numberOptions: config.numberOptions,
+      loading: true,
+      loaded: false,
     };
   },
 
@@ -466,8 +498,14 @@ export default {
       this.visitsNumber = shop.reservation.number_of_visiters;
     },
 
-    async deleteReservation(reservation_id) {
-      await reservationsRepository.deleteReservation(reservation_id);
+    displayCancelDialog(reservation) {
+      this.showDialogConfirmCancelReservation = true;
+      this.slectedReservation = reservation
+    },
+
+    async deleteReservation() {
+      this.showDialogConfirmCancelReservation = false;
+      await reservationsRepository.deleteReservation(this.slectedReservation.id);
       this.getUserReservations();
     },
 
@@ -476,6 +514,8 @@ export default {
         this.user.id
       );
       this.shops = resData.data.data;
+      this.loading = false;
+      this.loaded = true;
     },
   },
 };

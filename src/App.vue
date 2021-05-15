@@ -241,4 +241,8 @@ h1 {
   justify-content: center;
   align-items: center;
 }
+
+.table-line {
+  line-height: 50px;
+}
 </style>

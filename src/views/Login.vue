@@ -51,14 +51,19 @@
                 </validation-provider>
 
                 <v-card-actions class="justify-center">
-                  <v-btn color="amber" :disabled="invalid" @click="login">
-                    登録
+                  <v-btn
+                    color="amber"
+                    :disabled="invalid"
+                    @click="login"
+                  >
+                    ログイン
                   </v-btn>
                 </v-card-actions>
               </v-form>
             </validation-observer>
           </v-card-text>
         </v-card>
+
       </div>
     </v-main>
   </div>

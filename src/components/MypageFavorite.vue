@@ -1,6 +1,9 @@
 <template>
   <div>
-    <v-row>
+    <div class="wrapper" v-if="loading">
+      <v-progress-circular indeterminate color="amber"></v-progress-circular>
+    </div>
+    <v-row v-if="loaded">
       <v-col v-for="shop in shops" :key="shop.id" cols="3">
         <v-card height="300">
           <v-img height="125" :src="shop.image_url"></v-img>
@@ -54,6 +57,8 @@ export default {
   data() {
     return {
       shops: [],
+      loading: true,
+      loaded: false,
     };
   },
 
@@ -69,10 +74,11 @@ export default {
     async getUserFavorites() {
       const resData = await favoritesRepository.getUserFavorites(this.user.id);
       this.shops = resData.data.data;
-      console.log(resData);
+      this.loading = false;
+      this.loaded = true;
     },
 
-     async removeFavorite(favoriteId) {
+    async removeFavorite(favoriteId) {
       await favoritesRepository.removeFavorite(favoriteId);
       this.getUserFavorites();
     },
@@ -83,3 +89,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.wrapper {
+  height: calc(100vh - 112px);
+}
+</style>

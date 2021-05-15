@@ -25,7 +25,8 @@
           </v-col>
           <v-col class="px-0" cols="6">
             <v-text-field
-              label="Search..."
+              v-model="keyword"
+              label="Enter shop name"
               class="rounded-l-0"
               prepend-inner-icon="mdi-magnify"
               solo
@@ -38,13 +39,14 @@
     </TheHomeHeader>
 
     <v-main>
-      <v-container class="mt-2">
+      <div class="wrapper" v-if="loading">
+        <v-progress-circular indeterminate color="amber"></v-progress-circular>
+      </div>
+      <v-container v-if="loaded" class="mt-2">
         <v-row>
-          <v-col v-for="shop in shops" :key="shop.id" cols="3">
+          <v-col v-for="shop in filteredShops" :key="shop.id" cols="3">
             <v-card height="300">
-              <v-hover>
-                <v-img height="125" :src="shop.image_url"></v-img>
-              </v-hover>
+              <v-img height="125" :src="shop.image_url"></v-img>
               <v-card-title>{{ shop.name }}</v-card-title>
               <v-card-text>
                 <v-row align="center" class="mx-0">
@@ -105,13 +107,76 @@ export default {
       genreOptions: ["All genre"],
       selectedArea: "All area",
       selectedGenre: "All genre",
+      keyword: "",
       favoriteIcon: "mdi-heart",
       notFavoriteIcon: "mdi-heart-outline",
+      loading: true,
+      loaded: false,
     };
   },
 
   computed: {
     ...mapState(["user"]),
+
+    filteredShops: function() {
+      let shops = [];
+
+      // 全てのエリア・ジャンルを表示
+      if (
+        this.selectedArea === "All area" &&
+        this.selectedGenre === "All genre"
+      ) {
+        if (this.keyword === "") {
+          return this.shops;
+        } else {
+          return this.fileterShopsByKeyword(this.shops, this.keyword);
+        }
+      }
+
+      //エリアのみで検索
+      if (
+        this.selectedArea !== "All area" &&
+        this.selectedGenre === "All genre"
+      ) {
+        shops = this.fileterShops(this.shops, "area", this.selectedArea);
+        if (this.keyword === "") {
+          return shops;
+        } else {
+          return this.fileterShopsByKeyword(this.shops, this.keyword);
+        }
+      }
+
+      // ジャンルのみで検索
+      if (
+        this.selectedArea === "All area" &&
+        this.selectedGenre !== "All genre"
+      ) {
+        shops = this.fileterShops(this.shops, "genre", this.selectedGenre);
+        if (this.keyword === "") {
+          return shops;
+        } else {
+          return this.fileterShopsByKeyword(this.shops, this.keyword);
+        }
+      }
+
+      // エリアとジャンルで検索
+      if (
+        this.selectedArea !== "All area" &&
+        this.selectedGenre !== "All genre"
+      ) {
+        shops = this.fileterShops(this.shops, "area", this.selectedArea);
+        const filteredShops = this.fileterShops(
+          shops,
+          "genre",
+          this.selectedGenre
+        );
+        if (this.keyword === "") {
+          return filteredShops;
+        } else {
+          return this.fileterShopsByKeyword(this.shops, this.keyword);
+        }
+      }
+    },
 
     showFavoriteIcon() {
       return function(shopId) {
@@ -131,6 +196,28 @@ export default {
   },
 
   methods: {
+    fileterShops(shops, itemName, target) {
+      let filteredShops = [];
+      for (let i in shops) {
+        let shop = shops[i];
+        if (shop[itemName].name.indexOf(target) !== -1) {
+          filteredShops.push(shop);
+        }
+      }
+      return filteredShops;
+    },
+
+    fileterShopsByKeyword(shops, keyword) {
+      let filteredShops = [];
+      for (let i in shops) {
+        let shop = shops[i];
+        if (shop.name.indexOf(keyword) !== -1) {
+          filteredShops.push(shop);
+        }
+      }
+      return filteredShops;
+    },
+
     changeFavorite(shopId) {
       const result = this.isFavorite(shopId);
       if (result === false) {
@@ -175,6 +262,8 @@ export default {
     async getUserFavorites() {
       const resData = await favoritesRepository.getUserFavorites(this.user.id);
       this.favorites = resData.data.data;
+      this.loading = false;
+      this.loaded = true;
     },
 
     async getShops() {
@@ -183,8 +272,10 @@ export default {
       this.shops = shops;
       this.createSerchOptions(shops, "areaOptions", "area");
       this.createSerchOptions(shops, "genreOptions", "genre");
+      // console.log(resData);
     },
 
+    //エリア・ジャンル検索における選択肢を作成する
     createSerchOptions(shops, options, itemName) {
       for (let i in shops) {
         let result = this[options].includes(shops[i][itemName].name);
@@ -205,8 +296,3 @@ export default {
 };
 </script>
 
-<style scoped>
-.header-txt {
-  cursor: pointer;
-}
-</style>

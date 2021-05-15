@@ -1,8 +1,11 @@
 <template>
   <div>
-    <TheHeader></TheHeader>
+    <TheHomeHeader></TheHomeHeader>
     <v-main>
-      <v-container class="mt-5">
+      <div class="wrapper" v-if="loading">
+        <v-progress-circular indeterminate color="amber"></v-progress-circular>
+      </div>
+      <v-container v-if="loaded" class="mt-5">
         <v-row>
           <v-col cols="6">
             <div class="d-flex">
@@ -74,7 +77,11 @@
                         :min="today"
                       >
                         <v-spacer></v-spacer>
-                        <v-btn text color="primary" @click="showdatePickerMenu = false">
+                        <v-btn
+                          text
+                          color="primary"
+                          @click="showdatePickerMenu = false"
+                        >
                           キャンセル
                         </v-btn>
                         <v-btn
@@ -130,7 +137,7 @@
             </v-card>
 
             <v-dialog v-model="showReservationDialog" width="500" persistent>
-              <v-card>
+              <v-card :loading="reservationLoading">
                 <v-card-title class="amber">
                   予約内容の確認
                 </v-card-title>
@@ -167,7 +174,8 @@
                             人数
                           </th>
                           <td class="text-left">
-                            {{ visitsNumber }}<span v-if="visitsNumber">名</span>
+                            {{ visitsNumber
+                            }}<span v-if="visitsNumber">名</span>
                           </td>
                         </tr>
                       </tbody>
@@ -222,6 +230,9 @@ export default {
       today: config.today,
       timeOptions: config.timeOptions,
       numberOptions: config.numberOptions,
+      loading: true,
+      loaded: false,
+      reservationLoading: false,
     };
   },
 
@@ -237,9 +248,12 @@ export default {
     async getShop() {
       const resData = await shopsRepository.getShop(this.shopId);
       this.shop = resData.data.data;
+      this.loading = false;
+      this.loaded = true;
     },
 
     async createReservation() {
+      this.reservationLoading = true;
       const sendData = {
         user_id: this.user.id,
         shop_id: this.shop.id,
@@ -248,6 +262,7 @@ export default {
       };
       await reservationsRepository.createReservation(sendData);
       this.$router.push("/done");
+      this.reservationLoading = false;
     },
   },
 };

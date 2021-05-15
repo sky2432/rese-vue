@@ -6,6 +6,10 @@ export default {
     return Repository.get(`${resource}/${user_id}`);
   },
 
+  confirmUser(payload) {
+    return Repository.post(`${resource}/confirm`, payload);
+  },
+
   createUser(payload) {
     return Repository.post(`${resource}`, payload);
   },
