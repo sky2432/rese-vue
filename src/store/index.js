@@ -15,14 +15,13 @@ export default new Vuex.Store({
     user: "",
   },
 
-
   getters: {
     auth(state) {
       return state.auth;
     },
     user(state) {
       return state.user;
-    }
+    },
   },
 
   mutations: {
@@ -71,6 +70,10 @@ export default new Vuex.Store({
       commit("resetRole");
       commit("resetUser");
       router.replace("/");
+    },
+
+    updateUser({ commit }, data) {
+      commit("updateUser", data);
     },
   },
 });

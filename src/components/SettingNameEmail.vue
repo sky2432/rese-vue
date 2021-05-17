@@ -96,7 +96,7 @@ export default {
       usersRepository
         .updateUser(this.user.id, sendData)
         .then((response) => {
-          this.$store.commit("updateUser", response.data.data);
+          this.$store.dispatch("updateUser", response.data.data);
           this.getUserData();
           this.$refs.messageDialog.changeShowMessageDialog();
         })
