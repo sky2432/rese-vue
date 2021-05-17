@@ -2,9 +2,9 @@ import Repository from "./Repository";
 
 const resource = "/users";
 export default {
-  showUser(user_id) {
-    return Repository.get(`${resource}/${user_id}`);
-  },
+  // showUser(user_id) {
+  //   return Repository.get(`${resource}/${user_id}`);
+  // },
 
   confirmUser(payload) {
     return Repository.post(`${resource}/confirm`, payload);

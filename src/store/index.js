@@ -11,6 +11,7 @@ export default new Vuex.Store({
 
   state: {
     auth: false,
+    role: "",
     user: "",
   },
 
@@ -18,28 +19,37 @@ export default new Vuex.Store({
     auth(state, payload) {
       state.auth = payload;
     },
+    role(state, payload) {
+      state.role = payload;
+    },
     user(state, payload) {
       state.user = payload;
     },
     updateUser(state, payload) {
       state.user = payload;
     },
+    resetRole(state) {
+      state.role = "";
+    },
+    resetUser(state) {
+      state.user = "";
+    },
   },
 
   actions: {
-    async login({ commit }, { email, password }) {
-      const sendData = {
-        email: email,
-        password: password,
-      };
-      const resData = await authRepository.login(sendData);
-
-      if (resData.data.auth === true) {
-        commit("auth", resData.data.auth);
-        commit("user", resData.data.data);
-
-        if (resData.data.data.role === "user") {
+    async login({ commit }, resData) {
+      if (resData.auth === true) {
+        commit("auth", resData.auth);
+        commit("role", resData.role);
+        commit("user", resData.data);
+        if (resData.role === "user") {
           router.replace("/home");
+        }
+        if (resData.role === "owner") {
+          router.replace("/owner");
+        }
+        if (resData.role === "admin") {
+          router.replace("/");
         }
       }
     },
@@ -48,6 +58,8 @@ export default new Vuex.Store({
       const resData = await authRepository.logout();
 
       commit("auth", resData.data.auth);
+      commit("resetRole");
+      commit("resetUser");
       router.replace("/");
     },
   },

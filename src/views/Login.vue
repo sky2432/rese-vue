@@ -3,99 +3,37 @@
     <TheHeader></TheHeader>
     <v-main>
       <div class="wrapper">
-        <v-card
-          class="white pa-5"
-          elevation="2"
-          outlined
-          shaped
-          tile
-          width="600px"
-        >
-          <v-card-title>
-            Login
-          </v-card-title>
-          <v-card-text>
-            <validation-observer ref="observer" v-slot="{ invalid }">
-              <v-form v-model="formValid">
-                <validation-provider
-                  v-slot="{ errors }"
-                  name="メールアドレス"
-                  vid="email"
-                  rules="required|email"
-                >
-                  <v-text-field
-                    v-model="email"
-                    :error-messages="errors"
-                    label="E-mail"
-                    prepend-icon="mdi-email"
-                    required
-                  ></v-text-field>
-                </validation-provider>
-
-                <validation-provider
-                  v-slot="{ errors }"
-                  name="パスワード"
-                  vid="password"
-                  rules="required|min:4"
-                >
-                  <v-text-field
-                    v-model="password"
-                    :error-messages="errors"
-                    label="Password"
-                    :type="showPassword ? 'text' : 'password'"
-                    :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-                    @click:append="showPassword = !showPassword"
-                    prepend-icon="mdi-key"
-                    required
-                  ></v-text-field>
-                </validation-provider>
-
-                <v-card-actions class="justify-center">
-                  <v-btn
-                    color="amber"
-                    :disabled="invalid"
-                    @click="login"
-                  >
-                    ログイン
-                  </v-btn>
-                </v-card-actions>
-              </v-form>
-            </validation-observer>
-          </v-card-text>
-        </v-card>
-
+        <div>
+          <v-card tile>
+            <v-tabs>
+              <v-tab @click="currentComponent = 'LoginUser'">ユーザー</v-tab>
+              <v-tab @click="currentComponent = 'LoginOwner'">店舗代表者</v-tab>
+              <v-tab @click="currentComponent = 'LoginAdmin'">管理者</v-tab>
+            </v-tabs>
+          </v-card>
+          <component :is="currentComponent"></component>
+        </div>
       </div>
     </v-main>
   </div>
 </template>
 
 <script>
-import "../plugins/veeValidate.js";
-import authRepository from "../repositories/authRepository";
+import LoginUser from "../components/LoginUser";
+import LoginOwner from "../components/LoginOwner";
+import LoginAdmin from "../components/LoginAdmin";
 
 export default {
+  components: {
+    LoginUser,
+    LoginOwner,
+    LoginAdmin,
+  },
+
   data() {
     return {
-      email: "",
-      password: "",
-      formValid: false,
-      showPassword: false,
+      currentComponent: LoginUser,
     };
-  },
-  methods: {
-    login() {
-      const sendData = {
-        email: this.email,
-        password: this.password,
-      };
-      authRepository
-        .confirm(sendData)
-        .then(() => this.$store.dispatch("login", sendData))
-        .catch((e) => {
-          console.log(e);
-          this.$refs.observer.setErrors(e.response.data.errors);
-        });
-    },
   },
 };
 </script>

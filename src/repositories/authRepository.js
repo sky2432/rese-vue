@@ -1,16 +1,20 @@
 import Repository from "./Repository";
 
-const resource = "/users";
+const resource = "login";
 export default {
-  login(payload) {
-    return Repository.post(`${resource}/login`, payload);
+  userLogin(payload) {
+    return Repository.post(`users/${resource}`, payload);
   },
 
-  confirm(payload) {
-    return Repository.post(`${resource}/login/confirm`, payload);
+  ownerLogin(payload) {
+    return Repository.post(`owners/${resource}`, payload);
+  },
+
+  adminLogin(payload) {
+    return Repository.post(`admins/${resource}`, payload);
   },
 
   logout() {
-    return Repository.post(`${resource}/logout`);
+    return Repository.post(`logout`);
   },
 };

@@ -9,6 +9,7 @@ import Done from "../views/Done.vue";
 import TopPage from "../views/TopPage.vue";
 import Mypage from "../views/Mypage.vue";
 import Setting from "../views/Setting.vue";
+import Owner from "../views/Owner.vue";
 import store from "../store/index";
 
 
@@ -100,7 +101,17 @@ const routes = [
     meta: {
       requiresAuth: true,
       title: "設定ページ",
-      desc: "設定ぺーじです。",
+      desc: "設定ぺージです。",
+    },
+  },
+  {
+    path: "/owner",
+    name: "Owner",
+    component: Owner,
+    meta: {
+      requiresAuth: true,
+      title: "店舗代表者ページ",
+      desc: "店舗代表者ページです。",
     },
   },
   {
