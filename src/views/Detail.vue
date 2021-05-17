@@ -208,7 +208,7 @@ import { mapState } from "vuex";
 import shopsRepository from "../repositories/shopsRepository.js";
 import reservationsRepository from "../repositories/reservationsRepository";
 import "../plugins/veeValidate.js";
-import config from "../config/config.js";
+import config from "../config/const.js";
 
 export default {
   props: {

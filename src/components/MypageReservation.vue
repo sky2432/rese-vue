@@ -6,12 +6,15 @@
     <v-row v-if="loaded" class="mt-1">
       <v-col v-for="shop in shops" :key="shop.reservation.id" cols="12">
         <v-card height="300" class="card">
+          <v-card-title class="amber">{{
+            showReservationStatus(shop.reservation)
+          }}</v-card-title>
           <v-row class="row">
             <v-col cols="4" class="pa-0 image-wrap">
-              <v-img class="image" height="300px" :src="shop.image_url"></v-img>
+              <v-img class="image" height="236px" :src="shop.image_url"></v-img>
             </v-col>
-            <v-col cols="4"></v-col>
-            <v-col cols="4" class="col">
+            <v-col cols="4" class="reservation-col"></v-col>
+            <v-col cols="4" class="reservation-col">
               <v-card-title>{{ shop.name }}</v-card-title>
               <v-card-text>
                 <v-row align="center" class="mx-0">
@@ -36,14 +39,26 @@
                 #{{ shop.area.name }}＃{{ shop.genre.name }}
               </v-card-subtitle>
               <v-card-text class="mt-6">
-                <p>来店日時：{{ shop.reservation.visited_on }}</p>
-                <p>来店人数：{{ shop.reservation.number_of_visiters }}</p>
-                {{ shop.reservation.id }}
+                <p class="mb-1">
+                  来店日：{{ getVisitsDate(shop.reservation.visited_on) }}
+                </p>
+                <p class="mb-1">
+                  来店時刻：{{ getVisitsTime(shop.reservation.visited_on) }}
+                </p>
+                <p class="mb-1">
+                  来店人数：{{ shop.reservation.number_of_visiters }}名
+                </p>
               </v-card-text>
             </v-col>
 
-            <v-col cols="4" class="d-flex justify-center align-center col">
-              <v-card-actions class="flex-column">
+            <v-col
+              cols="4"
+              class="d-flex justify-center align-center reservation-col"
+            >
+              <v-card-actions
+                class="flex-column"
+                v-if="showButtonInReserving(shop.reservation.status)"
+              >
                 <v-btn
                   @click="displayDialogUpdateReservation(shop)"
                   color="amber"
@@ -58,6 +73,11 @@
                   width="100"
                   >キャンセル
                 </v-btn>
+              </v-card-actions>
+              <v-card-actions
+                class="flex-column"
+                v-if="showButtonInVisited(shop.reservation.status)"
+              >
                 <v-btn
                   v-if="showAddEvaluationButton(shop.evaluations)"
                   color="amber"
@@ -74,6 +94,25 @@
                   @click="displayDialogEditEvaluation(shop.evaluations)"
                   >評価を編集
                 </v-btn>
+                <v-btn
+                  color="amber"
+                  class="white--text mt-2 ml-0"
+                  width="100"
+                  @click="moveShopDeatail(shop.id)"
+                  >もう一度予約
+                </v-btn>
+              </v-card-actions>
+              <v-card-actions
+                class="flex-column"
+                v-if="showButtonInCancelled(shop.reservation.status)"
+              >
+                <v-btn
+                  color="amber"
+                  class="white--text mt-2 ml-0"
+                  width="100"
+                  @click="moveShopDeatail(shop.id)"
+                  >もう一度予約
+                </v-btn>
               </v-card-actions>
             </v-col>
           </v-row>
@@ -85,23 +124,28 @@
         max-width="500px"
         :retain-focus="false"
       >
-        <v-card>
+        <v-card :loading="cancelLoading">
           <v-card-title class="justify-center">
             本当にキャンセルしますか？
           </v-card-title>
           <v-card-actions class="justify-center">
             <v-btn
               color="amber"
+              dark
               @click="showDialogConfirmCancelReservation = false"
             >
               いいえ
             </v-btn>
-            <v-btn color="red" @click="deleteReservation">
+            <v-btn color="red" dark @click="deleteReservation">
               はい
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
+
+      <MessageDialog ref="cancelMessageDialog">
+        <template #message>予約をキャンセルしました</template>
+      </MessageDialog>
 
       <v-dialog v-model="showDialogUpdateReservation" width="500" persistent>
         <v-card>
@@ -254,7 +298,7 @@
         </v-dialog>
       </v-dialog>
 
-      <MessageDialog ref="messageDialog">
+      <MessageDialog ref="updateMessageDialog">
         <template #message>予約を変更しました</template>
       </MessageDialog>
 
@@ -331,7 +375,7 @@ import { mapState } from "vuex";
 import MessageDialog from "../components/MessageDialog";
 import reservationsRepository from "../repositories/reservationsRepository.js";
 import evaluationsRepository from "../repositories/evaluationsRepository";
-import config from "../config/config.js";
+import config from "../config/const.js";
 import "../plugins/veeValidate.js";
 
 export default {
@@ -357,6 +401,7 @@ export default {
       showDialogConfirmCancelReservation: false,
       showdatePickerMenu: false,
       updateLoading: false,
+      cancelLoading: false,
       today: config.today,
       timeOptions: config.timeOptions,
       numberOptions: config.numberOptions,
@@ -368,12 +413,68 @@ export default {
   computed: {
     ...mapState(["user"]),
 
+    getVisitsDate() {
+      return function(visitedOn) {
+        const date = visitedOn.substr(0, 10);
+        const convertedDate = this.convertDateFormat(date, "YYYY年MM月DD日");
+        return convertedDate;
+      };
+    },
+
+    getVisitsTime() {
+      return function(visitedOn) {
+        const time = visitedOn.substr(11, 5);
+        return time;
+      };
+    },
+
     isEvaluated() {
       if (this.evaluation > 0) {
         return false;
       } else {
         return true;
       }
+    },
+
+    showReservationStatus() {
+      return function(reservation) {
+        if (reservation.status === "reserving") {
+          return "予約中";
+        }
+        if (reservation.status === "cancelled") {
+          return "キャンセル";
+        }
+        if (reservation.status === "visited") {
+          return "来店済み";
+        }
+      };
+    },
+
+    showButtonInReserving() {
+      return function(reservationStatus) {
+        if (reservationStatus === "reserving") {
+          return true;
+        }
+        return false;
+      };
+    },
+
+    showButtonInVisited() {
+      return function(reservationStatus) {
+        if (reservationStatus === "visited") {
+          return true;
+        }
+        return false;
+      };
+    },
+
+    showButtonInCancelled() {
+      return function(reservationStatus) {
+        if (reservationStatus === "cancelled") {
+          return true;
+        }
+        return false;
+      };
     },
 
     showEditEvaluationButton() {
@@ -399,6 +500,14 @@ export default {
   },
 
   methods: {
+    convertDateFormat(date, format) {
+      format = format.replace(/YYYY/, date.substr(0, 4));
+      format = format.replace(/MM/, date.substr(5, 2));
+      format = format.replace(/DD/, date.substr(8, 2));
+
+      return format;
+    },
+
     async deleteEvaluation() {
       this.showDialogEditEvaluation = false;
       await evaluationsRepository.deleteEvaluation(this.selectedEvaluation.id);
@@ -413,7 +522,7 @@ export default {
     serchUserEvaluation(evaluations) {
       for (let i in evaluations) {
         if (this.user.id === evaluations[i].user_id) {
-          this.updatedEvaluation = evaluations[i].evaluation;
+          this.updatedEvaluation = parseFloat(evaluations[i].evaluation);
           this.selectedEvaluation = evaluations[i];
         }
       }
@@ -475,9 +584,9 @@ export default {
     },
 
     changeDialog() {
+      this.$refs.updateMessageDialog.changeShowMessageDialog();
       this.showDialogUpdateReservation = false;
       this.showDialogConfirmReservation = false;
-      this.$refs.messageDialog.changeShowMessageDialog();
     },
 
     resetUpdateData() {
@@ -500,12 +609,17 @@ export default {
 
     displayCancelDialog(reservation) {
       this.showDialogConfirmCancelReservation = true;
-      this.slectedReservation = reservation
+      this.slectedReservation = reservation;
     },
 
     async deleteReservation() {
+      this.cancelLoading = true;
+      await reservationsRepository.deleteReservation(
+        this.slectedReservation.id
+      );
+      this.cancelLoading = false;
+      this.$refs.cancelMessageDialog.changeShowMessageDialog();
       this.showDialogConfirmCancelReservation = false;
-      await reservationsRepository.deleteReservation(this.slectedReservation.id);
       this.getUserReservations();
     },
 
@@ -516,6 +630,11 @@ export default {
       this.shops = resData.data.data;
       this.loading = false;
       this.loaded = true;
+      // console.log(resData);
+    },
+
+    moveShopDeatail(shopId) {
+      this.$helpers.$_movePageWithPram("Detail", "shopId", shopId);
     },
   },
 };
@@ -528,12 +647,12 @@ export default {
 
 .image-wrap {
   position: absolute;
-  top: 0;
+  top: 64px;
   left: 0;
 }
 
 .image {
-  border-radius: 5px 0 0 5px;
+  border-radius: 0 0 0 5px;
 }
 
 .row {
@@ -546,5 +665,9 @@ export default {
 
 .table-line {
   line-height: 50px;
+}
+
+.reservation-col {
+  height: 236px;
 }
 </style>

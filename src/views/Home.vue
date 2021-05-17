@@ -118,7 +118,7 @@ export default {
   computed: {
     ...mapState(["user"]),
 
-    filteredShops: function() {
+    filteredShops() {
       let shops = [];
 
       // 全てのエリア・ジャンルを表示
@@ -126,9 +126,7 @@ export default {
         this.selectedArea === "All area" &&
         this.selectedGenre === "All genre"
       ) {
-        if (this.keyword === "") {
-          return this.shops;
-        } else {
+        if (this.keyword !== "") {
           return this.fileterShopsByKeyword(this.shops, this.keyword);
         }
       }
@@ -176,6 +174,7 @@ export default {
           return this.fileterShopsByKeyword(this.shops, this.keyword);
         }
       }
+      return this.shops;
     },
 
     showFavoriteIcon() {
@@ -295,4 +294,3 @@ export default {
   },
 };
 </script>
-

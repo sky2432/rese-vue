@@ -6,4 +6,12 @@ module.exports = {
       title: "Rese",
     },
   },
+  configureWebpack: {
+    devServer: {
+      watchOptions: {
+        poll: true,
+      },
+      disableHostCheck: true,
+    },
+  },
 };
