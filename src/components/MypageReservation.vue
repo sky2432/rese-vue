@@ -371,7 +371,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 import MessageDialog from "../components/MessageDialog";
 import reservationsRepository from "../repositories/reservationsRepository.js";
 import evaluationsRepository from "../repositories/evaluationsRepository";
@@ -411,7 +411,7 @@ export default {
   },
 
   computed: {
-    ...mapState(["user"]),
+    ...mapGetters(["user"]),
 
     getVisitsDate() {
       return function(visitedOn) {

@@ -12,7 +12,6 @@ import Setting from "../views/Setting.vue";
 import Owner from "../views/Owner.vue";
 import store from "../store/index";
 
-
 Vue.use(VueRouter);
 
 const routes = [
@@ -129,7 +128,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   if (
     to.matched.some((record) => record.meta.requiresAuth) &&
-    !store.state.auth
+    !store.getters.auth
   ) {
     next({
       path: "/",

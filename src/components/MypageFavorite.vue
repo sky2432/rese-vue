@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 import favoritesRepository from "../repositories/favoritesRepository.js";
 
 export default {
@@ -63,7 +63,7 @@ export default {
   },
 
   computed: {
-    ...mapState(["user"]),
+    ...mapGetters(["user"]),
   },
 
   created() {

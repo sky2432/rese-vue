@@ -70,16 +70,16 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 export default {
   props: {
     showTab: {
       type: Boolean,
-    }
+    },
   },
 
   computed: {
-    ...mapState(["user"]),
+    ...mapGetters(["user"]),
   },
 
   methods: {

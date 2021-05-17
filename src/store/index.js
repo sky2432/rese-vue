@@ -15,6 +15,16 @@ export default new Vuex.Store({
     user: "",
   },
 
+
+  getters: {
+    auth(state) {
+      return state.auth;
+    },
+    user(state) {
+      return state.user;
+    }
+  },
+
   mutations: {
     auth(state, payload) {
       state.auth = payload;

@@ -31,7 +31,7 @@ export default {
 
   data() {
     return {
-      currentComponent: MypageReservation,
+      currentComponent: MypageFavorite,
     };
   },
 };

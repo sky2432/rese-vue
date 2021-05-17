@@ -56,7 +56,7 @@
 
 <script>
 import MessageDialog from "../components/MessageDialog";
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 import "../plugins/veeValidate.js";
 import usersRepository from "../repositories/usersRepository";
 
@@ -75,7 +75,7 @@ export default {
   },
 
   computed: {
-    ...mapState(["user"]),
+    ...mapGetters(["user"]),
   },
 
   created() {
@@ -107,4 +107,3 @@ export default {
   },
 };
 </script>
-

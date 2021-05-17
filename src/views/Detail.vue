@@ -204,7 +204,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 import shopsRepository from "../repositories/shopsRepository.js";
 import reservationsRepository from "../repositories/reservationsRepository";
 import "../plugins/veeValidate.js";
@@ -237,7 +237,7 @@ export default {
   },
 
   computed: {
-    ...mapState(["user"]),
+    ...mapGetters(["user"]),
   },
 
   created() {
