@@ -79,10 +79,10 @@ export default {
   data() {
     return {
       drawer: null,
-      selectedItem: 0,
+      selectedItem: 1,
       ownerReservation: true,
       ownerShop: false,
-      currentComponent: OwnerReservation,
+      currentComponent: OwnerShop,
     };
   },
 
