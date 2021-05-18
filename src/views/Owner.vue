@@ -80,7 +80,7 @@
           >
             <template v-slot:[`item.reservation.status`]="{ item }">
               <v-chip :color="getStatusColor(item.reservation.status)" dark>
-                {{ convertStatus(item.reservation.status) }}
+                {{ item.reservation.status }}
               </v-chip>
             </template>
             <template v-slot:no-data>
@@ -130,28 +130,14 @@ export default {
 
     getStatusColor() {
       return function(status) {
-        if (status === "reserving") {
+        if (status === "予約中") {
           return "green";
         }
-        if (status === "visited") {
+        if (status === "来店済み") {
           return "amber";
         }
-        if (status === "cancelled") {
+        if (status === "キャンセル") {
           return "red";
-        }
-      };
-    },
-
-    convertStatus() {
-      return function(status) {
-        if (status === "reserving") {
-          return "予約中";
-        }
-        if (status === "visited") {
-          return "来店済み";
-        }
-        if (status === "cancelled") {
-          return "キャンセル";
         }
       };
     },
@@ -172,8 +158,23 @@ export default {
       const resData = await reservationsRepository.getShopReservations(
         this.shop.id
       );
-      this.reservations = resData.data.data;
+      this.reservations = this.convetReservationStatus(resData.data.data);
       this.loading = false;
+    },
+
+    convetReservationStatus(data) {
+      for (let i in data) {
+        if (data[i].reservation.status === "reserving") {
+          data[i].reservation.status = "予約中";
+        }
+        if (data[i].reservation.status === "visited") {
+          data[i].reservation.status = "来店済み";
+        }
+        if (data[i].reservation.status === "cancelled") {
+          data[i].reservation.status = "キャンセル";
+        }
+      }
+      return data;
     },
 
     logout() {
