@@ -47,13 +47,6 @@ import { mapGetters } from "vuex";
 import reservationsRepository from "../repositories/reservationsRepository";
 
 export default {
-  props: {
-    shopId: {
-      type: Number,
-      require: true,
-    },
-  },
-
   data() {
     return {
       search: "",
@@ -75,7 +68,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["user"]),
+    ...mapGetters(["shop"]),
 
     showReservations() {
       if (this.showTodayReservations === false) {
@@ -112,6 +105,10 @@ export default {
     },
   },
 
+  created() {
+    this.getShopReservations();
+  },
+
   methods: {
     createToday() {
       const now = new Date();
@@ -131,7 +128,7 @@ export default {
 
     async getShopReservations() {
       const resData = await reservationsRepository.getShopReservations(
-        this.shopId
+        this.shop.id
       );
       this.reservations = this.convetReservationStatus(resData.data.data);
       this.loading = false;

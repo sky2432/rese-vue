@@ -13,6 +13,7 @@ export default new Vuex.Store({
     auth: false,
     role: "",
     user: "",
+    shop: "",
   },
 
   getters: {
@@ -21,6 +22,9 @@ export default new Vuex.Store({
     },
     user(state) {
       return state.user;
+    },
+    shop(state) {
+      return state.shop;
     },
   },
 
@@ -37,12 +41,14 @@ export default new Vuex.Store({
     updateUser(state, payload) {
       state.user = payload;
     },
-    resetRole(state) {
-      state.role = "";
+    shop(state, payload) {
+      state.shop = payload;
     },
-    resetUser(state) {
+    resetLoginData(state) {
       state.user = "";
-    },
+      state.role = "";
+      state.shop = "";
+    }
   },
 
   actions: {
@@ -67,13 +73,16 @@ export default new Vuex.Store({
       const resData = await authRepository.logout();
 
       commit("auth", resData.data.auth);
-      commit("resetRole");
-      commit("resetUser");
+      commit("resetLoginData");
       router.replace("/");
     },
 
     updateUser({ commit }, data) {
       commit("updateUser", data);
+    },
+
+    shop({ commit }, data) {
+      commit("shop", data);
     },
   },
 });

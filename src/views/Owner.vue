@@ -14,7 +14,7 @@
 
       <v-list>
         <v-list-item-group color="amber" v-model="selectedItem">
-          <v-list-item>
+          <v-list-item @click="currentComponent = 'OwnerReservation'">
             <v-list-item-icon>
               <v-icon>mdi-inbox-arrow-down</v-icon>
             </v-list-item-icon>
@@ -23,20 +23,20 @@
               <v-list-item-title>予約一覧</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item>
+
+          <v-list-item @click="currentComponent = 'OwnerShop'">
             <v-list-item-icon>
               <v-icon>mdi-inbox-arrow-down</v-icon>
             </v-list-item-icon>
-
             <v-list-item-content>
               <v-list-item-title>店舗情報</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+
           <v-list-item>
             <v-list-item-icon>
               <v-icon>mdi-account</v-icon>
             </v-list-item-icon>
-
             <v-list-item-content>
               <v-list-item-title>アカウント</v-list-item-title>
             </v-list-item-content>
@@ -58,10 +58,7 @@
 
     <v-main>
       <v-container class="py-8 px-6" fluid>
-        <OwnerReservation
-          ref="ownrReservaiton"
-          :shop-id="shop.id"
-        ></OwnerReservation>
+        <component :is="currentComponent"></component>
       </v-container>
     </v-main>
   </v-app>
@@ -71,33 +68,36 @@
 import { mapGetters } from "vuex";
 import ownersRepository from "../repositories/ownersRepository.js";
 import OwnerReservation from "../components/OwnerReservation";
+import OwnerShop from "../components/OwnerShop";
 
 export default {
   components: {
     OwnerReservation,
+    OwnerShop,
   },
 
   data() {
     return {
-      shop: "",
       drawer: null,
       selectedItem: 0,
+      ownerReservation: true,
+      ownerShop: false,
+      currentComponent: OwnerReservation,
     };
   },
 
   computed: {
-    ...mapGetters(["user"]),
+    ...mapGetters(["user", "shop"]),
   },
 
   async created() {
     await this.getOwnerShop();
-    this.$refs.ownrReservaiton.getShopReservations();
   },
 
   methods: {
     async getOwnerShop() {
       const resData = await ownersRepository.getOwnerShop(this.user.id);
-      this.shop = resData.data.data;
+      this.$store.dispatch("shop", resData.data.data);
     },
 
     logout() {
