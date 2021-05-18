@@ -145,7 +145,7 @@
                   <v-simple-table>
                     <template v-slot:default>
                       <tbody>
-                        <tr class="table-line">
+                        <tr>
                           <th class="text-left">
                             店舗名
                           </th>
@@ -153,7 +153,7 @@
                             {{ shop.name }}
                           </td>
                         </tr>
-                        <tr class="table-line">
+                        <tr>
                           <th class="text-left">
                             日付
                           </th>
@@ -161,7 +161,7 @@
                             {{ visitsDate }}
                           </td>
                         </tr>
-                        <tr class="table-line">
+                        <tr>
                           <th class="text-left">
                             時刻
                           </th>
@@ -169,7 +169,7 @@
                             {{ visitsTime }}
                           </td>
                         </tr>
-                        <tr class="table-line">
+                        <tr>
                           <th class="text-left">
                             人数
                           </th>
@@ -271,9 +271,5 @@ export default {
 <style scoped>
 .card {
   margin-top: 68px;
-}
-
-.table-line {
-  line-height: 50px;
 }
 </style>

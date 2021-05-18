@@ -245,7 +245,7 @@
               <v-simple-table>
                 <template v-slot:default>
                   <tbody>
-                    <tr class="table-line">
+                    <tr>
                       <th class="text-left">
                         店舗名
                       </th>
@@ -253,7 +253,7 @@
                         {{ selectedShop.name }}
                       </td>
                     </tr>
-                    <tr class="table-line">
+                    <tr>
                       <th class="text-left">
                         日付
                       </th>
@@ -261,7 +261,7 @@
                         {{ visitsDate }}
                       </td>
                     </tr>
-                    <tr class="table-line">
+                    <tr>
                       <th class="text-left">
                         時刻
                       </th>
@@ -269,7 +269,7 @@
                         {{ visitsTime }}
                       </td>
                     </tr>
-                    <tr class="table-line">
+                    <tr>
                       <th class="text-left">
                         人数
                       </th>
@@ -661,10 +661,6 @@ export default {
 
 .btn-wrap {
   text-align: left;
-}
-
-.table-line {
-  line-height: 50px;
 }
 
 .reservation-col {
