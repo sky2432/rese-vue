@@ -7,7 +7,7 @@ export default {
     return Repository.get(`users/${user_id}/${resource}`);
   },
 
-  showShopReservations(shop_id) {
+  getShopReservations(shop_id) {
     return Repository.get(`shops/${shop_id}/${resource}`);
   },
 
