@@ -66,7 +66,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-import ownersRepository from "../repositories/ownersRepository.js";
 import OwnerReservation from "../components/OwnerReservation";
 import OwnerShop from "../components/OwnerShop";
 
@@ -79,27 +78,16 @@ export default {
   data() {
     return {
       drawer: null,
-      selectedItem: 1,
-      ownerReservation: true,
-      ownerShop: false,
-      currentComponent: OwnerShop,
+      selectedItem: 0,
+      currentComponent: OwnerReservation,
     };
   },
 
   computed: {
-    ...mapGetters(["user", "shop"]),
-  },
-
-  async created() {
-    await this.getOwnerShop();
+    ...mapGetters(["shop"]),
   },
 
   methods: {
-    async getOwnerShop() {
-      const resData = await ownersRepository.getOwnerShop(this.user.id);
-      this.$store.dispatch("shop", resData.data.data);
-    },
-
     logout() {
       this.$store.dispatch("logout");
     },

@@ -45,6 +45,7 @@
 <script>
 import { mapGetters } from "vuex";
 import reservationsRepository from "../repositories/reservationsRepository";
+import ownersRepository from "../repositories/ownersRepository.js";
 
 export default {
   data() {
@@ -68,7 +69,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["shop"]),
+    ...mapGetters(["user","shop"]),
 
     showReservations() {
       if (this.showTodayReservations === false) {
@@ -105,7 +106,8 @@ export default {
     },
   },
 
-  created() {
+  async created() {
+    await this.getOwnerShop();
     this.getShopReservations();
   },
 
@@ -124,6 +126,12 @@ export default {
         date.getDate()
       );
       return specificDate;
+    },
+
+    async getOwnerShop() {
+      const resData = await ownersRepository.getOwnerShop(this.user.id);
+      const shopData = resData.data.data;
+      this.$store.dispatch("shop", shopData);
     },
 
     async getShopReservations() {
