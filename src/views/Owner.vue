@@ -72,12 +72,19 @@
           </v-card-title>
           <v-data-table
             :headers="headers"
-            :items="reservations"
+            :items="showReservations"
             item-key="reservaiton.id"
             :search="search"
             :loading="loading"
             loading-text="予約を取得中です"
           >
+            <template v-slot:top>
+              <v-switch
+                v-model="showTodayReservations"
+                label="本日の予約"
+                class="pa-3"
+              ></v-switch>
+            </template>
             <template v-slot:[`item.reservation.status`]="{ item }">
               <v-chip :color="getStatusColor(item.reservation.status)" dark>
                 {{ item.reservation.status }}
@@ -109,6 +116,7 @@ export default {
       selectedItem: 0,
       search: "",
       loading: true,
+      showTodayReservations: false,
       shop: "",
       reservations: [],
       headers: [
@@ -127,6 +135,26 @@ export default {
 
   computed: {
     ...mapGetters(["user"]),
+
+    showReservations() {
+      if (this.showTodayReservations === false) {
+        return this.reservations;
+      }
+      if (this.showTodayReservations === true) {
+        let todayReservations = [];
+        const today = this.createToday();
+        for (let i in this.reservations) {
+          const reservations = this.reservations[i];
+          const reserveDate = this.createSpecificDate(
+            reservations.reservation.visited_on
+          );
+          if (today.getTime() === reserveDate.getTime()) {
+            todayReservations.push(reservations);
+          }
+        }
+        return todayReservations;
+      }
+    },
 
     getStatusColor() {
       return function(status) {
@@ -149,6 +177,22 @@ export default {
   },
 
   methods: {
+    createToday() {
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      return today;
+    },
+
+    createSpecificDate(value) {
+      const date = new Date(value);
+      const specificDate = new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate()
+      );
+      return specificDate;
+    },
+
     async getOwnerShop() {
       const resData = await ownersRepository.getOwnerShop(this.user.id);
       this.shop = resData.data.data;
