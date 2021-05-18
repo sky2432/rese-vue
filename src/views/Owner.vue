@@ -58,43 +58,40 @@
 
     <v-main>
       <v-container class="py-8 px-6" fluid>
-        <v-data-table
-          :headers="headers"
-          :items="reservations"
-          :items-per-page="5"
-          class="elevation-1"
-        ></v-data-table>
-        <!-- <v-row>
-          <v-col>
-            <v-card>
-              <v-subheader>予約一覧</v-subheader>
+        <v-card>
+          <v-card-title>
+            予約一覧
+            <v-spacer></v-spacer>
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Search"
+              single-line
+              hide-details
+            ></v-text-field>
+          </v-card-title>
+          <v-data-table
+            :headers="headers"
+            :items="reservations"
+            item-key="reservaiton.id"
+            :search="search"
+            :loading="loading"
+            loading-text="予約を取得中です"
+          >
+            <template v-slot:[`item.reservation.status`]="{ item }">
+              <v-chip :color="getStatusColor(item.reservation.status)" dark>
+                {{ convertStatus(item.reservation.status) }}
+              </v-chip>
+            </template>
+            <template v-slot:no-data>
+              予約がありません
+            </template>
 
-              <v-list two-line>
-                <template v-for="n in 6">
-                  <v-list-item :key="n">
-                    <v-list-item-avatar color="grey darken-1">
-                    </v-list-item-avatar>
-
-                    <v-list-item-content>
-                      <v-list-item-title>Message {{ n }}</v-list-item-title>
-
-                      <v-list-item-subtitle>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Nihil repellendus distinctio similique
-                      </v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-
-                  <v-divider
-                    v-if="n !== 6"
-                    :key="`divider-${n}`"
-                    inset
-                  ></v-divider>
-                </template>
-              </v-list>
-            </v-card>
-          </v-col>
-        </v-row> -->
+            <template v-slot:no-results>
+              検索条件に当てはまる予約はありません
+            </template>
+          </v-data-table>
+        </v-card>
       </v-container>
     </v-main>
   </v-app>
@@ -110,17 +107,18 @@ export default {
     return {
       drawer: null,
       selectedItem: 0,
+      search: "",
+      loading: true,
       shop: "",
       reservations: [],
       headers: [
         {
           text: "予約ID",
           align: "start",
-          sortable: false,
           value: "reservation.id",
         },
-        { text: "状態", value: "reservation.status" },
-        { text: "名前", value: "name" },
+        { text: "予約状況", value: "reservation.status" },
+        { text: "予約者名", value: "name" },
         { text: "来店人数", value: "reservation.number_of_visiters" },
         { text: "来店日時", value: "reservation.visited_on" },
       ],
@@ -129,6 +127,34 @@ export default {
 
   computed: {
     ...mapGetters(["user"]),
+
+    getStatusColor() {
+      return function(status) {
+        if (status === "reserving") {
+          return "green";
+        }
+        if (status === "visited") {
+          return "amber";
+        }
+        if (status === "cancelled") {
+          return "red";
+        }
+      };
+    },
+
+    convertStatus() {
+      return function(status) {
+        if (status === "reserving") {
+          return "予約中";
+        }
+        if (status === "visited") {
+          return "来店済み";
+        }
+        if (status === "cancelled") {
+          return "キャンセル";
+        }
+      };
+    },
   },
 
   async created() {
@@ -140,7 +166,6 @@ export default {
     async getOwnerShop() {
       const resData = await ownersRepository.getOwnerShop(this.user.id);
       this.shop = resData.data.data;
-      // console.log(resData);
     },
 
     async getShopReservations() {
@@ -148,7 +173,7 @@ export default {
         this.shop.id
       );
       this.reservations = resData.data.data;
-      console.log(resData);
+      this.loading = false;
     },
 
     logout() {
