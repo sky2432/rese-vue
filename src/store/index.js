@@ -38,9 +38,6 @@ export default new Vuex.Store({
     user(state, payload) {
       state.user = payload;
     },
-    updateUser(state, payload) {
-      state.user = payload;
-    },
     shop(state, payload) {
       state.shop = payload;
     },
@@ -78,7 +75,7 @@ export default new Vuex.Store({
     },
 
     updateUser({ commit }, data) {
-      commit("updateUser", data);
+      commit("user", data);
     },
 
     shop({ commit }, data) {
