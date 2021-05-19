@@ -242,6 +242,20 @@
                 outlined
               ></v-textarea>
             </validation-provider>
+            
+            <v-file-input
+              v-model="image"
+              accept="image/*"
+              label="店舗画像を選択"
+              ref="imageInput"
+              @change="showImagePreview($event)"
+              chips
+            ></v-file-input>
+
+            <div v-if="imageUrl">
+              <v-subheader>プレビュー</v-subheader>
+              <v-img :src="imageUrl" height="400px"></v-img>
+            </div>
 
             <v-card-actions class="justify-center">
               <v-btn color="amber" :disabled="invalid">
@@ -276,18 +290,20 @@ export default {
 
   data() {
     return {
-      formValid: false,
-      dialog: false,
-      warnDialog: false,
-      showDialogConfirmDeletionShop: false,
       name: "",
       area: "",
       genre: "",
       overview: "",
-      areaOptions: config.areaOptions,
-      genreOptions: config.genreOptions,
+      image: null,
+      imageUrl: "",
+      formValid: false,
+      dialog: false,
+      warnDialog: false,
       loading: false,
       deleteLoading: false,
+      showDialogConfirmDeletionShop: false,
+      areaOptions: config.areaOptions,
+      genreOptions: config.genreOptions,
     };
   },
 
@@ -300,6 +316,10 @@ export default {
   },
 
   methods: {
+    showImagePreview() {
+      this.imageUrl = URL.createObjectURL(this.image);
+    },
+
     getShopData() {
       this.name = this.shop.name;
       this.area = this.shop.area_id;
