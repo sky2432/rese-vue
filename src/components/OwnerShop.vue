@@ -2,7 +2,18 @@
   <div>
     <v-card>
       <v-card-title class="amber">店舗情報</v-card-title>
-      <v-img :src="shop.image_url" height="400px"></v-img>
+      <v-hover>
+        <template v-slot:default="{ hover }">
+          <v-card tile elevation="0">
+            <v-img :src="shop.image_url" height="400px"></v-img>
+            <v-fade-transition>
+              <v-overlay v-if="hover" absolute color="#036358">
+                <v-btn>See more info</v-btn>
+              </v-overlay>
+            </v-fade-transition>
+          </v-card>
+        </template>
+      </v-hover>
       <v-simple-table>
         <template v-slot:default>
           <tbody>
@@ -31,7 +42,7 @@
     </v-card>
 
     <v-dialog v-model="dialog" max-width="700px">
-      <v-card>
+      <v-card :loading="loading">
         <v-card-title class="amber">
           店舗情報の更新
           <v-spacer></v-spacer>
@@ -45,7 +56,7 @@
               <validation-provider
                 v-slot="{ errors }"
                 name="店名"
-                rules="required|max:10"
+                rules="required|min:2|max:10"
               >
                 <v-text-field
                   v-model="name"
@@ -97,7 +108,7 @@
                 rules="required|max:255"
               >
                 <v-textarea
-                class="mt-4"
+                  class="mt-4"
                   v-model="overview"
                   name="概要"
                   label="店舗概要"
@@ -107,14 +118,14 @@
                 ></v-textarea>
               </validation-provider>
 
-              <v-file-input
+              <!-- <v-file-input
                 accept="image/*"
                 label="File input"
                 chips
-              ></v-file-input>
+              ></v-file-input> -->
 
               <v-card-actions class="justify-center">
-                <v-btn color="amber" :disabled="invalid">
+                <v-btn color="amber" :disabled="invalid" @click="updateShop">
                   更新
                 </v-btn>
               </v-card-actions>
@@ -129,6 +140,9 @@
 <script>
 import { mapGetters } from "vuex";
 import config from "../config/const.js";
+import shopsRepository from "../repositories/shopsRepository.js";
+import ownersRepository from "../repositories/ownersRepository.js";
+
 
 export default {
   props: {
@@ -148,11 +162,12 @@ export default {
       overview: "",
       areaOptions: config.areaOptions,
       genreOptions: config.genreOptions,
+      loading: false,
     };
   },
 
   computed: {
-    ...mapGetters(["shop"]),
+    ...mapGetters(["user", "shop"]),
   },
 
   created() {
@@ -165,6 +180,27 @@ export default {
       this.area = this.shop.area_id;
       this.genre = this.shop.genre_id;
       this.overview = this.shop.overview;
+    },
+
+    async updateShop() {
+      this.loading = true;
+      const sendData = {
+        name: this.name,
+        area_id: this.area,
+        genre_id: this.genre,
+        overview: this.overview,
+      };
+      const resData = await shopsRepository.updateShop(this.shop.id, sendData);
+      console.log(resData);
+      this.getOwnerShop();
+      this.dialog = false;
+      this.loading = false;
+    },
+
+    async getOwnerShop() {
+      const resData = await ownersRepository.getOwnerShop(this.user.id);
+      const shopData = resData.data.data;
+      this.$store.dispatch("shop", shopData);
     },
   },
 };

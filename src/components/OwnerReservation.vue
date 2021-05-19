@@ -75,6 +75,7 @@ export default {
       if (this.showTodayReservations === false) {
         return this.reservations;
       }
+      //本日の予約のみを表示
       if (this.showTodayReservations === true) {
         let todayReservations = [];
         const today = this.createToday();
