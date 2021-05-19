@@ -1,12 +1,12 @@
 <template>
   <v-card>
-    <v-card-title>
+    <v-card-title class="amber">
       予約一覧
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
         append-icon="mdi-magnify"
-        label="Search"
+        label="検索"
         single-line
         hide-details
       ></v-text-field>

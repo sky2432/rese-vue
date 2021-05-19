@@ -42,4 +42,16 @@ export default Object.freeze({
     { state: "9名", abbr: 9 },
     { state: "10名", abbr: 10 },
   ],
+  areaOptions: [
+    { state: "東京都", abbr: 1 },
+    { state: "大阪府", abbr: 2 },
+    { state: "福岡県", abbr: 3 },
+  ],
+  genreOptions: [
+    { state: "寿司", abbr: 1 },
+    { state: "焼肉", abbr: 2 },
+    { state: "居酒屋", abbr: 3 },
+    { state: "イタリアン", abbr: 4 },
+    { state: "ラーメン", abbr: 5 },
+  ],
 });

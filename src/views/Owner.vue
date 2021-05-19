@@ -57,7 +57,7 @@
     </v-navigation-drawer>
 
     <v-main>
-      <v-container class="py-8 px-6" fluid>
+      <v-container class="py-4 px-6" fluid>
         <component :is="currentComponent"></component>
       </v-container>
     </v-main>
@@ -79,7 +79,7 @@ export default {
     return {
       drawer: null,
       selectedItem: 0,
-      currentComponent: OwnerReservation,
+      currentComponent: OwnerShop,
     };
   },
 
