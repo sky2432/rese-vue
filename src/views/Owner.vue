@@ -3,10 +3,12 @@
     <v-navigation-drawer v-model="drawer" app>
       <v-sheet color="amber" class="pa-8">
         <v-row class="align-center">
-          <v-avatar color="grey darken-1" size="64">
-            <img :src="shop.image_url" alt="" />
+          <v-avatar color="white" size="64">
+            <img v-if="existsShop" :src="shop.image_url" alt=""/>
+            <v-icon v-if="!existsShop">mdi-silverware-variant</v-icon>
           </v-avatar>
-          <div class="pl-4">{{ shop.name }}</div>
+          <div v-if="existsShop" class="pl-4">{{ shop.name }}</div>
+          <div v-if="!existsShop" class="pl-4">Rese</div>
         </v-row>
       </v-sheet>
 
@@ -79,12 +81,12 @@ export default {
     return {
       drawer: null,
       selectedItem: 0,
-      currentComponent: OwnerShop,
+      currentComponent: OwnerReservation,
     };
   },
 
   computed: {
-    ...mapGetters(["shop"]),
+    ...mapGetters(["shop", "existsShop"]),
   },
 
   methods: {

@@ -69,7 +69,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["user","shop"]),
+    ...mapGetters(["user", "shop", "existsShop"]),
 
     showReservations() {
       if (this.showTodayReservations === false) {
@@ -109,10 +109,19 @@ export default {
 
   async created() {
     await this.getOwnerShop();
+    this.resetLoading();
     this.getShopReservations();
   },
 
   methods: {
+    resetLoading() {
+      if (this.existsShop === false) {
+        this.loading = false;
+      } else {
+        this.loading = true;
+      }
+    },
+
     createToday() {
       const now = new Date();
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -132,15 +141,23 @@ export default {
     async getOwnerShop() {
       const resData = await ownersRepository.getOwnerShop(this.user.id);
       const shopData = resData.data.data;
-      this.$store.dispatch("shop", shopData);
+      if (resData.status === 200) {
+        this.$store.dispatch("shop", shopData);
+        this.$store.dispatch("existsShop", true);
+      }
+      if (resData.status === 204) {
+        this.$store.dispatch("existsShop", false);
+      }
     },
 
     async getShopReservations() {
-      const resData = await reservationsRepository.getShopReservations(
-        this.shop.id
-      );
-      this.reservations = this.convetReservationStatus(resData.data.data);
-      this.loading = false;
+      if (this.existsShop) {
+        const resData = await reservationsRepository.getShopReservations(
+          this.shop.id
+        );
+        this.reservations = this.convetReservationStatus(resData.data.data);
+        this.loading = false;
+      }
     },
 
     convetReservationStatus(data) {
