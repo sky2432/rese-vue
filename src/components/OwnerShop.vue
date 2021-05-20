@@ -353,6 +353,13 @@ export default {
       const resData = await ownersRepository.getOwnerShop(this.user.id);
       const shopData = resData.data.data;
       this.$store.dispatch("shop", shopData);
+      if (resData.status === 200) {
+        this.$store.dispatch("shop", shopData);
+        this.$store.dispatch("existsShop", true);
+      }
+      if (resData.status === 204) {
+        this.$store.dispatch("existsShop", false);
+      }
     },
 
     closeDeleteDialog() {
@@ -381,11 +388,12 @@ export default {
         area_id: this.area,
         genre_id: this.genre,
         overview: this.overview,
-        image: formData,
       };
+      const data = JSON.stringify(sendData);
+      formData.append('data', data);
       const resData = await shopsRepository.createShop(formData);
       console.log(resData);
-      // this.$store.dispatch("shop", resData.data.data);
+      this.getOwnerShop();
     },
   },
 };

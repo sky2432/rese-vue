@@ -10,8 +10,9 @@ export default {
     return Repository.get(`${resource}/${shop_id}`);
   },
 
-  createShop(payload) {
-    return Repository.post(`${resource}`, payload);
+  createShop(payload, formData) {
+    const config = { headers: { "content-type": "multipart/form-data" } };
+    return Repository.post(`${resource}`, payload, formData, config);
   },
 
   updateShop(shop_id, payload) {
