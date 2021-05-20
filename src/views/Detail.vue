@@ -9,7 +9,7 @@
         <v-row>
           <v-col cols="6">
             <div class="d-flex">
-              <v-btn @click="$router.push('/home')">
+              <v-btn @click="$router.go(-1)">
                 <v-icon>mdi-chevron-left</v-icon>
               </v-btn>
               <h1 class="ml-5">{{ shop.name }}</h1>

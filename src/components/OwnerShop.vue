@@ -242,23 +242,30 @@
                 outlined
               ></v-textarea>
             </validation-provider>
-            
-            <v-file-input
-              v-model="image"
-              accept="image/*"
-              label="店舗画像を選択"
-              ref="imageInput"
-              @change="showImagePreview($event)"
-              chips
-            ></v-file-input>
 
-            <div v-if="imageUrl">
+            <validation-provider
+              v-slot="{ errors }"
+              name="店舗画像"
+              rules="selectRequired"
+            >
+              <v-file-input
+                v-model="image"
+                accept="image/*"
+                label="店舗画像を選択"
+                ref="imageInput"
+                @change="showImagePreview($event)"
+                :error-messages="errors"
+                chips
+              ></v-file-input>
+            </validation-provider>
+
+            <div v-if="imageUrl" class="text-center">
               <v-subheader>プレビュー</v-subheader>
-              <v-img :src="imageUrl" height="400px"></v-img>
+              <img :src="imageUrl" width="50%" />
             </div>
 
             <v-card-actions class="justify-center">
-              <v-btn color="amber" :disabled="invalid">
+              <v-btn color="amber" :disabled="invalid" @click="createShop">
                 登録
               </v-btn>
             </v-card-actions>
@@ -363,6 +370,22 @@ export default {
       this.loading = false;
       this.showDialogConfirmDeletionShop = false;
       this.warnDialog = false;
+    },
+
+    async createShop() {
+      const formData = new FormData();
+      formData.append("file", this.image);
+      const sendData = {
+        name: this.name,
+        owner_id: this.user.id,
+        area_id: this.area,
+        genre_id: this.genre,
+        overview: this.overview,
+        image: formData,
+      };
+      const resData = await shopsRepository.createShop(formData);
+      console.log(resData);
+      // this.$store.dispatch("shop", resData.data.data);
     },
   },
 };
