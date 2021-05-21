@@ -4,7 +4,7 @@
       <v-sheet color="amber" class="pa-8">
         <v-row class="align-center">
           <v-avatar color="white" size="64">
-            <img v-if="existsShop" :src="shop.image_url" alt=""/>
+            <v-img v-if="existsShop" :src="shop.image_url"></v-img>
             <v-icon v-if="!existsShop">mdi-silverware-variant</v-icon>
           </v-avatar>
           <div v-if="existsShop" class="pl-4">{{ shop.name }}</div>

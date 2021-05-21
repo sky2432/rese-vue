@@ -41,7 +41,7 @@
           >
         </v-card-title>
         <v-card-text class="mt-4">
-          <validation-observer ref="observer" v-slot="{ invalid }">
+          <validation-observer ref="editObserver" v-slot="{ invalid }">
             <v-form v-model="formValid">
               <validation-provider
                 v-slot="{ errors }"
@@ -175,7 +175,7 @@
         店舗情報の登録
       </v-card-title>
       <v-card-text class="mt-4">
-        <validation-observer ref="observer" v-slot="{ invalid }">
+        <validation-observer ref="addObserver" v-slot="{ invalid }">
           <v-form v-model="formValid">
             <validation-provider
               v-slot="{ errors }"
@@ -245,15 +245,16 @@
 
             <validation-provider
               v-slot="{ errors }"
+              ref="fileProvider"
               name="店舗画像"
-              rules="selectRequired"
+              rules="selectRequired|image"
             >
               <v-file-input
                 v-model="image"
                 accept="image/*"
                 label="店舗画像を選択"
                 ref="imageInput"
-                @change="showImagePreview($event)"
+                @change="showImagePreview"
                 :error-messages="errors"
                 chips
               ></v-file-input>
@@ -362,11 +363,6 @@ export default {
       }
     },
 
-    closeDeleteDialog() {
-      this.warnDialog = false;
-      this.showDialogConfirmDeletionShop = false;
-    },
-
     async deleteShop() {
       this.deleteLoading = true;
       await shopsRepository.deleteShop(this.shop.id);
@@ -374,14 +370,19 @@ export default {
       this.$store.dispatch("existsShop", false);
       this.getShopData();
       this.$refs.deleteMessageDialog.changeShowMessageDialog();
-      this.loading = false;
+      this.deleteLoading = false;
       this.showDialogConfirmDeletionShop = false;
       this.warnDialog = false;
     },
 
+    closeDeleteDialog() {
+      this.warnDialog = false;
+      this.showDialogConfirmDeletionShop = false;
+    },
+
     async createShop() {
       const formData = new FormData();
-      formData.append("file", this.image);
+      formData.append("image", this.image);
       const sendData = {
         name: this.name,
         owner_id: this.user.id,
@@ -390,10 +391,20 @@ export default {
         overview: this.overview,
       };
       const data = JSON.stringify(sendData);
-      formData.append('data', data);
-      const resData = await shopsRepository.createShop(formData);
-      console.log(resData);
+      formData.append("sendData", data);
+      await shopsRepository.createShop(formData);
+      this.resetData();
+      this.$refs.addObserver.reset();
       this.getOwnerShop();
+    },
+
+    resetData() {
+      this.name = "";
+      this.area = "";
+      this.genre = "";
+      this.overview = "";
+      this.image = null;
+      this.imageUrl = "";
     },
   },
 };

@@ -1,6 +1,6 @@
 import Vue from "vue";
 
-import { required, email, max, min } from "vee-validate/dist/rules";
+import { required, email, max, min, image } from "vee-validate/dist/rules";
 import {
   extend,
   ValidationObserver,
@@ -36,4 +36,9 @@ extend("min", {
 extend("email", {
   ...email,
   message: "Emailを正しい形式で入力してください",
+});
+
+extend("image", {
+  ...image,
+  message: "画像ファイルを選択してください",
 });
