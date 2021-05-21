@@ -157,7 +157,6 @@ export default {
         name: this.name,
         email: this.email,
         password: this.password,
-        role: "user",
       };
       usersRepository
         .confirmUser(sendData)
