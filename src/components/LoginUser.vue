@@ -14,11 +14,11 @@ export default {
   components: {
     LoginForm,
   },
-
+git
   methods: {
     login(sendData) {
       authRepository
-        .userLogin(sendData)
+        .login('user', sendData)
         .then((response) => {
           this.$store.dispatch("login", response.data);
         })

@@ -18,7 +18,7 @@ export default {
   methods: {
     login(sendData) {
       authRepository
-        .ownerLogin(sendData)
+        .login('owner', sendData)
         .then((response) => {
           this.$store.dispatch("login", response.data);
         })
