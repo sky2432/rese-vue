@@ -2,7 +2,20 @@
   <div>
     <v-card v-if="existsShop">
       <v-card-title class="amber">店舗情報</v-card-title>
-      <v-img :src="shop.image_url" height="400px"></v-img>
+      <v-hover>
+        <template v-slot:default="{ hover }">
+          <v-card tile elevation="0">
+            <v-img :src="shop.image_url" height="400px"></v-img>
+            <v-fade-transition>
+              <v-overlay v-if="hover" absolute color="#036358">
+                <v-btn color="amber" dark @click="showImageDialog"
+                  >店舗画像の更新</v-btn
+                >
+              </v-overlay>
+            </v-fade-transition>
+          </v-card>
+        </template>
+      </v-hover>
       <v-simple-table>
         <template v-slot:default>
           <tbody>
@@ -31,8 +44,54 @@
       </v-card-actions>
     </v-card>
 
+    <v-dialog v-model="imageDialog" max-width="700px">
+      <v-card :loading="imageLoading">
+        <v-card-title class="amber">
+          店舗画像の更新
+          <v-spacer></v-spacer>
+          <v-btn icon @click="imageDialog = false"
+            ><v-icon>mdi-window-close</v-icon></v-btn
+          >
+        </v-card-title>
+        <v-card-text>
+          <validation-observer ref="editImageObserver" v-slot="{ invalid }">
+            <v-form>
+              <validation-provider
+                v-slot="{ errors }"
+                ref="fileProvider"
+                name="店舗画像"
+                rules="selectRequired|image"
+              >
+                <v-file-input
+                  v-model="image"
+                  accept="image/*"
+                  label="店舗画像を選択"
+                  @change="showImagePreview"
+                  :error-messages="errors"
+                  chips
+                ></v-file-input>
+              </validation-provider>
+              <div v-if="imageUrl" class="text-center">
+                <v-subheader>プレビュー</v-subheader>
+                <img :src="imageUrl" width="50%" />
+              </div>
+              <v-card-actions class="justify-center">
+                <v-btn color="amber" :disabled="invalid" @click="updateImage">
+                  更新
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </validation-observer>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+
+    <MessageDialog ref="imageMessageDialog">
+      <template #message>店舗画像を変更しました</template>
+    </MessageDialog>
+
     <v-dialog v-model="dialog" max-width="700px">
-      <v-card :loading="loading">
+      <v-card :loading="updateLoading">
         <v-card-title class="amber">
           店舗情報の更新
           <v-spacer></v-spacer>
@@ -253,7 +312,6 @@
                 v-model="image"
                 accept="image/*"
                 label="店舗画像を選択"
-                ref="imageInput"
                 @change="showImagePreview"
                 :error-messages="errors"
                 chips
@@ -306,9 +364,11 @@ export default {
       imageUrl: "",
       formValid: false,
       dialog: false,
+      imageDialog: false,
       warnDialog: false,
-      loading: false,
+      updateLoading: false,
       deleteLoading: false,
+      imageLoading: false,
       showDialogConfirmDeletionShop: false,
       areaOptions: config.areaOptions,
       genreOptions: config.genreOptions,
@@ -324,6 +384,27 @@ export default {
   },
 
   methods: {
+    showImageDialog() {
+      this.imageDialog = true;
+      if (this.image) {
+        this.image = null;
+        this.imageUrl = "";
+        this.$refs.editImageObserver.reset();
+      }
+    },
+
+    async updateImage() {
+      this.imageLoading = true;
+      const formData = new FormData();
+      formData.append("image", this.image);
+      const resData = await shopsRepository.updateImage(this.shop.id, formData);
+      console.log(resData);
+      this.getOwnerShop();
+      this.imageDialog = false;
+      this.imageLoading = false;
+      this.$refs.imageMessageDialog.changeShowMessageDialog();
+    },
+
     showImagePreview() {
       this.imageUrl = URL.createObjectURL(this.image);
     },
@@ -336,7 +417,7 @@ export default {
     },
 
     async updateShop() {
-      this.loading = true;
+      this.updateLoading = true;
       const sendData = {
         name: this.name,
         area_id: this.area,
@@ -346,7 +427,7 @@ export default {
       await shopsRepository.updateShop(this.shop.id, sendData);
       this.getOwnerShop();
       this.dialog = false;
-      this.loading = false;
+      this.updateLoading = false;
       this.$refs.updateMessageDialog.changeShowMessageDialog();
     },
 

@@ -14,7 +14,7 @@ export default {
   components: {
     LoginForm,
   },
-git
+
   methods: {
     login(sendData) {
       authRepository
