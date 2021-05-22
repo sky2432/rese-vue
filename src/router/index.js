@@ -137,6 +137,22 @@ router.beforeEach((to, from, next) => {
       },
     });
   }
+  if (store.state.role === "user") {
+    if (to.name === "Owner") {
+      next("/home");
+    }
+  }
+  if (store.state.role === "owner") {
+    if (
+      to.name === "Home" ||
+      to.name === "Detail" ||
+      to.name === "Done" ||
+      to.name === "Mypage" ||
+      to.name === "Setting"
+    ) {
+      next("/owner");
+    }
+  }
   next();
 });
 
