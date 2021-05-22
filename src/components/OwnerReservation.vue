@@ -43,11 +43,20 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import reservationsRepository from "../repositories/reservationsRepository";
-import ownersRepository from "../repositories/ownersRepository.js";
 
 export default {
+  props: {
+    shopId: {
+      type: Number,
+      // require: true,
+    },
+    existsShop: {
+      type: Boolean,
+      require: true,
+    },
+  },
+
   data() {
     return {
       search: "",
@@ -69,8 +78,6 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["user", "shop", "existsShop"]),
-
     showReservations() {
       if (this.showTodayReservations === false) {
         return this.reservations;
@@ -107,21 +114,31 @@ export default {
     },
   },
 
-  async created() {
-    await this.getOwnerShop();
-    this.resetLoading();
-    this.getShopReservations();
+  created() {
+    if (this.shopId && this.existsShop) {
+      console.log("create");
+      this.getShopReservations();
+    }
+    if (!this.existsShop) {
+      this.loading = false;
+    }
+  },
+
+  watch: {
+    shopId() {
+      if (this.existsShop) {
+        console.log("wathc");
+        this.getShopReservations();
+      }
+    },
+    existsShop() {
+      if (!this.existsShop) {
+        this.loading = false;
+      }
+    },
   },
 
   methods: {
-    resetLoading() {
-      if (this.existsShop === false) {
-        this.loading = false;
-      } else {
-        this.loading = true;
-      }
-    },
-
     createToday() {
       const now = new Date();
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -138,26 +155,12 @@ export default {
       return specificDate;
     },
 
-    async getOwnerShop() {
-      const resData = await ownersRepository.getOwnerShop(this.user.id);
-      const shopData = resData.data.data;
-      if (resData.status === 200) {
-        this.$store.dispatch("shop", shopData);
-        this.$store.dispatch("existsShop", true);
-      }
-      if (resData.status === 204) {
-        this.$store.dispatch("existsShop", false);
-      }
-    },
-
     async getShopReservations() {
-      if (this.existsShop) {
-        const resData = await reservationsRepository.getShopReservations(
-          this.shop.id
-        );
-        this.reservations = this.convetReservationStatus(resData.data.data);
-        this.loading = false;
-      }
+      const resData = await reservationsRepository.getShopReservations(
+        this.shopId
+      );
+      this.reservations = this.convetReservationStatus(resData.data.data);
+      this.loading = false;
     },
 
     convetReservationStatus(data) {

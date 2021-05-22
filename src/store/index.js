@@ -13,8 +13,6 @@ export default new Vuex.Store({
     auth: false,
     role: "",
     user: "",
-    existsShop: false,
-    shop: "",
   },
 
   getters: {
@@ -23,12 +21,6 @@ export default new Vuex.Store({
     },
     user(state) {
       return state.user;
-    },
-    existsShop(state) {
-      return state.existsShop;
-    },
-    shop(state) {
-      return state.shop;
     },
   },
 
@@ -42,19 +34,9 @@ export default new Vuex.Store({
     user(state, payload) {
       state.user = payload;
     },
-    existsShop(state, payload) {
-      state.existsShop = payload;
-    },
-    shop(state, payload) {
-      state.shop = payload;
-    },
-    resetShop(state) {
-      state.shop = "";
-    },
     resetLoginData(state) {
       state.user = "";
       state.role = "";
-      state.shop = "";
     },
   },
 
@@ -86,18 +68,6 @@ export default new Vuex.Store({
 
     updateUser({ commit }, data) {
       commit("user", data);
-    },
-
-    shop({ commit }, data) {
-      commit("shop", data);
-    },
-
-    resetShop({ commit }) {
-      commit("resetShop");
-    },
-
-    existsShop({ commit }, data) {
-      commit("existsShop", data);
     },
   },
 });

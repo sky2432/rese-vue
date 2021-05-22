@@ -1,5 +1,5 @@
 <template>
-  <v-app id="inspire">
+  <v-app>
     <v-navigation-drawer v-model="drawer" app>
       <v-sheet color="amber" class="pa-8">
         <v-row class="align-center">
@@ -16,7 +16,7 @@
 
       <v-list>
         <v-list-item-group color="amber" v-model="selectedItem">
-          <v-list-item @click="currentComponent = 'OwnerReservation'">
+          <v-list-item @click="showOwnerReservation">
             <v-list-item-icon>
               <v-icon>mdi-inbox-arrow-down</v-icon>
             </v-list-item-icon>
@@ -26,7 +26,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item @click="currentComponent = 'OwnerShop'">
+          <v-list-item @click="showOwnerShop">
             <v-list-item-icon>
               <v-icon>mdi-inbox-arrow-down</v-icon>
             </v-list-item-icon>
@@ -60,7 +60,25 @@
 
     <v-main>
       <v-container class="py-4 px-6" fluid>
-        <component :is="currentComponent"></component>
+        <OwnerReservation
+          v-if="ownerReservation"
+          v-bind="{ shopId: shop.id, existsShop: existsShop }"
+        ></OwnerReservation>
+        <OwnerShop
+          v-if="ownerShop"
+          v-bind="{
+            shopName: shop.name,
+            shopId: shop.id,
+            areaId: shop.area_id,
+            genreId: shop.genre_id,
+            shopOverview: shop.overview,
+            shopImageUrl: shop.image_url,
+            areaName: shopArea.name,
+            genreName: shopGenre.name,
+            existsShop: existsShop,
+          }"
+          @reload="getOwnerShop"
+        ></OwnerShop>
       </v-container>
     </v-main>
   </v-app>
@@ -70,6 +88,7 @@
 import { mapGetters } from "vuex";
 import OwnerReservation from "../components/OwnerReservation";
 import OwnerShop from "../components/OwnerShop";
+import ownersRepository from "../repositories/ownersRepository.js";
 
 export default {
   components: {
@@ -79,17 +98,50 @@ export default {
 
   data() {
     return {
+      shop: "",
+      shopArea: "",
+      shopGenre: "",
+      existsShop: true,
+      ownerReservation: true,
+      ownerShop: false,
       drawer: null,
       selectedItem: 0,
-      currentComponent: OwnerReservation,
     };
   },
 
   computed: {
-    ...mapGetters(["shop", "existsShop"]),
+    ...mapGetters(["user"]),
+  },
+
+  created() {
+    this.getOwnerShop();
   },
 
   methods: {
+    showOwnerReservation() {
+      this.ownerReservation = true;
+      this.ownerShop = false;
+    },
+
+    showOwnerShop() {
+      this.ownerReservation = false;
+      this.ownerShop = true;
+    },
+
+    async getOwnerShop() {
+      const resData = await ownersRepository.getOwnerShop(this.user.id);
+      if (resData.status === 200) {
+        const shop = resData.data.data;
+        this.shop = shop;
+        this.shopArea = shop.area;
+        this.shopGenre = shop.genre;
+        this.existsShop = true;
+      }
+      if (resData.status === 204) {
+        this.existsShop = false;
+      }
+    },
+
     logout() {
       this.$store.dispatch("logout");
     },

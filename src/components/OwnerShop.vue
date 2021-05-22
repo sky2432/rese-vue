@@ -5,7 +5,7 @@
       <v-hover>
         <template v-slot:default="{ hover }">
           <v-card tile elevation="0">
-            <v-img :src="shop.image_url" height="400px"></v-img>
+            <v-img :src="shopImageUrl" height="400px"></v-img>
             <v-fade-transition>
               <v-overlay v-if="hover" absolute color="#036358">
                 <v-btn color="amber" dark @click="showImageDialog"
@@ -21,25 +21,25 @@
           <tbody>
             <tr>
               <th>店名</th>
-              <td class="table-data">{{ shop.name }}</td>
+              <td class="table-data">{{ shopName }}</td>
             </tr>
             <tr>
               <th>エリア</th>
-              <td class="table-data">{{ shop.area.name }}</td>
+              <td class="table-data">{{ areaName }}</td>
             </tr>
             <tr>
               <th>ジャンル</th>
-              <td class="table-data">{{ shop.genre.name }}</td>
+              <td class="table-data">{{ genreName }}</td>
             </tr>
           </tbody>
         </template>
       </v-simple-table>
       <v-subheader class="black--text">店舗概要</v-subheader>
       <v-card-text class="py-0">
-        {{ shop.overview }}
+        {{ shopOverview }}
       </v-card-text>
       <v-card-actions class="justify-center">
-        <v-btn color="amber" dark @click="dialog = true">編集</v-btn>
+        <v-btn color="amber" dark @click="insertShopData">編集</v-btn>
         <v-btn color="red" dark @click="warnDialog = true">削除</v-btn>
       </v-card-actions>
     </v-card>
@@ -90,12 +90,12 @@
       <template #message>店舗画像を変更しました</template>
     </MessageDialog>
 
-    <v-dialog v-model="dialog" max-width="700px">
+    <v-dialog v-model="editDialog" max-width="700px">
       <v-card :loading="updateLoading">
         <v-card-title class="amber">
           店舗情報の更新
           <v-spacer></v-spacer>
-          <v-btn icon @click="dialog = false"
+          <v-btn icon @click="editDialog = false"
             ><v-icon>mdi-window-close</v-icon></v-btn
           >
         </v-card-title>
@@ -339,19 +339,50 @@
 import { mapGetters } from "vuex";
 import config from "../config/const.js";
 import shopsRepository from "../repositories/shopsRepository.js";
-import ownersRepository from "../repositories/ownersRepository.js";
 import MessageDialog from "../components/MessageDialog";
 
 export default {
-  components: {
-    MessageDialog,
-  },
-
   props: {
     shopId: {
       type: Number,
       require: true,
     },
+    areaId: {
+      type: Number,
+      require: true,
+    },
+    genreId: {
+      type: Number,
+      require: true,
+    },
+    shopName: {
+      type: String,
+      require: true,
+    },
+    areaName: {
+      type: String,
+      require: true,
+    },
+    genreName: {
+      type: String,
+      require: true,
+    },
+    shopOverview: {
+      type: String,
+      require: true,
+    },
+    shopImageUrl: {
+      type: String,
+      require: true,
+    },
+    existsShop: {
+      type: Boolean,
+      require: true,
+    },
+  },
+
+  components: {
+    MessageDialog,
   },
 
   data() {
@@ -363,7 +394,7 @@ export default {
       image: null,
       imageUrl: "",
       formValid: false,
-      dialog: false,
+      editDialog: false,
       imageDialog: false,
       warnDialog: false,
       updateLoading: false,
@@ -376,91 +407,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["user", "shop", "existsShop"]),
-  },
-
-  created() {
-    this.getShopData();
+    ...mapGetters(["user"]),
   },
 
   methods: {
-    showImageDialog() {
-      this.imageDialog = true;
-      if (this.image) {
-        this.image = null;
-        this.imageUrl = "";
-        this.$refs.editImageObserver.reset();
-      }
-    },
-
-    async updateImage() {
-      this.imageLoading = true;
-      const formData = new FormData();
-      formData.append("image", this.image);
-      const resData = await shopsRepository.updateImage(this.shop.id, formData);
-      console.log(resData);
-      this.getOwnerShop();
-      this.imageDialog = false;
-      this.imageLoading = false;
-      this.$refs.imageMessageDialog.changeShowMessageDialog();
-    },
-
-    showImagePreview() {
-      this.imageUrl = URL.createObjectURL(this.image);
-    },
-
-    getShopData() {
-      this.name = this.shop.name;
-      this.area = this.shop.area_id;
-      this.genre = this.shop.genre_id;
-      this.overview = this.shop.overview;
-    },
-
-    async updateShop() {
-      this.updateLoading = true;
-      const sendData = {
-        name: this.name,
-        area_id: this.area,
-        genre_id: this.genre,
-        overview: this.overview,
-      };
-      await shopsRepository.updateShop(this.shop.id, sendData);
-      this.getOwnerShop();
-      this.dialog = false;
-      this.updateLoading = false;
-      this.$refs.updateMessageDialog.changeShowMessageDialog();
-    },
-
-    async getOwnerShop() {
-      const resData = await ownersRepository.getOwnerShop(this.user.id);
-      const shopData = resData.data.data;
-      this.$store.dispatch("shop", shopData);
-      if (resData.status === 200) {
-        this.$store.dispatch("shop", shopData);
-        this.$store.dispatch("existsShop", true);
-      }
-      if (resData.status === 204) {
-        this.$store.dispatch("existsShop", false);
-      }
-    },
-
-    async deleteShop() {
-      this.deleteLoading = true;
-      await shopsRepository.deleteShop(this.shop.id);
-      this.$store.dispatch("resetShop");
-      this.$store.dispatch("existsShop", false);
-      this.getShopData();
-      this.$refs.deleteMessageDialog.changeShowMessageDialog();
-      this.deleteLoading = false;
-      this.showDialogConfirmDeletionShop = false;
-      this.warnDialog = false;
-    },
-
-    closeDeleteDialog() {
-      this.warnDialog = false;
-      this.showDialogConfirmDeletionShop = false;
-    },
-
     async createShop() {
       const formData = new FormData();
       formData.append("image", this.image);
@@ -474,9 +424,9 @@ export default {
       const data = JSON.stringify(sendData);
       formData.append("sendData", data);
       await shopsRepository.createShop(formData);
+      this.$emit("reload");
       this.resetData();
       this.$refs.addObserver.reset();
-      this.getOwnerShop();
     },
 
     resetData() {
@@ -486,6 +436,69 @@ export default {
       this.overview = "";
       this.image = null;
       this.imageUrl = "";
+    },
+
+    showImagePreview() {
+      this.imageUrl = URL.createObjectURL(this.image);
+    },
+
+    showImageDialog() {
+      this.imageDialog = true;
+      if (this.image) {
+        this.image = null;
+        this.imageUrl = "";
+        this.$refs.editImageObserver.reset();
+      }
+    },
+
+    async updateImage() {
+      this.imageLoading = true;
+      const formData = new FormData();
+      formData.append("image", this.image);
+      await shopsRepository.updateImage(this.shopId, formData);
+      this.$emit("reload");
+      this.imageDialog = false;
+      this.imageLoading = false;
+      this.$refs.imageMessageDialog.changeShowMessageDialog();
+    },
+
+    insertShopData() {
+      this.editDialog = true;
+      this.name = this.shopName;
+      this.area = this.areaId;
+      this.genre = this.genreId;
+      this.overview = this.shopOverview;
+    },
+
+    async updateShop() {
+      this.updateLoading = true;
+      const sendData = {
+        name: this.name,
+        area_id: this.area,
+        genre_id: this.genre,
+        overview: this.overview,
+      };
+      await shopsRepository.updateShop(this.shopId, sendData);
+      this.$emit("reload");
+      this.editDialog = false;
+      this.updateLoading = false;
+      this.$refs.updateMessageDialog.changeShowMessageDialog();
+    },
+
+    async deleteShop() {
+      this.deleteLoading = true;
+      await shopsRepository.deleteShop(this.shopId);
+      this.resetData();
+      this.$emit("reload");
+      this.$refs.deleteMessageDialog.changeShowMessageDialog();
+      this.deleteLoading = false;
+      this.showDialogConfirmDeletionShop = false;
+      this.warnDialog = false;
+    },
+
+    closeDeleteDialog() {
+      this.warnDialog = false;
+      this.showDialogConfirmDeletionShop = false;
     },
   },
 };
