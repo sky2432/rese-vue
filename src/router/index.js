@@ -11,8 +11,19 @@ import Mypage from "../views/Mypage.vue";
 import Setting from "../views/Setting.vue";
 import Owner from "../views/Owner.vue";
 import store from "../store/index";
+import multiguard from "vue-router-multiguard";
 
 Vue.use(VueRouter);
+
+const loginedAccount = function(to, from, next) {
+  if (store.state.auth && store.state.role === "user") {
+    next("/home");
+  }
+  if (store.state.auth && store.state.role === "owner") {
+    next("/owner");
+  }
+  next();
+};
 
 const routes = [
   {
@@ -23,6 +34,7 @@ const routes = [
       title: "トップページ",
       desc: "トップページです。",
     },
+    beforeEnter: multiguard([loginedAccount]),
   },
   {
     path: "/register",
@@ -32,6 +44,7 @@ const routes = [
       title: "会員登録",
       desc: "会員登録ページです。",
     },
+    beforeEnter: multiguard([loginedAccount]),
   },
   {
     path: "/thanks",
@@ -41,6 +54,7 @@ const routes = [
       title: "会員登録完了",
       desc: "会員登録完了ページです。",
     },
+    beforeEnter: multiguard([loginedAccount]),
   },
   {
     path: "/login",
@@ -50,6 +64,7 @@ const routes = [
       title: "ログイン",
       desc: "ログインページです。",
     },
+    beforeEnter: multiguard([loginedAccount]),
   },
   {
     path: "/home",
