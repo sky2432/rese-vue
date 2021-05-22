@@ -119,7 +119,7 @@ export default {
     response(response) {
       this.$store.dispatch("updateUser", response.data.data);
       this.getUserData();
-      this.$refs.messageDialog.changeShowMessageDialog();
+      this.$refs.messageDialog.openMessageDialog();
     },
 
     error(e) {

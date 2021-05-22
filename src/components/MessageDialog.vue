@@ -18,13 +18,12 @@ export default {
   data() {
     return {
       showMessageDialog: false,
-    }
+    };
   },
   methods: {
-    changeShowMessageDialog() {
-      this.showMessageDialog = !this.showMessageDialog;
+    openMessageDialog() {
+      this.showMessageDialog = true;
     },
-  }
-
+  },
 };
 </script>

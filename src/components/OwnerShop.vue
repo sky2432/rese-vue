@@ -91,12 +91,12 @@
         <template #message>店舗画像を変更しました</template>
       </MessageDialog>
 
-      <v-dialog v-model="editDialog" max-width="700px">
+      <v-dialog v-model="updateDialog" max-width="700px">
         <v-card :loading="updateLoading">
           <v-card-title class="amber">
             店舗情報の更新
             <v-spacer></v-spacer>
-            <v-btn icon @click="editDialog = false"
+            <v-btn icon @click="updateDialog = false"
               ><v-icon>mdi-window-close</v-icon></v-btn
             >
           </v-card-title>
@@ -202,7 +202,7 @@
               <v-btn
                 color="red lighten-1"
                 class="mt-2"
-                @click="showDialogConfirmDeletionShop = true"
+                @click="dialogConfirmDeletionShop = true"
                 >店舗を削除</v-btn
               >
             </v-alert>
@@ -210,7 +210,7 @@
         </v-card>
       </v-dialog>
 
-      <v-dialog v-model="showDialogConfirmDeletionShop" max-width="500px">
+      <v-dialog v-model="dialogConfirmDeletionShop" max-width="500px">
         <v-card :loading="deleteLoading">
           <v-card-title class="justify-center">
             本当に店舗を削除しますか？
@@ -396,13 +396,13 @@ export default {
       image: null,
       imageUrl: "",
       formValid: false,
-      editDialog: false,
+      updateDialog: false,
       imageDialog: false,
       warnDialog: false,
       updateLoading: false,
       deleteLoading: false,
       imageLoading: false,
-      showDialogConfirmDeletionShop: false,
+      dialogConfirmDeletionShop: false,
       areaOptions: config.areaOptions,
       genreOptions: config.genreOptions,
     };
@@ -427,11 +427,11 @@ export default {
       formData.append("sendData", data);
       await shopsRepository.createShop(formData);
       this.$emit("reload");
-      this.resetData();
+      this.resetShopData();
       this.$refs.addObserver.reset();
     },
 
-    resetData() {
+    resetShopData() {
       this.name = "";
       this.area = "";
       this.genre = "";
@@ -461,11 +461,11 @@ export default {
       this.$emit("reload");
       this.imageDialog = false;
       this.imageLoading = false;
-      this.$refs.imageMessageDialog.changeShowMessageDialog();
+      this.$refs.imageMessageDialog.openMessageDialog();
     },
 
     insertShopData() {
-      this.editDialog = true;
+      this.updateDialog = true;
       this.name = this.shopName;
       this.area = this.areaId;
       this.genre = this.genreId;
@@ -482,25 +482,25 @@ export default {
       };
       await shopsRepository.updateShop(this.shopId, sendData);
       this.$emit("reload");
-      this.editDialog = false;
+      this.updateDialog = false;
       this.updateLoading = false;
-      this.$refs.updateMessageDialog.changeShowMessageDialog();
+      this.$refs.updateMessageDialog.openMessageDialog();
     },
 
     async deleteShop() {
       this.deleteLoading = true;
       await shopsRepository.deleteShop(this.shopId);
-      this.resetData();
+      this.resetShopData();
       this.$emit("reload");
-      this.$refs.deleteMessageDialog.changeShowMessageDialog();
+      this.$refs.deleteMessageDialog.openMessageDialog();
       this.deleteLoading = false;
-      this.showDialogConfirmDeletionShop = false;
+      this.dialogConfirmDeletionShop = false;
       this.warnDialog = false;
     },
 
     closeDeleteDialog() {
       this.warnDialog = false;
-      this.showDialogConfirmDeletionShop = false;
+      this.dialogConfirmDeletionShop = false;
     },
   },
 };

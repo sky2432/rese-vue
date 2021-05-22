@@ -584,7 +584,7 @@ export default {
     },
 
     changeDialog() {
-      this.$refs.updateMessageDialog.changeShowMessageDialog();
+      this.$refs.updateMessageDialog.openMessageDialog();
       this.showDialogUpdateReservation = false;
       this.showDialogConfirmReservation = false;
     },
@@ -618,7 +618,7 @@ export default {
         this.slectedReservation.id
       );
       this.cancelLoading = false;
-      this.$refs.cancelMessageDialog.changeShowMessageDialog();
+      this.$refs.cancelMessageDialog.openMessageDialog();
       this.showDialogConfirmCancelReservation = false;
       this.getUserReservations();
     },
@@ -630,7 +630,6 @@ export default {
       this.shops = resData.data.data;
       this.loading = false;
       this.loaded = true;
-      // console.log(resData);
     },
 
     moveShopDeatail(shopId) {
