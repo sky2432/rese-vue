@@ -16,7 +16,7 @@
 
       <v-list>
         <v-list-item-group color="amber" v-model="selectedItem">
-          <v-list-item @click="showOwnerReservation">
+          <v-list-item @click="currentComponent = 'OwnerReservation'">
             <v-list-item-icon>
               <v-icon>mdi-inbox-arrow-down</v-icon>
             </v-list-item-icon>
@@ -26,7 +26,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item @click="showOwnerShop">
+          <v-list-item @click="currentComponent = 'OwnerShop'">
             <v-list-item-icon>
               <v-icon>mdi-inbox-arrow-down</v-icon>
             </v-list-item-icon>
@@ -35,7 +35,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item @click="showOwnerAccount">
+          <v-list-item @click="currentComponent = 'OwnerAccount'">
             <v-list-item-icon>
               <v-icon>mdi-account</v-icon>
             </v-list-item-icon>
@@ -58,17 +58,12 @@
       </v-list>
     </v-navigation-drawer>
 
-    <OwnerReservation
-      v-if="ownerReservation"
-      v-bind="{ shopId: shop.id, existsShop: existsShop }"
-    ></OwnerReservation>
-    <OwnerShop
-      v-if="ownerShop"
+    <component
       v-bind="childComponentProps"
       :existsShop="existsShop"
+      :is="currentComponent"
       @reload="getOwnerShop"
-    ></OwnerShop>
-    <OwnerAccount v-if="ownerAccount"></OwnerAccount>
+    ></component>
   </v-app>
 </template>
 
@@ -92,11 +87,9 @@ export default {
       shopArea: "",
       shopGenre: "",
       existsShop: true,
-      ownerReservation: false,
-      ownerShop: false,
-      ownerAccount: true,
       drawer: null,
       selectedItem: 0,
+      currentComponent: OwnerReservation,
     };
   },
 
@@ -132,24 +125,6 @@ export default {
   },
 
   methods: {
-    showOwnerReservation() {
-      this.ownerReservation = true;
-      this.ownerShop = false;
-      this.ownerAccount = false;
-    },
-
-    showOwnerShop() {
-      this.ownerReservation = false;
-      this.ownerShop = true;
-      this.ownerAccount = false;
-    },
-
-    showOwnerAccount() {
-      this.ownerReservation = false;
-      this.ownerShop = false;
-      this.ownerAccount = true;
-    },
-
     async getOwnerShop() {
       const resData = await ownersRepository.getOwnerShop(this.user.id);
       if (resData.status === 200) {

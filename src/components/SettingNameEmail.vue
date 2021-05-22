@@ -55,9 +55,9 @@
 </template>
 
 <script>
-import MessageDialog from "../components/MessageDialog";
-import { mapGetters } from "vuex";
 import "../plugins/veeValidate.js";
+import { mapGetters } from "vuex";
+import MessageDialog from "../components/MessageDialog";
 import usersRepository from "../repositories/usersRepository";
 import ownersRepository from "../repositories/ownersRepository";
 

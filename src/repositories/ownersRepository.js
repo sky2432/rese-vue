@@ -9,6 +9,7 @@ export default {
   updateOwner(owner_id, payload) {
     return Repository.put(`${resource}/${owner_id}`, payload);
   },
+  
 
   updatePassword(owner_id, payload) {
     return Repository.put(`${resource}/${owner_id}/password`, payload);
