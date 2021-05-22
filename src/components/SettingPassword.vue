@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <v-card tile class="setting-card">
@@ -66,6 +65,7 @@ import MessageDialog from "../components/MessageDialog";
 import { mapGetters } from "vuex";
 import "../plugins/veeValidate.js";
 import usersRepository from "../repositories/usersRepository";
+import ownersRepository from "../repositories/ownersRepository";
 
 export default {
   components: {
@@ -83,7 +83,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["user"]),
+    ...mapGetters(["user", "role"]),
   },
 
   methods: {
@@ -92,16 +92,36 @@ export default {
         password: this.password,
         new_password: this.newPassword,
       };
-      usersRepository
-        .updatePassword(this.user.id, sendData)
-        .then(() => {
-          this.resetPasswordForm();
-          this.$refs.observer.reset();
-          this.$refs.messageDialog.changeShowMessageDialog();
-        })
-        .catch((e) => {
-          this.$refs.observer.setErrors(e.response.data.errors);
-        });
+      if (this.role === "user") {
+        usersRepository
+          .updatePassword(this.user.id, sendData)
+          .then(() => {
+            this.response();
+          })
+          .catch((e) => {
+            this.error(e);
+          });
+      }
+      if (this.role === "owner") {
+        ownersRepository
+          .updatePassword(this.user.id, sendData)
+          .then(() => {
+            this.response();
+          })
+          .catch((e) => {
+            this.error(e);
+          });
+      }
+    },
+
+    response() {
+      this.resetPasswordForm();
+      this.$refs.observer.reset();
+      this.$refs.messageDialog.changeShowMessageDialog();
+    },
+
+    error(e) {
+      this.$refs.observer.setErrors(e.response.data.errors);
     },
 
     resetPasswordForm() {

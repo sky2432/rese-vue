@@ -1,45 +1,49 @@
 <template>
-  <v-card>
-    <v-card-title class="amber">
-      予約一覧
-      <v-spacer></v-spacer>
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="検索"
-        single-line
-        hide-details
-      ></v-text-field>
-    </v-card-title>
-    <v-data-table
-      :headers="headers"
-      :items="showReservations"
-      item-key="reservaiton.id"
-      :search="search"
-      :loading="loading"
-      loading-text="予約を取得中です"
-    >
-      <template v-slot:top>
-        <v-switch
-          v-model="showTodayReservations"
-          label="本日の予約"
-          class="pa-3"
-        ></v-switch>
-      </template>
-      <template v-slot:[`item.reservation.status`]="{ item }">
-        <v-chip :color="getStatusColor(item.reservation.status)" dark>
-          {{ item.reservation.status }}
-        </v-chip>
-      </template>
-      <template v-slot:no-data>
-        予約がありません
-      </template>
+  <v-main>
+    <v-container class="py-4 px-6" fluid>
+      <v-card>
+        <v-card-title class="amber">
+          予約一覧
+          <v-spacer></v-spacer>
+          <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="検索"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-card-title>
+        <v-data-table
+          :headers="headers"
+          :items="showReservations"
+          item-key="reservaiton.id"
+          :search="search"
+          :loading="loading"
+          loading-text="予約を取得中です"
+        >
+          <template v-slot:top>
+            <v-switch
+              v-model="showTodayReservations"
+              label="本日の予約"
+              class="pa-3"
+            ></v-switch>
+          </template>
+          <template v-slot:[`item.reservation.status`]="{ item }">
+            <v-chip :color="getStatusColor(item.reservation.status)" dark>
+              {{ item.reservation.status }}
+            </v-chip>
+          </template>
+          <template v-slot:no-data>
+            予約がありません
+          </template>
 
-      <template v-slot:no-results>
-        検索条件に当てはまる予約はありません
-      </template>
-    </v-data-table>
-  </v-card>
+          <template v-slot:no-results>
+            検索条件に当てはまる予約はありません
+          </template>
+        </v-data-table>
+      </v-card>
+    </v-container>
+  </v-main>
 </template>
 
 <script>
@@ -181,5 +185,3 @@ export default {
   },
 };
 </script>
-
-

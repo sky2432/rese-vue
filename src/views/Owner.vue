@@ -35,7 +35,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item>
+          <v-list-item @click="showOwnerAccount">
             <v-list-item-icon>
               <v-icon>mdi-account</v-icon>
             </v-list-item-icon>
@@ -58,20 +58,17 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-main>
-      <v-container class="py-4 px-6" fluid>
-        <OwnerReservation
-          v-if="ownerReservation"
-          v-bind="{ shopId: shop.id, existsShop: existsShop }"
-        ></OwnerReservation>
-        <OwnerShop
-          v-if="ownerShop"
-          v-bind="childComponentProps"
-          :existsShop="existsShop"
-          @reload="getOwnerShop"
-        ></OwnerShop>
-      </v-container>
-    </v-main>
+    <OwnerReservation
+      v-if="ownerReservation"
+      v-bind="{ shopId: shop.id, existsShop: existsShop }"
+    ></OwnerReservation>
+    <OwnerShop
+      v-if="ownerShop"
+      v-bind="childComponentProps"
+      :existsShop="existsShop"
+      @reload="getOwnerShop"
+    ></OwnerShop>
+    <OwnerAccount v-if="ownerAccount"></OwnerAccount>
   </v-app>
 </template>
 
@@ -79,12 +76,14 @@
 import { mapGetters } from "vuex";
 import OwnerReservation from "../components/OwnerReservation";
 import OwnerShop from "../components/OwnerShop";
+import OwnerAccount from "../components/OwnerAccount";
 import ownersRepository from "../repositories/ownersRepository.js";
 
 export default {
   components: {
     OwnerReservation,
     OwnerShop,
+    OwnerAccount,
   },
 
   data() {
@@ -93,8 +92,9 @@ export default {
       shopArea: "",
       shopGenre: "",
       existsShop: true,
-      ownerReservation: true,
+      ownerReservation: false,
       ownerShop: false,
+      ownerAccount: true,
       drawer: null,
       selectedItem: 0,
     };
@@ -135,11 +135,19 @@ export default {
     showOwnerReservation() {
       this.ownerReservation = true;
       this.ownerShop = false;
+      this.ownerAccount = false;
     },
 
     showOwnerShop() {
       this.ownerReservation = false;
       this.ownerShop = true;
+      this.ownerAccount = false;
+    },
+
+    showOwnerAccount() {
+      this.ownerReservation = false;
+      this.ownerShop = false;
+      this.ownerAccount = true;
     },
 
     async getOwnerShop() {

@@ -59,6 +59,7 @@ import MessageDialog from "../components/MessageDialog";
 import { mapGetters } from "vuex";
 import "../plugins/veeValidate.js";
 import usersRepository from "../repositories/usersRepository";
+import ownersRepository from "../repositories/ownersRepository";
 
 export default {
   components: {
@@ -75,7 +76,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["user"]),
+    ...mapGetters(["user", "role"]),
   },
 
   created() {
@@ -93,16 +94,36 @@ export default {
         name: this.name,
         email: this.email,
       };
-      usersRepository
-        .updateUser(this.user.id, sendData)
-        .then((response) => {
-          this.$store.dispatch("updateUser", response.data.data);
-          this.getUserData();
-          this.$refs.messageDialog.changeShowMessageDialog();
-        })
-        .catch((e) => {
-          this.$refs.observer.setErrors(e.response.data.errors);
-        });
+      if (this.role === "user") {
+        usersRepository
+          .updateUser(this.user.id, sendData)
+          .then((response) => {
+            this.response(response);
+          })
+          .catch((e) => {
+            this.error(e);
+          });
+      }
+      if (this.role === "owner") {
+        ownersRepository
+          .updateOwner(this.user.id, sendData)
+          .then((response) => {
+            this.response(response);
+          })
+          .catch((e) => {
+            this.error(e);
+          });
+      }
+    },
+
+    response(response) {
+      this.$store.dispatch("updateUser", response.data.data);
+      this.getUserData();
+      this.$refs.messageDialog.changeShowMessageDialog();
+    },
+
+    error(e) {
+      this.$refs.observer.setErrors(e.response.data.errors);
     },
   },
 };
