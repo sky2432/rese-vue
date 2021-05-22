@@ -114,9 +114,9 @@ export default {
     },
   },
 
+  //タブ切り替えした際に発火
   created() {
     if (this.shopId && this.existsShop) {
-      console.log("create");
       this.getShopReservations();
     }
     if (!this.existsShop) {
@@ -124,10 +124,11 @@ export default {
     }
   },
 
+  //最初の読み込みで発火
+  //createdの段階だとまだ親のデータが送られてきていないのでwatchで親のデータが来るタイミングを監視している
   watch: {
     shopId() {
       if (this.existsShop) {
-        console.log("wathc");
         this.getShopReservations();
       }
     },
@@ -180,3 +181,5 @@ export default {
   },
 };
 </script>
+
+

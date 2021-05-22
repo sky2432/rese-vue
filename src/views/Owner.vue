@@ -66,17 +66,8 @@
         ></OwnerReservation>
         <OwnerShop
           v-if="ownerShop"
-          v-bind="{
-            shopName: shop.name,
-            shopId: shop.id,
-            areaId: shop.area_id,
-            genreId: shop.genre_id,
-            shopOverview: shop.overview,
-            shopImageUrl: shop.image_url,
-            areaName: shopArea.name,
-            genreName: shopGenre.name,
-            existsShop: existsShop,
-          }"
+          v-bind="childComponentProps"
+          :existsShop="existsShop"
           @reload="getOwnerShop"
         ></OwnerShop>
       </v-container>
@@ -111,6 +102,29 @@ export default {
 
   computed: {
     ...mapGetters(["user"]),
+
+    childComponentProps() {
+      const {
+        id: shopId,
+        name: shopName,
+        area_id: areaId,
+        genre_id: genreId,
+        overview: shopOverview,
+        image_url: shopImageUrl,
+      } = this.shop;
+      const { name: areaName } = this.shopArea;
+      const { name: genreName } = this.shopGenre;
+      return {
+        shopId,
+        shopName,
+        areaId,
+        genreId,
+        shopOverview,
+        shopImageUrl,
+        areaName,
+        genreName,
+      };
+    },
   },
 
   created() {

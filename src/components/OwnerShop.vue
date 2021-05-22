@@ -105,7 +105,7 @@
               <validation-provider
                 v-slot="{ errors }"
                 name="店名"
-                rules="required|min:2|max:10"
+                rules="required|max:10"
               >
                 <v-text-field
                   v-model="name"
