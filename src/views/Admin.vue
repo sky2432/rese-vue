@@ -24,7 +24,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item>
+          <v-list-item @click="currentComponent = 'AdminOwnerList'">
             <v-list-item-icon>
               <v-icon>mdi-account</v-icon>
             </v-list-item-icon>
@@ -71,15 +71,18 @@
 
 <script>
 import { mapGetters } from "vuex";
+import AdminOwnerList from "../components/AdminOwnerList";
 
 export default {
-  components: {},
+  components: {
+    AdminOwnerList,
+  },
 
   data() {
     return {
       drawer: null,
-      selectedItem: 0,
-      currentComponent: "",
+      selectedItem: 1,
+      currentComponent: AdminOwnerList,
     };
   },
 

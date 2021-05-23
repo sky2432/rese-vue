@@ -69,10 +69,10 @@
 
 <script>
 import { mapGetters } from "vuex";
+import ownersRepository from "../repositories/ownersRepository.js";
 import OwnerReservation from "../components/OwnerReservation";
 import OwnerShop from "../components/OwnerShop";
 import OwnerAccount from "../components/OwnerAccount";
-import ownersRepository from "../repositories/ownersRepository.js";
 
 export default {
   components: {
