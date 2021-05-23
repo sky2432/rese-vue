@@ -10,6 +10,7 @@ import TopPage from "../views/TopPage.vue";
 import Mypage from "../views/Mypage.vue";
 import Setting from "../views/Setting.vue";
 import Owner from "../views/Owner.vue";
+import Admin from "../views/Admin.vue";
 import store from "../store/index";
 import multiguard from "vue-router-multiguard";
 
@@ -21,6 +22,9 @@ const loginedAccount = function(to, from, next) {
   }
   if (store.state.auth && store.state.role === "owner") {
     next("/owner");
+  }
+  if (store.state.auth && store.state.role === "admin") {
+    next("/admin");
   }
   next();
 };
@@ -129,6 +133,16 @@ const routes = [
     },
   },
   {
+    path: "/admin",
+    name: "Admin",
+    component: Admin,
+    meta: {
+      requiresAuth: true,
+      title: "管理者ページ",
+      desc: "管理者ページです。",
+    },
+  },
+  {
     path: "*",
     redirect: "/",
   },
@@ -153,11 +167,21 @@ router.beforeEach((to, from, next) => {
     });
   }
   if (store.state.role === "user") {
-    if (to.name === "Owner") {
+    if (to.name === "Owner" || to.name === "Admin") {
       next("/home");
     }
   }
   if (store.state.role === "owner") {
+    if (to.name === "Admin") {
+      next("/owner");
+    }
+  }
+  if (store.state.role === "admin") {
+    if (to.name === "Owner") {
+      next("/admin");
+    }
+  }
+  if (store.state.role === "owner" || store.state.role === "admin") {
     if (
       to.name === "Home" ||
       to.name === "Detail" ||
@@ -165,7 +189,8 @@ router.beforeEach((to, from, next) => {
       to.name === "Mypage" ||
       to.name === "Setting"
     ) {
-      next("/owner");
+      if (store.state.role === "owner") next("/owner");
+      if (store.state.role === "admin") next("/admin");
     }
   }
   next();

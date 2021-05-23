@@ -8,7 +8,8 @@
             <v-card tile elevation="0">
               <v-img :src="shopImageUrl" height="400px"></v-img>
               <v-fade-transition>
-                <v-overlay v-if="hover" absolute color="#036358">
+                <v-overlay v-if="hover" absol
+                ute color="#036358">
                   <v-btn color="amber" dark @click="showImageDialog"
                     >店舗画像の更新</v-btn
                   >
