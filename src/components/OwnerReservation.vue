@@ -33,10 +33,12 @@
               {{ item.reservation.status }}
             </v-chip>
           </template>
+          <template v-slot:[`item.reservation.number_of_visiters`]="{ item }">
+            {{ item.reservation.number_of_visiters }}名
+          </template>
           <template v-slot:no-data>
             予約がありません
           </template>
-
           <template v-slot:no-results>
             検索条件に当てはまる予約はありません
           </template>

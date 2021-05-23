@@ -632,8 +632,7 @@ export default {
       this.loaded = true;
     },
 
-    //予約中が最初でその後に残りの来店済みとキャンセルの順で並び替え。
-    //予約中は予約時刻の昇順で、来店済みとキャンセルは予約時刻の降順で並び替え。
+    //予約中の昇順、その後に来店済みとキャンセルの降順で配列を並び替え
     sortReservations(reservations) {
       let reserving = [];
       for (let i in reservations) {
