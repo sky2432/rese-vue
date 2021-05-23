@@ -89,10 +89,10 @@ export default {
       //本日の予約のみを表示
       if (this.showTodayReservations === true) {
         let todayReservations = [];
-        const today = this.createToday();
+        const today = this.$helpers.$_createToday();
         for (let i in this.reservations) {
           const reservations = this.reservations[i];
-          const reserveDate = this.createSpecificDate(
+          const reserveDate = this.$helpers.$_createSpecificDate(
             reservations.reservation.visited_on
           );
           if (today.getTime() === reserveDate.getTime()) {
@@ -129,7 +129,7 @@ export default {
   },
 
   //最初の読み込みで発火
-  //createdの段階だとまだ親のデータが送られてきていないのでwatchで親のデータが来るタイミングを監視している
+  //createdの段階だとまだ親のデータが送られてきていないのでwatchで親のデータが来るタイミングを監視して処理を実行している
   watch: {
     shopId() {
       if (this.existsShop) {
@@ -144,22 +144,6 @@ export default {
   },
 
   methods: {
-    createToday() {
-      const now = new Date();
-      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      return today;
-    },
-
-    createSpecificDate(value) {
-      const date = new Date(value);
-      const specificDate = new Date(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate()
-      );
-      return specificDate;
-    },
-
     async getShopReservations() {
       const resData = await reservationsRepository.getShopReservations(
         this.shopId

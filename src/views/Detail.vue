@@ -48,8 +48,8 @@
                     <v-menu
                       ref="datePickerMenu"
                       v-model="showdatePickerMenu"
-                      :close-on-content-click="false"
                       :return-value.sync="visitsDate"
+                      :close-on-content-click="false"
                       transition="scale-transition"
                       offset-y
                       min-width="auto"
@@ -59,6 +59,7 @@
                           v-slot="{ errors }"
                           name="日付"
                           rules="selectRequired"
+                          vid="date"
                         >
                           <v-text-field
                             v-model="visitsDate"
@@ -98,10 +99,11 @@
                       v-slot="{ errors }"
                       name="時刻"
                       rules="selectRequired"
+                      vid="time"
                     >
                       <v-select
-                        :items="timeOptions"
                         v-model="visitsTime"
+                        :items="timeOptions"
                         label="時刻を選択"
                         prepend-icon="mdi-clock-time-eight-outline"
                         :error-messages="errors"
@@ -112,6 +114,7 @@
                       v-slot="{ errors }"
                       name="人数"
                       rules="selectRequired"
+                      vid="number"
                     >
                       <v-select
                         :items="numberOptions"
@@ -126,11 +129,7 @@
                   </v-card-text>
 
                   <v-card-actions class="justify-center pb-5">
-                    <v-btn
-                      @click="showReservationDialog = true"
-                      :disabled="invalid"
-                      >予約</v-btn
-                    >
+                    <v-btn @click="checkTime" :disabled="invalid">予約</v-btn>
                   </v-card-actions>
                 </v-form>
               </validation-observer>
@@ -204,11 +203,11 @@
 </template>
 
 <script>
+import "../plugins/veeValidate.js";
+import config from "../config/const.js";
 import { mapGetters } from "vuex";
 import shopsRepository from "../repositories/shopsRepository.js";
 import reservationsRepository from "../repositories/reservationsRepository";
-import "../plugins/veeValidate.js";
-import config from "../config/const.js";
 
 export default {
   props: {
@@ -245,6 +244,22 @@ export default {
   },
 
   methods: {
+    checkTime() {
+      if (this.visitsDate && this.visitsTime) {
+        const now = new Date();
+        const dayTime = `${this.visitsDate} ${this.visitsTime}`;
+        const selected = new Date(dayTime);
+        if (now > selected) {
+          this.$refs.observer.setErrors({
+            time: ["現在時刻よりも後の時刻を選択してください"],
+          });
+        }
+        if (now <= selected) {
+          this.showReservationDialog = true;
+        }
+      }
+    },
+
     async getShop() {
       const resData = await shopsRepository.getShop(this.shopId);
       this.shop = resData.data.data;
