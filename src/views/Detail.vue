@@ -245,18 +245,16 @@ export default {
 
   methods: {
     checkTime() {
-      if (this.visitsDate && this.visitsTime) {
-        const now = new Date();
-        const dayTime = `${this.visitsDate} ${this.visitsTime}`;
-        const selected = new Date(dayTime);
-        if (now > selected) {
-          this.$refs.observer.setErrors({
-            time: ["現在時刻よりも後の時刻を選択してください"],
-          });
-        }
-        if (now <= selected) {
-          this.showReservationDialog = true;
-        }
+      const now = new Date();
+      const dayTime = `${this.visitsDate} ${this.visitsTime}`;
+      const selected = new Date(dayTime);
+      if (now > selected) {
+        this.$refs.observer.setErrors({
+          time: ["現在時刻よりも後の時刻を選択してください"],
+        });
+      }
+      if (now <= selected) {
+        this.showReservationDialog = true;
       }
     },
 

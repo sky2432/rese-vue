@@ -627,9 +627,40 @@ export default {
       const resData = await reservationsRepository.getUserReservations(
         this.user.id
       );
-      this.shops = resData.data.data;
+      this.shops = this.sortReservations(resData.data.data);
       this.loading = false;
       this.loaded = true;
+    },
+
+    //予約中が最初でその後に残りの来店済みとキャンセルの順で並び替え。
+    //予約中は予約時刻の昇順で、来店済みとキャンセルは予約時刻の降順で並び替え。
+    sortReservations(reservations) {
+      let reserving = [];
+      for (let i in reservations) {
+        if (reservations[i].reservation.status === "reserving") {
+          reserving.push(reservations[i]);
+        }
+      }
+      let visitedAndCancelled = [];
+      for (let i in reservations) {
+        if (
+          reservations[i].reservation.status === "visited" ||
+          reservations[i].reservation.status === "cancelled"
+        ) {
+          visitedAndCancelled.push(reservations[i]);
+        }
+      }
+      visitedAndCancelled.sort(function(a, b) {
+        if (a.reservation.visited_on > b.reservation.visited_on) {
+          return -1;
+        } else {
+          return 1;
+        }
+      });
+      for (let i in visitedAndCancelled) {
+        reserving.push(visitedAndCancelled[i]);
+      }
+      return reserving;
     },
 
     moveShopDeatail(shopId) {
