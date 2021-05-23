@@ -3,7 +3,7 @@
     <v-container class="py-4 px-6" fluid>
       <v-card>
         <v-card-title class="amber">
-          店舗代表者一覧
+          ユーザー一覧
           <v-spacer></v-spacer>
           <v-text-field
             v-model="search"
@@ -15,17 +15,17 @@
         </v-card-title>
         <v-data-table
           :headers="headers"
-          :items="owners"
+          :items="users"
           :search="search"
           :loading="loading"
           item-key="id"
           loading-text="ロード中です"
         >
           <template v-slot:no-data>
-            店舗代表者はいません
+            ユーザーはいません
           </template>
           <template v-slot:no-results>
-            検索条件に当てはまる店舗代表者はいません
+            検索条件に当てはまるユーザーはいません
           </template>
         </v-data-table>
       </v-card>
@@ -34,19 +34,18 @@
 </template>
 
 <script>
-import ownersRepository from "../repositories/ownersRepository.js";
+import usersRepository from "../repositories/usersRepository";
 
 export default {
   data() {
     return {
-      owners: [],
+      users: [],
       search: "",
       loading: true,
       headers: [
         { text: "ID", value: "id" },
         { text: "名前", value: "name" },
         { text: "メールアドレス", value: "email" },
-        { text: "店舗名", value: "shop.name" },
       ],
     };
   },
@@ -54,13 +53,13 @@ export default {
   computed: {},
 
   created() {
-    this.getOwners();
+    this.getUsers();
   },
 
   methods: {
-    async getOwners() {
-      const resData = await ownersRepository.getOwners();
-      this.owners = resData.data.data;
+    async getUsers() {
+      const resData = await usersRepository.getUsers();
+      this.users = resData.data.data;
       this.loading = false;
     },
   },

@@ -2,6 +2,10 @@ import Repository from "./Repository";
 
 const resource = "/users";
 export default {
+  getUsers() {
+    return Repository.get(`${resource}`);
+  },
+
   // showUser(user_id) {
   //   return Repository.get(`${resource}/${user_id}`);
   // },

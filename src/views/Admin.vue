@@ -33,7 +33,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item>
+          <v-list-item @click="currentComponent = 'AdminUserList'">
             <v-list-item-icon>
               <v-icon>mdi-account</v-icon>
             </v-list-item-icon>
@@ -72,10 +72,12 @@
 <script>
 import { mapGetters } from "vuex";
 import AdminOwnerList from "../components/AdminOwnerList";
+import AdminUserList from "../components/AdminUserList";
 
 export default {
   components: {
     AdminOwnerList,
+    AdminUserList,
   },
 
   data() {
