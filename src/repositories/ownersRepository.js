@@ -6,6 +6,14 @@ export default {
     return Repository.get(`${resource}`);
   },
 
+  confirmOwner(payload) {
+    return Repository.post(`${resource}/confirm`, payload);
+  },
+
+  createOwner(payload) {
+    return Repository.post(`${resource}`, payload);
+  },
+
   updateOwner(owner_id, payload) {
     return Repository.put(`${resource}/${owner_id}`, payload);
   },

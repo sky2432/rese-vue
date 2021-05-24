@@ -77,16 +77,16 @@ import AdminShopList from "../components/AdminShopList";
 
 export default {
   components: {
+    AdminShopList,
     AdminOwnerList,
     AdminUserList,
-    AdminShopList,
   },
 
   data() {
     return {
       drawer: null,
       selectedItem: 0,
-      currentComponent: AdminShopList,
+      currentComponent: AdminOwnerList,
     };
   },
 

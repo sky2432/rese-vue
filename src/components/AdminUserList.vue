@@ -104,9 +104,9 @@ export default {
       this.deleteLoading = true;
       await usersRepository.deleteUser(this.deleteId);
       this.$refs.messageDialog.openMessageDialog();
+      this.getUsers();
       this.deleteDialog = false;
       this.deleteLoading = false;
-      this.getUsers();
     },
   },
 };

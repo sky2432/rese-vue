@@ -21,6 +21,7 @@
                   v-slot="{ errors }"
                   name="名前"
                   rules="required|max:10"
+                  vid="name"
                 >
                   <v-text-field
                     v-model="name"
@@ -51,6 +52,7 @@
                   v-slot="{ errors }"
                   name="パスワード"
                   rules="required|min:4"
+                  vid="password"
                 >
                   <v-text-field
                     v-model="password"
@@ -174,7 +176,6 @@ export default {
         name: this.name,
         email: this.email,
         password: this.password,
-        role: "user",
       };
       await usersRepository.createUser(sendData);
       this.$router.replace("/thanks");
