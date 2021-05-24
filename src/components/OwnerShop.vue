@@ -8,8 +8,7 @@
             <v-card tile elevation="0">
               <v-img :src="shopImageUrl" height="400px"></v-img>
               <v-fade-transition>
-                <v-overlay v-if="hover" absol
-                ute color="#036358">
+                <v-overlay v-if="hover" absol ute color="#036358">
                   <v-btn color="amber" dark @click="showImageDialog"
                     >店舗画像の更新</v-btn
                   >
@@ -42,7 +41,6 @@
         </v-card-text>
         <v-card-actions class="justify-center">
           <v-btn color="amber" dark @click="insertShopData">編集</v-btn>
-          <v-btn color="red" dark @click="warnDialog = true">削除</v-btn>
         </v-card-actions>
       </v-card>
 
@@ -183,52 +181,6 @@
 
       <MessageDialog ref="updateMessageDialog">
         <template #message>店舗情報を変更しました</template>
-      </MessageDialog>
-
-      <v-dialog v-model="warnDialog" width="500px">
-        <v-card>
-          <v-card-title class="amber"
-            >※注意事項
-            <v-spacer></v-spacer>
-            <v-btn icon @click="warnDialog = false"
-              ><v-icon>mdi-window-close</v-icon></v-btn
-            >
-          </v-card-title>
-          <v-card-text class="mt-4">
-            <v-alert prominent type="error" text class="text-center mb-0">
-              <h3>必ずご確認ください</h3>
-              <p>
-                店舗を削除すると、これまでのデータはすべて削除されます。
-              </p>
-              <v-btn
-                color="red lighten-1"
-                class="mt-2"
-                @click="dialogConfirmDeletionShop = true"
-                >店舗を削除</v-btn
-              >
-            </v-alert>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
-
-      <v-dialog v-model="dialogConfirmDeletionShop" max-width="500px">
-        <v-card :loading="deleteLoading">
-          <v-card-title class="justify-center">
-            本当に店舗を削除しますか？
-          </v-card-title>
-          <v-card-actions class="justify-center">
-            <v-btn color="red lighten-1" dark @click="deleteShop">
-              削除
-            </v-btn>
-            <v-btn color="amber" dark @click="closeDeleteDialog">
-              キャンセル
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
-      <MessageDialog ref="deleteMessageDialog">
-        <template #message>店舗を削除しました</template>
       </MessageDialog>
 
       <v-card v-if="!existsShop">
@@ -399,11 +351,8 @@ export default {
       formValid: false,
       updateDialog: false,
       imageDialog: false,
-      warnDialog: false,
       updateLoading: false,
-      deleteLoading: false,
       imageLoading: false,
-      dialogConfirmDeletionShop: false,
       areaOptions: config.areaOptions,
       genreOptions: config.genreOptions,
     };
@@ -488,21 +437,7 @@ export default {
       this.$refs.updateMessageDialog.openMessageDialog();
     },
 
-    async deleteShop() {
-      this.deleteLoading = true;
-      await shopsRepository.deleteShop(this.shopId);
-      this.resetShopData();
-      this.$emit("reload");
-      this.$refs.deleteMessageDialog.openMessageDialog();
-      this.deleteLoading = false;
-      this.dialogConfirmDeletionShop = false;
-      this.warnDialog = false;
-    },
 
-    closeDeleteDialog() {
-      this.warnDialog = false;
-      this.dialogConfirmDeletionShop = false;
-    },
   },
 };
 </script>

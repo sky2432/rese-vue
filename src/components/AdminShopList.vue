@@ -28,9 +28,9 @@
             {{ item.name }}
           </template>
           <template v-slot:[`item.detail`]="{ item }">
-            <v-icon small @click="editItem(item)">
-              mdi-pencil
-            </v-icon>
+            <v-btn color="amber" dark outlined @click="moveShopDetail(item.id)"
+              >詳細</v-btn
+            >
           </template>
           <template v-slot:no-data>
             店舗はありません
@@ -74,7 +74,10 @@ export default {
       const resData = await shopsRepository.getShops();
       this.shops = resData.data.data;
       this.loading = false;
-      console.log(this.shops);
+    },
+
+    moveShopDetail(shopId) {
+      this.$helpers.$_movePageWithPram("ShopDetail", "shopId", shopId);
     },
   },
 };

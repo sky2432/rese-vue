@@ -73,7 +73,7 @@
               <v-card-actions>
                 <v-btn
                   color="amber"
-                  @click="moveShopDeatail(shop.id)"
+                  @click="moveShopDetail(shop.id)"
                   rounded
                   dark
                   >詳細
@@ -284,7 +284,7 @@ export default {
       }
     },
 
-    moveShopDeatail(shopId) {
+    moveShopDetail(shopId) {
       this.$helpers.$_movePageWithPram("Detail", "shopId", shopId);
     },
 

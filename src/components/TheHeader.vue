@@ -5,7 +5,7 @@
         <v-col>
           <div class="header-logo d-flex">
             <v-icon class="mr-1 " large>mdi-silverware-variant</v-icon>
-            <h1 class="header-txt" @click="$router.push('/')">Rese</h1>
+            <h1 class="header-txt" @click="$router.go(-1)">Rese</h1>
           </div>
         </v-col>
         <v-spacer></v-spacer>

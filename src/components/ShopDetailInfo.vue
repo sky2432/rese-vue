@@ -1,0 +1,153 @@
+<template>
+  <div>
+    <v-card v-if="loaded" tile>
+      <v-row class="ma-0">
+        <v-col cols="6" class="pa-0">
+          <v-img :src="shop.image_url"></v-img>
+        </v-col>
+        <v-col cols="6" class="d-flex align-center">
+          <v-card>
+            <v-card-title class="amber">{{ shop.name }}</v-card-title>
+            <v-card-text>
+              <v-row align="center" class="mx-0 mt-5">
+                <v-rating
+                  :value="shop.evaluation"
+                  color="amber"
+                  dense
+                  half-increments
+                  readonly
+                  size="14"
+                ></v-rating>
+
+                <div class="ml-1">
+                  {{ shop.evaluation
+                  }}<span class="grey--text ml-2"
+                    >({{ shop.evaluation_count }}件)</span
+                  >
+                </div>
+              </v-row>
+              <p class="mt-5" v-if="shop">
+                店舗代表者：{{ shop.owner.name }}<br />
+                エリア：{{ shop.area.name }}<br />ジャンル：{{
+                  shop.genre.name
+                }}
+              </p>
+              <p>
+                {{ shop.overview }}
+              </p>
+            </v-card-text>
+            <v-card-actions class="justify-center">
+              <v-btn color="amber" dark>店舗代表者</v-btn>
+              <v-btn color="red" dark @click="warnDialog = true"
+                >店舗の削除</v-btn
+              >
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-card>
+
+    <v-dialog v-model="warnDialog" width="500px">
+      <v-card>
+        <v-card-title class="amber"
+          >※注意事項
+          <v-spacer></v-spacer>
+          <v-btn icon @click="warnDialog = false"
+            ><v-icon>mdi-window-close</v-icon></v-btn
+          >
+        </v-card-title>
+        <v-card-text class="mt-4">
+          <v-alert prominent type="error" text class="text-center mb-0">
+            <h3>必ずご確認ください</h3>
+            <p>
+              店舗を削除すると、これまでのデータはすべて削除されます。
+            </p>
+            <v-btn
+              color="red lighten-1"
+              class="mt-2"
+              @click="dialogConfirmDeletionShop = true"
+              >店舗を削除</v-btn
+            >
+          </v-alert>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="dialogConfirmDeletionShop" max-width="500px">
+      <v-card :loading="deleteLoading">
+        <v-card-title class="justify-center">
+          本当に店舗を削除しますか？
+        </v-card-title>
+        <v-card-actions class="justify-center">
+          <v-btn color="red lighten-1" dark @click="deleteShop">
+            削除
+          </v-btn>
+          <v-btn color="amber" dark @click="closeDeleteDialog">
+            キャンセル
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <MessageDialog ref="deleteMessageDialog">
+      <template #message>店舗を削除しました</template>
+    </MessageDialog>
+  </div>
+</template>
+
+<script>
+import shopsRepository from "../repositories/shopsRepository.js";
+import MessageDialog from "../components/MessageDialog";
+
+export default {
+  components: {
+    MessageDialog,
+  },
+
+  props: {
+    shopId: {
+      type: Number,
+    },
+  },
+
+  data() {
+    return {
+      shop: "",
+      loading: true,
+      loaded: false,
+      warnDialog: false,
+      dialogConfirmDeletionShop: false,
+      deleteLoading: false,
+    };
+  },
+
+  created() {
+    this.getShop();
+  },
+
+  methods: {
+    async getShop() {
+      const resData = await shopsRepository.getShop(this.shopId);
+      this.shop = resData.data.data;
+      this.loaded = true;
+      console.log(this.shop);
+    },
+
+    async deleteShop() {
+      this.deleteLoading = true;
+      await shopsRepository.deleteShop(this.shopId);
+      this.$refs.deleteMessageDialog.openMessageDialog();
+      this.deleteLoading = false;
+      this.dialogConfirmDeletionShop = false;
+      this.warnDialog = false;
+    },
+
+    closeDeleteDialog() {
+      this.warnDialog = false;
+      this.dialogConfirmDeletionShop = false;
+    },
+  },
+};
+</script>
+
+<style></style>
