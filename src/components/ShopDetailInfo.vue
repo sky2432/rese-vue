@@ -88,21 +88,14 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-
-    <MessageDialog ref="deleteMessageDialog">
-      <template #message>店舗を削除しました</template>
-    </MessageDialog>
   </div>
 </template>
 
 <script>
 import shopsRepository from "../repositories/shopsRepository.js";
-import MessageDialog from "../components/MessageDialog";
 
 export default {
-  components: {
-    MessageDialog,
-  },
+  components: {},
 
   props: {
     shopId: {
@@ -136,10 +129,10 @@ export default {
     async deleteShop() {
       this.deleteLoading = true;
       await shopsRepository.deleteShop(this.shopId);
-      this.$refs.deleteMessageDialog.openMessageDialog();
       this.deleteLoading = false;
       this.dialogConfirmDeletionShop = false;
       this.warnDialog = false;
+      this.$router.push("/admin");
     },
 
     closeDeleteDialog() {

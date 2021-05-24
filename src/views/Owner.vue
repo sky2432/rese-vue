@@ -58,12 +58,14 @@
       </v-list>
     </v-navigation-drawer>
 
-    <component
-      v-bind="childComponentProps"
-      :existsShop="existsShop"
-      :is="currentComponent"
-      @reload="getOwnerShop"
-    ></component>
+    <v-main>
+      <component
+        v-bind="childComponentProps"
+        :existsShop="existsShop"
+        :is="currentComponent"
+        @reload="getOwnerShop"
+      ></component>
+    </v-main>
   </v-app>
 </template>
 
