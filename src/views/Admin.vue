@@ -6,7 +6,7 @@
           <v-avatar color="white" size="64">
             <v-icon>mdi-silverware-variant</v-icon>
           </v-avatar>
-          <div class="pl-4">Rese</div>
+          <div class="pl-4">Rese管理者</div>
         </v-row>
       </v-sheet>
 
@@ -20,7 +20,7 @@
             </v-list-item-icon>
 
             <v-list-item-content>
-              <v-list-item-title>店舗一覧</v-list-item-title>
+              <v-list-item-title>店舗リスト</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
@@ -29,7 +29,7 @@
               <v-icon>mdi-account</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title>店舗代表者一覧</v-list-item-title>
+              <v-list-item-title>オーナーリスト</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
@@ -38,7 +38,7 @@
               <v-icon>mdi-account</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title>ユーザー一覧</v-list-item-title>
+              <v-list-item-title>ユーザーリスト</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
@@ -70,7 +70,6 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import AdminOwnerList from "../components/AdminOwnerList";
 import AdminUserList from "../components/AdminUserList";
 import AdminShopList from "../components/AdminShopList";
@@ -88,10 +87,6 @@ export default {
       selectedItem: 0,
       currentComponent: AdminShopList,
     };
-  },
-
-  computed: {
-    ...mapGetters(["user"]),
   },
 
   created() {},

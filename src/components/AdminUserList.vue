@@ -3,7 +3,7 @@
     <v-container class="py-4 px-6" fluid>
       <v-card>
         <v-card-title class="amber">
-          ユーザー一覧
+          ユーザーリスト
           <v-spacer></v-spacer>
           <v-text-field
             v-model="search"

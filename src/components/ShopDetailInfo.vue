@@ -1,12 +1,15 @@
 <template>
   <div>
-    <v-card v-if="loaded" tile>
-      <v-row class="ma-0">
-        <v-col cols="6" class="pa-0">
-          <v-img :src="shop.image_url"></v-img>
+    <v-card  tile height="400px">
+      <div v-if="loading" style="height: 100%" class="d-flex justify-center align-center">
+        <v-progress-circular indeterminate color="amber"></v-progress-circular>
+      </div>
+      <v-row v-if="loaded" class="ma-0">
+        <v-col cols="6">
+          <v-img :src="shop.image_url" height="370"></v-img>
         </v-col>
-        <v-col cols="6" class="d-flex align-center">
-          <v-card>
+        <v-col cols="6">
+          <v-card elevation="0" tile>
             <v-card-title class="amber">{{ shop.name }}</v-card-title>
             <v-card-text>
               <v-row align="center" class="mx-0 mt-5">
@@ -37,9 +40,11 @@
               </p>
             </v-card-text>
             <v-card-actions class="justify-center">
-              <v-btn color="amber" dark>店舗代表者</v-btn>
               <v-btn color="red" dark @click="warnDialog = true"
                 >店舗の削除</v-btn
+              >
+              <v-btn color="amber" dark @click="moveOwnerDetail"
+                >オーナー詳細</v-btn
               >
             </v-card-actions>
           </v-card>
@@ -122,8 +127,8 @@ export default {
     async getShop() {
       const resData = await shopsRepository.getShop(this.shopId);
       this.shop = resData.data.data;
+      this.loading = false;
       this.loaded = true;
-      console.log(this.shop);
     },
 
     async deleteShop() {
@@ -138,6 +143,14 @@ export default {
     closeDeleteDialog() {
       this.warnDialog = false;
       this.dialogConfirmDeletionShop = false;
+    },
+
+    moveOwnerDetail() {
+      this.$helpers.$_movePageWithPram(
+        "OwnerDetail",
+        "ownerId",
+        this.shop.owner.id
+      );
     },
   },
 };

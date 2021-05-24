@@ -3,7 +3,7 @@
     <v-container class="py-4 px-6" fluid>
       <v-card>
         <v-card-title class="amber">
-          店舗一覧
+          店舗リスト
           <v-spacer></v-spacer>
           <v-text-field
             v-model="search"

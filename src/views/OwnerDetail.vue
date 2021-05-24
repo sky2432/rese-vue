@@ -2,7 +2,8 @@
   <div>
     <TheHeader></TheHeader>
     <div class="wrapper">
-      <v-main>
+      <v-progress-circular indeterminate color="amber" v-if="loading"></v-progress-circular>
+      <v-main v-if="loaded">
         <v-container>
           <v-card>
             <v-card-text v-if="owner">
@@ -40,6 +41,14 @@
                         <tr>
                           <th>店舗名</th>
                           <td>{{ owner.shop.name }}</td>
+                        </tr>
+                        <tr>
+                          <th>エリア</th>
+                          <td>{{ owner.shop.area.name }}</td>
+                        </tr>
+                        <tr>
+                          <th>ジャンル</th>
+                          <td>{{ owner.shop.genre.name }}</td>
                         </tr>
                       </tbody>
                     </template>
@@ -135,6 +144,8 @@ export default {
       warnDialog: false,
       dialogConfirmDeletionShop: false,
       deleteLoading: false,
+      loading: true,
+      loaded: false,
     };
   },
 
@@ -146,6 +157,8 @@ export default {
     async getOwner() {
       const resData = await ownersRepository.getOwner(this.ownerId);
       this.owner = resData.data.data;
+      this.loading = false;
+      this.loaded = true;
     },
 
     async deleteOwner() {

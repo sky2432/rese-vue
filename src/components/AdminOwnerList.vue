@@ -3,7 +3,7 @@
     <v-container class="py-4 px-6" fluid>
       <v-card>
         <v-card-title class="amber">
-          店舗代表者一覧
+          オーナーリスト
           <v-spacer></v-spacer>
           <v-text-field
             class="pt-0 mr-4"
@@ -12,9 +12,10 @@
             label="ID・名前・メールアドレス・店舗名で検索"
             single-line
             hide-details
+
           ></v-text-field>
           <v-btn @click="openRegisterDialog">
-            店舗代表者を登録
+            オーナー登録
           </v-btn>
         </v-card-title>
         <v-data-table
@@ -190,7 +191,7 @@ export default {
       showPassword: false,
       registerLoading: false,
       headers: [
-        { text: "店舗代表者ID", value: "id" },
+        { text: "オーナーID", value: "id" },
         { text: "名前", value: "name" },
         { text: "メールアドレス", value: "email" },
         { text: "店舗名", value: "shop.name" },
