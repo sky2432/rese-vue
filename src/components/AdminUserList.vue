@@ -8,7 +8,7 @@
           <v-text-field
             v-model="search"
             append-icon="mdi-magnify"
-            label="検索"
+            label="ID・名前・メールアドレスで検索"
             single-line
             hide-details
           ></v-text-field>
@@ -43,7 +43,7 @@ export default {
       search: "",
       loading: true,
       headers: [
-        { text: "ID", value: "id" },
+        { text: "ユーザーID", value: "id" },
         { text: "名前", value: "name" },
         { text: "メールアドレス", value: "email" },
       ],

@@ -14,7 +14,7 @@
 
       <v-list>
         <v-list-item-group color="amber" v-model="selectedItem">
-          <v-list-item>
+          <v-list-item @click="currentComponent = 'AdminShopList'">
             <v-list-item-icon>
               <v-icon>mdi-store</v-icon>
             </v-list-item-icon>
@@ -73,18 +73,20 @@
 import { mapGetters } from "vuex";
 import AdminOwnerList from "../components/AdminOwnerList";
 import AdminUserList from "../components/AdminUserList";
+import AdminShopList from "../components/AdminShopList";
 
 export default {
   components: {
     AdminOwnerList,
     AdminUserList,
+    AdminShopList,
   },
 
   data() {
     return {
       drawer: null,
-      selectedItem: 1,
-      currentComponent: AdminOwnerList,
+      selectedItem: 0,
+      currentComponent: AdminShopList,
     };
   },
 
