@@ -1,6 +1,11 @@
 <template>
   <v-card tile>
     <v-card-title>
+      <v-switch
+        v-model="showTodayReservations"
+        label="本日の予約"
+        class="pa-3"
+      ></v-switch>
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -19,13 +24,6 @@
       :items-per-page="5"
       loading-text="予約を取得中です"
     >
-      <template v-slot:top>
-        <v-switch
-          v-model="showTodayReservations"
-          label="本日の予約"
-          class="pa-3"
-        ></v-switch>
-      </template>
       <template v-slot:[`item.reservation.status`]="{ item }">
         <v-chip :color="getStatusColor(item.reservation.status)" dark>
           {{ item.reservation.status }}

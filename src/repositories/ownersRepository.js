@@ -6,6 +6,10 @@ export default {
     return Repository.get(`${resource}`);
   },
 
+  getOwner(owner_id) {
+    return Repository.get(`${resource}/${owner_id}`);
+  },
+
   confirmOwner(payload) {
     return Repository.post(`${resource}/confirm`, payload);
   },
@@ -20,6 +24,10 @@ export default {
 
   updatePassword(owner_id, payload) {
     return Repository.put(`${resource}/${owner_id}/password`, payload);
+  },
+
+  deleteOwner(owner_id) {
+    return Repository.delete(`${resource}/${owner_id}`);
   },
 
   getOwnerShop(owner_id) {

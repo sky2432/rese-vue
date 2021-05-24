@@ -60,7 +60,7 @@
           <v-alert prominent type="error" text class="text-center mb-0">
             <h3>必ずご確認ください</h3>
             <p>
-              店舗を削除すると、これまでのデータはすべて削除されます。
+              店舗を削除すると、店舗に関係する全ての情報が削除されます。
             </p>
             <v-btn
               color="red lighten-1"

@@ -12,6 +12,7 @@ import Setting from "../views/Setting.vue";
 import Owner from "../views/Owner.vue";
 import Admin from "../views/Admin.vue";
 import ShopDetail from "../views/ShopDetail.vue";
+import OwnerDetail from "../views/OwnerDetail.vue";
 import store from "../store/index";
 import multiguard from "vue-router-multiguard";
 
@@ -152,6 +153,17 @@ const routes = [
       requiresAuth: true,
       title: "店舗詳細",
       desc: "店舗詳細ページです",
+    },
+  },
+  {
+    path: "/admin/owner/:ownerId",
+    name: "OwnerDetail",
+    component: OwnerDetail,
+    props: true,
+    meta: {
+      requiresAuth: true,
+      title: "店舗代表者詳細",
+      desc: "店舗代表者詳細ページです",
     },
   },
   {

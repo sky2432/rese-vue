@@ -25,6 +25,11 @@
           item-key="id"
           loading-text="ロード中です"
         >
+          <template v-slot:[`item.detail`]="{ item }">
+            <v-btn color="amber" dark outlined @click="moveOwnerDetail(item.id)"
+              >詳細</v-btn
+            >
+          </template>
           <template v-slot:no-data>
             店舗代表者はいません
           </template>
@@ -189,6 +194,7 @@ export default {
         { text: "名前", value: "name" },
         { text: "メールアドレス", value: "email" },
         { text: "店舗名", value: "shop.name" },
+        { text: "", value: "detail" },
       ],
     };
   },
@@ -247,6 +253,10 @@ export default {
       this.confirmDialog = false;
       this.registerDialog = false;
       this.registerLoading = false;
+    },
+
+    moveOwnerDetail(ownerId) {
+      this.$helpers.$_movePageWithPram("OwnerDetail", "ownerId", ownerId);
     },
   },
 };
