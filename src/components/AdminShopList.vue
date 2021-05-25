@@ -42,8 +42,8 @@
       </v-card> -->
       <DataTable
         ref="dataTable"
-        v-bind="{ tableData: shops, headers: headers }"
         label="ID・店名・エリア・ジャンルで検索"
+        v-bind="{ tableData: shops, headers: headers, loading: loading }"
         :avatar="true"
         :detail="true"
         @move-page="moveShopDetail"
@@ -70,6 +70,7 @@ export default {
   data() {
     return {
       shops: [],
+      loading: true,
       headers: [
         { text: "店舗ID", value: "id" },
         { text: "店名", value: "name" },
@@ -88,7 +89,7 @@ export default {
     async getShops() {
       const resData = await shopsRepository.getShops();
       this.shops = resData.data.data;
-      this.$refs.dataTable.stopLoading();
+      this.loading = false;
     },
 
     moveShopDetail(shopId) {

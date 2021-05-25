@@ -1,7 +1,7 @@
 <template>
   <v-main>
     <v-container class="py-4 px-6" fluid>
-      <v-card>
+      <!-- <v-card>
         <v-card-title class="amber">
           オーナーリスト
           <v-spacer></v-spacer>
@@ -38,7 +38,25 @@
             検索条件に当てはまる店舗代表者はいません
           </template>
         </v-data-table>
-      </v-card>
+      </v-card> -->
+      <DataTable
+        ref="dataTable"
+        label="ID・名前・メールアドレス・店舗名で検索"
+        v-bind="{ tableData: owners, headers: headers, loading: loading }"
+        :detail="true"
+        @move-page="moveOwnerDetail"
+      >
+        <template #title>
+          オーナーリスト
+        </template>
+        <template #addButton>
+          <v-btn @click="openRegisterDialog">
+            オーナー登録
+          </v-btn>
+        </template>
+        <template #noData>店舗代表者はいません</template>
+        <template #noResults>検索条件に当てはまる店舗代表者はいません</template>
+      </DataTable>
 
       <v-dialog v-model="registerDialog" max-width="600" persistent>
         <v-card class="white pa-5" elevation="2" outlined shaped tile>
@@ -171,16 +189,19 @@
 <script>
 import ownersRepository from "../repositories/ownersRepository.js";
 import MessageDialog from "../components/MessageDialog";
+import DataTable from "../components/DataTable";
+
 
 export default {
   components: {
     MessageDialog,
+    DataTable,
   },
 
   data() {
     return {
       owners: [],
-      search: "",
+      // search: "",
       name: "",
       email: "",
       password: "",

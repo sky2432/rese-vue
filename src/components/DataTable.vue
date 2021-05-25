@@ -4,12 +4,14 @@
       <slot name="title"></slot>
       <v-spacer></v-spacer>
       <v-text-field
+        class="pt-0 mr-4"
         v-model="search"
         append-icon="mdi-magnify"
         :label="label"
         single-line
         hide-details
       ></v-text-field>
+      <slot name="addButton"></slot>
     </v-card-title>
     <v-data-table
       :items="tableData"
@@ -55,6 +57,10 @@ export default {
       type: String,
       require: true,
     },
+    loading: {
+      type: Boolean,
+      default: true,
+    },
     avatar: {
       type: Boolean,
       default: false,
@@ -71,16 +77,11 @@ export default {
 
   data() {
     return {
-      loading: true,
       search: "",
     };
   },
 
   methods: {
-    stopLoading() {
-      this.loading = false;
-    },
-
     movePage(itemId) {
       this.$emit("move-page", itemId);
     },
