@@ -42,7 +42,7 @@
 
             <v-card-actions class="justify-center">
               <v-btn color="amber" :disabled="invalid" @click="login">
-                登録
+                ログイン
               </v-btn>
             </v-card-actions>
           </v-form>
