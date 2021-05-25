@@ -34,6 +34,7 @@
       </v-card> -->
 
       <DataTable
+
         ref="dataTable"
         label="ID・名前・メールアドレスで検索"
         v-bind="{ tableData: users, headers: headers, loading: loading }"

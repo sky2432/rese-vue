@@ -1,5 +1,5 @@
 <template>
-  <v-card tile>
+  <!-- <v-card tile>
     <v-card-title>
       <v-switch
         v-model="showTodayReservations"
@@ -39,13 +39,43 @@
         検索条件に当てはまる予約はありません
       </template>
     </v-data-table>
-  </v-card>
+  </v-card> -->
+  <DataTable
+    label="検索"
+    v-bind="{
+      tableData: sendReservations,
+      headers: headers,
+      loading: loading,
+    }"
+    :reservationStatus="true"
+    itemKey="reservaiton.id"
+  >
+    <template #title>
+      予約一覧
+    </template>
+    <template #top>
+      <v-switch
+        v-model="showTodayReservations"
+        :value="showTodayReservations"
+        @change="showReservations($event)"
+        label="本日の予約"
+        class="pa-3"
+      ></v-switch>
+    </template>
+    <template #noData>予約はありません</template>
+    <template #noResults>検索条件に当てはまる予約はありません</template>
+  </DataTable>
 </template>
 
 <script>
 import reservationsRepository from "../repositories/reservationsRepository";
+import DataTable from "../components/DataTable";
 
 export default {
+  components: {
+    DataTable,
+  },
+
   props: {
     shopId: {
       type: Number,
@@ -54,10 +84,10 @@ export default {
 
   data() {
     return {
-      search: "",
       loading: true,
       showTodayReservations: false,
       reservations: [],
+      sendReservations: [],
       headers: [
         {
           text: "予約ID",
@@ -72,10 +102,15 @@ export default {
     };
   },
 
-  computed: {
-    showReservations() {
-      if (this.showTodayReservations === false) {
-        return this.reservations;
+  created() {
+    this.getShopReservations();
+  },
+
+  methods: {
+    showReservations(event) {
+      this.showTodayReservations = event;
+      if (this.showTodayReservations === null) {
+        this.sendReservations = this.reservations;
       }
       //本日の予約のみを表示
       if (this.showTodayReservations === true) {
@@ -90,35 +125,17 @@ export default {
             todayReservations.push(reservations);
           }
         }
-        return todayReservations;
+        this.sendReservations = todayReservations;
       }
     },
 
-    getStatusColor() {
-      return function(status) {
-        if (status === "予約中") {
-          return "green";
-        }
-        if (status === "来店済み") {
-          return "amber";
-        }
-        if (status === "キャンセル") {
-          return "red";
-        }
-      };
-    },
-  },
-
-  created() {
-    this.getShopReservations();
-  },
-
-  methods: {
     async getShopReservations() {
       const resData = await reservationsRepository.getShopReservations(
         this.shopId
       );
-      this.reservations = this.convetReservationStatus(resData.data.data);
+      const reservaitons = this.convetReservationStatus(resData.data.data);
+      this.reservations = reservaitons;
+      this.sendReservations = reservaitons;
       this.loading = false;
     },
 
