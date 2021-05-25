@@ -54,8 +54,8 @@
             オーナー登録
           </v-btn>
         </template>
-        <template #noData>店舗代表者はいません</template>
-        <template #noResults>検索条件に当てはまる店舗代表者はいません</template>
+        <template #noData>オーナーはいません</template>
+        <template #noResults>検索条件に当てはまるオーナーはいません</template>
       </DataTable>
 
       <v-dialog v-model="registerDialog" max-width="600" persistent>
@@ -201,7 +201,6 @@ export default {
   data() {
     return {
       owners: [],
-      // search: "",
       name: "",
       email: "",
       password: "",

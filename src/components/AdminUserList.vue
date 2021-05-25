@@ -1,7 +1,7 @@
 <template>
   <v-main>
     <v-container class="py-4 px-6" fluid>
-      <v-card>
+      <!-- <v-card>
         <v-card-title class="amber">
           ユーザーリスト
           <v-spacer></v-spacer>
@@ -31,7 +31,21 @@
             検索条件に当てはまるユーザーはいません
           </template>
         </v-data-table>
-      </v-card>
+      </v-card> -->
+
+      <DataTable
+        ref="dataTable"
+        label="ID・名前・メールアドレス・店舗名で検索"
+        v-bind="{ tableData: users, headers: headers, loading: loading }"
+        :deletion="true"
+        @open-delete-dialog="openDeleteDialog"
+      >
+        <template #title>
+          ユーザーリスト
+        </template>
+        <template #noData>ユーザーはいません</template>
+        <template #noResults>検索条件に当てはまるユーザーはいません</template>
+      </DataTable>
 
       <v-dialog v-model="deleteDialog" max-width="500px">
         <v-card :loading="deleteLoading">
@@ -59,16 +73,17 @@
 <script>
 import usersRepository from "../repositories/usersRepository";
 import MessageDialog from "../components/MessageDialog";
+import DataTable from "../components/DataTable";
 
 export default {
   components: {
     MessageDialog,
+    DataTable,
   },
 
   data() {
     return {
       users: [],
-      search: "",
       deleteId: "",
       loading: true,
       deleteDialog: false,

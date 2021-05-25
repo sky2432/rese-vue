@@ -32,6 +32,9 @@
           >詳細</v-btn
         >
       </template>
+      <template v-slot:[`item.delete`]="{ item }" v-if="deletion">
+        <v-icon @click="openDeleteDialog(item.id)">mdi-delete</v-icon>
+      </template>
       <template v-slot:no-data>
         <slot name="noData"></slot>
       </template>
@@ -69,6 +72,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    deletion: {
+      type: Boolean,
+      default: false,
+    },
     itemKey: {
       type: String,
       default: "id",
@@ -84,6 +91,10 @@ export default {
   methods: {
     movePage(itemId) {
       this.$emit("move-page", itemId);
+    },
+
+    openDeleteDialog(itemId) {
+      this.$emit("open-delete-dialog", itemId);
     },
   },
 };
