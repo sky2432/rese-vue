@@ -108,7 +108,7 @@
             </v-card>
           </v-dialog>
 
-          <MessageDialog
+          <BaseDialog
             ref="dialogConfirmDeletionOwner"
             baseButtonText="キャンセル"
           >
@@ -123,7 +123,7 @@
                 キャンセル
               </v-btn>
             </template>
-          </MessageDialog>
+          </BaseDialog>
         </v-container>
       </v-main>
     </div>
@@ -173,7 +173,7 @@ export default {
 
     closeDeleteDialog() {
       this.warnDialog = false;
-      this.dialogConfirmDeletionOwner = false;
+      this.$refs.dialogConfirmDeletionOwner.closeDialog();
     },
 
     moveShopDetail() {

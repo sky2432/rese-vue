@@ -46,9 +46,9 @@
           </v-form>
         </validation-observer>
 
-        <MessageDialog ref="messageDialog">
+        <BaseDialog ref="baseDialog">
           <template #message>名前・メールアドレスを更新しました</template>
-        </MessageDialog>
+        </BaseDialog>
       </div>
     </v-card>
   </div>
@@ -57,15 +57,10 @@
 <script>
 import "../plugins/veeValidate.js";
 import { mapGetters } from "vuex";
-import MessageDialog from "../components/MessageDialog";
 import usersRepository from "../repositories/usersRepository";
 import ownersRepository from "../repositories/ownersRepository";
 
 export default {
-  components: {
-    MessageDialog,
-  },
-
   data() {
     return {
       name: "",
@@ -119,7 +114,7 @@ export default {
     response(response) {
       this.$store.dispatch("updateUser", response.data.data);
       this.getUserData();
-      this.$refs.messageDialog.openDialog();
+      this.$refs.baseDialog.openDialog();
     },
 
     error(e) {

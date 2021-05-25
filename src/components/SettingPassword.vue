@@ -52,9 +52,9 @@
           </v-form>
         </validation-observer>
 
-        <MessageDialog ref="messageDialog">
+        <BaseDialog ref="baseDialog">
           <template #message>パスワードを更新しました</template>
-        </MessageDialog>
+        </BaseDialog>
       </div>
     </v-card>
   </div>
@@ -63,15 +63,10 @@
 <script>
 import "../plugins/veeValidate.js";
 import { mapGetters } from "vuex";
-import MessageDialog from "../components/MessageDialog";
 import usersRepository from "../repositories/usersRepository";
 import ownersRepository from "../repositories/ownersRepository";
 
 export default {
-  components: {
-    MessageDialog,
-  },
-
   data() {
     return {
       password: "",
@@ -117,7 +112,7 @@ export default {
     response() {
       this.resetPasswordForm();
       this.$refs.observer.reset();
-      this.$refs.messageDialog.openDialog();
+      this.$refs.baseDialog.openDialog();
     },
 
     error(e) {

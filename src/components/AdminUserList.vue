@@ -35,21 +35,19 @@
         </v-card>
       </v-dialog>
 
-      <MessageDialog ref="messageDialog">
+      <BaseDialog ref="baseDialog">
         <template #message>ユーザーを削除しました</template>
-      </MessageDialog>
+      </BaseDialog>
     </v-container>
   </v-main>
 </template>
 
 <script>
 import usersRepository from "../repositories/usersRepository";
-import MessageDialog from "../components/MessageDialog";
 import DataTable from "../components/DataTable";
 
 export default {
   components: {
-    MessageDialog,
     DataTable,
   },
 
@@ -64,7 +62,7 @@ export default {
         { text: "ユーザーID", value: "id" },
         { text: "名前", value: "name" },
         { text: "メールアドレス", value: "email" },
-        { text: "", value: "delete" },
+        { text: "", value: "delete", sortable: false },
       ],
     };
   },
@@ -88,7 +86,7 @@ export default {
     async deleteUser() {
       this.deleteLoading = true;
       await usersRepository.deleteUser(this.deleteId);
-      this.$refs.messageDialog.openDialog();
+      this.$refs.baseDialog.openDialog();
       this.getUsers();
       this.deleteDialog = false;
       this.deleteLoading = false;

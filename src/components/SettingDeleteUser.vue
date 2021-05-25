@@ -14,19 +14,19 @@
           <v-btn
             color="red lighten-1"
             class="mt-2"
-            @click="$refs.messageDialog.openDialog()"
+            @click="$refs.baseDialog.openDialog()"
             >アカウントを削除</v-btn
           >
         </v-alert>
 
-        <MessageDialog ref="messageDialog">
+        <BaseDialog ref="baseDialog">
           <template #message>本当にアカウントを削除しますか？</template>
           <template #leftButton>
             <v-btn color="red lighten-1" dark @click="deleteUser">
               削除
             </v-btn>
           </template>
-        </MessageDialog>
+        </BaseDialog>
       </div>
     </v-card>
   </div>

@@ -119,21 +119,18 @@
         </v-card>
       </v-col>
 
-      <MessageDialog
-        ref="dialogConfirmCancelReservation"
-        baseButtonText="いいえ"
-      >
+      <BaseDialog ref="dialogConfirmCancelReservation" baseButtonText="いいえ">
         <template #message>本当にキャンセルしますか？</template>
         <template #leftButton>
           <v-btn color="red" dark @click="deleteReservation">
             はい
           </v-btn>
         </template>
-      </MessageDialog>
+      </BaseDialog>
 
-      <MessageDialog ref="cancelMessageDialog">
+      <BaseDialog ref="cancelBaseDialog">
         <template #message>予約をキャンセルしました</template>
-      </MessageDialog>
+      </BaseDialog>
 
       <v-dialog v-model="showDialogUpdateReservation" width="500" persistent>
         <v-card>
@@ -255,9 +252,9 @@
         >
       </ConfirmDialog>
 
-      <MessageDialog ref="updateMessageDialog">
+      <BaseDialog ref="updateBaseDialog">
         <template #message>予約を変更しました</template>
-      </MessageDialog>
+      </BaseDialog>
 
       <v-dialog
         v-model="showEvaluationDialog"
@@ -279,7 +276,6 @@
               hover
               color="amber"
             ></v-rating>
-            
           </v-card-text>
           <v-card-actions class="justify-center">
             <v-btn
@@ -330,7 +326,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-import MessageDialog from "../components/MessageDialog";
 import reservationsRepository from "../repositories/reservationsRepository.js";
 import evaluationsRepository from "../repositories/evaluationsRepository";
 import config from "../config/const.js";
@@ -339,7 +334,6 @@ import ConfirmDialog from "../components/ConfirmDialog";
 
 export default {
   components: {
-    MessageDialog,
     ConfirmDialog,
   },
 
@@ -566,7 +560,7 @@ export default {
     },
 
     changeDialog() {
-      this.$refs.updateMessageDialog.openDialog();
+      this.$refs.updateBaseDialog.openDialog();
       this.showDialogUpdateReservation = false;
       this.$refs.confirmDialog.closeDialog();
     },
@@ -600,7 +594,7 @@ export default {
         this.slectedReservation.id
       );
       this.$refs.dialogConfirmCancelReservation.stopLoading();
-      this.$refs.cancelMessageDialog.openDialog();
+      this.$refs.cancelBaseDialog.openDialog();
       this.$refs.dialogConfirmCancelReservation.closeDialog();
       this.getUserReservations();
     },

@@ -82,7 +82,7 @@
       </v-card>
     </v-dialog>
 
-    <MessageDialog ref="dialogConfirmDeletionShop" baseButtonText="キャンセル">
+    <BaseDialog ref="dialogConfirmDeletionShop" baseButtonText="キャンセル">
       <template #message>本当に店舗を削除しますか？</template>
       <template #leftButton>
         <v-btn color="red lighten-1" dark @click="deleteShop">
@@ -94,7 +94,7 @@
           キャンセル
         </v-btn>
       </template>
-    </MessageDialog>
+    </BaseDialog>
   </div>
 </template>
 

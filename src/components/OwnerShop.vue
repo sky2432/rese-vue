@@ -85,9 +85,9 @@
       </v-card>
     </v-dialog>
 
-    <MessageDialog ref="imageMessageDialog">
+    <BaseDialog ref="imageBaseDialog">
       <template #message>店舗画像を変更しました</template>
-    </MessageDialog>
+    </BaseDialog>
 
     <v-dialog v-model="updateDialog" max-width="700px">
       <v-card :loading="updateLoading">
@@ -178,9 +178,9 @@
       </v-card>
     </v-dialog>
 
-    <MessageDialog ref="updateMessageDialog">
+    <BaseDialog ref="updateBaseDialog">
       <template #message>店舗情報を変更しました</template>
-    </MessageDialog>
+    </BaseDialog>
 
     <v-card v-if="!existsShop">
       <v-card-title class="amber">
@@ -292,7 +292,6 @@
 import { mapGetters } from "vuex";
 import config from "../config/const.js";
 import shopsRepository from "../repositories/shopsRepository.js";
-import MessageDialog from "../components/MessageDialog";
 
 export default {
   props: {
@@ -332,10 +331,6 @@ export default {
       type: Boolean,
       require: true,
     },
-  },
-
-  components: {
-    MessageDialog,
   },
 
   data() {
@@ -409,7 +404,7 @@ export default {
       this.$emit("reload");
       this.imageDialog = false;
       this.imageLoading = false;
-      this.$refs.imageMessageDialog.openDialog();
+      this.$refs.imageBaseDialog.openDialog();
     },
 
     insertShopData() {
@@ -432,7 +427,7 @@ export default {
       this.$emit("reload");
       this.updateDialog = false;
       this.updateLoading = false;
-      this.$refs.updateMessageDialog.openDialog();
+      this.$refs.updateBaseDialog.openDialog();
     },
   },
 };

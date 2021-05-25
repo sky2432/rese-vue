@@ -47,9 +47,9 @@
         >
       </ConfirmDialog>
 
-      <MessageDialog ref="messageDialog">
+      <BaseDialog ref="baseDialog">
         <template #message>店舗代表者を登録しました</template>
-      </MessageDialog>
+      </BaseDialog>
     </v-container>
   </v-main>
 </template>
@@ -77,7 +77,7 @@ export default {
         { text: "名前", value: "name" },
         { text: "メールアドレス", value: "email" },
         { text: "店舗名", value: "shop.name" },
-        { text: "", value: "detail" },
+        { text: "", value: "detail", sortable: false },
       ],
       confirmDialogData: [],
       registerData: "",
@@ -128,7 +128,7 @@ export default {
     async register() {
       this.$refs.confirmDialog.startLoading();
       await ownersRepository.createOwner(this.registerData);
-      this.$refs.messageDialog.openDialog();
+      this.$refs.baseDialog.openDialog();
       this.getOwners();
       this.$refs.confirmDialog.closeDialog();
       this.registerDialog = false;

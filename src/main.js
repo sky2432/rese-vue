@@ -5,7 +5,7 @@ import store from "./store";
 import vuetify from "./plugins/vuetify";
 import TheHeader from "./components/TheHeader.vue";
 import TheHomeHeader from "./components/TheHomeHeader.vue";
-import MessageDialog from "./components/MessageDialog.vue";
+import BaseDialog from "./components/BaseDialog.vue";
 import helpers from "./helpers/helper";
 
 const plugin = {
@@ -18,7 +18,7 @@ Vue.use(plugin);
 
 Vue.component("TheHeader", TheHeader);
 Vue.component("TheHomeHeader", TheHomeHeader);
-Vue.component("MessageDialog", MessageDialog);
+Vue.component("BaseDialog", BaseDialog);
 
 Vue.config.productionTip = false;
 
