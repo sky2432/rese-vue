@@ -4,9 +4,13 @@
       <DataTable
         ref="dataTable"
         label="ID・店名・エリア・ジャンルで検索"
-        v-bind="{ tableData: shops, headers: headers, loading: loading }"
-        :avatar="true"
-        :detail="true"
+        v-bind="{
+          tableData: shops,
+          headers: headers,
+          loading: loading,
+          avatar: true,
+          detail: true,
+        }"
         @move-page="moveShopDetail"
       >
         <template #title>

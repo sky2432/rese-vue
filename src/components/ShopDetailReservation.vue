@@ -5,14 +5,12 @@
       tableData: sendReservations,
       headers: headers,
       loading: loading,
+      reservationStatus: true,
     }"
-    :reservationStatus="true"
     itemKey="reservaiton.id"
+    titleColor="white"
   >
     <template #title>
-      予約一覧
-    </template>
-    <template #top>
       <v-switch
         v-model="showTodayReservations"
         :value="showTodayReservations"

@@ -6,8 +6,8 @@
         tableData: sendReservations,
         headers: headers,
         loading: loading,
+        reservationStatus: true,
       }"
-      :reservationStatus="true"
       itemKey="reservaiton.id"
     >
       <template #title>

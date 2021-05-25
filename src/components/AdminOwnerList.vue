@@ -4,8 +4,12 @@
       <DataTable
         ref="dataTable"
         label="ID・名前・メールアドレス・店舗名で検索"
-        v-bind="{ tableData: owners, headers: headers, loading: loading }"
-        :detail="true"
+        v-bind="{
+          tableData: owners,
+          headers: headers,
+          loading: loading,
+          detail: true,
+        }"
         @move-page="moveOwnerDetail"
       >
         <template #title>

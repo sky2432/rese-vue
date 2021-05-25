@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-title class="amber">
+    <v-card-title :class="titleColor">
       <slot name="title"></slot>
       <v-spacer></v-spacer>
       <v-text-field
@@ -94,6 +94,10 @@ export default {
     itemKey: {
       type: String,
       default: "id",
+    },
+    titleColor: {
+      type: String,
+      default: "amber",
     },
   },
 

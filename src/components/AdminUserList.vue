@@ -4,8 +4,12 @@
       <DataTable
         ref="dataTable"
         label="ID・名前・メールアドレスで検索"
-        v-bind="{ tableData: users, headers: headers, loading: loading }"
-        :deletion="true"
+        v-bind="{
+          tableData: users,
+          headers: headers,
+          loading: loading,
+          deletion: true,
+        }"
         @open-delete-dialog="openDeleteDialog"
       >
         <template #title>
