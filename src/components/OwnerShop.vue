@@ -409,7 +409,7 @@ export default {
       this.$emit("reload");
       this.imageDialog = false;
       this.imageLoading = false;
-      this.$refs.imageMessageDialog.openMessageDialog();
+      this.$refs.imageMessageDialog.openDialog();
     },
 
     insertShopData() {
@@ -432,7 +432,7 @@ export default {
       this.$emit("reload");
       this.updateDialog = false;
       this.updateLoading = false;
-      this.$refs.updateMessageDialog.openMessageDialog();
+      this.$refs.updateMessageDialog.openDialog();
     },
   },
 };

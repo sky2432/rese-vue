@@ -1,7 +1,11 @@
 <template>
   <div>
-    <v-card  tile height="400px">
-      <div v-if="loading" style="height: 100%" class="d-flex justify-center align-center">
+    <v-card tile height="400px">
+      <div
+        v-if="loading"
+        style="height: 100%"
+        class="d-flex justify-center align-center"
+      >
         <v-progress-circular indeterminate color="amber"></v-progress-circular>
       </div>
       <v-row v-if="loaded" class="ma-0">
@@ -70,7 +74,7 @@
             <v-btn
               color="red lighten-1"
               class="mt-2"
-              @click="dialogConfirmDeletionShop = true"
+              @click="$refs.dialogConfirmDeletionShop.openDialog()"
               >店舗を削除</v-btn
             >
           </v-alert>
@@ -78,21 +82,20 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="dialogConfirmDeletionShop" max-width="500px">
-      <v-card :loading="deleteLoading">
-        <v-card-title class="justify-center">
-          本当に店舗を削除しますか？
-        </v-card-title>
-        <v-card-actions class="justify-center">
-          <v-btn color="red lighten-1" dark @click="deleteShop">
-            削除
-          </v-btn>
-          <v-btn color="amber" dark @click="closeDeleteDialog">
-            キャンセル
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <MessageDialog ref="dialogConfirmDeletionShop" rightButtonText="キャンセル">
+      <template #message>本当に店舗を削除しますか？</template>
+      <template #leftButton>
+        <v-btn color="red lighten-1" dark @click="deleteShop">
+          削除
+        </v-btn>
+      </template>
+      <template #rightButton>
+        <v-btn color="amber" dark @click="closeDeleteDialog">
+          キャンセル
+        </v-btn>
+      </template>
+    </MessageDialog>
+    
   </div>
 </template>
 
@@ -114,8 +117,6 @@ export default {
       loading: true,
       loaded: false,
       warnDialog: false,
-      dialogConfirmDeletionShop: false,
-      deleteLoading: false,
     };
   },
 
@@ -132,17 +133,17 @@ export default {
     },
 
     async deleteShop() {
-      this.deleteLoading = true;
+      this.$refs.dialogConfirmDeletionShop.startLoading();
       await shopsRepository.deleteShop(this.shopId);
-      this.deleteLoading = false;
-      this.dialogConfirmDeletionShop = false;
+      this.$refs.dialogConfirmDeletionShop.stopLoading();
+      this.$refs.dialogConfirmDeletionShop.closeDialog();
       this.warnDialog = false;
       this.$router.push("/admin");
     },
 
     closeDeleteDialog() {
       this.warnDialog = false;
-      this.dialogConfirmDeletionShop = false;
+      this.$refs.dialogConfirmDeletionShop.closeDialog();
     },
 
     moveOwnerDetail() {

@@ -2,7 +2,11 @@
   <div>
     <TheHeader></TheHeader>
     <div class="wrapper">
-      <v-progress-circular indeterminate color="amber" v-if="loading"></v-progress-circular>
+      <v-progress-circular
+        indeterminate
+        color="amber"
+        v-if="loading"
+      ></v-progress-circular>
       <v-main v-if="loaded">
         <v-container>
           <v-card>
@@ -96,7 +100,7 @@
                   <v-btn
                     color="red lighten-1"
                     class="mt-2"
-                    @click="dialogConfirmDeletionShop = true"
+                    @click="$refs.dialogConfirmDeletionOwner.openDialog()"
                     >オーナーを削除</v-btn
                   >
                 </v-alert>
@@ -104,21 +108,22 @@
             </v-card>
           </v-dialog>
 
-          <v-dialog v-model="dialogConfirmDeletionShop" max-width="500px">
-            <v-card :loading="deleteLoading">
-              <v-card-title class="justify-center">
-                本当にオーナーを削除しますか？
-              </v-card-title>
-              <v-card-actions class="justify-center">
-                <v-btn color="red lighten-1" dark @click="deleteOwner">
-                  削除
-                </v-btn>
-                <v-btn color="amber" dark @click="closeDeleteDialog">
-                  キャンセル
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+          <MessageDialog
+            ref="dialogConfirmDeletionOwner"
+            rightButtonText="キャンセル"
+          >
+            <template #message>本当にオーナーを削除しますか？</template>
+            <template #leftButton>
+              <v-btn color="red lighten-1" dark @click="deleteOwner">
+                削除
+              </v-btn>
+            </template>
+            <template #rightButton>
+              <v-btn color="amber" dark @click="closeDeleteDialog">
+                キャンセル
+              </v-btn>
+            </template>
+          </MessageDialog>
         </v-container>
       </v-main>
     </div>
@@ -142,8 +147,6 @@ export default {
     return {
       owner: "",
       warnDialog: false,
-      dialogConfirmDeletionShop: false,
-      deleteLoading: false,
       loading: true,
       loaded: false,
     };
@@ -162,17 +165,17 @@ export default {
     },
 
     async deleteOwner() {
-      this.deleteLoading = true;
+      this.$refs.dialogConfirmDeletionOwner.startLoading();
       await ownersRepository.deleteOwner(this.ownerId);
-      this.deleteLoading = false;
-      this.dialogConfirmDeletionShop = false;
+      this.$refs.dialogConfirmDeletionOwner.stopLoading();
+      this.$refs.dialogConfirmDeletionOwner.closeDialog();
       this.warnDialog = false;
       this.$router.push("/admin");
     },
 
     closeDeleteDialog() {
       this.warnDialog = false;
-      this.dialogConfirmDeletionShop = false;
+      this.dialogConfirmDeletionOwner = false;
     },
 
     moveShopDetail() {

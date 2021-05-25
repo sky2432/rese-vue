@@ -1,13 +1,16 @@
 <template>
-  <v-dialog v-model="showMessageDialog" max-width="500px">
-    <v-card>
+  <v-dialog v-model="dialog" max-width="500px">
+    <v-card :loading="loading">
       <v-card-title class="justify-center">
         <slot name="message"></slot>
       </v-card-title>
       <v-card-actions class="justify-center">
-        <v-btn color="amber" @click="showMessageDialog = false">
-          閉じる
-        </v-btn>
+        <slot name="leftButton"></slot>
+        <slot name="rightButton">
+          <v-btn color="amber" dark @click="dialog = false">
+            {{ rightButtonText }}
+          </v-btn>
+        </slot>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -15,14 +18,34 @@
 
 <script>
 export default {
+  props: {
+    rightButtonText: {
+      type: String,
+      default: "閉じる",
+    },
+  },
+
   data() {
     return {
-      showMessageDialog: false,
+      dialog: false,
+      loading: false,
     };
   },
   methods: {
-    openMessageDialog() {
-      this.showMessageDialog = true;
+    openDialog() {
+      this.dialog = true;
+    },
+
+    closeDialog() {
+      this.dialog = false;
+    },
+
+    startLoading() {
+      this.loading = true;
+    },
+
+    stopLoading() {
+      this.loading = false;
     },
   },
 };

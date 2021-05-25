@@ -88,7 +88,7 @@ export default {
     async deleteUser() {
       this.deleteLoading = true;
       await usersRepository.deleteUser(this.deleteId);
-      this.$refs.messageDialog.openMessageDialog();
+      this.$refs.messageDialog.openDialog();
       this.getUsers();
       this.deleteDialog = false;
       this.deleteLoading = false;

@@ -119,29 +119,17 @@
         </v-card>
       </v-col>
 
-      <v-dialog
-        v-model="showDialogConfirmCancelReservation"
-        max-width="500px"
-        :retain-focus="false"
+      <MessageDialog
+        ref="dialogConfirmCancelReservation"
+        rightButtonText="いいえ"
       >
-        <v-card :loading="cancelLoading">
-          <v-card-title class="justify-center">
-            本当にキャンセルしますか？
-          </v-card-title>
-          <v-card-actions class="justify-center">
-            <v-btn
-              color="amber"
-              dark
-              @click="showDialogConfirmCancelReservation = false"
-            >
-              いいえ
-            </v-btn>
-            <v-btn color="red" dark @click="deleteReservation">
-              はい
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+        <template #message>本当にキャンセルしますか？</template>
+        <template #leftButton>
+          <v-btn color="red" dark @click="deleteReservation">
+            はい
+          </v-btn>
+        </template>
+      </MessageDialog>
 
       <MessageDialog ref="cancelMessageDialog">
         <template #message>予約をキャンセルしました</template>
@@ -398,10 +386,8 @@ export default {
       showEvaluationDialog: false,
       showDialogUpdateReservation: false,
       showDialogConfirmReservation: false,
-      showDialogConfirmCancelReservation: false,
       showdatePickerMenu: false,
       updateLoading: false,
-      cancelLoading: false,
       today: config.today,
       timeOptions: config.timeOptions,
       numberOptions: config.numberOptions,
@@ -584,7 +570,7 @@ export default {
     },
 
     changeDialog() {
-      this.$refs.updateMessageDialog.openMessageDialog();
+      this.$refs.updateMessageDialog.openDialog();
       this.showDialogUpdateReservation = false;
       this.showDialogConfirmReservation = false;
     },
@@ -608,18 +594,18 @@ export default {
     },
 
     displayCancelDialog(reservation) {
-      this.showDialogConfirmCancelReservation = true;
+      this.$refs.dialogConfirmCancelReservation.openDialog();
       this.slectedReservation = reservation;
     },
 
     async deleteReservation() {
-      this.cancelLoading = true;
+      this.$refs.dialogConfirmCancelReservation.startLoading();
       await reservationsRepository.deleteReservation(
         this.slectedReservation.id
       );
-      this.cancelLoading = false;
-      this.$refs.cancelMessageDialog.openMessageDialog();
-      this.showDialogConfirmCancelReservation = false;
+      this.$refs.dialogConfirmCancelReservation.stopLoading();
+      this.$refs.cancelMessageDialog.openDialog();
+      this.$refs.dialogConfirmCancelReservation.closeDialog();
       this.getUserReservations();
     },
 

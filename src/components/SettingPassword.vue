@@ -117,7 +117,7 @@ export default {
     response() {
       this.resetPasswordForm();
       this.$refs.observer.reset();
-      this.$refs.messageDialog.openMessageDialog();
+      this.$refs.messageDialog.openDialog();
     },
 
     error(e) {

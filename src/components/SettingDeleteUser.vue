@@ -14,30 +14,19 @@
           <v-btn
             color="red lighten-1"
             class="mt-2"
-            @click="showDialogConfirmDeletionUser = true"
+            @click="$refs.messageDialog.openDialog()"
             >アカウントを削除</v-btn
           >
         </v-alert>
 
-        <v-dialog v-model="showDialogConfirmDeletionUser" max-width="500px">
-          <v-card>
-            <v-card-title class="justify-center">
-              本当にアカウントを削除しますか？
-            </v-card-title>
-            <v-card-actions class="justify-center">
-              <v-btn color="red lighten-1" dark @click="deleteUser">
-                削除
-              </v-btn>
-              <v-btn
-                color="amber"
-                dark
-                @click="showDialogConfirmDeletionUser = false"
-              >
-                キャンセル
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+        <MessageDialog ref="messageDialog">
+          <template #message>本当にアカウントを削除しますか？</template>
+          <template #leftButton>
+            <v-btn color="red lighten-1" dark @click="deleteUser">
+              削除
+            </v-btn>
+          </template>
+        </MessageDialog>
       </div>
     </v-card>
   </div>
@@ -48,12 +37,6 @@ import { mapGetters } from "vuex";
 import usersRepository from "../repositories/usersRepository.js";
 
 export default {
-  data() {
-    return {
-      showDialogConfirmDeletionUser: false,
-    };
-  },
-
   computed: {
     ...mapGetters(["user"]),
   },

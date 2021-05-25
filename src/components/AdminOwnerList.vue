@@ -234,7 +234,7 @@ export default {
         password: this.password,
       };
       await ownersRepository.createOwner(sendData);
-      this.$refs.messageDialog.openMessageDialog();
+      this.$refs.messageDialog.openDialog();
       this.getOwners();
       this.confirmDialog = false;
       this.registerDialog = false;
