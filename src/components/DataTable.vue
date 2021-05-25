@@ -19,6 +19,7 @@
       :item-key="itemKey"
       :search="search"
       :loading="loading"
+      :items-per-page="perPage"
       loading-text="ロード中です"
     >
       <template v-slot:top>
@@ -98,6 +99,10 @@ export default {
     titleColor: {
       type: String,
       default: "amber",
+    },
+    perPage: {
+      type: Number,
+      default: 10,
     },
   },
 
