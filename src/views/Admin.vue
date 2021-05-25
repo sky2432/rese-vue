@@ -85,7 +85,7 @@ export default {
     return {
       drawer: null,
       selectedItem: 0,
-      currentComponent: AdminOwnerList,
+      currentComponent: AdminShopList,
     };
   },
 

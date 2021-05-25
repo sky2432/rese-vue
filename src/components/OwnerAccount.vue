@@ -3,10 +3,10 @@
     <div class="container">
       <v-card tile>
         <v-tabs>
-          <v-tab @click="currentComponent = 'SettingNameEmail'"
+          <v-tab @click="currentComponent = 'FormUpdateNameEmail'"
             >名前・メールアドレス</v-tab
           >
-          <v-tab @click="currentComponent = 'SettingPassword'"
+          <v-tab @click="currentComponent = 'FormUpdatePassword'"
             >パスワード</v-tab
           >
         </v-tabs>
@@ -17,18 +17,18 @@
 </template>
 
 <script>
-import SettingNameEmail from "../components/SettingNameEmail";
-import SettingPassword from "../components/SettingPassword";
+import FormUpdateNameEmail from "../components/FormUpdateNameEmail";
+import FormUpdatePassword from "../components/FormUpdatePassword";
 
 export default {
   components: {
-    SettingNameEmail,
-    SettingPassword,
+    FormUpdateNameEmail,
+    FormUpdatePassword,
   },
 
   data() {
     return {
-      currentComponent: SettingNameEmail,
+      currentComponent: FormUpdateNameEmail,
     };
   },
 };

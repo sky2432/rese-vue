@@ -11,14 +11,18 @@
                 <v-list>
                   <v-subheader>設定</v-subheader>
                   <v-list-item-group color="primary" v-model="selectedItem">
-                    <v-list-item @click="currentComponent = 'SettingNameEmail'">
+                    <v-list-item
+                      @click="currentComponent = 'FormUpdateNameEmail'"
+                    >
                       <v-list-item-content>
                         <v-list-item-title
                           >名前・メールアドレス</v-list-item-title
                         >
                       </v-list-item-content>
                     </v-list-item>
-                    <v-list-item @click="currentComponent = 'SettingPassword'">
+                    <v-list-item
+                      @click="currentComponent = 'FormUpdatePassword'"
+                    >
                       <v-list-item-content>
                         <v-list-item-title>パスワード</v-list-item-title>
                       </v-list-item-content>
@@ -46,21 +50,21 @@
 </template>
 
 <script>
-import SettingNameEmail from "../components/SettingNameEmail";
-import SettingPassword from "../components/SettingPassword";
+import FormUpdateNameEmail from "../components/FormUpdateNameEmail";
+import FormUpdatePassword from "../components/FormUpdatePassword";
 import SettingDeleteUser from "../components/SettingDeleteUser";
 
 export default {
   components: {
-    SettingNameEmail,
-    SettingPassword,
+    FormUpdateNameEmail,
+    FormUpdatePassword,
     SettingDeleteUser,
   },
 
   data() {
     return {
       selectedItem: 0,
-      currentComponent: SettingNameEmail,
+      currentComponent: FormUpdateNameEmail,
     };
   },
 };

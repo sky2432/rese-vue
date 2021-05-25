@@ -3,9 +3,9 @@
     <TheHeader></TheHeader>
     <v-main>
       <div class="wrapper">
-        <RegisterForm ref="registerForm" @confirm="confirm">
+        <FormRegister ref="formRegister" @confirm="confirm">
           <template #title>Registration</template>
-        </RegisterForm>
+        </FormRegister>
 
         <ConfirmDialog
           ref="confirmDialog"
@@ -26,12 +26,12 @@
 import usersRepository from "../repositories/usersRepository.js";
 import "../plugins/veeValidate.js";
 import ConfirmDialog from "../components/ConfirmDialog";
-import RegisterForm from "../components/RegisterForm";
+import FormRegister from "../components/FormRegister";
 
 export default {
   components: {
     ConfirmDialog,
-    RegisterForm,
+    FormRegister,
   },
 
   data() {
@@ -51,7 +51,7 @@ export default {
           this.createConfirmDialogData();
         })
         .catch((e) => {
-          this.$refs.registerForm.$refs.observer.setErrors(
+          this.$refs.formRegister.$refs.observer.setErrors(
             e.response.data.errors
           );
         });

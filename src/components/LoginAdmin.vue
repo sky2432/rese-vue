@@ -1,29 +1,29 @@
 <template>
   <div>
-    <LoginForm ref="loginForm" @login="login">
+    <FormLogin ref="formLogin" @login="login">
       <template #title>AdminLogin</template>
-    </LoginForm>
+    </FormLogin>
   </div>
 </template>
 
 <script>
 import authRepository from "../repositories/authRepository";
-import LoginForm from "../components/LoginForm";
+import FormLogin from "../components/FormLogin";
 
 export default {
   components: {
-    LoginForm,
+    FormLogin,
   },
 
   methods: {
     login(sendData) {
       authRepository
-        .login('admin', sendData)
+        .login("admin", sendData)
         .then((response) => {
           this.$store.dispatch("login", response.data);
         })
         .catch((e) => {
-          this.$refs.loginForm.$refs.observer.setErrors(e.response.data.errors);
+          this.$refs.formLogin.$refs.observer.setErrors(e.response.data.errors);
         });
     },
   },

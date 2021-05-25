@@ -25,7 +25,7 @@
       </DataTable>
 
       <v-dialog v-model="registerDialog" max-width="600" persistent>
-        <RegisterForm ref="registerForm" @confirm="confirm">
+        <FormRegister ref="formRegister" @confirm="confirm">
           <template #title>OwnerRegistration</template>
           <template #closeIcon>
             <v-spacer></v-spacer>
@@ -33,7 +33,7 @@
               ><v-icon>mdi-window-close</v-icon></v-btn
             ></template
           >
-        </RegisterForm>
+        </FormRegister>
       </v-dialog>
 
       <ConfirmDialog
@@ -58,13 +58,13 @@
 import ownersRepository from "../repositories/ownersRepository.js";
 import DataTable from "../components/DataTable";
 import ConfirmDialog from "../components/ConfirmDialog";
-import RegisterForm from "../components/RegisterForm";
+import FormRegister from "../components/FormRegister";
 
 export default {
   components: {
     DataTable,
     ConfirmDialog,
-    RegisterForm,
+    FormRegister,
   },
 
   data() {
@@ -99,7 +99,7 @@ export default {
 
     closeRegisterDialog() {
       this.registerDialog = false;
-      this.$refs.registerForm.resetData();
+      this.$refs.formRegister.resetData();
     },
 
     confirm(sendData) {
@@ -111,7 +111,7 @@ export default {
           this.createConfirmDialogData();
         })
         .catch((e) => {
-          this.$refs.registerForm.$refs.observer.setErrors(
+          this.$refs.formRegister.$refs.observer.setErrors(
             e.response.data.errors
           );
         });
