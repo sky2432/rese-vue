@@ -1,5 +1,9 @@
 <template>
-  <ReservationList ref="reservationList" titleColor="white" :perPage="5"></ReservationList>
+  <ReservationList
+    ref="reservationList"
+    titleColor="white"
+    v-bind="{ perPage: 5, ownerType: false, detailType: true }"
+  ></ReservationList>
 </template>
 
 <script>

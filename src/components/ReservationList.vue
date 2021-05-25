@@ -6,12 +6,23 @@
       headers: headers,
       loading: loading,
       reservationStatus: true,
-      perPage: perPage
+      perPage: perPage,
     }"
     itemKey="reservaiton.id"
     :titleColor="titleColor"
   >
     <template #title>
+      <span v-if="ownerType">予約一覧</span>
+      <v-switch
+        v-if="detailType"
+        v-model="showTodayReservations"
+        :value="showTodayReservations"
+        @change="showReservations($event)"
+        label="本日の予約"
+        class="pa-3"
+      ></v-switch>
+    </template>
+    <template #top v-if="ownerType">
       <v-switch
         v-model="showTodayReservations"
         :value="showTodayReservations"
@@ -39,9 +50,17 @@ export default {
       type: String,
     },
     perPage: {
-      type: String,
+      type: Number,
       default: 10,
-    }
+    },
+    ownerType: {
+      type: Boolean,
+      default: true,
+    },
+    detailType: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data() {
@@ -92,9 +111,7 @@ export default {
     },
 
     async getShopReservations(shopId) {
-      const resData = await reservationsRepository.getShopReservations(
-        shopId
-      );
+      const resData = await reservationsRepository.getShopReservations(shopId);
       const reservaitons = this.convetReservationStatus(resData.data.data);
       this.reservations = reservaitons;
       this.sendReservations = reservaitons;
