@@ -6,11 +6,12 @@
       </v-card-title>
       <v-card-actions class="justify-center">
         <slot name="leftButton"></slot>
-        <slot name="rightButton">
+        <slot name="baseButton">
           <v-btn color="amber" dark @click="dialog = false">
-            {{ rightButtonText }}
+            {{ baseButtonText }}
           </v-btn>
         </slot>
+        <slot name="lightButton"></slot>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -19,7 +20,7 @@
 <script>
 export default {
   props: {
-    rightButtonText: {
+    baseButtonText: {
       type: String,
       default: "閉じる",
     },
@@ -31,6 +32,7 @@ export default {
       loading: false,
     };
   },
+
   methods: {
     openDialog() {
       this.dialog = true;

@@ -96,54 +96,16 @@
         </v-card>
       </v-dialog>
 
-      <v-dialog v-model="confirmDialog" width="500" persistent>
-        <v-card :loading="registerLoading">
-          <v-card-title class="amber">
-            登録内容の確認
-          </v-card-title>
-          <v-card-text class="pt-5 pb-0">
-            <v-simple-table>
-              <template v-slot:default>
-                <tbody>
-                  <tr class="table-line">
-                    <th class="text-left">
-                      Name
-                    </th>
-                    <td class="text-left">
-                      {{ name }}
-                    </td>
-                  </tr>
-                  <tr class="table-line">
-                    <th class="text-left">
-                      E-mail
-                    </th>
-                    <td class="text-left">
-                      {{ email }}
-                    </td>
-                  </tr>
-                  <tr class="table-line">
-                    <th class="text-left">
-                      Password
-                    </th>
-                    <td class="text-left">
-                      表示されません
-                    </td>
-                  </tr>
-                </tbody>
-              </template>
-            </v-simple-table>
-          </v-card-text>
-
-          <v-divider></v-divider>
-
-          <v-card-actions class="pb-6 justify-center">
-            <v-btn color="amber" dark @click="confirmDialog = false"
-              >修正</v-btn
-            >
-            <v-btn color="amber" dark @click="register">登録</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+      <ConfirmDialog
+        ref="confirmDialog"
+        :tableData="confirmDialogData"
+        cancellButtonText="修正"
+      >
+        <template #title>登録内容の確認</template>
+        <template #actionButton
+          ><v-btn color="amber" dark @click="register">登録</v-btn></template
+        >
+      </ConfirmDialog>
 
       <MessageDialog ref="messageDialog">
         <template #message>店舗代表者を登録しました</template>
@@ -156,11 +118,13 @@
 import ownersRepository from "../repositories/ownersRepository.js";
 import MessageDialog from "../components/MessageDialog";
 import DataTable from "../components/DataTable";
+import ConfirmDialog from "../components/ConfirmDialog";
 
 export default {
   components: {
     MessageDialog,
     DataTable,
+    ConfirmDialog,
   },
 
   data() {
@@ -171,10 +135,8 @@ export default {
       password: "",
       loading: true,
       registerDialog: false,
-      confirmDialog: false,
       formValid: false,
       showPassword: false,
-      registerLoading: false,
       headers: [
         { text: "オーナーID", value: "id" },
         { text: "名前", value: "name" },
@@ -182,6 +144,7 @@ export default {
         { text: "店舗名", value: "shop.name" },
         { text: "", value: "detail" },
       ],
+      confirmDialogData: [],
     };
   },
 
@@ -219,15 +182,25 @@ export default {
       ownersRepository
         .confirmOwner(sendData)
         .then(() => {
-          this.confirmDialog = true;
+          this.$refs.confirmDialog.openDialog();
+          this.createConfirmDialogData();
         })
         .catch((e) => {
           this.$refs.observer.setErrors(e.response.data.errors);
         });
     },
 
+    createConfirmDialogData() {
+      this.confirmDialogData = [
+        { header: "Name", data: this.name },
+        { header: "E-mail", data: this.email },
+        { header: "Password", data: this.password },
+      ];
+    },
+
     async register() {
-      this.registerLoading = true;
+      this.$refs.confirmDialog.startLoading();
+
       const sendData = {
         name: this.name,
         email: this.email,
@@ -236,9 +209,9 @@ export default {
       await ownersRepository.createOwner(sendData);
       this.$refs.messageDialog.openDialog();
       this.getOwners();
-      this.confirmDialog = false;
+      this.$refs.confirmDialog.closeDialog();
       this.registerDialog = false;
-      this.registerLoading = false;
+      this.$refs.confirmDialog.stopLoading();
     },
 
     moveOwnerDetail(ownerId) {

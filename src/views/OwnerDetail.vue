@@ -110,7 +110,7 @@
 
           <MessageDialog
             ref="dialogConfirmDeletionOwner"
-            rightButtonText="キャンセル"
+            baseButtonText="キャンセル"
           >
             <template #message>本当にオーナーを削除しますか？</template>
             <template #leftButton>
@@ -118,7 +118,7 @@
                 削除
               </v-btn>
             </template>
-            <template #rightButton>
+            <template #baseButton>
               <v-btn color="amber" dark @click="closeDeleteDialog">
                 キャンセル
               </v-btn>
@@ -134,8 +134,6 @@
 import ownersRepository from "../repositories/ownersRepository.js";
 
 export default {
-  components: {},
-
   props: {
     ownerId: {
       type: Number,

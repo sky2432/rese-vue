@@ -121,7 +121,7 @@
 
       <MessageDialog
         ref="dialogConfirmCancelReservation"
-        rightButtonText="いいえ"
+        baseButtonText="いいえ"
       >
         <template #message>本当にキャンセルしますか？</template>
         <template #leftButton>
@@ -140,151 +140,120 @@
           <v-card-title class="headline amber">
             予約変更
           </v-card-title>
-
-          <v-card-text class="pb-0">
-            <div class="mt-5">
-              <v-menu
-                ref="datePickerMenu"
-                v-model="showdatePickerMenu"
-                :close-on-content-click="false"
-                :return-value.sync="visitsDate"
-                transition="scale-transition"
-                offset-y
-                min-width="auto"
-              >
-                <template #activator="{ on, attrs }">
-                  <v-text-field
-                    v-model="visitsDate"
-                    label="日付を選択"
-                    prepend-icon="mdi-calendar"
-                    readonly
-                    v-bind="attrs"
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                  :value="visitsDate"
-                  @input="visitsDate = $event"
-                  no-title
-                  scrollable
-                  :min="today"
+          <validation-observer ref="observer" v-slot="{ invalid }">
+            <v-form v-model="formValid">
+              <v-card-text class="mt-5 px-5">
+                <v-menu
+                  ref="datePickerMenu"
+                  v-model="showdatePickerMenu"
+                  :return-value.sync="visitsDate"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
                 >
-                  <v-spacer></v-spacer>
-                  <v-btn
-                    text
-                    color="primary"
-                    @click="showdatePickerMenu = false"
+                  <template #activator="{ on }">
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="日付"
+                      rules="selectRequired"
+                      vid="date"
+                    >
+                      <v-text-field
+                        v-model="visitsDate"
+                        label="日付を選択"
+                        prepend-icon="mdi-calendar"
+                        readonly
+                        v-on="on"
+                        :error-messages="errors"
+                      ></v-text-field>
+                    </validation-provider>
+                  </template>
+                  <v-date-picker
+                    v-model="visitsDate"
+                    no-title
+                    scrollable
+                    :min="today"
                   >
-                    キャンセル
-                  </v-btn>
-                  <v-btn
-                    text
-                    color="primary"
-                    @click="$refs.datePickerMenu.save(visitsDate)"
-                  >
-                    選択
-                  </v-btn>
-                </v-date-picker>
-              </v-menu>
-              <v-select
-                :items="timeOptions"
-                v-model="visitsTime"
-                label="時刻を選択"
-                prepend-icon="mdi-clock-time-eight-outline"
-              ></v-select>
-              <v-select
-                :items="numberOptions"
-                item-text="state"
-                item-value="abbr"
-                v-model="visitsNumber"
-                label="人数を選択"
-                prepend-icon="mdi-account"
-              ></v-select>
-            </div>
-          </v-card-text>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      text
+                      color="primary"
+                      @click="showdatePickerMenu = false"
+                    >
+                      キャンセル
+                    </v-btn>
+                    <v-btn
+                      text
+                      color="primary"
+                      @click="$refs.datePickerMenu.save(visitsDate)"
+                    >
+                      選択
+                    </v-btn>
+                  </v-date-picker>
+                </v-menu>
 
-          <v-divider></v-divider>
+                <validation-provider
+                  v-slot="{ errors }"
+                  name="時刻"
+                  rules="selectRequired"
+                  vid="time"
+                >
+                  <v-select
+                    v-model="visitsTime"
+                    :items="timeOptions"
+                    label="時刻を選択"
+                    prepend-icon="mdi-clock-time-eight-outline"
+                    :error-messages="errors"
+                  ></v-select>
+                </validation-provider>
 
-          <v-card-actions class="pb-6">
-            <v-spacer></v-spacer>
-            <v-btn
-              color="red"
-              class="white--text"
-              @click="showDialogUpdateReservation = false"
-            >
-              キャンセル
-            </v-btn>
-            <v-btn
-              color="amber"
-              class="white--text"
-              @click="showDialogConfirmReservation = true"
-            >
-              確認
-            </v-btn>
-          </v-card-actions>
+                <validation-provider
+                  v-slot="{ errors }"
+                  name="人数"
+                  rules="selectRequired"
+                  vid="number"
+                >
+                  <v-select
+                    :items="numberOptions"
+                    item-text="state"
+                    item-value="abbr"
+                    v-model="visitsNumber"
+                    label="人数を選択"
+                    prepend-icon="mdi-account"
+                    :error-messages="errors"
+                  ></v-select>
+                </validation-provider>
+              </v-card-text>
+
+              <v-divider></v-divider>
+
+              <v-card-actions class="justify-center pb-5">
+                <v-spacer></v-spacer>
+                <v-btn
+                  color="red"
+                  class="white--text"
+                  @click="showDialogUpdateReservation = false"
+                >
+                  キャンセル
+                </v-btn>
+                <v-btn color="amber" dark @click="checkTime" :disabled="invalid"
+                  >確認</v-btn
+                >
+              </v-card-actions>
+            </v-form>
+          </validation-observer>
         </v-card>
-
-        <v-dialog v-model="showDialogConfirmReservation" width="500" persistent>
-          <v-card :loading="updateLoading">
-            <v-card-title class="amber">
-              変更内容の確認
-            </v-card-title>
-            <v-card-text class="pt-5 pb-0">
-              <v-simple-table>
-                <template v-slot:default>
-                  <tbody>
-                    <tr>
-                      <th class="text-left">
-                        店舗名
-                      </th>
-                      <td class="text-left">
-                        {{ selectedShop.name }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <th class="text-left">
-                        日付
-                      </th>
-                      <td class="text-left">
-                        {{ visitsDate }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <th class="text-left">
-                        時刻
-                      </th>
-                      <td class="text-left">
-                        {{ visitsTime }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <th class="text-left">
-                        人数
-                      </th>
-                      <td class="text-left">
-                        {{ visitsNumber }}<span v-if="visitsNumber">名</span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </template>
-              </v-simple-table>
-            </v-card-text>
-
-            <v-divider></v-divider>
-
-            <v-card-actions class="pb-6">
-              <v-spacer></v-spacer>
-              <v-btn
-                color="red"
-                dark
-                @click="showDialogConfirmReservation = false"
-                >キャンセル</v-btn
-              >
-              <v-btn color="amber" dark @click="updateReservation">変更</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
       </v-dialog>
+
+      <ConfirmDialog ref="confirmDialog" :tableData="confirmDialogData">
+        <template #title>変更内容の確認</template>
+        <template #actionButton
+          ><v-btn color="amber" dark @click="updateReservation"
+            >変更</v-btn
+          ></template
+        >
+      </ConfirmDialog>
 
       <MessageDialog ref="updateMessageDialog">
         <template #message>予約を変更しました</template>
@@ -310,6 +279,7 @@
               hover
               color="amber"
             ></v-rating>
+            
           </v-card-text>
           <v-card-actions class="justify-center">
             <v-btn
@@ -365,15 +335,18 @@ import reservationsRepository from "../repositories/reservationsRepository.js";
 import evaluationsRepository from "../repositories/evaluationsRepository";
 import config from "../config/const.js";
 import "../plugins/veeValidate.js";
+import ConfirmDialog from "../components/ConfirmDialog";
 
 export default {
   components: {
     MessageDialog,
+    ConfirmDialog,
   },
 
   data() {
     return {
       shops: [],
+      formValid: false,
       selectedShop: "",
       selectedEvaluation: "",
       slectedReservation: "",
@@ -385,14 +358,13 @@ export default {
       showDialogEditEvaluation: false,
       showEvaluationDialog: false,
       showDialogUpdateReservation: false,
-      showDialogConfirmReservation: false,
       showdatePickerMenu: false,
-      updateLoading: false,
       today: config.today,
       timeOptions: config.timeOptions,
       numberOptions: config.numberOptions,
       loading: true,
       loaded: false,
+      confirmDialogData: [],
     };
   },
 
@@ -486,6 +458,30 @@ export default {
   },
 
   methods: {
+    checkTime() {
+      const now = new Date();
+      const dayTime = `${this.visitsDate} ${this.visitsTime}`;
+      const selected = new Date(dayTime);
+      if (now > selected) {
+        this.$refs.observer.setErrors({
+          time: ["現在時刻よりも後の時刻を選択してください"],
+        });
+      }
+      if (now <= selected) {
+        this.$refs.confirmDialog.openDialog();
+        this.createConfirmDialogData();
+      }
+    },
+
+    createConfirmDialogData() {
+      this.confirmDialogData = [
+        { header: "店舗名", data: this.selectedShop.name },
+        { header: "日付", data: this.visitsDate },
+        { header: "時刻", data: this.visitsTime },
+        { header: "人数", data: this.visitsNumber },
+      ];
+    },
+
     convertDateFormat(date, format) {
       format = format.replace(/YYYY/, date.substr(0, 4));
       format = format.replace(/MM/, date.substr(5, 2));
@@ -554,7 +550,7 @@ export default {
     },
 
     async updateReservation() {
-      this.updateLoading = true;
+      this.$refs.confirmDialog.startLoading();
       const sendData = {
         visited_on: `${this.visitsDate} ${this.visitsTime}`,
         number_of_visiters: this.visitsNumber,
@@ -563,7 +559,7 @@ export default {
         this.selectedShop.reservation.id,
         sendData
       );
-      this.updateLoading = false;
+      this.$refs.confirmDialog.stopLoading();
       this.changeDialog();
       this.resetUpdateData();
       this.getUserReservations();
@@ -572,7 +568,7 @@ export default {
     changeDialog() {
       this.$refs.updateMessageDialog.openDialog();
       this.showDialogUpdateReservation = false;
-      this.showDialogConfirmReservation = false;
+      this.$refs.confirmDialog.closeDialog();
     },
 
     resetUpdateData() {

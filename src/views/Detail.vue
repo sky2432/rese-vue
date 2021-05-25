@@ -129,72 +129,22 @@
                   </v-card-text>
 
                   <v-card-actions class="justify-center pb-5">
-                    <v-btn @click="checkTime" :disabled="invalid">予約</v-btn>
+                    <v-btn color="amber" @click="checkTime" :disabled="invalid"
+                      >確認</v-btn
+                    >
                   </v-card-actions>
                 </v-form>
               </validation-observer>
             </v-card>
 
-            <v-dialog v-model="showReservationDialog" width="500" persistent>
-              <v-card :loading="reservationLoading">
-                <v-card-title class="amber">
-                  予約内容の確認
-                </v-card-title>
-                <v-card-text class="pt-5 pb-0">
-                  <v-simple-table>
-                    <template v-slot:default>
-                      <tbody>
-                        <tr>
-                          <th class="text-left">
-                            店舗名
-                          </th>
-                          <td class="text-left">
-                            {{ shop.name }}
-                          </td>
-                        </tr>
-                        <tr>
-                          <th class="text-left">
-                            日付
-                          </th>
-                          <td class="text-left">
-                            {{ visitsDate }}
-                          </td>
-                        </tr>
-                        <tr>
-                          <th class="text-left">
-                            時刻
-                          </th>
-                          <td class="text-left">
-                            {{ visitsTime }}
-                          </td>
-                        </tr>
-                        <tr>
-                          <th class="text-left">
-                            人数
-                          </th>
-                          <td class="text-left">
-                            {{ visitsNumber
-                            }}<span v-if="visitsNumber">名</span>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </template>
-                  </v-simple-table>
-                </v-card-text>
-
-                <v-divider></v-divider>
-
-                <v-card-actions class="pb-6">
-                  <v-spacer></v-spacer>
-                  <v-btn color="red" dark @click="showReservationDialog = false"
-                    >キャンセル</v-btn
-                  >
-                  <v-btn color="amber" dark @click="createReservation"
-                    >予約</v-btn
-                  >
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
+            <ConfirmDialog ref="confirmDialog" :tableData="confirmDialogData">
+              <template #title>予約内容の確認</template>
+              <template #actionButton
+                ><v-btn color="amber" dark @click="createReservation"
+                  >予約</v-btn
+                ></template
+              >
+            </ConfirmDialog>
           </v-col>
         </v-row>
       </v-container>
@@ -208,8 +158,13 @@ import config from "../config/const.js";
 import { mapGetters } from "vuex";
 import shopsRepository from "../repositories/shopsRepository.js";
 import reservationsRepository from "../repositories/reservationsRepository";
+import ConfirmDialog from "../components/ConfirmDialog";
 
 export default {
+  components: {
+    ConfirmDialog,
+  },
+
   props: {
     shopId: {
       type: Number,
@@ -225,13 +180,12 @@ export default {
       visitsNumber: "",
       formValid: false,
       showdatePickerMenu: false,
-      showReservationDialog: false,
       today: config.today,
       timeOptions: config.timeOptions,
       numberOptions: config.numberOptions,
       loading: true,
       loaded: false,
-      reservationLoading: false,
+      confirmDialogData: [],
     };
   },
 
@@ -254,8 +208,18 @@ export default {
         });
       }
       if (now <= selected) {
-        this.showReservationDialog = true;
+        this.$refs.confirmDialog.openDialog();
+        this.createConfirmDialogData();
       }
+    },
+
+    createConfirmDialogData() {
+      this.confirmDialogData = [
+        { header: "店舗名", data: this.shop.name },
+        { header: "日付", data: this.visitsDate },
+        { header: "時刻", data: this.visitsTime },
+        { header: "人数", data: this.visitsNumber },
+      ];
     },
 
     async getShop() {
@@ -266,7 +230,7 @@ export default {
     },
 
     async createReservation() {
-      this.reservationLoading = true;
+      this.$refs.confirmDialog.startLoading();
       const sendData = {
         user_id: this.user.id,
         shop_id: this.shop.id,
@@ -275,7 +239,6 @@ export default {
       };
       await reservationsRepository.createReservation(sendData);
       this.$router.push("/done");
-      this.reservationLoading = false;
     },
   },
 };
