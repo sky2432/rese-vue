@@ -21,6 +21,9 @@
       :loading="loading"
       loading-text="ロード中です"
     >
+      <template v-slot:top>
+        <slot name="top"></slot>
+      </template>
       <template v-slot:[`item.name`]="{ item }" v-if="avatar">
         <v-avatar color="white" size="35">
           <v-img :src="item.image_url"></v-img>
@@ -34,6 +37,14 @@
       </template>
       <template v-slot:[`item.delete`]="{ item }" v-if="deletion">
         <v-icon @click="openDeleteDialog(item.id)">mdi-delete</v-icon>
+      </template>
+      <template
+        v-if="reservationStatus"
+        v-slot:[`item.reservation.status`]="{ item }"
+      >
+        <v-chip :color="getStatusColor(item.reservation.status)" dark>
+          {{ item.reservation.status }}
+        </v-chip>
       </template>
       <template v-slot:no-data>
         <slot name="noData"></slot>
@@ -76,6 +87,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    reservationStatus: {
+      type: Boolean,
+      default: false,
+    },
     itemKey: {
       type: String,
       default: "id",
@@ -86,6 +101,22 @@ export default {
     return {
       search: "",
     };
+  },
+
+  computed: {
+    getStatusColor() {
+      return function(status) {
+        if (status === "予約中") {
+          return "green";
+        }
+        if (status === "来店済み") {
+          return "amber";
+        }
+        if (status === "キャンセル") {
+          return "red";
+        }
+      };
+    },
   },
 
   methods: {

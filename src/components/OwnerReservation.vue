@@ -1,6 +1,6 @@
 <template>
   <v-container class="py-4 px-6" fluid>
-    <v-card>
+    <!-- <v-card>
       <v-card-title class="amber">
         予約一覧
         <v-spacer></v-spacer>
@@ -36,20 +36,50 @@
           {{ item.reservation.number_of_visiters }}名
         </template>
         <template v-slot:no-data>
-          予約がありません
+          予約はありません
         </template>
         <template v-slot:no-results>
           検索条件に当てはまる予約はありません
         </template>
       </v-data-table>
-    </v-card>
+    </v-card> -->
+    <DataTable
+      label="検索"
+      v-bind="{
+        tableData: sendReservations,
+        headers: headers,
+        loading: loading,
+      }"
+      :reservationStatus="true"
+      itemKey="reservaiton.id"
+    >
+      <template #title>
+        予約一覧
+      </template>
+      <template #top>
+        <v-switch
+          v-model="showTodayReservations"
+          :value="showTodayReservations"
+          @change="showReservations($event)"
+          label="本日の予約"
+          class="pa-3"
+        ></v-switch>
+      </template>
+      <template #noData>予約はありません</template>
+      <template #noResults>検索条件に当てはまる予約はありません</template>
+    </DataTable>
   </v-container>
 </template>
 
 <script>
 import reservationsRepository from "../repositories/reservationsRepository";
+import DataTable from "../components/DataTable";
 
 export default {
+  components: {
+    DataTable,
+  },
+
   props: {
     shopId: {
       type: Number,
@@ -62,10 +92,10 @@ export default {
 
   data() {
     return {
-      search: "",
       loading: true,
-      showTodayReservations: false,
+      showTodayReservations: null,
       reservations: [],
+      sendReservations: [],
       headers: [
         {
           text: "予約ID",
@@ -78,43 +108,6 @@ export default {
         { text: "来店日時", value: "reservation.visited_on" },
       ],
     };
-  },
-
-  computed: {
-    showReservations() {
-      if (this.showTodayReservations === false) {
-        return this.reservations;
-      }
-      //本日の予約のみを表示
-      if (this.showTodayReservations === true) {
-        let todayReservations = [];
-        const today = this.$helpers.$_createToday();
-        for (let i in this.reservations) {
-          const reservations = this.reservations[i];
-          const reserveDate = this.$helpers.$_createSpecificDate(
-            reservations.reservation.visited_on
-          );
-          if (today.getTime() === reserveDate.getTime()) {
-            todayReservations.push(reservations);
-          }
-        }
-        return todayReservations;
-      }
-    },
-
-    getStatusColor() {
-      return function(status) {
-        if (status === "予約中") {
-          return "green";
-        }
-        if (status === "来店済み") {
-          return "amber";
-        }
-        if (status === "キャンセル") {
-          return "red";
-        }
-      };
-    },
   },
 
   //タブ切り替えした際に発火
@@ -143,11 +136,35 @@ export default {
   },
 
   methods: {
+    showReservations(event) {
+      this.showTodayReservations = event;
+      if (this.showTodayReservations === null) {
+        this.sendReservations = this.reservations;
+      }
+      //本日の予約のみを表示
+      if (this.showTodayReservations === true) {
+        let todayReservations = [];
+        const today = this.$helpers.$_createToday();
+        for (let i in this.reservations) {
+          const reservations = this.reservations[i];
+          const reserveDate = this.$helpers.$_createSpecificDate(
+            reservations.reservation.visited_on
+          );
+          if (today.getTime() === reserveDate.getTime()) {
+            todayReservations.push(reservations);
+          }
+        }
+        this.sendReservations = todayReservations;
+      }
+    },
+
     async getShopReservations() {
       const resData = await reservationsRepository.getShopReservations(
         this.shopId
       );
-      this.reservations = this.convetReservationStatus(resData.data.data);
+      const reservaitons = this.convetReservationStatus(resData.data.data);
+      this.reservations = reservaitons;
+      this.sendReservations = reservaitons;
       this.loading = false;
     },
 
