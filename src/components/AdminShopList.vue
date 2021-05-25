@@ -1,7 +1,7 @@
 <template>
   <v-main>
     <v-container class="py-4 px-6" fluid>
-      <v-card>
+      <!-- <v-card>
         <v-card-title class="amber">
           店舗リスト
           <v-spacer></v-spacer>
@@ -39,20 +39,37 @@
             検索条件に当てはまる店舗はありません
           </template>
         </v-data-table>
-      </v-card>
+      </v-card> -->
+      <DataTable
+        ref="dataTable"
+        v-bind="{ tableData: shops, headers: headers }"
+        label="ID・店名・エリア・ジャンルで検索"
+        :avatar="true"
+        :detail="true"
+        @move-page="moveShopDetail"
+      >
+        <template #title>
+          店舗リスト
+        </template>
+        <template #noData>店舗はありません</template>
+        <template #noResults>検索条件に当てはまる店舗はありません</template>
+      </DataTable>
     </v-container>
   </v-main>
 </template>
 
 <script>
 import shopsRepository from "../repositories/shopsRepository";
+import DataTable from "../components/DataTable";
 
 export default {
+  components: {
+    DataTable,
+  },
+
   data() {
     return {
       shops: [],
-      search: "",
-      loading: true,
       headers: [
         { text: "店舗ID", value: "id" },
         { text: "店名", value: "name" },
@@ -63,8 +80,6 @@ export default {
     };
   },
 
-  computed: {},
-
   created() {
     this.getShops();
   },
@@ -73,7 +88,7 @@ export default {
     async getShops() {
       const resData = await shopsRepository.getShops();
       this.shops = resData.data.data;
-      this.loading = false;
+      this.$refs.dataTable.stopLoading();
     },
 
     moveShopDetail(shopId) {
