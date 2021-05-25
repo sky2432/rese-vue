@@ -1,45 +1,4 @@
 <template>
-  <!-- <v-card tile>
-    <v-card-title>
-      <v-switch
-        v-model="showTodayReservations"
-        label="本日の予約"
-        class="pa-3"
-      ></v-switch>
-      <v-spacer></v-spacer>
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="検索"
-        single-line
-        hide-details
-      ></v-text-field>
-    </v-card-title>
-    <v-data-table
-      :headers="headers"
-      :items="showReservations"
-      item-key="reservaiton.id"
-      :search="search"
-      :loading="loading"
-      :items-per-page="5"
-      loading-text="予約を取得中です"
-    >
-      <template v-slot:[`item.reservation.status`]="{ item }">
-        <v-chip :color="getStatusColor(item.reservation.status)" dark>
-          {{ item.reservation.status }}
-        </v-chip>
-      </template>
-      <template v-slot:[`item.reservation.number_of_visiters`]="{ item }">
-        {{ item.reservation.number_of_visiters }}名
-      </template>
-      <template v-slot:no-data>
-        予約がありません
-      </template>
-      <template v-slot:no-results>
-        検索条件に当てはまる予約はありません
-      </template>
-    </v-data-table>
-  </v-card> -->
   <DataTable
     label="検索"
     v-bind="{

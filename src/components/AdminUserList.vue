@@ -1,40 +1,7 @@
 <template>
   <v-main>
     <v-container class="py-4 px-6" fluid>
-      <!-- <v-card>
-        <v-card-title class="amber">
-          ユーザーリスト
-          <v-spacer></v-spacer>
-          <v-text-field
-            v-model="search"
-            append-icon="mdi-magnify"
-            label="ID・名前・メールアドレスで検索"
-            single-line
-            hide-details
-          ></v-text-field>
-        </v-card-title>
-        <v-data-table
-          :headers="headers"
-          :items="users"
-          :search="search"
-          :loading="loading"
-          item-key="id"
-          loading-text="ロード中です"
-        >
-          <template v-slot:[`item.delete`]="{ item }">
-            <v-icon @click="openDeleteDialog(item.id)">mdi-delete</v-icon>
-          </template>
-          <template v-slot:no-data>
-            ユーザーはいません
-          </template>
-          <template v-slot:no-results>
-            検索条件に当てはまるユーザーはいません
-          </template>
-        </v-data-table>
-      </v-card> -->
-
       <DataTable
-
         ref="dataTable"
         label="ID・名前・メールアドレスで検索"
         v-bind="{ tableData: users, headers: headers, loading: loading }"
@@ -97,8 +64,6 @@ export default {
       ],
     };
   },
-
-  computed: {},
 
   created() {
     this.getUsers();

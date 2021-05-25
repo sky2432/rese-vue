@@ -1,45 +1,6 @@
 <template>
   <v-main>
     <v-container class="py-4 px-6" fluid>
-      <!-- <v-card>
-        <v-card-title class="amber">
-          店舗リスト
-          <v-spacer></v-spacer>
-          <v-text-field
-            v-model="search"
-            append-icon="mdi-magnify"
-            label="ID・店名・エリア・ジャンルで検索"
-            single-line
-            hide-details
-          ></v-text-field>
-        </v-card-title>
-        <v-data-table
-          :headers="headers"
-          :items="shops"
-          :search="search"
-          :loading="loading"
-          item-key="id"
-          loading-text="ロード中です"
-        >
-          <template v-slot:[`item.name`]="{ item }">
-            <v-avatar color="white" size="35">
-              <v-img :src="item.image_url"></v-img>
-            </v-avatar>
-            {{ item.name }}
-          </template>
-          <template v-slot:[`item.detail`]="{ item }">
-            <v-btn color="amber" dark outlined @click="moveShopDetail(item.id)"
-              >詳細</v-btn
-            >
-          </template>
-          <template v-slot:no-data>
-            店舗はありません
-          </template>
-          <template v-slot:no-results>
-            検索条件に当てはまる店舗はありません
-          </template>
-        </v-data-table>
-      </v-card> -->
       <DataTable
         ref="dataTable"
         label="ID・店名・エリア・ジャンルで検索"
