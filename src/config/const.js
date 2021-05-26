@@ -1,6 +1,8 @@
 export default Object.freeze({
   today: new Date().toISOString().slice(0, 10),
   timeOptions: [
+    "09:00",
+    "09:30",
     "10:00",
     "10:30",
     "11:00",
