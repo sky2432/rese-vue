@@ -101,15 +101,14 @@ export default {
 
   methods: {
     checkTime(sendData) {
-      const now = new Date();
-      const dayTime = `${sendData.visitsDate} ${sendData.visitsTime}`;
-      const selected = new Date(dayTime);
-      if (now > selected) {
+      const dateTime = `${sendData.visitsDate} ${sendData.visitsTime}`;
+      const result = this.$helpers.$_isBeforeThanNow(dateTime);
+      if (result) {
         this.$refs.formReservation.$refs.observer.setErrors({
           time: ["現在時刻よりも後の時刻を選択してください"],
         });
       }
-      if (now <= selected) {
+      if (!result) {
         this.reservationData = sendData;
         this.$refs.confirmDialog.openDialog();
         this.createConfirmDialogData(sendData);
@@ -117,12 +116,12 @@ export default {
     },
 
     createConfirmDialogData(sendData) {
-      this.confirmDialogData = [
-        { header: "店舗名", data: this.shop.name },
-        { header: "日付", data: sendData.visitsDate },
-        { header: "時刻", data: sendData.visitsTime },
-        { header: "人数", data: sendData.visitsNumber },
-      ];
+      this.confirmDialogData = this.$helpers.$_createDataConfirmReservation(
+        this.shop.name,
+        sendData.visitsDate,
+        sendData.visitsTime,
+        sendData.visitsNumber
+      );
     },
 
     async createReservation() {

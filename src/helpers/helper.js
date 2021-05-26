@@ -25,4 +25,24 @@ export default {
     );
     return specificDate;
   },
+
+  $_isBeforeThanNow(dateTime) {
+    const now = new Date();
+    const selected = new Date(dateTime);
+    if (now > selected) {
+      return true;
+    }
+    if (now <= selected) {
+      return false;
+    }
+  },
+
+  $_createDataConfirmReservation(name, date, time, number) {
+    return [
+      { header: "店舗名", data: name },
+      { header: "日付", data: date },
+      { header: "時刻", data: time },
+      { header: "人数", data: `${number}名` },
+    ];
+  },
 };

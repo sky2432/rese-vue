@@ -132,7 +132,7 @@
         <template #message>予約をキャンセルしました</template>
       </BaseDialog>
 
-      <v-dialog v-model="showDialogUpdateReservation" width="500" persistent>
+      <v-dialog v-model="DialogUpdateReservation" width="500" persistent>
         <FormReservation
           v-bind="{
             date: visitsDate,
@@ -144,11 +144,7 @@
         >
           <template #title>予約の変更</template>
           <template #leftButton
-            ><v-btn
-              color="red"
-              dark
-              @click="showDialogUpdateReservation = false"
-            >
+            ><v-btn color="red" dark @click="DialogUpdateReservation = false">
               キャンセル
             </v-btn></template
           >
@@ -229,7 +225,7 @@ export default {
       visitsNumber: 0,
       evaluation: 0,
       updatedEvaluation: 0,
-      showDialogUpdateReservation: false,
+      DialogUpdateReservation: false,
       loading: true,
       loaded: false,
       reservationData: "",
@@ -403,7 +399,7 @@ export default {
 
     //予約
     displayDialogUpdateReservation(shop) {
-      this.showDialogUpdateReservation = true;
+      this.DialogUpdateReservation = true;
       this.setReservationUpdateData(shop);
     },
 
@@ -415,15 +411,14 @@ export default {
     },
 
     checkTime(sendData) {
-      const now = new Date();
-      const dayTime = `${sendData.visitsDate} ${sendData.visitsTime}`;
-      const selected = new Date(dayTime);
-      if (now > selected) {
+      const dateTime = `${sendData.visitsDate} ${sendData.visitsTime}`;
+      const result = this.$helpers.$_isBeforeThanNow(dateTime);
+      if (result) {
         this.$refs.formReservation.$refs.observer.setErrors({
           time: ["現在時刻よりも後の時刻を選択してください"],
         });
       }
-      if (now <= selected) {
+      if (!result) {
         this.reservationData = sendData;
         this.$refs.confirmDialog.openDialog();
         this.createConfirmDialogData(sendData);
@@ -431,12 +426,12 @@ export default {
     },
 
     createConfirmDialogData(sendData) {
-      this.confirmDialogData = [
-        { header: "店舗名", data: this.selectedShop.name },
-        { header: "日付", data: sendData.visitsDate },
-        { header: "時刻", data: sendData.visitsTime },
-        { header: "人数", data: `${sendData.visitsNumber}名` },
-      ];
+      this.confirmDialogData = this.$helpers.$_createDataConfirmReservation(
+        this.selectedShop.name,
+        sendData.visitsDate,
+        sendData.visitsTime,
+        sendData.visitsNumber
+      );
     },
 
     async updateReservation() {
@@ -457,7 +452,7 @@ export default {
 
     changeDialog() {
       this.$refs.updateBaseDialog.openDialog();
-      this.showDialogUpdateReservation = false;
+      this.DialogUpdateReservation = false;
       this.$refs.confirmDialog.closeDialog();
     },
 
