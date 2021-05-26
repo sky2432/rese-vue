@@ -7,7 +7,7 @@
           <template #title>Registration</template>
         </FormRegister>
 
-        <ConfirmDialog
+        <DialogConfirm
           ref="confirmDialog"
           :tableData="confirmDialogData"
           cancellButtonText="修正"
@@ -16,7 +16,7 @@
           <template #actionButton
             ><v-btn color="amber" dark @click="register">登録</v-btn></template
           >
-        </ConfirmDialog>
+        </DialogConfirm>
       </div>
     </v-main>
   </div>
@@ -25,12 +25,12 @@
 <script>
 import usersRepository from "../repositories/usersRepository.js";
 import "../plugins/veeValidate.js";
-import ConfirmDialog from "../components/ConfirmDialog";
+import DialogConfirm from "../components/DialogConfirm";
 import FormRegister from "../components/FormRegister";
 
 export default {
   components: {
-    ConfirmDialog,
+    DialogConfirm,
     FormRegister,
   },
 

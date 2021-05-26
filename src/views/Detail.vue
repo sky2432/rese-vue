@@ -45,14 +45,14 @@
               <template #title>予約</template>
             </FormReservation>
 
-            <ConfirmDialog ref="confirmDialog" :tableData="confirmDialogData">
+            <DialogConfirm ref="confirmDialog" :tableData="confirmDialogData">
               <template #title>予約内容の確認</template>
               <template #actionButton
                 ><v-btn color="amber" dark @click="createReservation"
                   >予約</v-btn
                 ></template
               >
-            </ConfirmDialog>
+            </DialogConfirm>
           </v-col>
         </v-row>
       </v-container>
@@ -65,13 +65,13 @@ import "../plugins/veeValidate.js";
 import { mapGetters } from "vuex";
 import shopsRepository from "../repositories/shopsRepository.js";
 import reservationsRepository from "../repositories/reservationsRepository";
-import ConfirmDialog from "../components/ConfirmDialog";
+import DialogConfirm from "../components/DialogConfirm";
 import FormReservation from "../components/FormReservation";
 
 export default {
   components: {
     FormReservation,
-    ConfirmDialog,
+    DialogConfirm,
   },
 
   props: {

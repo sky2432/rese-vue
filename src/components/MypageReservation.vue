@@ -151,14 +151,14 @@
         </FormReservation>
       </v-dialog>
 
-      <ConfirmDialog ref="confirmDialog" :tableData="confirmDialogData">
+      <DialogConfirm ref="confirmDialog" :tableData="confirmDialogData">
         <template #title>変更内容の確認</template>
         <template #actionButton
           ><v-btn color="amber" dark @click="updateReservation"
             >変更</v-btn
           ></template
         >
-      </ConfirmDialog>
+      </DialogConfirm>
 
       <BaseDialog ref="updateBaseDialog">
         <template #message>予約を変更しました</template>
@@ -203,14 +203,14 @@ import "../plugins/veeValidate.js";
 import { mapGetters } from "vuex";
 import reservationsRepository from "../repositories/reservationsRepository.js";
 import evaluationsRepository from "../repositories/evaluationsRepository";
-import ConfirmDialog from "../components/ConfirmDialog";
+import DialogConfirm from "../components/DialogConfirm";
 import DialogEvaluation from "../components/DialogEvaluation";
 import FormReservation from "../components/FormReservation";
 
 export default {
   components: {
     FormReservation,
-    ConfirmDialog,
+    DialogConfirm,
     DialogEvaluation,
   },
 

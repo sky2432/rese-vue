@@ -36,7 +36,7 @@
         </FormRegister>
       </v-dialog>
 
-      <ConfirmDialog
+      <DialogConfirm
         ref="confirmDialog"
         :tableData="confirmDialogData"
         cancellButtonText="修正"
@@ -45,7 +45,7 @@
         <template #actionButton
           ><v-btn color="amber" dark @click="register">登録</v-btn></template
         >
-      </ConfirmDialog>
+      </DialogConfirm>
 
       <BaseDialog ref="baseDialog">
         <template #message>店舗代表者を登録しました</template>
@@ -57,13 +57,13 @@
 <script>
 import ownersRepository from "../repositories/ownersRepository.js";
 import DataTable from "../components/DataTable";
-import ConfirmDialog from "../components/ConfirmDialog";
+import DialogConfirm from "../components/DialogConfirm";
 import FormRegister from "../components/FormRegister";
 
 export default {
   components: {
     DataTable,
-    ConfirmDialog,
+    DialogConfirm,
     FormRegister,
   },
 
