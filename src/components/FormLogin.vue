@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="white pa-5" elevation="2" outlined shaped tile width="600px">
+    <v-card class="white pa-5" elevation="2" width="600px" outlined shaped tile>
       <v-card-title>
         <slot name="title"></slot>
       </v-card-title>

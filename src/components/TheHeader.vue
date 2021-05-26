@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app class="amber" light>
+  <v-app-bar class="amber" light app>
     <v-container>
       <v-row class="align-center">
         <v-col>
@@ -18,9 +18,7 @@
 </template>
 
 <script>
-export default {
-
-};
+export default {};
 </script>
 
 <style scoped>

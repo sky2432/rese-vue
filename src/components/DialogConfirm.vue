@@ -1,12 +1,12 @@
 <template>
-  <v-dialog v-model="dialog" max-width="500" persistent>
+  <v-dialog max-width="500" persistent v-model="dialog">
     <v-card :loading="loading">
       <v-card-title class="amber">
         <slot name="title"></slot>
       </v-card-title>
       <v-card-text class="pt-5 pb-0">
         <v-simple-table>
-          <template v-slot:default>
+          <template #default>
             <tbody>
               <tr v-for="item in tableData" :key="item.header">
                 <th>{{ item.header }}</th>

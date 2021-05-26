@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" max-width="500px">
+  <v-dialog max-width="500px" v-model="dialog">
     <v-card :loading="loading">
       <v-card-title class="justify-center">
         <slot name="message"></slot>

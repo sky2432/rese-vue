@@ -2,13 +2,13 @@
   <div>
     <v-card tile height="400px">
       <div
-        v-if="loading"
-        style="height: 100%"
         class="d-flex justify-center align-center"
+        style="height: 100%"
+        v-if="loading"
       >
         <v-progress-circular indeterminate color="amber"></v-progress-circular>
       </div>
-      <v-row v-if="loaded" class="ma-0">
+      <v-row class="ma-0" v-if="loaded">
         <v-col cols="6">
           <v-img :src="shop.image_url" height="370"></v-img>
         </v-col>
@@ -16,14 +16,14 @@
           <v-card elevation="0" tile>
             <v-card-title class="amber">{{ shop.name }}</v-card-title>
             <v-card-text>
-              <v-row align="center" class="mx-0 mt-5">
+              <v-row class="mx-0 mt-5" align="center">
                 <v-rating
                   :value="shop.evaluation"
                   color="amber"
+                  size="14"
                   dense
                   half-increments
                   readonly
-                  size="14"
                 ></v-rating>
 
                 <div class="ml-1">
@@ -56,7 +56,7 @@
       </v-row>
     </v-card>
 
-    <v-dialog v-model="warnDialog" width="500px">
+    <v-dialog width="500px" v-model="warnDialog">
       <v-card>
         <v-card-title class="amber"
           >※注意事項
@@ -66,14 +66,14 @@
           >
         </v-card-title>
         <v-card-text class="mt-4">
-          <v-alert prominent type="error" text class="text-center mb-0">
+          <v-alert class="text-center mb-0" type="error" prominent text>
             <h3>必ずご確認ください</h3>
             <p>
               店舗を削除すると、店舗に関係する全ての情報が削除されます。
             </p>
             <v-btn
-              color="red lighten-1"
               class="mt-2"
+              color="red lighten-1"
               @click="$refs.dialogConfirmDeletionShop.openDialog()"
               >店舗を削除</v-btn
             >

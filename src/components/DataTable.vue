@@ -5,22 +5,22 @@
       <v-spacer></v-spacer>
       <v-text-field
         class="pt-0 mr-4"
-        v-model="search"
         append-icon="mdi-magnify"
+        hide-details
         :label="label"
         single-line
-        hide-details
+        v-model="search"
       ></v-text-field>
       <slot name="addButton"></slot>
     </v-card-title>
     <v-data-table
-      :items="tableData"
       :headers="headers"
+      :items="tableData"
       :item-key="itemKey"
-      :search="search"
-      :loading="loading"
       :items-per-page="perPage"
+      :loading="loading"
       loading-text="ロード中です"
+      :search="search"
     >
       <template v-slot:top>
         <slot name="top"></slot>

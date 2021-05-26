@@ -6,12 +6,12 @@
     vid="email"
   >
     <v-text-field
-      :value="value"
-      @input="$emit('input', $event)"
       :error-messages="errors"
       label="E-mail"
       prepend-icon="mdi-email"
       required
+      :value="value"
+      @input="$emit('input', $event)"
     ></v-text-field>
   </validation-provider>
 </template>

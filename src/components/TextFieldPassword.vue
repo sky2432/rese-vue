@@ -6,15 +6,15 @@
     :vid="vid"
   >
     <v-text-field
-      :value="value"
-      @input="$emit('input', $event)"
       :error-messages="errors"
       :label="label"
-      :type="showPassword ? 'text' : 'password'"
-      :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-      @click:append="showPassword = !showPassword"
       prepend-icon="mdi-key"
+      :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+      :type="showPassword ? 'text' : 'password'"
+      :value="value"
       required
+      @input="$emit('input', $event)"
+      @click:append="showPassword = !showPassword"
     ></v-text-field>
   </validation-provider>
 </template>

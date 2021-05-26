@@ -24,7 +24,7 @@
         <template #noResults>検索条件に当てはまるオーナーはいません</template>
       </DataTable>
 
-      <v-dialog v-model="registerDialog" max-width="600" persistent>
+      <v-dialog max-width="600" persistent v-model="registerDialog">
         <FormRegister ref="formRegister" @confirm="confirm">
           <template #title>OwnerRegistration</template>
           <template #closeIcon>

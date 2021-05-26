@@ -14,21 +14,21 @@
     <template #title>
       <span v-if="ownerType">予約一覧</span>
       <v-switch
+        class="pa-3"
+        :value="showTodayReservations"
+        label="本日の予約"
         v-if="detailType"
         v-model="showTodayReservations"
-        :value="showTodayReservations"
         @change="showReservations($event)"
-        label="本日の予約"
-        class="pa-3"
       ></v-switch>
     </template>
     <template #top v-if="ownerType">
       <v-switch
-        v-model="showTodayReservations"
-        :value="showTodayReservations"
-        @change="showReservations($event)"
-        label="本日の予約"
         class="pa-3"
+        :value="showTodayReservations"
+        label="本日の予約"
+        v-model="showTodayReservations"
+        @change="showReservations($event)"
       ></v-switch>
     </template>
     <template #noData>予約はありません</template>

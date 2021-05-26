@@ -19,7 +19,7 @@
         <template #noResults>検索条件に当てはまるユーザーはいません</template>
       </DataTable>
 
-      <v-dialog v-model="deleteDialog" max-width="500px">
+      <v-dialog max-width="500px" v-model="deleteDialog">
         <v-card :loading="deleteLoading">
           <v-card-title class="justify-center">
             このユーザーを削除しますか？

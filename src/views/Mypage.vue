@@ -2,7 +2,7 @@
   <div>
     <TheHomeHeader :showTab="true">
       <template #tab>
-        <v-tabs centered slider-color="grey">
+        <v-tabs slider-color="grey" centered>
           <v-tab @click="currentComponent = 'MypageFavorite'">お気に入り</v-tab>
           <v-tab @click="currentComponent = 'MypageReservation'"
             >予約一覧</v-tab

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card tile class="setting-card">
+    <v-card class="setting-card" tile>
       <div class="setting-content">
         <validation-observer
           ref="observer"
@@ -9,16 +9,16 @@
         >
           <v-form v-model="formValid">
             <TextFieldPassword
-              v-model="newPassword"
               name="現在のパスワード"
               label="Current Password"
+              v-model="newPassword"
             ></TextFieldPassword>
 
             <TextFieldPassword
-              v-model="password"
               name="新しいパスワード"
               label="New Password"
               vid="new_password"
+              v-model="password"
             ></TextFieldPassword>
 
             <v-card-actions class="justify-center">

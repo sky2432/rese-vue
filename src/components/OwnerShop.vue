@@ -3,11 +3,11 @@
     <v-card v-if="existsShop">
       <v-card-title class="amber">店舗情報</v-card-title>
       <v-hover>
-        <template v-slot:default="{ hover }">
-          <v-card tile elevation="0">
+        <template #default="{ hover }">
+          <v-card elevation="0" tile>
             <v-img :src="shopImageUrl" height="400px"></v-img>
             <v-fade-transition>
-              <v-overlay v-if="hover" absolute color="#036358">
+              <v-overlay color="#036358" absolute v-if="hover">
                 <v-btn color="amber" dark @click="showImageDialog"
                   >店舗画像の更新</v-btn
                 >
@@ -17,7 +17,7 @@
         </template>
       </v-hover>
       <v-simple-table>
-        <template v-slot:default>
+        <template #default>
           <tbody>
             <tr>
               <th>店名</th>
@@ -43,7 +43,7 @@
       </v-card-actions>
     </v-card>
 
-    <v-dialog v-model="imageDialog" max-width="700px">
+    <v-dialog max-width="700px" v-model="imageDialog">
       <v-card :loading="imageLoading">
         <v-card-title class="amber">
           店舗画像の更新
@@ -79,7 +79,7 @@
       <template #message>店舗画像を変更しました</template>
     </BaseDialog>
 
-    <v-dialog v-model="updateDialog" max-width="700px">
+    <v-dialog max-width="700px" v-model="updateDialog">
       <v-card :loading="updateLoading">
         <v-card-title class="amber">
           店舗情報の更新
@@ -92,26 +92,26 @@
           <validation-observer ref="editObserver" v-slot="{ invalid }">
             <v-form v-model="formValid">
               <TextFieldName
-                v-model="name"
                 name="店名"
-                label="Shop Name"
                 icon="mdi-store"
+                label="Shop Name"
+                v-model="name"
               ></TextFieldName>
 
               <BaseSelector
-                v-model="area"
-                :options="areaOptions"
                 name="エリア"
                 label="Area"
                 icon="mdi-map-marker"
+                :options="areaOptions"
+                v-model="area"
               ></BaseSelector>
 
               <BaseSelector
-                v-model="genre"
                 :options="genreOptions"
                 name="ジャンル"
                 label="Genre"
                 icon="mdi-silverware-fork-knife"
+                v-model="genre"
               ></BaseSelector>
 
               <validation-provider
@@ -123,9 +123,9 @@
                   class="mt-4"
                   v-model="overview"
                   name="概要"
-                  label="店舗概要"
                   counter="255"
                   :error-messages="errors"
+                  label="店舗概要"
                   prepend-icon="mdi-storefront"
                   outlined
                 ></v-textarea>
@@ -154,26 +154,26 @@
         <validation-observer ref="addObserver" v-slot="{ invalid }">
           <v-form v-model="formValid">
             <TextFieldName
-              v-model="name"
               name="店名"
               label="Shop Name"
               icon="mdi-store"
+              v-model="name"
             ></TextFieldName>
 
             <BaseSelector
-              v-model="area"
               :options="areaOptions"
               name="エリア"
               label="Area"
               icon="mdi-map-marker"
+              v-model="area"
             ></BaseSelector>
 
             <BaseSelector
-              v-model="genre"
               :options="genreOptions"
               name="ジャンル"
               label="Genre"
               icon="mdi-silverware-fork-knife"
+              v-model="genre"
             ></BaseSelector>
 
             <validation-provider
@@ -183,17 +183,20 @@
             >
               <v-textarea
                 class="mt-4"
-                v-model="overview"
                 name="概要"
                 label="Overview"
                 counter="255"
                 :error-messages="errors"
                 prepend-icon="mdi-storefront"
                 outlined
+                v-model="overview"
               ></v-textarea>
             </validation-provider>
 
-            <FileInputImage :value="image" @setImage="setImage"></FileInputImage>
+            <FileInputImage
+              :value="image"
+              @setImage="setImage"
+            ></FileInputImage>
 
             <div v-if="imageUrl" class="text-center">
               <v-subheader>プレビュー</v-subheader>
@@ -282,6 +285,7 @@ export default {
       imageLoading: false,
       areaOptions: config.areaOptions,
       genreOptions: config.genreOptions,
+      tableData: [],
     };
   },
 

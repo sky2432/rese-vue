@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" app>
-      <v-sheet color="amber" class="pa-8">
+    <v-navigation-drawer app v-model="drawer">
+      <v-sheet class="pa-8" color="amber">
         <v-row class="align-center">
           <v-avatar color="white" size="64">
             <v-icon>mdi-silverware-variant</v-icon>

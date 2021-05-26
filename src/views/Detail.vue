@@ -3,9 +3,9 @@
     <TheHomeHeader></TheHomeHeader>
     <v-main>
       <div class="wrapper" v-if="loading">
-        <v-progress-circular indeterminate color="amber"></v-progress-circular>
+        <v-progress-circular color="amber" indeterminate></v-progress-circular>
       </div>
-      <v-container v-if="loaded" class="mt-5">
+      <v-container class="mt-5" v-if="loaded">
         <v-row>
           <v-col cols="6">
             <div class="d-flex">
@@ -15,14 +15,14 @@
               <h1 class="ml-5">{{ shop.name }}</h1>
             </div>
             <v-img class="mt-5" :src="shop.image_url"> </v-img>
-            <v-row align="center" class="mx-0 mt-5">
+            <v-row class="mx-0 mt-5" align="center">
               <v-rating
-                :value="shop.evaluation"
                 color="amber"
+                :value="shop.evaluation"
+                size="14"
                 dense
                 half-increments
                 readonly
-                size="14"
               ></v-rating>
 
               <div class="ml-1">

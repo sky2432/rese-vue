@@ -1,11 +1,11 @@
 <template>
   <div>
-    <v-card tile class="setting-card">
+    <v-card class="setting-card" tile>
       <div class="setting-content">
         <validation-observer
+          style="width: 80%;"
           ref="observer"
           v-slot="{ invalid }"
-          style="width: 80%;"
         >
           <v-form v-model="formValid">
             <TextFieldName v-model="name"></TextFieldName>

@@ -1,15 +1,15 @@
 <template>
   <validation-provider v-slot="{ errors }" :name="name" rules="selectRequired">
     <v-select
-      :value="value"
-      @input="$emit('input', $event)"
+      :error-messages="errors"
       :items="options"
       item-text="state"
       item-value="abbr"
-      :error-messages="errors"
       :label="label"
       :prepend-icon="icon"
       required
+      :value="value"
+      @input="$emit('input', $event)"
     ></v-select>
   </validation-provider>
 </template>

@@ -3,35 +3,35 @@
     <TheHomeHeader>
       <template #search>
         <v-row>
-          <v-col class="px-0" cols="3">
+          <v-col cols="3" class="px-0">
             <v-select
-              v-model="selectedArea"
-              :items="areaOptions"
               class="rounded-r-0"
-              solo
+              :items="areaOptions"
               dense
               hide-details
+              solo
+              v-model="selectedArea"
             ></v-select>
           </v-col>
-          <v-col class="px-0" cols="3">
+          <v-col cols="3" class="px-0">
             <v-select
-              v-model="selectedGenre"
-              :items="genreOptions"
               class="rounded-0"
-              solo
+              :items="genreOptions"
               dense
               hide-details
+              solo
+              v-model="selectedGenre"
             ></v-select>
           </v-col>
-          <v-col class="px-0" cols="6">
+          <v-col cols="6" class="px-0">
             <v-text-field
-              v-model="keyword"
-              label="Enter shop name"
               class="rounded-l-0"
+              label="Enter shop name"
               prepend-inner-icon="mdi-magnify"
-              solo
               dense
               hide-details
+              solo
+              v-model="keyword"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -40,23 +40,23 @@
 
     <v-main>
       <div class="wrapper" v-if="loading">
-        <v-progress-circular indeterminate color="amber"></v-progress-circular>
+        <v-progress-circular color="amber" indeterminate></v-progress-circular>
       </div>
-      <v-container v-if="loaded" class="mt-2">
+      <v-container class="mt-2" v-if="loaded">
         <v-row>
-          <v-col v-for="shop in filteredShops" :key="shop.id" cols="3">
+          <v-col cols="3" v-for="shop in filteredShops" :key="shop.id">
             <v-card height="300">
               <v-img height="125" :src="shop.image_url"></v-img>
               <v-card-title>{{ shop.name }}</v-card-title>
               <v-card-text>
-                <v-row align="center" class="mx-0">
+                <v-row class="mx-0" align="center">
                   <v-rating
-                    :value="shop.evaluation"
                     color="amber"
+                    :value="shop.evaluation"
+                    size="14"
                     dense
                     half-increments
                     readonly
-                    size="14"
                   ></v-rating>
 
                   <div class="ml-1">
@@ -73,14 +73,14 @@
               <v-card-actions>
                 <v-btn
                   color="amber"
-                  @click="moveShopDetail(shop.id)"
-                  rounded
                   dark
+                  rounded
+                  @click="moveShopDetail(shop.id)"
                   >詳細
                 </v-btn>
                 <v-spacer></v-spacer>
                 <v-btn text icon>
-                  <v-icon large color="red" @click="changeFavorite(shop.id)">{{
+                  <v-icon color="red" large @click="changeFavorite(shop.id)">{{
                     showFavoriteIcon(shop.id)
                   }}</v-icon>
                 </v-btn>

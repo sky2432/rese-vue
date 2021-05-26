@@ -6,10 +6,10 @@
         <v-card
           class="white pa-16"
           elevation="2"
+          width="600px"
           outlined
           shaped
           tile
-          width="600px"
         >
           <v-card-title class="justify-center">
             ご予約ありがとうございます

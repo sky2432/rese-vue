@@ -63,8 +63,8 @@
         </v-col>
       </v-row>
     </v-container>
-    <template v-slot:extension v-if="showTab">
-      <slot name="tab"> </slot>
+    <template #extension v-if="showTab">
+      <slot name="tab"></slot>
     </template>
   </v-app-bar>
 </template>

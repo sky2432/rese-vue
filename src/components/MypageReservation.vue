@@ -1,30 +1,30 @@
 <template>
   <div>
     <div class="wrapper" v-if="loading">
-      <v-progress-circular indeterminate color="amber"></v-progress-circular>
+      <v-progress-circular color="amber" indeterminate></v-progress-circular>
     </div>
-    <v-row v-if="loaded" class="mt-1">
-      <v-col v-for="shop in shops" :key="shop.reservation.id" cols="12">
-        <v-card height="300" class="card">
+    <v-row class="mt-1" v-if="loaded">
+      <v-col cols="12" v-for="shop in shops" :key="shop.reservation.id">
+        <v-card class="card" height="300">
           <v-card-title class="amber">{{
             showReservationStatus(shop.reservation)
           }}</v-card-title>
           <v-row class="row">
             <v-col cols="4" class="pa-0 image-wrap">
-              <v-img class="image" height="236px" :src="shop.image_url"></v-img>
+              <v-img class="image" :src="shop.image_url" height="236px"></v-img>
             </v-col>
             <v-col cols="4" class="reservation-col"></v-col>
             <v-col cols="4" class="reservation-col">
               <v-card-title>{{ shop.name }}</v-card-title>
               <v-card-text>
-                <v-row align="center" class="mx-0">
+                <v-row class="mx-0" align="center">
                   <v-rating
                     :value="shop.evaluation"
                     color="amber"
-                    dense
-                    readonly
                     size="14"
+                    dense
                     half-increments
+                    readonly
                   ></v-rating>
 
                   <div class="ml-1">
@@ -60,17 +60,17 @@
                 v-if="showButtonInReserving(shop.reservation.status)"
               >
                 <v-btn
-                  @click="displayDialogUpdateReservation(shop)"
-                  color="amber"
                   class="white--text"
+                  color="amber"
                   width="100"
+                  @click="displayDialogUpdateReservation(shop)"
                   >変更
                 </v-btn>
                 <v-btn
-                  color="red"
                   class="white--text mt-2 ml-0"
-                  @click="displayCancelDialog(shop.reservation)"
+                  color="red"
                   width="100"
+                  @click="displayCancelDialog(shop.reservation)"
                   >キャンセル
                 </v-btn>
               </v-card-actions>
@@ -79,24 +79,24 @@
                 v-if="showButtonInVisited(shop.reservation.status)"
               >
                 <v-btn
-                  v-if="showAddEvaluationButton(shop.evaluations)"
-                  color="amber"
                   class="white--text mt-2 ml-0"
+                  color="amber"
                   width="100"
+                  v-if="showAddEvaluationButton(shop.evaluations)"
                   @click="displayEvaluationDialog(shop)"
                   >評価
                 </v-btn>
                 <v-btn
-                  v-if="showEditEvaluationButton(shop.evaluations)"
-                  color="amber"
                   class="white--text mt-2 ml-0"
+                  color="amber"
                   width="100"
+                  v-if="showEditEvaluationButton(shop.evaluations)"
                   @click="displayDialogEditEvaluation(shop.evaluations)"
                   >評価を編集
                 </v-btn>
                 <v-btn
-                  color="amber"
                   class="white--text mt-2 ml-0"
+                  color="amber"
                   width="100"
                   @click="moveShopDeatail(shop.id)"
                   >もう一度予約
@@ -107,8 +107,8 @@
                 v-if="showButtonInCancelled(shop.reservation.status)"
               >
                 <v-btn
-                  color="amber"
                   class="white--text mt-2 ml-0"
+                  color="amber"
                   width="100"
                   @click="moveShopDeatail(shop.id)"
                   >もう一度予約
@@ -132,7 +132,7 @@
         <template #message>予約をキャンセルしました</template>
       </BaseDialog>
 
-      <v-dialog v-model="DialogUpdateReservation" width="500" persistent>
+      <v-dialog width="500" persistent v-model="DialogUpdateReservation">
         <FormReservation
           v-bind="{
             date: visitsDate,
@@ -168,10 +168,10 @@
         <template #title>評価</template>
         <template #rightButton>
           <v-btn
-            color="amber"
             class="white--text"
-            @click="createEvaluation"
+            color="amber"
             :disabled="isEvaluated"
+            @click="createEvaluation"
           >
             投稿
           </v-btn>

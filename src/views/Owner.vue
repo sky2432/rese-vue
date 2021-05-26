@@ -1,14 +1,14 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" app>
-      <v-sheet color="amber" class="pa-8">
+    <v-navigation-drawer app v-model="drawer">
+      <v-sheet class="pa-8" color="amber">
         <v-row class="align-center">
           <v-avatar color="white" size="64">
-            <v-img v-if="existsShop" :src="shop.image_url"></v-img>
+            <v-img :src="shop.image_url" v-if="existsShop"></v-img>
             <v-icon v-if="!existsShop">mdi-silverware-variant</v-icon>
           </v-avatar>
-          <div v-if="existsShop" class="pl-4">{{ shop.name }}</div>
-          <div v-if="!existsShop" class="pl-4">Rese</div>
+          <div class="pl-4" v-if="existsShop">{{ shop.name }}</div>
+          <div class="pl-4" v-if="!existsShop">Rese</div>
         </v-row>
       </v-sheet>
 

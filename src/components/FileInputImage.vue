@@ -2,16 +2,16 @@
   <validation-provider
     v-slot="{ errors }"
     ref="fileProvider"
-    name="店舗画像"
     rules="selectRequired|image"
+    name="店舗画像"
   >
     <v-file-input
+      accept="image/*"
+      :error-messages="errors"
+      label="Select Image"
+      chips
       :value="value"
       @change="$emit('setImage', $event)"
-      accept="image/*"
-      label="Select Image"
-      :error-messages="errors"
-      chips
     ></v-file-input>
   </validation-provider>
 </template>

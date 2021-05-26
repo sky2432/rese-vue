@@ -8,13 +8,13 @@
         <v-form v-model="formValid">
           <v-card-text class="mt-5 px-5">
             <v-menu
-              ref="datePickerMenu"
-              v-model="showdatePickerMenu"
-              :return-value.sync="visitsDate"
               :close-on-content-click="false"
+              min-width="auto"
+              :return-value.sync="visitsDate"
+              ref="datePickerMenu"
               transition="scale-transition"
               offset-y
-              min-width="auto"
+              v-model="showdatePickerMenu"
             >
               <template #activator="{ on }">
                 <validation-provider
@@ -24,28 +24,28 @@
                   vid="date"
                 >
                   <v-text-field
-                    v-model="visitsDate"
+                    :error-messages="errors"
                     label="日付を選択"
                     prepend-icon="mdi-calendar"
-                    readonly
                     v-on="on"
-                    :error-messages="errors"
+                    readonly
+                    v-model="visitsDate"
                   ></v-text-field>
                 </validation-provider>
               </template>
               <v-date-picker
-                v-model="visitsDate"
+                :min="today"
                 no-title
                 scrollable
-                :min="today"
+                v-model="visitsDate"
               >
                 <v-spacer></v-spacer>
-                <v-btn text color="primary" @click="showdatePickerMenu = false">
+                <v-btn color="primary" text @click="showdatePickerMenu = false">
                   キャンセル
                 </v-btn>
                 <v-btn
-                  text
                   color="primary"
+                  text
                   @click="$refs.datePickerMenu.save(visitsDate)"
                 >
                   選択
@@ -60,26 +60,26 @@
               vid="time"
             >
               <v-select
-                v-model="visitsTime"
+                :error-messages="errors"
                 :items="timeOptions"
                 label="時刻を選択"
                 prepend-icon="mdi-clock-time-eight-outline"
-                :error-messages="errors"
+                v-model="visitsTime"
               ></v-select>
             </validation-provider>
 
             <BaseSelector
-              v-model="visitsNumber"
-              :options="numberOptions"
-              name="人数"
-              label="人数を選択"
               icon="mdi-account"
+              label="人数を選択"
+              name="人数"
+              :options="numberOptions"
+              v-model="visitsNumber"
             ></BaseSelector>
           </v-card-text>
 
           <v-card-actions class="justify-center pb-5">
             <slot name="leftButton"></slot>
-            <v-btn color="amber" dark @click="checkTime" :disabled="invalid"
+            <v-btn color="amber" dark :disabled="invalid" @click="checkTime"
               >確認</v-btn
             >
           </v-card-actions>

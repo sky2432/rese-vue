@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" max-width="500" persistent>
+  <v-dialog max-width="500" persistent v-model="dialog">
     <v-card :loading="loading">
       <v-card-title class="amber">
         <slot name="title"></slot>
@@ -10,11 +10,11 @@
       </v-card-title>
       <v-card-text class="text-center mt-4">
         <v-rating
-          :value="value"
-          @input="$emit('input', $event)"
+          color="amber"
           half-increments
           hover
-          color="amber"
+          :value="value"
+          @input="$emit('input', $event)"
         ></v-rating>
       </v-card-text>
       <v-card-actions class="justify-center">

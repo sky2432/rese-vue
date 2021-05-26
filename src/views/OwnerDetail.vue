@@ -3,8 +3,8 @@
     <TheHeader></TheHeader>
     <div class="wrapper">
       <v-progress-circular
-        indeterminate
         color="amber"
+        indeterminate
         v-if="loading"
       ></v-progress-circular>
       <v-main v-if="loaded">
@@ -15,7 +15,7 @@
                 <v-col>
                   <v-subheader>オーナー情報</v-subheader>
                   <v-simple-table>
-                    <template v-slot:default>
+                    <template #default>
                       <tbody>
                         <tr>
                           <th>ID</th>
@@ -36,7 +36,7 @@
                 <v-col>
                   <v-subheader>店舗情報</v-subheader>
                   <v-simple-table v-if="owner.shop">
-                    <template v-slot:default>
+                    <template #default>
                       <tbody>
                         <tr>
                           <th>店舗ID</th>
@@ -58,9 +58,9 @@
                     </template>
                   </v-simple-table>
                   <div
-                    v-if="!owner.shop"
-                    style="height: 100%"
                     class="d-flex justify-center align-center"
+                    style="height: 100%"
+                    v-if="!owner.shop"
                   >
                     店舗はありません
                   </div>
@@ -82,7 +82,7 @@
             </v-card-actions>
           </v-card>
 
-          <v-dialog v-model="warnDialog" width="500px">
+          <v-dialog width="500px" v-model="warnDialog">
             <v-card>
               <v-card-title class="amber"
                 >※注意事項
@@ -92,14 +92,14 @@
                 >
               </v-card-title>
               <v-card-text class="mt-4">
-                <v-alert prominent type="error" text class="text-center mb-0">
+                <v-alert class="text-center mb-0" type="error" text prominent>
                   <h3>必ずご確認ください</h3>
                   <p>
                     オーナーを削除すると、オーナーが所有する店舗、店舗関連情報全てが削除されます
                   </p>
                   <v-btn
-                    color="red lighten-1"
                     class="mt-2"
+                    color="red lighten-1"
                     @click="$refs.dialogConfirmDeletionOwner.openDialog()"
                     >オーナーを削除</v-btn
                   >

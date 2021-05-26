@@ -1,22 +1,22 @@
 <template>
   <div>
     <div class="wrapper" v-if="loading">
-      <v-progress-circular indeterminate color="amber"></v-progress-circular>
+      <v-progress-circular color="amber" indeterminate></v-progress-circular>
     </div>
     <v-row v-if="loaded">
-      <v-col v-for="shop in shops" :key="shop.id" cols="3">
+      <v-col cols="3" v-for="shop in shops" :key="shop.id">
         <v-card height="300">
           <v-img height="125" :src="shop.image_url"></v-img>
           <v-card-title>{{ shop.name }}</v-card-title>
           <v-card-text>
-            <v-row align="center" class="mx-0">
+            <v-row class="mx-0" align="center">
               <v-rating
                 :value="shop.evaluation"
                 color="amber"
+                size="14"
                 dense
                 half-increments
                 readonly
-                size="14"
               ></v-rating>
 
               <div class="ml-1">

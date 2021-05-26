@@ -6,13 +6,13 @@
     vid="name"
   >
     <v-text-field
-      :value="value"
-      @input="$emit('input', $event)"
       :counter="10"
       :error-messages="errors"
       :label="label"
       :prepend-icon="icon"
       required
+      :value="value"
+      @input="$emit('input', $event)"
     ></v-text-field>
   </validation-provider>
 </template>

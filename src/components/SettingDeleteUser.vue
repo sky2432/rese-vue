@@ -1,19 +1,19 @@
 <template>
   <div>
-    <v-card tile class="setting-card">
+    <v-card class="setting-card" tile>
       <div class="setting-content">
         <v-alert
-          prominent
-          type="error"
-          text
           class="text-center mx-auto mb-0"
+          type="error"
           width="85%"
+          prominent
+          text
         >
           <h3>必ずご確認ください</h3>
           <p>アカウントを削除すると、これまでのデータはすべて削除されます。</p>
           <v-btn
-            color="red lighten-1"
             class="mt-2"
+            color="red lighten-1"
             @click="$refs.baseDialog.openDialog()"
             >アカウントを削除</v-btn
           >
