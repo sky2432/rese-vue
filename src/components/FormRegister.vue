@@ -7,21 +7,7 @@
     <v-card-text>
       <validation-observer ref="observer" v-slot="{ invalid }">
         <v-form v-model="formValid">
-          <validation-provider
-            v-slot="{ errors }"
-            name="名前"
-            rules="required|max:10"
-            vid="name"
-          >
-            <v-text-field
-              v-model="name"
-              :counter="10"
-              :error-messages="errors"
-              label="Name"
-              prepend-icon="mdi-account"
-              required
-            ></v-text-field>
-          </validation-provider>
+          <TextFieldName v-model="name"></TextFieldName>
 
           <validation-provider
             v-slot="{ errors }"
@@ -53,10 +39,12 @@
 
 <script>
 import "../plugins/veeValidate.js";
+import TextFieldName from "../components/TextFieldName";
 import TextFieldPassword from "../components/TextFieldPassword";
 
 export default {
   components: {
+    TextFieldName,
     TextFieldPassword,
   },
 

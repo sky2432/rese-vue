@@ -8,20 +8,7 @@
           style="width: 80%;"
         >
           <v-form v-model="formValid">
-            <validation-provider
-              v-slot="{ errors }"
-              name="名前"
-              rules="required|min:2"
-              vid="name"
-            >
-              <v-text-field
-                v-model="name"
-                :error-messages="errors"
-                label="Name"
-                prepend-icon="mdi-account"
-                required
-              ></v-text-field>
-            </validation-provider>
+            <TextFieldName v-model="name"></TextFieldName>
 
             <validation-provider
               v-slot="{ errors }"
@@ -59,8 +46,13 @@ import "../plugins/veeValidate.js";
 import { mapGetters } from "vuex";
 import usersRepository from "../repositories/usersRepository";
 import ownersRepository from "../repositories/ownersRepository";
+import TextFieldName from "../components/TextFieldName";
 
 export default {
+  components: {
+    TextFieldName,
+  },
+
   data() {
     return {
       name: "",

@@ -189,20 +189,11 @@
       <v-card-text class="mt-4">
         <validation-observer ref="addObserver" v-slot="{ invalid }">
           <v-form v-model="formValid">
-            <validation-provider
-              v-slot="{ errors }"
+            <TextFieldName
+              v-model="name"
               name="店名"
-              rules="required|min:2|max:10"
-            >
-              <v-text-field
-                v-model="name"
-                :counter="10"
-                :error-messages="errors"
-                label="店名"
-                prepend-icon="mdi-store"
-                required
-              ></v-text-field>
-            </validation-provider>
+              label="Shop Name"
+            ></TextFieldName>
 
             <validation-provider
               v-slot="{ errors }"
@@ -215,7 +206,7 @@
                 item-text="state"
                 item-value="abbr"
                 :error-messages="errors"
-                label="エリア"
+                label="Area"
                 prepend-icon="mdi-map-marker"
                 required
               ></v-select>
@@ -232,7 +223,7 @@
                 item-text="state"
                 item-value="abbr"
                 :error-messages="errors"
-                label="ジャンル"
+                label="Genre"
                 prepend-icon="mdi-silverware-fork-knife"
                 required
               ></v-select>
@@ -247,7 +238,7 @@
                 class="mt-4"
                 v-model="overview"
                 name="概要"
-                label="店舗概要"
+                label="Overview"
                 counter="255"
                 :error-messages="errors"
                 prepend-icon="mdi-storefront"
@@ -264,7 +255,7 @@
               <v-file-input
                 v-model="image"
                 accept="image/*"
-                label="店舗画像を選択"
+                label="Select Image"
                 @change="showImagePreview"
                 :error-messages="errors"
                 chips
@@ -292,8 +283,13 @@
 import { mapGetters } from "vuex";
 import config from "../config/const.js";
 import shopsRepository from "../repositories/shopsRepository.js";
+import TextFieldName from "../components/TextFieldName";
 
 export default {
+  components: {
+    TextFieldName,
+  },
+
   props: {
     shopId: {
       type: Number,
