@@ -40,7 +40,7 @@
             </p>
           </v-col>
 
-          <v-col cols="6">
+          <v-col cols="6" class="reservation-form">
             <FormReservation ref="formReservation" @check-time="checkTime">
               <template #title>予約</template>
             </FormReservation>
@@ -86,8 +86,8 @@ export default {
       shop: "",
       loading: true,
       loaded: false,
-      confirmDialogData: [],
       reservationData: "",
+      confirmDialogData: [],
     };
   },
 
@@ -146,3 +146,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.reservation-form {
+  padding-top: 80px;
+}
+</style>

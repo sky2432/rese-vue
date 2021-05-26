@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" width="500" persistent>
+  <v-dialog v-model="dialog" max-width="500" persistent>
     <v-card :loading="loading">
       <v-card-title class="amber">
         <slot name="title"></slot>

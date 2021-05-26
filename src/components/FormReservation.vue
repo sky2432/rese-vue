@@ -88,7 +88,7 @@
 
           <v-card-actions class="justify-center pb-5">
             <slot name="leftButton"></slot>
-            <v-btn color="amber" @click="checkTime" :disabled="invalid"
+            <v-btn color="amber" dark @click="checkTime" :disabled="invalid"
               >確認</v-btn
             >
           </v-card-actions>
@@ -103,6 +103,18 @@ import "../plugins/veeValidate.js";
 import config from "../config/const.js";
 
 export default {
+  props: {
+    date: {
+      type: String,
+    },
+    time: {
+      type: String,
+    },
+    number: {
+      type: Number,
+    },
+  },
+
   data() {
     return {
       visitsDate: "",
@@ -116,12 +128,21 @@ export default {
     };
   },
 
+  created() {
+    this.setUpdateData();
+  },
+
   methods: {
+    setUpdateData() {
+      this.visitsDate = this.date;
+      this.visitsTime = this.time;
+      this.visitsNumber = this.number;
+    },
+
     checkTime() {
       const sendData = {
         visitsDate: this.visitsDate,
         visitsTime: this.visitsTime,
-        // visited_on: `${this.visitsDate} ${this.visitsTime}`,
         visitsNumber: this.visitsNumber,
       };
       this.$emit("check-time", sendData);
@@ -129,9 +150,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.card {
-  margin-top: 68px;
-}
-</style>

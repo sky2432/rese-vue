@@ -133,114 +133,26 @@
       </BaseDialog>
 
       <v-dialog v-model="showDialogUpdateReservation" width="500" persistent>
-        <v-card>
-          <v-card-title class="headline amber">
-            予約変更
-          </v-card-title>
-          <validation-observer ref="observer" v-slot="{ invalid }">
-            <v-form v-model="formValid">
-              <v-card-text class="mt-5 px-5">
-                <v-menu
-                  ref="datePickerMenu"
-                  v-model="showdatePickerMenu"
-                  :return-value.sync="visitsDate"
-                  :close-on-content-click="false"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="auto"
-                >
-                  <template #activator="{ on }">
-                    <validation-provider
-                      v-slot="{ errors }"
-                      name="日付"
-                      rules="selectRequired"
-                      vid="date"
-                    >
-                      <v-text-field
-                        v-model="visitsDate"
-                        label="日付を選択"
-                        prepend-icon="mdi-calendar"
-                        readonly
-                        v-on="on"
-                        :error-messages="errors"
-                      ></v-text-field>
-                    </validation-provider>
-                  </template>
-                  <v-date-picker
-                    v-model="visitsDate"
-                    no-title
-                    scrollable
-                    :min="today"
-                  >
-                    <v-spacer></v-spacer>
-                    <v-btn
-                      text
-                      color="primary"
-                      @click="showdatePickerMenu = false"
-                    >
-                      キャンセル
-                    </v-btn>
-                    <v-btn
-                      text
-                      color="primary"
-                      @click="$refs.datePickerMenu.save(visitsDate)"
-                    >
-                      選択
-                    </v-btn>
-                  </v-date-picker>
-                </v-menu>
-
-                <validation-provider
-                  v-slot="{ errors }"
-                  name="時刻"
-                  rules="selectRequired"
-                  vid="time"
-                >
-                  <v-select
-                    v-model="visitsTime"
-                    :items="timeOptions"
-                    label="時刻を選択"
-                    prepend-icon="mdi-clock-time-eight-outline"
-                    :error-messages="errors"
-                  ></v-select>
-                </validation-provider>
-
-                <validation-provider
-                  v-slot="{ errors }"
-                  name="人数"
-                  rules="selectRequired"
-                  vid="number"
-                >
-                  <v-select
-                    :items="numberOptions"
-                    item-text="state"
-                    item-value="abbr"
-                    v-model="visitsNumber"
-                    label="人数を選択"
-                    prepend-icon="mdi-account"
-                    :error-messages="errors"
-                  ></v-select>
-                </validation-provider>
-              </v-card-text>
-
-              <v-divider></v-divider>
-
-              <v-card-actions class="justify-center pb-5">
-                <v-spacer></v-spacer>
-                <v-btn
-                  color="red"
-                  class="white--text"
-                  @click="showDialogUpdateReservation = false"
-                >
-                  キャンセル
-                </v-btn>
-                <v-btn color="amber" dark @click="checkTime" :disabled="invalid"
-                  >確認</v-btn
-                >
-              </v-card-actions>
-            </v-form>
-          </validation-observer>
-        </v-card>
+        <FormReservation
+          v-bind="{
+            date: visitsDate,
+            time: visitsTime,
+            number: visitsNumber,
+          }"
+          ref="formReservation"
+          @check-time="checkTime"
+        >
+          <template #title>予約の変更</template>
+          <template #leftButton
+            ><v-btn
+              color="red"
+              dark
+              @click="showDialogUpdateReservation = false"
+            >
+              キャンセル
+            </v-btn></template
+          >
+        </FormReservation>
       </v-dialog>
 
       <ConfirmDialog ref="confirmDialog" :tableData="confirmDialogData">
@@ -256,11 +168,7 @@
         <template #message>予約を変更しました</template>
       </BaseDialog>
 
-      <v-dialog
-        v-model="showEvaluationDialog"
-        :retain-focus="false"
-        max-width="500px"
-      >
+      <v-dialog v-model="showEvaluationDialog" max-width="500px">
         <v-card>
           <v-card-title class="amber">
             評価
@@ -280,6 +188,7 @@
           <v-card-actions class="justify-center">
             <v-btn
               color="amber"
+              class="white--text"
               @click="createEvaluation"
               :disabled="isEvaluated"
             >
@@ -289,11 +198,7 @@
         </v-card>
       </v-dialog>
 
-      <v-dialog
-        v-model="showDialogEditEvaluation"
-        :retain-focus="false"
-        max-width="500px"
-      >
+      <v-dialog v-model="showDialogEditEvaluation" max-width="500px">
         <v-card>
           <v-card-title class="amber">
             評価を編集
@@ -311,10 +216,10 @@
             ></v-rating>
           </v-card-text>
           <v-card-actions class="justify-center">
-            <v-btn color="red" @click="deleteEvaluation">
+            <v-btn color="red" dark @click="deleteEvaluation">
               削除
             </v-btn>
-            <v-btn color="amber" @click="updateEvaluation">
+            <v-btn color="amber" dark @click="updateEvaluation">
               更新
             </v-btn>
           </v-card-actions>
@@ -325,22 +230,22 @@
 </template>
 
 <script>
+import "../plugins/veeValidate.js";
 import { mapGetters } from "vuex";
 import reservationsRepository from "../repositories/reservationsRepository.js";
 import evaluationsRepository from "../repositories/evaluationsRepository";
-import config from "../config/const.js";
-import "../plugins/veeValidate.js";
 import ConfirmDialog from "../components/ConfirmDialog";
+import FormReservation from "../components/FormReservation";
 
 export default {
   components: {
+    FormReservation,
     ConfirmDialog,
   },
 
   data() {
     return {
       shops: [],
-      formValid: false,
       selectedShop: "",
       selectedEvaluation: "",
       slectedReservation: "",
@@ -348,16 +253,13 @@ export default {
       updatedEvaluation: 0,
       visitsDate: "",
       visitsTime: "",
-      visitsNumber: "",
+      visitsNumber: 0,
       showDialogEditEvaluation: false,
       showEvaluationDialog: false,
       showDialogUpdateReservation: false,
-      showdatePickerMenu: false,
-      today: config.today,
-      timeOptions: config.timeOptions,
-      numberOptions: config.numberOptions,
       loading: true,
       loaded: false,
+      reservationData: "",
       confirmDialogData: [],
     };
   },
@@ -452,30 +354,6 @@ export default {
   },
 
   methods: {
-    checkTime() {
-      const now = new Date();
-      const dayTime = `${this.visitsDate} ${this.visitsTime}`;
-      const selected = new Date(dayTime);
-      if (now > selected) {
-        this.$refs.observer.setErrors({
-          time: ["現在時刻よりも後の時刻を選択してください"],
-        });
-      }
-      if (now <= selected) {
-        this.$refs.confirmDialog.openDialog();
-        this.createConfirmDialogData();
-      }
-    },
-
-    createConfirmDialogData() {
-      this.confirmDialogData = [
-        { header: "店舗名", data: this.selectedShop.name },
-        { header: "日付", data: this.visitsDate },
-        { header: "時刻", data: this.visitsTime },
-        { header: "人数", data: this.visitsNumber },
-      ];
-    },
-
     convertDateFormat(date, format) {
       format = format.replace(/YYYY/, date.substr(0, 4));
       format = format.replace(/MM/, date.substr(5, 2));
@@ -484,6 +362,7 @@ export default {
       return format;
     },
 
+    //評価
     async deleteEvaluation() {
       this.showDialogEditEvaluation = false;
       await evaluationsRepository.deleteEvaluation(this.selectedEvaluation.id);
@@ -543,11 +422,49 @@ export default {
       this.getUserReservations();
     },
 
+    //予約
+    displayDialogUpdateReservation(shop) {
+      this.showDialogUpdateReservation = true;
+      this.setReservationUpdateData(shop);
+    },
+
+    setReservationUpdateData(shop) {
+      this.selectedShop = shop;
+      this.visitsDate = shop.reservation.visited_on.substr(0, 10);
+      this.visitsTime = shop.reservation.visited_on.substr(11, 5);
+      this.visitsNumber = shop.reservation.number_of_visiters;
+    },
+
+    checkTime(sendData) {
+      const now = new Date();
+      const dayTime = `${sendData.visitsDate} ${sendData.visitsTime}`;
+      const selected = new Date(dayTime);
+      if (now > selected) {
+        this.$refs.formReservation.$refs.observer.setErrors({
+          time: ["現在時刻よりも後の時刻を選択してください"],
+        });
+      }
+      if (now <= selected) {
+        this.reservationData = sendData;
+        this.$refs.confirmDialog.openDialog();
+        this.createConfirmDialogData(sendData);
+      }
+    },
+
+    createConfirmDialogData(sendData) {
+      this.confirmDialogData = [
+        { header: "店舗名", data: this.selectedShop.name },
+        { header: "日付", data: sendData.visitsDate },
+        { header: "時刻", data: sendData.visitsTime },
+        { header: "人数", data: `${sendData.visitsNumber}名` },
+      ];
+    },
+
     async updateReservation() {
       this.$refs.confirmDialog.startLoading();
       const sendData = {
-        visited_on: `${this.visitsDate} ${this.visitsTime}`,
-        number_of_visiters: this.visitsNumber,
+        visited_on: `${this.reservationData.visitsDate} ${this.reservationData.visitsTime}`,
+        number_of_visiters: this.reservationData.visitsNumber,
       };
       await reservationsRepository.updateReservation(
         this.selectedShop.reservation.id,
@@ -566,23 +483,13 @@ export default {
     },
 
     resetUpdateData() {
-      (this.selectedShop = ""), (this.visitsDate = "");
+      this.selectedShop = "";
+      this.visitsDate = "";
       this.visitsTime = "";
-      this.visitsNumber = "";
+      this.visitsNumber = 0;
     },
 
-    displayDialogUpdateReservation(shop) {
-      this.showDialogUpdateReservation = true;
-      this.setReservationUpdateData(shop);
-    },
-
-    setReservationUpdateData(shop) {
-      this.selectedShop = shop;
-      this.visitsDate = shop.reservation.visited_on.substr(0, 10);
-      this.visitsTime = shop.reservation.visited_on.substr(11, 5);
-      this.visitsNumber = shop.reservation.number_of_visiters;
-    },
-
+    //キャンセル
     displayCancelDialog(reservation) {
       this.$refs.dialogConfirmCancelReservation.openDialog();
       this.slectedReservation = reservation;
