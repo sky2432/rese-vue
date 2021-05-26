@@ -118,11 +118,10 @@ export default {
     },
 
     createConfirmDialogData() {
-      this.confirmDialogData = [
-        { header: "Name", data: this.registerData.name },
-        { header: "E-mail", data: this.registerData.email },
-        { header: "Password", data: this.registerData.password },
-      ];
+      this.confirmDialogData = this.$helpers.$_createDataConfirmRegistration(
+        this.registerData.name,
+        this.registerData.email
+      );
     },
 
     async register() {

@@ -45,4 +45,12 @@ export default {
       { header: "人数", data: `${number}名` },
     ];
   },
+
+  $_createDataConfirmRegistration(name, email) {
+    return [
+      { header: "Name", data: name },
+      { header: "E-mail", data: email },
+      { header: "Password", data: "表示されません" },
+    ];
+  },
 };

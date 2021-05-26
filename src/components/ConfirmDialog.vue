@@ -19,13 +19,12 @@
 
       <v-divider></v-divider>
 
-      <v-card-actions class="pb-6">
-        <v-spacer></v-spacer>
+      <v-card-actions class="pb-6 justify-center">
         <v-btn color="red" dark @click="dialog = false">{{
           cancellButtonText
         }}</v-btn>
         <slot name="actionButton"></slot>
-      </v-card-actions>
+      </v-card-actions>~
     </v-card>
   </v-dialog>
 </template>
