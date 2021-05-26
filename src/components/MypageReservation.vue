@@ -168,63 +168,36 @@
         <template #message>予約を変更しました</template>
       </BaseDialog>
 
-      <v-dialog v-model="showEvaluationDialog" max-width="500px">
-        <v-card>
-          <v-card-title class="amber">
-            評価
-            <v-spacer></v-spacer>
-            <v-btn icon @click="showEvaluationDialog = false"
-              ><v-icon>mdi-window-close</v-icon></v-btn
-            >
-          </v-card-title>
-          <v-card-text class="text-center mt-4">
-            <v-rating
-              v-model="evaluation"
-              half-increments
-              hover
-              color="amber"
-            ></v-rating>
-          </v-card-text>
-          <v-card-actions class="justify-center">
-            <v-btn
-              color="amber"
-              class="white--text"
-              @click="createEvaluation"
-              :disabled="isEvaluated"
-            >
-              投稿
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+      <DialogEvaluation ref="DialogCreateEvaluation" v-model="evaluation">
+        <template #title>評価</template>
+        <template #rightButton>
+          <v-btn
+            color="amber"
+            class="white--text"
+            @click="createEvaluation"
+            :disabled="isEvaluated"
+          >
+            投稿
+          </v-btn>
+        </template>
+      </DialogEvaluation>
 
-      <v-dialog v-model="showDialogEditEvaluation" max-width="500px">
-        <v-card>
-          <v-card-title class="amber">
-            評価を編集
-            <v-spacer></v-spacer>
-            <v-btn icon @click="showDialogEditEvaluation = false"
-              ><v-icon>mdi-window-close</v-icon></v-btn
-            >
-          </v-card-title>
-          <v-card-text class="text-center mt-4">
-            <v-rating
-              v-model="updatedEvaluation"
-              half-increments
-              hover
-              color="amber"
-            ></v-rating>
-          </v-card-text>
-          <v-card-actions class="justify-center">
-            <v-btn color="red" dark @click="deleteEvaluation">
-              削除
-            </v-btn>
-            <v-btn color="amber" dark @click="updateEvaluation">
-              更新
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+      <DialogEvaluation
+        ref="DialogUpdateEvaluation"
+        v-model="updatedEvaluation"
+      >
+        <template #title>評価を編集</template>
+        <template #leftButton>
+          <v-btn color="red" dark @click="deleteEvaluation">
+            削除
+          </v-btn>
+        </template>
+        <template #rightButton>
+          <v-btn color="amber" dark @click="updateEvaluation">
+            更新
+          </v-btn>
+        </template>
+      </DialogEvaluation>
     </v-row>
   </div>
 </template>
@@ -235,12 +208,14 @@ import { mapGetters } from "vuex";
 import reservationsRepository from "../repositories/reservationsRepository.js";
 import evaluationsRepository from "../repositories/evaluationsRepository";
 import ConfirmDialog from "../components/ConfirmDialog";
+import DialogEvaluation from "../components/DialogEvaluation";
 import FormReservation from "../components/FormReservation";
 
 export default {
   components: {
     FormReservation,
     ConfirmDialog,
+    DialogEvaluation,
   },
 
   data() {
@@ -249,13 +224,11 @@ export default {
       selectedShop: "",
       selectedEvaluation: "",
       slectedReservation: "",
-      evaluation: 0,
-      updatedEvaluation: 0,
       visitsDate: "",
       visitsTime: "",
       visitsNumber: 0,
-      showDialogEditEvaluation: false,
-      showEvaluationDialog: false,
+      evaluation: 0,
+      updatedEvaluation: 0,
       showDialogUpdateReservation: false,
       loading: true,
       loaded: false,
@@ -362,15 +335,38 @@ export default {
       return format;
     },
 
+    exisitsUserEvaluation(evaluations) {
+      for (let i in evaluations) {
+        if (this.user.id === evaluations[i].user_id) {
+          return true;
+        }
+      }
+      return false;
+    },
+
     //評価
-    async deleteEvaluation() {
-      this.showDialogEditEvaluation = false;
-      await evaluationsRepository.deleteEvaluation(this.selectedEvaluation.id);
+    displayEvaluationDialog(shop) {
+      this.$refs.DialogCreateEvaluation.openDialog();
+      this.selectedShop = shop;
+      this.evaluation = 0;
+    },
+
+    async createEvaluation() {
+      this.$refs.DialogCreateEvaluation.startLoading();
+      const sendData = {
+        user_id: this.user.id,
+        shop_id: this.selectedShop.id,
+        evaluation: this.evaluation,
+      };
+      await evaluationsRepository.createEvaluation(sendData);
+      this.$refs.DialogCreateEvaluation.closeDialog();
+      this.$refs.DialogCreateEvaluation.stopLoading();
+      this.selectedShop = "";
       this.getUserReservations();
     },
 
     displayDialogEditEvaluation(evaluations) {
-      this.showDialogEditEvaluation = true;
+      this.$refs.DialogUpdateEvaluation.openDialog();
       this.serchUserEvaluation(evaluations);
     },
 
@@ -384,7 +380,7 @@ export default {
     },
 
     async updateEvaluation() {
-      this.showDialogEditEvaluation = false;
+      this.$refs.DialogUpdateEvaluation.startLoading();
       const sendData = {
         evaluation: this.updatedEvaluation,
       };
@@ -392,33 +388,16 @@ export default {
         this.selectedEvaluation.id,
         sendData
       );
+      this.$refs.DialogUpdateEvaluation.closeDialog();
+      this.$refs.DialogUpdateEvaluation.stopLoading();
       this.getUserReservations();
     },
 
-    exisitsUserEvaluation(evaluations) {
-      for (let i in evaluations) {
-        if (this.user.id === evaluations[i].user_id) {
-          return true;
-        }
-      }
-      return false;
-    },
-
-    displayEvaluationDialog(shop) {
-      this.showEvaluationDialog = true;
-      this.selectedShop = shop;
-      this.evaluation = 0;
-    },
-
-    async createEvaluation() {
-      this.showEvaluationDialog = false;
-      const sendData = {
-        user_id: this.user.id,
-        shop_id: this.selectedShop.id,
-        evaluation: this.evaluation,
-      };
-      await evaluationsRepository.createEvaluation(sendData);
-      this.selectedShop = "";
+    async deleteEvaluation() {
+      this.$refs.DialogUpdateEvaluation.startLoading();
+      await evaluationsRepository.deleteEvaluation(this.selectedEvaluation.id);
+      this.$refs.DialogUpdateEvaluation.closeDialog();
+      this.$refs.DialogUpdateEvaluation.stopLoading();
       this.getUserReservations();
     },
 
