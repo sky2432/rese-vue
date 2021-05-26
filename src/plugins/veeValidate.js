@@ -35,7 +35,7 @@ extend("min", {
 
 extend("email", {
   ...email,
-  message: "Emailを正しい形式で入力してください",
+  message: "{_field_}を正しい形式で入力してください",
 });
 
 extend("image", {

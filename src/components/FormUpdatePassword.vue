@@ -8,41 +8,18 @@
           style="width: 80%;"
         >
           <v-form v-model="formValid">
-            <validation-provider
-              v-slot="{ errors }"
+            <TextFieldPassword
+              v-model="newPassword"
               name="現在のパスワード"
-              rules="required"
-              vid="password"
-            >
-              <v-text-field
-                v-model="password"
-                :error-messages="errors"
-                label="Current Password"
-                :type="showPassword ? 'text' : 'password'"
-                :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-                @click:append="showPassword = !showPassword"
-                prepend-icon="mdi-key"
-                required
-              ></v-text-field>
-            </validation-provider>
+              label="Current Password"
+            ></TextFieldPassword>
 
-            <validation-provider
-              v-slot="{ errors }"
+            <TextFieldPassword
+              v-model="password"
               name="新しいパスワード"
-              rules="required|min:4"
+              label="New Password"
               vid="new_password"
-            >
-              <v-text-field
-                v-model="newPassword"
-                :error-messages="errors"
-                label="New Password"
-                :type="showNewPassword ? 'text' : 'password'"
-                :append-icon="showNewPassword ? 'mdi-eye-off' : 'mdi-eye'"
-                @click:append="showNewPassword = !showNewPassword"
-                prepend-icon="mdi-key"
-                required
-              ></v-text-field>
-            </validation-provider>
+            ></TextFieldPassword>
 
             <v-card-actions class="justify-center">
               <v-btn color="amber" :disabled="invalid" @click="updatePassword">
@@ -65,8 +42,13 @@ import "../plugins/veeValidate.js";
 import { mapGetters } from "vuex";
 import usersRepository from "../repositories/usersRepository";
 import ownersRepository from "../repositories/ownersRepository";
+import TextFieldPassword from "../components/TextFieldPassword";
 
 export default {
+  components: {
+    TextFieldPassword,
+  },
+
   data() {
     return {
       password: "",

@@ -22,23 +22,7 @@
               ></v-text-field>
             </validation-provider>
 
-            <validation-provider
-              v-slot="{ errors }"
-              name="パスワード"
-              vid="password"
-              rules="required|min:4"
-            >
-              <v-text-field
-                v-model="password"
-                :error-messages="errors"
-                label="Password"
-                :type="showPassword ? 'text' : 'password'"
-                :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-                @click:append="showPassword = !showPassword"
-                prepend-icon="mdi-key"
-                required
-              ></v-text-field>
-            </validation-provider>
+            <TextFieldPassword v-model="password"></TextFieldPassword>
 
             <v-card-actions class="justify-center">
               <v-btn color="amber" :disabled="invalid" @click="login">
@@ -54,14 +38,18 @@
 
 <script>
 import "../plugins/veeValidate.js";
+import TextFieldPassword from "../components/TextFieldPassword";
 
 export default {
+  components: {
+    TextFieldPassword,
+  },
+
   data() {
     return {
       email: "",
       password: "",
       formValid: false,
-      showPassword: false,
     };
   },
   methods: {

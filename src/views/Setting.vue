@@ -64,7 +64,7 @@ export default {
   data() {
     return {
       selectedItem: 0,
-      currentComponent: FormUpdateNameEmail,
+      currentComponent: FormUpdatePassword,
     };
   },
 };
