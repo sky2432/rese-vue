@@ -1,39 +1,37 @@
 <template>
-  <validation-provider
-    v-slot="{ errors }"
-    :name="name"
-    rules="required|min:2|max:10"
-    vid="name"
-  >
-    <v-text-field
+  <validation-provider v-slot="{ errors }" :name="name" rules="selectRequired">
+    <v-select
       :value="value"
       @input="$emit('input', $event)"
-      :counter="10"
+      :items="options"
+      item-text="state"
+      item-value="abbr"
       :error-messages="errors"
       :label="label"
       :prepend-icon="icon"
       required
-    ></v-text-field>
+    ></v-select>
   </validation-provider>
 </template>
 
 <script>
 export default {
   props: {
+    options: {
+      type: Array,
+      require: true,
+    },
     value: {
-      type: String,
+      type: Number,
     },
     name: {
       type: String,
-      default: "名前",
     },
     label: {
       type: String,
-      default: "Name",
     },
     icon: {
       type: String,
-      default: "mdi-account",
     },
   },
 };

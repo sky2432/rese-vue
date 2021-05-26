@@ -1,17 +1,16 @@
 <template>
   <validation-provider
     v-slot="{ errors }"
-    :name="name"
-    rules="required|min:2|max:10"
-    vid="name"
+    name="メールアドレス"
+    rules="required|email"
+    vid="email"
   >
     <v-text-field
       :value="value"
       @input="$emit('input', $event)"
-      :counter="10"
       :error-messages="errors"
-      :label="label"
-      :prepend-icon="icon"
+      label="E-mail"
+      prepend-icon="mdi-email"
       required
     ></v-text-field>
   </validation-provider>
@@ -22,18 +21,6 @@ export default {
   props: {
     value: {
       type: String,
-    },
-    name: {
-      type: String,
-      default: "名前",
-    },
-    label: {
-      type: String,
-      default: "Name",
-    },
-    icon: {
-      type: String,
-      default: "mdi-account",
     },
   },
 };

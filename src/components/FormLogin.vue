@@ -7,20 +7,7 @@
       <v-card-text>
         <validation-observer ref="observer" v-slot="{ invalid }">
           <v-form v-model="formValid">
-            <validation-provider
-              v-slot="{ errors }"
-              name="メールアドレス"
-              vid="email"
-              rules="required|email"
-            >
-              <v-text-field
-                v-model="email"
-                :error-messages="errors"
-                label="E-mail"
-                prepend-icon="mdi-email"
-                required
-              ></v-text-field>
-            </validation-provider>
+            <TextFieldEmail v-model="email"></TextFieldEmail>
 
             <TextFieldPassword v-model="password"></TextFieldPassword>
 
@@ -38,10 +25,12 @@
 
 <script>
 import "../plugins/veeValidate.js";
+import TextFieldEmail from "../components/TextFieldEmail";
 import TextFieldPassword from "../components/TextFieldPassword";
 
 export default {
   components: {
+    TextFieldEmail,
     TextFieldPassword,
   },
 

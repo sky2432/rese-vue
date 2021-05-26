@@ -1,19 +1,18 @@
 <template>
   <validation-provider
     v-slot="{ errors }"
-    :name="name"
-    rules="required|min:2|max:10"
-    vid="name"
+    ref="fileProvider"
+    name="店舗画像"
+    rules="selectRequired|image"
   >
-    <v-text-field
+    <v-file-input
       :value="value"
-      @input="$emit('input', $event)"
-      :counter="10"
+      @change="$emit('setImage', $event)"
+      accept="image/*"
+      label="Select Image"
       :error-messages="errors"
-      :label="label"
-      :prepend-icon="icon"
-      required
-    ></v-text-field>
+      chips
+    ></v-file-input>
   </validation-provider>
 </template>
 
@@ -21,19 +20,16 @@
 export default {
   props: {
     value: {
-      type: String,
+      type: File,
     },
     name: {
       type: String,
-      default: "名前",
     },
     label: {
       type: String,
-      default: "Name",
     },
     icon: {
       type: String,
-      default: "mdi-account",
     },
   },
 };

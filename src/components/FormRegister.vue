@@ -9,20 +9,7 @@
         <v-form v-model="formValid">
           <TextFieldName v-model="name"></TextFieldName>
 
-          <validation-provider
-            v-slot="{ errors }"
-            name="メールアドレス"
-            rules="required|email"
-            vid="email"
-          >
-            <v-text-field
-              v-model="email"
-              :error-messages="errors"
-              label="E-mail"
-              prepend-icon="mdi-email"
-              required
-            ></v-text-field>
-          </validation-provider>
+          <TextFieldEmail v-model="email"></TextFieldEmail>
 
           <TextFieldPassword v-model="password"></TextFieldPassword>
 
@@ -40,11 +27,13 @@
 <script>
 import "../plugins/veeValidate.js";
 import TextFieldName from "../components/TextFieldName";
+import TextFieldEmail from "../components/TextFieldEmail";
 import TextFieldPassword from "../components/TextFieldPassword";
 
 export default {
   components: {
     TextFieldName,
+    TextFieldEmail,
     TextFieldPassword,
   },
 

@@ -68,22 +68,13 @@
               ></v-select>
             </validation-provider>
 
-            <validation-provider
-              v-slot="{ errors }"
+            <BaseSelector
+              v-model="visitsNumber"
+              :options="numberOptions"
               name="人数"
-              rules="selectRequired"
-              vid="number"
-            >
-              <v-select
-                :items="numberOptions"
-                item-text="state"
-                item-value="abbr"
-                v-model="visitsNumber"
-                label="人数を選択"
-                prepend-icon="mdi-account"
-                :error-messages="errors"
-              ></v-select>
-            </validation-provider>
+              label="人数を選択"
+              icon="mdi-account"
+            ></BaseSelector>
           </v-card-text>
 
           <v-card-actions class="justify-center pb-5">
@@ -101,8 +92,13 @@
 <script>
 import "../plugins/veeValidate.js";
 import config from "../config/const.js";
+import BaseSelector from "../components/BaseSelector";
 
 export default {
+  components: {
+    BaseSelector,
+  },
+
   props: {
     date: {
       type: String,

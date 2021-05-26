@@ -7,7 +7,7 @@
           <v-card tile elevation="0">
             <v-img :src="shopImageUrl" height="400px"></v-img>
             <v-fade-transition>
-              <v-overlay v-if="hover" absol ute color="#036358">
+              <v-overlay v-if="hover" absolute color="#036358">
                 <v-btn color="amber" dark @click="showImageDialog"
                   >店舗画像の更新</v-btn
                 >
@@ -55,21 +55,11 @@
         <v-card-text>
           <validation-observer ref="editImageObserver" v-slot="{ invalid }">
             <v-form>
-              <validation-provider
-                v-slot="{ errors }"
-                ref="fileProvider"
-                name="店舗画像"
-                rules="selectRequired|image"
-              >
-                <v-file-input
-                  v-model="image"
-                  accept="image/*"
-                  label="店舗画像を選択"
-                  @change="showImagePreview"
-                  :error-messages="errors"
-                  chips
-                ></v-file-input>
-              </validation-provider>
+              <FileInputImage
+                :value="image"
+                @setImage="setImage"
+              ></FileInputImage>
+
               <div v-if="imageUrl" class="text-center">
                 <v-subheader>プレビュー</v-subheader>
                 <img :src="imageUrl" width="50%" />
@@ -101,54 +91,28 @@
         <v-card-text class="mt-4">
           <validation-observer ref="editObserver" v-slot="{ invalid }">
             <v-form v-model="formValid">
-              <validation-provider
-                v-slot="{ errors }"
+              <TextFieldName
+                v-model="name"
                 name="店名"
-                rules="required|max:10"
-              >
-                <v-text-field
-                  v-model="name"
-                  :counter="10"
-                  :error-messages="errors"
-                  label="店名"
-                  prepend-icon="mdi-store"
-                  required
-                ></v-text-field>
-              </validation-provider>
+                label="Shop Name"
+                icon="mdi-store"
+              ></TextFieldName>
 
-              <validation-provider
-                v-slot="{ errors }"
+              <BaseSelector
+                v-model="area"
+                :options="areaOptions"
                 name="エリア"
-                rules="selectRequired"
-              >
-                <v-select
-                  v-model="area"
-                  :items="areaOptions"
-                  item-text="state"
-                  item-value="abbr"
-                  :error-messages="errors"
-                  label="エリア"
-                  prepend-icon="mdi-map-marker"
-                  required
-                ></v-select>
-              </validation-provider>
+                label="Area"
+                icon="mdi-map-marker"
+              ></BaseSelector>
 
-              <validation-provider
-                v-slot="{ errors }"
+              <BaseSelector
+                v-model="genre"
+                :options="genreOptions"
                 name="ジャンル"
-                rules="selectRequired"
-              >
-                <v-select
-                  v-model="genre"
-                  :items="genreOptions"
-                  item-text="state"
-                  item-value="abbr"
-                  :error-messages="errors"
-                  label="ジャンル"
-                  prepend-icon="mdi-silverware-fork-knife"
-                  required
-                ></v-select>
-              </validation-provider>
+                label="Genre"
+                icon="mdi-silverware-fork-knife"
+              ></BaseSelector>
 
               <validation-provider
                 v-slot="{ errors }"
@@ -193,41 +157,24 @@
               v-model="name"
               name="店名"
               label="Shop Name"
+              icon="mdi-store"
             ></TextFieldName>
 
-            <validation-provider
-              v-slot="{ errors }"
+            <BaseSelector
+              v-model="area"
+              :options="areaOptions"
               name="エリア"
-              rules="selectRequired"
-            >
-              <v-select
-                v-model="area"
-                :items="areaOptions"
-                item-text="state"
-                item-value="abbr"
-                :error-messages="errors"
-                label="Area"
-                prepend-icon="mdi-map-marker"
-                required
-              ></v-select>
-            </validation-provider>
+              label="Area"
+              icon="mdi-map-marker"
+            ></BaseSelector>
 
-            <validation-provider
-              v-slot="{ errors }"
+            <BaseSelector
+              v-model="genre"
+              :options="genreOptions"
               name="ジャンル"
-              rules="selectRequired"
-            >
-              <v-select
-                v-model="genre"
-                :items="genreOptions"
-                item-text="state"
-                item-value="abbr"
-                :error-messages="errors"
-                label="Genre"
-                prepend-icon="mdi-silverware-fork-knife"
-                required
-              ></v-select>
-            </validation-provider>
+              label="Genre"
+              icon="mdi-silverware-fork-knife"
+            ></BaseSelector>
 
             <validation-provider
               v-slot="{ errors }"
@@ -246,21 +193,7 @@
               ></v-textarea>
             </validation-provider>
 
-            <validation-provider
-              v-slot="{ errors }"
-              ref="fileProvider"
-              name="店舗画像"
-              rules="selectRequired|image"
-            >
-              <v-file-input
-                v-model="image"
-                accept="image/*"
-                label="Select Image"
-                @change="showImagePreview"
-                :error-messages="errors"
-                chips
-              ></v-file-input>
-            </validation-provider>
+            <FileInputImage :value="image" @setImage="setImage"></FileInputImage>
 
             <div v-if="imageUrl" class="text-center">
               <v-subheader>プレビュー</v-subheader>
@@ -280,14 +213,19 @@
 </template>
 
 <script>
+import "../plugins/veeValidate.js";
 import { mapGetters } from "vuex";
 import config from "../config/const.js";
 import shopsRepository from "../repositories/shopsRepository.js";
 import TextFieldName from "../components/TextFieldName";
+import BaseSelector from "../components/BaseSelector";
+import FileInputImage from "../components/FileInputImage";
 
 export default {
   components: {
     TextFieldName,
+    BaseSelector,
+    FileInputImage,
   },
 
   props: {
@@ -332,8 +270,8 @@ export default {
   data() {
     return {
       name: "",
-      area: "",
-      genre: "",
+      area: null,
+      genre: null,
       overview: "",
       image: null,
       imageUrl: "",
@@ -379,16 +317,26 @@ export default {
       this.imageUrl = "";
     },
 
-    showImagePreview() {
-      this.imageUrl = URL.createObjectURL(this.image);
-    },
-
     showImageDialog() {
       this.imageDialog = true;
       if (this.image) {
         this.image = null;
         this.imageUrl = "";
         this.$refs.editImageObserver.reset();
+      }
+    },
+
+    setImage(event) {
+      this.image = event;
+      this.showImagePreview();
+    },
+
+    showImagePreview() {
+      if (this.image) {
+        this.imageUrl = URL.createObjectURL(this.image);
+      }
+      if (!this.image) {
+        this.imageUrl = "";
       }
     },
 

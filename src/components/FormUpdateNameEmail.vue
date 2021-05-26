@@ -10,20 +10,7 @@
           <v-form v-model="formValid">
             <TextFieldName v-model="name"></TextFieldName>
 
-            <validation-provider
-              v-slot="{ errors }"
-              name="メールアドレス"
-              rules="required|email"
-              vid="email"
-            >
-              <v-text-field
-                v-model="email"
-                :error-messages="errors"
-                label="E-mail"
-                prepend-icon="mdi-email"
-                required
-              ></v-text-field>
-            </validation-provider>
+            <TextFieldEmail v-model="email"></TextFieldEmail>
 
             <v-card-actions class="justify-center">
               <v-btn color="amber" :disabled="invalid" @click="updateUser">
@@ -47,9 +34,11 @@ import { mapGetters } from "vuex";
 import usersRepository from "../repositories/usersRepository";
 import ownersRepository from "../repositories/ownersRepository";
 import TextFieldName from "../components/TextFieldName";
+import TextFieldEmail from "../components/TextFieldEmail";
 
 export default {
   components: {
+    TextFieldEmail,
     TextFieldName,
   },
 
