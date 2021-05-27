@@ -42,7 +42,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item>
+          <v-list-item @click="currentComponent = 'AdminMail'">
             <v-list-item-icon>
               <v-icon>mdi-email</v-icon>
             </v-list-item-icon>
@@ -73,23 +73,23 @@
 import AdminOwnerList from "../components/AdminOwnerList";
 import AdminUserList from "../components/AdminUserList";
 import AdminShopList from "../components/AdminShopList";
+import AdminMail from "../components/AdminMail";
 
 export default {
   components: {
     AdminShopList,
     AdminOwnerList,
     AdminUserList,
+    AdminMail,
   },
 
   data() {
     return {
       drawer: null,
       selectedItem: 0,
-      currentComponent: AdminShopList,
+      currentComponent: AdminMail,
     };
   },
-
-  created() {},
 
   methods: {
     logout() {
