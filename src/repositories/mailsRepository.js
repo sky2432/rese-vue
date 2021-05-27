@@ -1,8 +1,16 @@
 import Repository from "./Repository";
 
-const resource = "/mail";
+const resource = "mail";
 export default {
-  sendMail(payload) {
+  sendMailForAll(payload) {
+    return Repository.post(`${resource}`, payload);
+  },
+
+  sendMailForUsers(payload) {
     return Repository.post(`users/${resource}`, payload);
+  },
+  
+  sendMailForOwners(payload) {
+    return Repository.post(`owners/${resource}`, payload);
   },
 };

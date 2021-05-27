@@ -151,7 +151,7 @@
         </FormReservation>
       </v-dialog>
 
-      <DialogConfirm ref="confirmDialog" :tableData="confirmDialogData">
+      <DialogConfirm ref="DialogConfirm" :tableData="confirmDialogData">
         <template #title>変更内容の確認</template>
         <template #actionButton
           ><v-btn color="amber" dark @click="updateReservation"
@@ -420,7 +420,7 @@ export default {
       }
       if (!result) {
         this.reservationData = sendData;
-        this.$refs.confirmDialog.openDialog();
+        this.$refs.DialogConfirm.openDialog();
         this.createConfirmDialogData(sendData);
       }
     },
@@ -435,7 +435,7 @@ export default {
     },
 
     async updateReservation() {
-      this.$refs.confirmDialog.startLoading();
+      this.$refs.DialogConfirm.startLoading();
       const sendData = {
         visited_on: `${this.reservationData.visitsDate} ${this.reservationData.visitsTime}`,
         number_of_visiters: this.reservationData.visitsNumber,
@@ -444,7 +444,7 @@ export default {
         this.selectedShop.reservation.id,
         sendData
       );
-      this.$refs.confirmDialog.stopLoading();
+      this.$refs.DialogConfirm.stopLoading();
       this.changeDialog();
       this.resetUpdateData();
       this.getUserReservations();
@@ -453,7 +453,7 @@ export default {
     changeDialog() {
       this.$refs.updateBaseDialog.openDialog();
       this.DialogUpdateReservation = false;
-      this.$refs.confirmDialog.closeDialog();
+      this.$refs.DialogConfirm.closeDialog();
     },
 
     resetUpdateData() {

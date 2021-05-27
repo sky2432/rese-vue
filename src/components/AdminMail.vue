@@ -9,35 +9,31 @@
           <validation-observer ref="observer" v-slot="{ invalid }">
             <v-form v-model="formValid">
               <BaseSelector
-                name="送信相手"
-                label="Receiver"
-                icon="mdi-map-marker"
-                v-model="receiver"
+                name="宛先"
+                label="destination"
+                :options="destinationOptions"
+                v-model="destination"
               ></BaseSelector>
 
               <BaseTextField name="件名" label="subject" v-model="subject">
               </BaseTextField>
 
-              <validation-provider
-                v-slot="{ errors }"
-                name="店舗概要"
-                rules="required|max:255"
-              >
-                <v-textarea
-                  class="mt-4"
-                  name="概要"
-                  label="Overview"
-                  counter="255"
-                  :error-messages="errors"
-                  prepend-icon="mdi-storefront"
-                  outlined
+              <div class="mt-4">
+                <BaseTextArea
+                  name="本文"
+                  label="content"
                   v-model="content"
-                ></v-textarea>
-              </validation-provider>
+                ></BaseTextArea>
+              </div>
 
               <v-card-actions class="justify-center">
-                <v-btn color="amber" :disabled="invalid">
-                  登録
+                <v-btn
+                  color="amber"
+                  class="white--text"
+                  :disabled="invalid"
+                  @click="confirmMailContent"
+                >
+                  確認
                 </v-btn>
               </v-card-actions>
             </v-form>
@@ -45,62 +41,90 @@
         </v-card-text>
       </v-card>
 
-      <v-dialog max-width="500px" v-model="deleteDialog">
-        <v-card :loading="deleteLoading">
-          <v-card-title class="justify-center">
-            このユーザーを削除しますか？
-          </v-card-title>
-          <v-card-actions class="justify-center">
-            <v-btn color="red lighten-1" dark >
-              削除
-            </v-btn>
-            <v-btn color="amber" dark @click="deleteDialog = false">
-              キャンセル
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+      <DialogConfirm
+        ref="DialogConfirm"
+        cancellButtonText="修正"
+        :tableData="confirmDialogData"
+      >
+        <template #title>メール内容の確認</template>
+        <template #actionButton
+          ><v-btn color="amber" dark @click="sendMail">送信</v-btn></template
+        >
+      </DialogConfirm>
 
       <BaseDialog ref="baseDialog">
-        <template #message>ユーザーを削除しました</template>
+        <template #message>メールを送信しました</template>
       </BaseDialog>
     </v-container>
   </v-main>
 </template>
 
 <script>
-import usersRepository from "../repositories/usersRepository";
+import config from "../config/const.js";
+import mailsRepository from "../repositories/mailsRepository.js";
 import BaseTextField from "../components/BaseTextField";
+import BaseTextArea from "../components/BaseTextArea";
 import BaseSelector from "../components/BaseSelector";
+import DialogConfirm from "../components/DialogConfirm";
 
 export default {
   components: {
     BaseTextField,
+    BaseTextArea,
     BaseSelector,
+    DialogConfirm,
   },
 
   data() {
     return {
-      receiver: null,
+      destination: null,
       subject: "",
       content: "",
       users: [],
       formValid: false,
-      loading: true,
-      deleteDialog: false,
-      deleteLoading: false,
+      destinationOptions: config.destinationOptions,
+      confirmDialogData: [],
     };
   },
 
-  created() {
-    this.getUsers();
-  },
-
   methods: {
-    async getUsers() {
-      const resData = await usersRepository.getUsers();
-      this.users = resData.data.data;
-      this.loading = false;
+    confirmMailContent() {
+      this.$refs.DialogConfirm.openDialog();
+      this.createConfirmDialogData();
+    },
+
+    createConfirmDialogData() {
+      this.confirmDialogData = [
+        { header: "宛先", data: this.destination },
+        { header: "件名", data: this.subject },
+        { header: "本文", data: this.content },
+      ];
+    },
+
+    sendMail() {
+      const sendData = {
+        role: this.$store.getters.role,
+        subject: this.subject,
+        content: this.content,
+      };
+      if (this.destination === 1) {
+        mailsRepository.sendMailForAll(sendData);
+      }
+      if (this.destination === 2) {
+        mailsRepository.sendMailForUsers(sendData);
+      }
+      if (this.destination === 3) {
+        mailsRepository.sendMailForOwners(sendData);
+      }
+      this.$refs.DialogConfirm.closeDialog();
+      this.$refs.baseDialog.openDialog();
+    },
+
+    resetData() {
+      this.destination = null;
+      this.subject = "";
+      this.content = "";
+      this.$refs.observer.reset();
     },
   },
 };

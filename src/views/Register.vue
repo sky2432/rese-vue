@@ -8,7 +8,7 @@
         </FormRegister>
 
         <DialogConfirm
-          ref="confirmDialog"
+          ref="DialogConfirm"
           :tableData="confirmDialogData"
           cancellButtonText="修正"
         >
@@ -47,7 +47,7 @@ export default {
         .confirmUser(sendData)
         .then(() => {
           this.registerData = sendData;
-          this.$refs.confirmDialog.openDialog();
+          this.$refs.DialogConfirm.openDialog();
           this.createConfirmDialogData();
         })
         .catch((e) => {
@@ -65,7 +65,7 @@ export default {
     },
 
     async register() {
-      this.$refs.confirmDialog.startLoading();
+      this.$refs.DialogConfirm.startLoading();
       await usersRepository.createUser(this.registerData);
       this.$router.replace("/thanks");
     },

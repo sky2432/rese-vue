@@ -5,15 +5,16 @@
     :rules="rules"
     :vid="vid"
   >
-    <v-text-field
+    <v-textarea
       :counter="counter"
       :error-messages="errors"
       :label="label"
       :prepend-icon="icon"
+      outlined
       required
       :value="value"
       @input="$emit('input', $event)"
-    ></v-text-field>
+    ></v-textarea>
   </validation-provider>
 </template>
 

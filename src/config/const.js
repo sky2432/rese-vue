@@ -56,4 +56,9 @@ export default Object.freeze({
     { state: "イタリアン", abbr: 4 },
     { state: "ラーメン", abbr: 5 },
   ],
+  destinationOptions: [
+    { state: "ユーザーとオーナー全員", abbr: 1 },
+    { state: "ユーザー全員", abbr: 2 },
+    { state: "オーナー全員", abbr: 3 },
+  ],
 });
