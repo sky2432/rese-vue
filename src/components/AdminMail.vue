@@ -20,9 +20,10 @@
 
               <div class="mt-4">
                 <BaseTextArea
+                  :clearable="true"
                   name="本文"
                   label="content"
-                  :clearable="true"
+                  vid="content"
                   v-model="content"
                 ></BaseTextArea>
               </div>

@@ -8,10 +8,10 @@
     <v-textarea
       :counter="counter"
       :clearable="clearable"
-      clear-icon="mdi-close-circle"
       :error-messages="errors"
       :label="label"
       :prepend-icon="icon"
+      clear-icon="mdi-close-circle"
       outlined
       required
       :value="value"

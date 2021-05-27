@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import "../plugins/veeValidate.js";
 export default {
   props: {
     value: {

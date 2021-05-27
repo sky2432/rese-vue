@@ -39,7 +39,7 @@
         {{ shopOverview }}
       </v-card-text>
       <v-card-actions class="justify-center">
-        <v-btn color="amber" dark @click="insertShopData">編集</v-btn>
+        <v-btn color="amber" dark @click="setShopData">編集</v-btn>
       </v-card-actions>
     </v-card>
 
@@ -91,45 +91,18 @@
         <v-card-text class="mt-4">
           <validation-observer ref="editObserver" v-slot="{ invalid }">
             <v-form v-model="formValid">
-              <TextFieldName
-                name="店名"
-                icon="mdi-store"
-                label="Shop Name"
-                v-model="name"
-              ></TextFieldName>
-
-              <BaseSelector
-                name="エリア"
-                label="Area"
-                icon="mdi-map-marker"
-                :options="areaOptions"
-                v-model="area"
-              ></BaseSelector>
-
-              <BaseSelector
-                :options="genreOptions"
-                name="ジャンル"
-                label="Genre"
-                icon="mdi-silverware-fork-knife"
-                v-model="genre"
-              ></BaseSelector>
-
-              <validation-provider
-                v-slot="{ errors }"
-                name="店舗概要"
-                rules="required|max:255"
-              >
-                <v-textarea
-                  class="mt-4"
-                  v-model="overview"
-                  name="概要"
-                  counter="255"
-                  :error-messages="errors"
-                  label="店舗概要"
-                  prepend-icon="mdi-storefront"
-                  outlined
-                ></v-textarea>
-              </validation-provider>
+              <FormShopInfo
+                v-bind="{
+                  name: name,
+                  area: area,
+                  genre: genre,
+                  overview: overview,
+                }"
+                @setName="name = $event"
+                @setArea="area = $event"
+                @setGenre="genre = $event"
+                @setOverview="overview = $event"
+              ></FormShopInfo>
 
               <v-card-actions class="justify-center">
                 <v-btn color="amber" :disabled="invalid" @click="updateShop">
@@ -153,45 +126,18 @@
       <v-card-text class="mt-4">
         <validation-observer ref="addObserver" v-slot="{ invalid }">
           <v-form v-model="formValid">
-            <TextFieldName
-              name="店名"
-              label="Shop Name"
-              icon="mdi-store"
-              v-model="name"
-            ></TextFieldName>
-
-            <BaseSelector
-              :options="areaOptions"
-              name="エリア"
-              label="Area"
-              icon="mdi-map-marker"
-              v-model="area"
-            ></BaseSelector>
-
-            <BaseSelector
-              :options="genreOptions"
-              name="ジャンル"
-              label="Genre"
-              icon="mdi-silverware-fork-knife"
-              v-model="genre"
-            ></BaseSelector>
-
-            <validation-provider
-              v-slot="{ errors }"
-              name="店舗概要"
-              rules="required|max:255"
-            >
-              <v-textarea
-                class="mt-4"
-                name="概要"
-                label="Overview"
-                counter="255"
-                :error-messages="errors"
-                prepend-icon="mdi-storefront"
-                outlined
-                v-model="overview"
-              ></v-textarea>
-            </validation-provider>
+            <FormShopInfo
+              v-bind="{
+                name: name,
+                area: area,
+                genre: genre,
+                overview: overview,
+              }"
+              @setName="name = $event"
+              @setArea="area = $event"
+              @setGenre="genre = $event"
+              @setOverview="overview = $event"
+            ></FormShopInfo>
 
             <FileInputImage
               :value="image"
@@ -220,15 +166,13 @@ import "../plugins/veeValidate.js";
 import { mapGetters } from "vuex";
 import config from "../config/const.js";
 import shopsRepository from "../repositories/shopsRepository.js";
-import TextFieldName from "../components/TextFieldName";
-import BaseSelector from "../components/BaseSelector";
 import FileInputImage from "../components/FileInputImage";
+import FormShopInfo from "../components/FormShopInfo";
 
 export default {
   components: {
-    TextFieldName,
-    BaseSelector,
     FileInputImage,
+    FormShopInfo,
   },
 
   props: {
@@ -285,7 +229,6 @@ export default {
       imageLoading: false,
       areaOptions: config.areaOptions,
       genreOptions: config.genreOptions,
-      tableData: [],
     };
   },
 
@@ -314,8 +257,8 @@ export default {
 
     resetShopData() {
       this.name = "";
-      this.area = "";
-      this.genre = "";
+      this.area = null;
+      this.genre = null;
       this.overview = "";
       this.image = null;
       this.imageUrl = "";
@@ -355,7 +298,7 @@ export default {
       this.$refs.imageBaseDialog.openDialog();
     },
 
-    insertShopData() {
+    setShopData() {
       this.updateDialog = true;
       this.name = this.shopName;
       this.area = this.areaId;

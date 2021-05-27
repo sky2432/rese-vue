@@ -42,6 +42,7 @@ export default {
     icon: {
       type: String,
     },
+
     value: {
       type: String,
     },
