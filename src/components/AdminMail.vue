@@ -9,19 +9,14 @@
           <validation-observer ref="observer" v-slot="{ invalid }">
             <v-form v-model="formValid">
               <BaseSelector
-                :options="areaOptions"
-                name="エリア"
-                label="Area"
+                name="送信相手"
+                label="Receiver"
                 icon="mdi-map-marker"
                 v-model="receiver"
               ></BaseSelector>
 
-              <TextFieldName
-                name="店名"
-                label="Shop Name"
-                icon="mdi-store"
-                v-model="subject"
-              ></TextFieldName>
+              <BaseTextField name="件名" label="subject" v-model="subject">
+              </BaseTextField>
 
               <validation-provider
                 v-slot="{ errors }"
@@ -56,7 +51,7 @@
             このユーザーを削除しますか？
           </v-card-title>
           <v-card-actions class="justify-center">
-            <v-btn color="red lighten-1" dark @click="deleteUser">
+            <v-btn color="red lighten-1" dark >
               削除
             </v-btn>
             <v-btn color="amber" dark @click="deleteDialog = false">
@@ -75,11 +70,13 @@
 
 <script>
 import usersRepository from "../repositories/usersRepository";
-import DataTable from "../components/DataTable";
+import BaseTextField from "../components/BaseTextField";
+import BaseSelector from "../components/BaseSelector";
 
 export default {
   components: {
-    DataTable,
+    BaseTextField,
+    BaseSelector,
   },
 
   data() {
