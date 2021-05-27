@@ -15,6 +15,7 @@
             </tbody>
           </template>
         </v-simple-table>
+        <slot name="additional"></slot>
       </v-card-text>
 
       <v-divider></v-divider>

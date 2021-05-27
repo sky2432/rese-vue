@@ -22,6 +22,7 @@
                 <BaseTextArea
                   name="本文"
                   label="content"
+                  :clearable="true"
                   v-model="content"
                 ></BaseTextArea>
               </div>
@@ -47,6 +48,12 @@
         :tableData="confirmDialogData"
       >
         <template #title>メール内容の確認</template>
+        <template #additional>
+          <v-subheader class="black--text">本文</v-subheader>
+          <v-card-text class="py-0">
+            {{ content }}
+          </v-card-text>
+        </template>
         <template #actionButton
           ><v-btn color="amber" dark @click="sendMail">送信</v-btn></template
         >
@@ -80,7 +87,6 @@ export default {
       destination: null,
       subject: "",
       content: "",
-      users: [],
       formValid: false,
       destinationOptions: config.destinationOptions,
       confirmDialogData: [],
@@ -95,9 +101,11 @@ export default {
 
     createConfirmDialogData() {
       this.confirmDialogData = [
-        { header: "宛先", data: this.destination },
+        {
+          header: "宛先",
+          data: config.destinationOptions[this.destination].state,
+        },
         { header: "件名", data: this.subject },
-        { header: "本文", data: this.content },
       ];
     },
 
@@ -107,13 +115,13 @@ export default {
         subject: this.subject,
         content: this.content,
       };
-      if (this.destination === 1) {
+      if (this.destination === 0) {
         mailsRepository.sendMailForAll(sendData);
       }
-      if (this.destination === 2) {
+      if (this.destination === 1) {
         mailsRepository.sendMailForUsers(sendData);
       }
-      if (this.destination === 3) {
+      if (this.destination === 2) {
         mailsRepository.sendMailForOwners(sendData);
       }
       this.$refs.DialogConfirm.closeDialog();

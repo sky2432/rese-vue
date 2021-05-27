@@ -7,6 +7,8 @@
   >
     <v-textarea
       :counter="counter"
+      :clearable="clearable"
+      clear-icon="mdi-close-circle"
       :error-messages="errors"
       :label="label"
       :prepend-icon="icon"
@@ -35,6 +37,10 @@ export default {
     },
     counter: {
       type: Number,
+    },
+    clearable: {
+      type: Boolean,
+      default: false,
     },
     label: {
       type: String,
