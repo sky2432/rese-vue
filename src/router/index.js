@@ -191,12 +191,21 @@ router.beforeEach((to, from, next) => {
     });
   }
   if (store.state.role === "user") {
-    if (to.name === "Owner" || to.name === "Admin") {
+    if (
+      to.name === "Owner" ||
+      to.name === "Admin" ||
+      to.name === "ShopDetail" ||
+      to.name === "OwnerDetail"
+    ) {
       next("/home");
     }
   }
   if (store.state.role === "owner") {
-    if (to.name === "Admin") {
+    if (
+      to.name === "Admin" ||
+      to.name === "ShopDetail" ||
+      to.name === "OwnerDetail"
+    ) {
       next("/owner");
     }
   }
