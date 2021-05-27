@@ -1,24 +1,23 @@
 <template>
-  <validation-provider
-    v-slot="{ errors }"
+  <BaseTextField
     :name="name"
     rules="required|min:2|max:10"
     vid="name"
-  >
-    <v-text-field
-      :counter="10"
-      :error-messages="errors"
-      :label="label"
-      :prepend-icon="icon"
-      required
-      :value="value"
-      @input="$emit('input', $event)"
-    ></v-text-field>
-  </validation-provider>
+    :counter="10"
+    :icon="icon"
+    :label="label"
+    :value="value"
+    @input="$emit('input', $event)"
+  ></BaseTextField>
 </template>
 
 <script>
+import BaseTextField from "../components/BaseTextField";
 export default {
+  components: {
+    BaseTextField,
+  },
+
   props: {
     value: {
       type: String,

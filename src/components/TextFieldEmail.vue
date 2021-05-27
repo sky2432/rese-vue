@@ -1,23 +1,23 @@
 <template>
-  <validation-provider
-    v-slot="{ errors }"
+  <BaseTextField
     name="メールアドレス"
     rules="required|email"
     vid="email"
-  >
-    <v-text-field
-      :error-messages="errors"
-      label="E-mail"
-      prepend-icon="mdi-email"
-      required
-      :value="value"
-      @input="$emit('input', $event)"
-    ></v-text-field>
-  </validation-provider>
+    icon="mdi-email"
+    label="E-mail"
+    :value="value"
+    @input="$emit('input', $event)"
+  ></BaseTextField>
 </template>
 
 <script>
+import BaseTextField from "../components/BaseTextField";
+
 export default {
+  components: {
+    BaseTextField,
+  },
+
   props: {
     value: {
       type: String,
