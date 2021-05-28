@@ -57,7 +57,9 @@
           </v-card-text>
         </template>
         <template #actionButton
-          ><v-btn color="amber" dark @click="sendMail">送信</v-btn></template
+          ><v-btn color="amber" class="white--text" @click="sendMail"
+            >送信</v-btn
+          ></template
         >
       </DialogConfirm>
 

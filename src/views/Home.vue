@@ -73,7 +73,7 @@
               <v-card-actions>
                 <v-btn
                   color="amber"
-                  dark
+                  class="white--text"
                   rounded
                   @click="moveShopDetail(shop.id)"
                   >詳細

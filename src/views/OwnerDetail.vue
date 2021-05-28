@@ -69,12 +69,12 @@
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions class="justify-center">
-              <v-btn color="red" dark @click="warnDialog = true"
+              <v-btn color="red" class="white--text" @click="warnDialog = true"
                 >オーナー削除</v-btn
               >
               <v-btn
                 color="amber"
-                dark
+                class="white--text"
                 :disabled="!owner.shop"
                 @click="moveShopDetail"
                 >店舗詳細へ</v-btn
@@ -114,12 +114,20 @@
           >
             <template #message>本当にオーナーを削除しますか？</template>
             <template #leftButton>
-              <v-btn color="red lighten-1" dark @click="deleteOwner">
+              <v-btn
+                color="red lighten-1"
+                class="white--text"
+                @click="deleteOwner"
+              >
                 削除
               </v-btn>
             </template>
             <template #baseButton>
-              <v-btn color="amber" dark @click="closeDeleteDialog">
+              <v-btn
+                color="amber"
+                class="white--text"
+                @click="closeDeleteDialog"
+              >
                 キャンセル
               </v-btn>
             </template>

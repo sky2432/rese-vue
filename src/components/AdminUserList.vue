@@ -25,10 +25,18 @@
             このユーザーを削除しますか？
           </v-card-title>
           <v-card-actions class="justify-center">
-            <v-btn color="red lighten-1" dark @click="deleteUser">
+            <v-btn
+              color="red lighten-1"
+              class="white--text"
+              @click="deleteUser"
+            >
               削除
             </v-btn>
-            <v-btn color="amber" dark @click="deleteDialog = false">
+            <v-btn
+              color="amber"
+              class="white--text"
+              @click="deleteDialog = false"
+            >
               キャンセル
             </v-btn>
           </v-card-actions>

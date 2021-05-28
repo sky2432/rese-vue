@@ -22,7 +22,11 @@
         <BaseDialog ref="baseDialog">
           <template #message>本当にアカウントを削除しますか？</template>
           <template #leftButton>
-            <v-btn color="red lighten-1" dark @click="deleteUser">
+            <v-btn
+              color="red lighten-1"
+              class="white--text"
+              @click="deleteUser"
+            >
               削除
             </v-btn>
           </template>

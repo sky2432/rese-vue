@@ -21,7 +21,7 @@
       <v-divider></v-divider>
 
       <v-card-actions class="pb-6 justify-center">
-        <v-btn color="red" dark @click="dialog = false">{{
+        <v-btn color="red" class="white--text" @click="dialog = false">{{
           cancellButtonText
         }}</v-btn>
         <slot name="actionButton"></slot>

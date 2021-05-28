@@ -17,7 +17,7 @@
             <v-col cols="2" class="align-self-center text-right">
               <v-menu offset-y>
                 <template v-slot:activator="{ on, attrs }">
-                  <v-btn class="white" dark v-bind="attrs" v-on="on">
+                  <v-btn class="white" v-bind="attrs" v-on="on">
                     <span class="amber--text">{{ user.name }}</span>
                     <v-icon color="amber">mdi-menu-down</v-icon>
                   </v-btn>

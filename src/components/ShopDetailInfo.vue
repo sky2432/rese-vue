@@ -44,10 +44,10 @@
               </p>
             </v-card-text>
             <v-card-actions class="justify-center">
-              <v-btn color="red" dark @click="warnDialog = true"
+              <v-btn color="red" class="white--text" @click="warnDialog = true"
                 >店舗の削除</v-btn
               >
-              <v-btn color="amber" dark @click="moveOwnerDetail"
+              <v-btn color="amber" class="white--text" @click="moveOwnerDetail"
                 >オーナー詳細</v-btn
               >
             </v-card-actions>
@@ -85,12 +85,12 @@
     <BaseDialog ref="dialogConfirmDeletionShop" baseButtonText="キャンセル">
       <template #message>本当に店舗を削除しますか？</template>
       <template #leftButton>
-        <v-btn color="red lighten-1" dark @click="deleteShop">
+        <v-btn color="red lighten-1" class="white--text" @click="deleteShop">
           削除
         </v-btn>
       </template>
       <template #baseButton>
-        <v-btn color="amber" dark @click="closeDeleteDialog">
+        <v-btn color="amber" class="white--text" @click="closeDeleteDialog">
           キャンセル
         </v-btn>
       </template>

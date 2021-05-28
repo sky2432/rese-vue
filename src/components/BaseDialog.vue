@@ -7,7 +7,7 @@
       <v-card-actions class="justify-center">
         <slot name="leftButton"></slot>
         <slot name="baseButton">
-          <v-btn color="amber" dark @click="dialog = false">
+          <v-btn color="amber" class="white--text" @click="dialog = false">
             {{ baseButtonText }}
           </v-btn>
         </slot>

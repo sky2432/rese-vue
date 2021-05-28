@@ -122,7 +122,7 @@
       <BaseDialog ref="dialogConfirmCancelReservation" baseButtonText="いいえ">
         <template #message>本当にキャンセルしますか？</template>
         <template #leftButton>
-          <v-btn color="red" dark @click="deleteReservation">
+          <v-btn color="red" class="white--text" @click="deleteReservation">
             はい
           </v-btn>
         </template>
@@ -144,7 +144,11 @@
         >
           <template #title>予約の変更</template>
           <template #leftButton
-            ><v-btn color="red" dark @click="DialogUpdateReservation = false">
+            ><v-btn
+              color="red"
+              class="white--text"
+              @click="DialogUpdateReservation = false"
+            >
               キャンセル
             </v-btn></template
           >
@@ -154,7 +158,7 @@
       <DialogConfirm ref="DialogConfirm" :tableData="confirmDialogData">
         <template #title>変更内容の確認</template>
         <template #actionButton
-          ><v-btn color="amber" dark @click="updateReservation"
+          ><v-btn color="amber" class="white--text" @click="updateReservation"
             >変更</v-btn
           ></template
         >
@@ -184,12 +188,12 @@
       >
         <template #title>評価を編集</template>
         <template #leftButton>
-          <v-btn color="red" dark @click="deleteEvaluation">
+          <v-btn color="red" class="white--text" @click="deleteEvaluation">
             削除
           </v-btn>
         </template>
         <template #rightButton>
-          <v-btn color="amber" dark @click="updateEvaluation">
+          <v-btn color="amber" class="white--text" @click="updateEvaluation">
             更新
           </v-btn>
         </template>

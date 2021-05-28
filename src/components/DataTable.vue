@@ -32,7 +32,11 @@
         {{ item.name }}
       </template>
       <template v-slot:[`item.detail`]="{ item }" v-if="detail">
-        <v-btn color="amber" dark outlined @click="movePage(item.id)"
+        <v-btn
+          color="amber"
+          class="white--text"
+          outlined
+          @click="movePage(item.id)"
           >詳細</v-btn
         >
       </template>
@@ -43,7 +47,10 @@
         v-if="reservationStatus"
         v-slot:[`item.reservation.status`]="{ item }"
       >
-        <v-chip :color="getStatusColor(item.reservation.status)" dark>
+        <v-chip
+          :color="getStatusColor(item.reservation.status)"
+          class="white--text"
+        >
           {{ item.reservation.status }}
         </v-chip>
       </template>

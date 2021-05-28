@@ -8,7 +8,10 @@
             <v-img :src="shopImageUrl" height="400px"></v-img>
             <v-fade-transition>
               <v-overlay color="#036358" absolute v-if="hover">
-                <v-btn color="amber" dark @click="showImageDialog"
+                <v-btn
+                  color="amber"
+                  class="white--text"
+                  @click="showImageDialog"
                   >店舗画像の更新</v-btn
                 >
               </v-overlay>
@@ -39,7 +42,9 @@
         {{ shopOverview }}
       </v-card-text>
       <v-card-actions class="justify-center">
-        <v-btn color="amber" dark @click="setShopData">編集</v-btn>
+        <v-btn color="amber" class="white--text" @click="setShopData"
+          >編集</v-btn
+        >
       </v-card-actions>
     </v-card>
 

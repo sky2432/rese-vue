@@ -79,7 +79,11 @@
 
           <v-card-actions class="justify-center pb-5">
             <slot name="leftButton"></slot>
-            <v-btn color="amber" dark :disabled="invalid" @click="checkTime"
+            <v-btn
+              color="amber"
+              class="white--text"
+              :disabled="invalid"
+              @click="checkTime"
               >確認</v-btn
             >
           </v-card-actions>

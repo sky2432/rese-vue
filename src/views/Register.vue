@@ -14,7 +14,7 @@
         >
           <template #title>登録内容の確認</template>
           <template #actionButton
-            ><v-btn color="amber" dark @click="register">登録</v-btn></template
+            ><v-btn color="amber" class="white--text" @click="register">登録</v-btn></template
           >
         </DialogConfirm>
       </div>
