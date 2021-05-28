@@ -4,11 +4,10 @@
     <v-main>
       <div class="wrapper">
         <v-card
-          class="white pa-16"
+          class="pa-16"
           elevation="2"
-          width="600px"
+          width="500px"
           outlined
-          shaped
           tile
         >
           <v-card-title class="justify-center">

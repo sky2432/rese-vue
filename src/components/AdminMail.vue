@@ -83,7 +83,6 @@ export default {
     BaseTextField,
     BaseTextArea,
     BaseSelector,
-
     DialogConfirm,
   },
 
