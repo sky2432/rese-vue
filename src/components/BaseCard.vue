@@ -1,6 +1,6 @@
 <template>
   <v-card
-    :class="style"
+    :class="padding"
     :elevation="elevation"
     :width="width"
     :outlined="outlined"
@@ -22,14 +22,14 @@
 <script>
 export default {
   props: {
-    style: {
+    padding: {
       type: String,
     },
     elevation: {
       type: Number,
       default: 2,
     },
-    with: {
+    width: {
       type: String,
       default: "600px",
     },

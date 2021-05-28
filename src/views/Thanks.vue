@@ -3,26 +3,25 @@
     <TheHeader></TheHeader>
     <v-main>
       <div class="wrapper">
-        <v-card
-          class="white pa-16"
-          elevation="2"
-          width="600px"
-          outlined
-          shaped
-          tile
-        >
-          <v-card-title class="justify-center">
-            会員登録ありがとうございます
-          </v-card-title>
-          <v-card-actions class="justify-center">
-            <v-btn color="amber" @click="$router.push('/login')">
-              ログインする
-            </v-btn>
-          </v-card-actions>
-        </v-card>
+        <BaseCard padding="pa-16" v-bind="{ outlined: true, tile: true }">
+          <template #title>会員登録ありがとうございます</template>
+          <template #rightButton
+            ><v-btn color="amber" @click="$router.push('/login')">
+              ログイン
+            </v-btn></template
+          >
+        </BaseCard>
       </div>
     </v-main>
   </div>
 </template>
 
+<script>
+import BaseCard from "../components/BaseCard";
 
+export default {
+  components: {
+    BaseCard,
+  },
+};
+</script>
