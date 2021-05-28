@@ -89,8 +89,8 @@ const routes = [
     props: true,
     meta: {
       requiresAuth: true,
-      title: "店舗詳細",
-      desc: "店舗詳細ページです。",
+      title: "予約",
+      desc: "予約ページです。",
     },
   },
   {
@@ -130,8 +130,8 @@ const routes = [
     component: Owner,
     meta: {
       requiresAuth: true,
-      title: "店舗代表者ページ",
-      desc: "店舗代表者ページです。",
+      title: "オーナーページ",
+      desc: "オーナーページです。",
     },
   },
   {
@@ -162,8 +162,8 @@ const routes = [
     props: true,
     meta: {
       requiresAuth: true,
-      title: "店舗代表者詳細",
-      desc: "店舗代表者詳細ページです",
+      title: "オーナー詳細",
+      desc: "オーナー詳細ページです",
     },
   },
   {
