@@ -10,7 +10,7 @@
             <tbody>
               <tr v-for="item in tableData" :key="item.header">
                 <th>{{ item.header }}</th>
-                <td>{{ item.data }}</td>
+                <td :style="color">{{ item.data }}</td>
               </tr>
             </tbody>
           </template>
@@ -40,6 +40,9 @@ export default {
     cancellButtonText: {
       type: String,
       default: "キャンセル",
+    },
+    color: {
+      type: String,
     },
   },
 

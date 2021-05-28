@@ -7,9 +7,10 @@
       loading: loading,
       reservationStatus: true,
       perPage: perPage,
+      titleColor: titleColor,
+      tile: true,
     }"
     itemKey="reservaiton.id"
-    :titleColor="titleColor"
   >
     <template #title>
       <span v-if="ownerType">予約一覧</span>

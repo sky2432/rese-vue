@@ -34,7 +34,7 @@
                 </div>
               </v-row>
               <p class="mt-5" v-if="shop">
-                店舗代表者：{{ shop.owner.name }}<br />
+                オーナー：{{ shop.owner.name }}<br />
                 エリア：{{ shop.area.name }}<br />ジャンル：{{
                   shop.genre.name
                 }}

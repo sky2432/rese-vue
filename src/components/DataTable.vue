@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card :tile="tile">
     <v-card-title :class="titleColor">
       <slot name="title"></slot>
       <v-spacer></v-spacer>
@@ -103,6 +103,10 @@ export default {
     perPage: {
       type: Number,
       default: 10,
+    },
+    tile: {
+      type: Boolean,
+      default: false,
     },
   },
 

@@ -7,7 +7,7 @@
           <v-card tile>
             <v-tabs>
               <v-tab @click="currentComponent = 'LoginUser'">ユーザー</v-tab>
-              <v-tab @click="currentComponent = 'LoginOwner'">店舗代表者</v-tab>
+              <v-tab @click="currentComponent = 'LoginOwner'">オーナー</v-tab>
               <v-tab @click="currentComponent = 'LoginAdmin'">管理者</v-tab>
             </v-tabs>
           </v-card>

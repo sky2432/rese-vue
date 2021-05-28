@@ -47,6 +47,7 @@
         ref="DialogConfirm"
         cancellButtonText="修正"
         :tableData="confirmDialogData"
+        color="color: rgba(0, 0, 0, 0.6);"
       >
         <template #title>メール内容の確認</template>
         <template #additional>
@@ -80,6 +81,7 @@ export default {
     BaseTextField,
     BaseTextArea,
     BaseSelector,
+
     DialogConfirm,
   },
 
