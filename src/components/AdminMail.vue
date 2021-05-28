@@ -10,19 +10,19 @@
             <v-form v-model="formValid">
               <BaseSelector
                 name="宛先"
-                label="destination"
+                label="宛先"
                 :options="destinationOptions"
                 v-model="destination"
               ></BaseSelector>
 
-              <BaseTextField name="件名" label="subject" v-model="subject">
+              <BaseTextField name="件名" label="件名" v-model="subject">
               </BaseTextField>
 
               <div class="mt-4">
                 <BaseTextArea
                   :clearable="true"
                   name="本文"
-                  label="content"
+                  label="本文"
                   vid="content"
                   v-model="content"
                 ></BaseTextArea>
@@ -129,6 +129,7 @@ export default {
       }
       this.$refs.DialogConfirm.closeDialog();
       this.$refs.baseDialog.openDialog();
+      this.resetData();
     },
 
     resetData() {
