@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TheHeader></TheHeader>
+    <TheHeader type="admin"></TheHeader>
     <div class="wrapper">
       <v-progress-circular
         color="amber"

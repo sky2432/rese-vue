@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import usersRepository from "../repositories/usersRepository.js";
 import "../plugins/veeValidate.js";
+import usersRepository from "../repositories/usersRepository.js";
 import DialogConfirm from "../components/DialogConfirm";
 import FormRegister from "../components/FormRegister";
 

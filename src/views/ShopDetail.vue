@@ -1,9 +1,10 @@
 <template>
   <div>
-    <TheHeader></TheHeader>
+    <TheHeader type="admin"></TheHeader>
     <v-main>
       <div class="wrapper">
         <v-container>
+
           <v-card tile>
             <v-tabs>
               <v-tab @click="currentComponent = 'ShopDetailInfo'"
