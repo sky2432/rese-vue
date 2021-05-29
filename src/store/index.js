@@ -12,6 +12,7 @@ export default new Vuex.Store({
   state: {
     auth: false,
     role: "",
+    apiToken: "",
     user: "",
   },
 
@@ -25,6 +26,9 @@ export default new Vuex.Store({
     role(state) {
       return state.role;
     },
+    apiToken(state) {
+      return state.role;
+    },
   },
 
   mutations: {
@@ -34,12 +38,16 @@ export default new Vuex.Store({
     role(state, payload) {
       state.role = payload;
     },
+    apiToken(state, payload) {
+      state.apiToken = payload;
+    },
     user(state, payload) {
       state.user = payload;
     },
     resetLoginData(state) {
       state.user = "";
       state.role = "";
+      state.apiToken = "";
     },
   },
 
@@ -48,6 +56,7 @@ export default new Vuex.Store({
       if (resData.auth === true) {
         commit("auth", resData.auth);
         commit("role", resData.role);
+        commit("apiToken", resData.token);
         commit("user", resData.data);
         if (resData.role === "user") {
           router.replace("/home");
