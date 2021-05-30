@@ -20,7 +20,6 @@ export default {
       authRepository
         .login("user", sendData)
         .then((response) => {
-          console.log(response);
           this.$store.dispatch("login", response.data);
         })
         .catch((e) => {

@@ -5,9 +5,19 @@ const baseDomain = "http://127.0.0.1:8000";
 
 const baseURL = `${baseDomain}/api`;
 
-export default axios.create({
-  baseURL: baseURL,
-  headers: {
-    Authorization: `Bearer ${store.state.apiToken}`,
-  },
-});
+let url;
+const token = store.getters.apiToken;
+if (token) {
+  url = axios.create({
+    baseURL: baseURL,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+} else {
+  url = axios.create({
+    baseURL: baseURL,
+  });
+}
+
+export default url;

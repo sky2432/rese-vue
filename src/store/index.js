@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import router from "../router/index";
 import authRepository from "../repositories/authRepository";
+import Repository from "../repositories/Repository";
 
 Vue.use(Vuex);
 
@@ -27,7 +28,7 @@ export default new Vuex.Store({
       return state.role;
     },
     apiToken(state) {
-      return state.role;
+      return state.apiToken;
     },
   },
 
@@ -58,6 +59,11 @@ export default new Vuex.Store({
         commit("role", resData.role);
         commit("apiToken", resData.token);
         commit("user", resData.data);
+
+        Repository.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${resData.token}`;
+        
         if (resData.role === "user") {
           router.replace("/home");
         }
