@@ -32,4 +32,10 @@ export default {
   deleteShop(shop_id) {
     return Repository.delete(`${resource}/${shop_id}`);
   },
+
+  downloadImage(shop_id) {
+    return Repository.get(`${resource}/${shop_id}/image`, {
+      responseType: "blob",
+    });
+  },
 };

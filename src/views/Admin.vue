@@ -18,6 +18,7 @@
             <v-list-item-icon>
               <v-icon>mdi-store</v-icon>
             </v-list-item-icon>
+            
 
             <v-list-item-content>
               <v-list-item-title>店舗リスト</v-list-item-title>

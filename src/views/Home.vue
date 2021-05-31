@@ -271,7 +271,7 @@ export default {
       this.shops = shops;
       this.createSerchOptions(shops, "areaOptions", "area");
       this.createSerchOptions(shops, "genreOptions", "genre");
-      // console.log(resData);
+      // console.log(resData.data);
     },
 
     //エリア・ジャンル検索における選択肢を作成する

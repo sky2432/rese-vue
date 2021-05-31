@@ -10,7 +10,23 @@
       </div>
       <v-row class="ma-0" v-if="loaded">
         <v-col cols="6">
-          <v-img :src="shop.image_url" height="370"></v-img>
+          <v-hover>
+            <template #default="{ hover }">
+              <v-card elevation="0" tile>
+                <v-img :src="shop.image_url" height="370"></v-img>
+                <v-fade-transition>
+                  <v-overlay color="#036358" absolute v-if="hover">
+                    <v-btn
+                      color="amber"
+                      class="white--text"
+                      @click="downloadImage"
+                      >店舗画像をダウンロード</v-btn
+                    >
+                  </v-overlay>
+                </v-fade-transition>
+              </v-card>
+            </template>
+          </v-hover>
         </v-col>
         <v-col cols="6">
           <v-card elevation="0" tile>
@@ -124,6 +140,16 @@ export default {
   },
 
   methods: {
+    async downloadImage() {
+      const resData = await shopsRepository.downloadImage(this.shopId);
+      const fileURL = window.URL.createObjectURL(resData.data);
+      const fileLink = document.createElement("a");
+      fileLink.href = fileURL;
+      fileLink.setAttribute("download", this.shop.name);
+      document.body.appendChild(fileLink);
+      fileLink.click();
+    },
+
     async getShop() {
       const resData = await shopsRepository.getShop(this.shopId);
       this.shop = resData.data.data;
