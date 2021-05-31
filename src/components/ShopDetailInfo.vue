@@ -142,12 +142,17 @@ export default {
   methods: {
     async downloadImage() {
       const resData = await shopsRepository.downloadImage(this.shopId);
-      const fileURL = window.URL.createObjectURL(resData.data);
-      const fileLink = document.createElement("a");
-      fileLink.href = fileURL;
-      fileLink.setAttribute("download", this.shop.name);
-      document.body.appendChild(fileLink);
-      fileLink.click();
+      if (resData.status === 200) {
+        const fileURL = window.URL.createObjectURL(resData.data);
+        const fileLink = document.createElement("a");
+        fileLink.href = fileURL;
+        fileLink.setAttribute("download", this.shop.name);
+        document.body.appendChild(fileLink);
+        fileLink.click();
+      }
+      if (resData.status === 204) {
+        alert("こちらの店舗画像はダウンロードできません");
+      }
     },
 
     async getShop() {
