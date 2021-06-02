@@ -55,15 +55,15 @@ export default new Vuex.Store({
   actions: {
     async login({ commit }, resData) {
       if (resData.auth === true) {
+        Repository.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${resData.token}`;
+
         commit("auth", resData.auth);
         commit("role", resData.role);
         commit("apiToken", resData.token);
         commit("user", resData.data);
 
-        Repository.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${resData.token}`;
-        
         if (resData.role === "user") {
           router.replace("/home");
         }
@@ -78,6 +78,8 @@ export default new Vuex.Store({
 
     async logout({ commit }) {
       const resData = await authRepository.logout();
+
+      Repository.defaults.headers.common["Authorization"] = null;
 
       commit("auth", resData.data.auth);
       commit("resetLoginData");
