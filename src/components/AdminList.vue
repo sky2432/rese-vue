@@ -1,5 +1,5 @@
 <template>
-  <v-main>
+
     <v-container class="py-4 px-6" fluid>
       <DataTable
         ref="dataTable"
@@ -81,7 +81,7 @@
         <template #message>管理者を削除しました</template>
       </BaseDialog>
     </v-container>
-  </v-main>
+
 </template>
 
 <script>

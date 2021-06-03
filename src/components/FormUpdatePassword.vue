@@ -11,14 +11,14 @@
             <TextFieldPassword
               name="現在のパスワード"
               label="Current Password"
-              v-model="newPassword"
+              v-model="password"
             ></TextFieldPassword>
 
             <TextFieldPassword
               name="新しいパスワード"
               label="New Password"
               vid="new_password"
-              v-model="password"
+              v-model="newPassword"
             ></TextFieldPassword>
 
             <v-card-actions class="justify-center">
@@ -42,6 +42,7 @@ import "../plugins/veeValidate.js";
 import { mapGetters } from "vuex";
 import usersRepository from "../repositories/usersRepository";
 import ownersRepository from "../repositories/ownersRepository";
+import adminsRepository from "../repositories/adminsRepository";
 import TextFieldPassword from "../components/TextFieldPassword";
 
 export default {
@@ -81,6 +82,16 @@ export default {
       }
       if (this.role === "owner") {
         ownersRepository
+          .updatePassword(this.user.id, sendData)
+          .then(() => {
+            this.response();
+          })
+          .catch((e) => {
+            this.error(e);
+          });
+      }
+      if (this.role === "admin") {
+        adminsRepository
           .updatePassword(this.user.id, sendData)
           .then(() => {
             this.response();

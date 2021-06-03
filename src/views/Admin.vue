@@ -19,7 +19,6 @@
               <v-icon>mdi-store</v-icon>
             </v-list-item-icon>
 
-
             <v-list-item-content>
               <v-list-item-title>店舗リスト</v-list-item-title>
             </v-list-item-content>
@@ -63,6 +62,15 @@
 
           <v-divider></v-divider>
 
+          <v-list-item @click="currentComponent = 'OwnerAccount'">
+            <v-list-item-icon>
+              <v-icon>mdi-account</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>アカウント</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
           <v-list-item @click="logout">
             <v-list-item-icon>
               <v-icon>mdi-logout</v-icon>
@@ -75,7 +83,9 @@
       </v-list>
     </v-navigation-drawer>
 
-    <component :is="currentComponent"></component>
+    <v-main>
+      <component :is="currentComponent"></component>
+    </v-main>
   </v-app>
 </template>
 
@@ -85,6 +95,7 @@ import AdminUserList from "../components/AdminUserList";
 import AdminShopList from "../components/AdminShopList";
 import AdminList from "../components/AdminList";
 import AdminMail from "../components/AdminMail";
+import OwnerAccount from "../components/OwnerAccount";
 
 export default {
   components: {
@@ -93,6 +104,7 @@ export default {
     AdminUserList,
     AdminList,
     AdminMail,
+    OwnerAccount,
   },
 
   data() {

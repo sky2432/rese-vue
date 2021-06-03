@@ -1,73 +1,71 @@
 <template>
-  <v-main>
-    <v-container class="py-4 px-6" fluid>
-      <v-card>
-        <v-card-title class="amber">
-          メール送信
-        </v-card-title>
-        <v-card-text class="mt-4">
-          <validation-observer ref="observer" v-slot="{ invalid }">
-            <v-form v-model="formValid">
-              <BaseSelector
-                name="宛先"
-                label="宛先"
-                :options="destinationOptions"
-                v-model="destination"
-              ></BaseSelector>
+  <v-container class="py-4 px-6" fluid>
+    <v-card>
+      <v-card-title class="amber">
+        メール送信
+      </v-card-title>
+      <v-card-text class="mt-4">
+        <validation-observer ref="observer" v-slot="{ invalid }">
+          <v-form v-model="formValid">
+            <BaseSelector
+              name="宛先"
+              label="宛先"
+              :options="destinationOptions"
+              v-model="destination"
+            ></BaseSelector>
 
-              <BaseTextField name="件名" label="件名" v-model="subject">
-              </BaseTextField>
+            <BaseTextField name="件名" label="件名" v-model="subject">
+            </BaseTextField>
 
-              <div class="mt-4">
-                <BaseTextArea
-                  :clearable="true"
-                  name="本文"
-                  label="本文"
-                  vid="content"
-                  v-model="content"
-                ></BaseTextArea>
-              </div>
+            <div class="mt-4">
+              <BaseTextArea
+                :clearable="true"
+                name="本文"
+                label="本文"
+                vid="content"
+                v-model="content"
+              ></BaseTextArea>
+            </div>
 
-              <v-card-actions class="justify-center">
-                <v-btn
-                  color="amber"
-                  class="white--text"
-                  :disabled="invalid"
-                  @click="confirmMailContent"
-                >
-                  確認
-                </v-btn>
-              </v-card-actions>
-            </v-form>
-          </validation-observer>
+            <v-card-actions class="justify-center">
+              <v-btn
+                color="amber"
+                class="white--text"
+                :disabled="invalid"
+                @click="confirmMailContent"
+              >
+                確認
+              </v-btn>
+            </v-card-actions>
+          </v-form>
+        </validation-observer>
+      </v-card-text>
+    </v-card>
+
+    <DialogConfirm
+      ref="dialogConfirm"
+      cancellButtonText="修正"
+      :tableData="confirmDialogData"
+      color="color: rgba(0, 0, 0, 0.6);"
+    >
+      <template #title>メール内容の確認</template>
+      <template #additional>
+        <v-subheader class="black--text">本文</v-subheader>
+        <v-card-text class="py-0">
+          {{ content }}
         </v-card-text>
-      </v-card>
-
-      <DialogConfirm
-        ref="dialogConfirm"
-        cancellButtonText="修正"
-        :tableData="confirmDialogData"
-        color="color: rgba(0, 0, 0, 0.6);"
+      </template>
+      <template #actionButton
+        ><v-btn color="amber" class="white--text" @click="sendMail"
+          >送信</v-btn
+        ></template
       >
-        <template #title>メール内容の確認</template>
-        <template #additional>
-          <v-subheader class="black--text">本文</v-subheader>
-          <v-card-text class="py-0">
-            {{ content }}
-          </v-card-text>
-        </template>
-        <template #actionButton
-          ><v-btn color="amber" class="white--text" @click="sendMail"
-            >送信</v-btn
-          ></template
-        >
-      </DialogConfirm>
+    </DialogConfirm>
 
-      <BaseDialog ref="baseDialog">
-        <template #message>メールを送信しました</template>
-      </BaseDialog>
-    </v-container>
-  </v-main>
+    <BaseDialog ref="baseDialog">
+      <template #message>メールを送信しました</template>
+    </BaseDialog>
+  </v-container>
 </template>
 
 <script>

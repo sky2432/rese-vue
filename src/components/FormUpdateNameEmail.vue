@@ -33,6 +33,7 @@ import "../plugins/veeValidate.js";
 import { mapGetters } from "vuex";
 import usersRepository from "../repositories/usersRepository";
 import ownersRepository from "../repositories/ownersRepository";
+import adminsRepository from "../repositories/adminsRepository";
 import TextFieldName from "../components/TextFieldName";
 import TextFieldEmail from "../components/TextFieldEmail";
 
@@ -83,6 +84,16 @@ export default {
       if (this.role === "owner") {
         ownersRepository
           .updateOwner(this.user.id, sendData)
+          .then((response) => {
+            this.response(response);
+          })
+          .catch((e) => {
+            this.error(e);
+          });
+      }
+      if (this.role === "admin") {
+        adminsRepository
+          .updateAdmin(this.user.id, sendData)
           .then((response) => {
             this.response(response);
           })

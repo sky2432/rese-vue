@@ -1,59 +1,57 @@
 <template>
-  <v-main>
-    <v-container class="py-4 px-6" fluid>
-      <DataTable
-        ref="dataTable"
-        label="ID・名前・メールアドレス・店舗名で検索"
-        v-bind="{
-          tableData: owners,
-          headers: headers,
-          loading: loading,
-          detail: true,
-        }"
-        @move-page="moveOwnerDetail"
-      >
-        <template #title>
-          オーナーリスト
-        </template>
-        <template #addButton>
-          <v-btn @click="registerDialog = true">
-            オーナー登録
-          </v-btn>
-        </template>
-        <template #noData>オーナーはいません</template>
-        <template #noResults>検索条件に当てはまるオーナーはいません</template>
-      </DataTable>
+  <v-container class="py-4 px-6" fluid>
+    <DataTable
+      ref="dataTable"
+      label="ID・名前・メールアドレス・店舗名で検索"
+      v-bind="{
+        tableData: owners,
+        headers: headers,
+        loading: loading,
+        detail: true,
+      }"
+      @move-page="moveOwnerDetail"
+    >
+      <template #title>
+        オーナーリスト
+      </template>
+      <template #addButton>
+        <v-btn @click="registerDialog = true">
+          オーナー登録
+        </v-btn>
+      </template>
+      <template #noData>オーナーはいません</template>
+      <template #noResults>検索条件に当てはまるオーナーはいません</template>
+    </DataTable>
 
-      <v-dialog max-width="600" persistent v-model="registerDialog">
-        <FormRegister ref="formRegister" @confirm="confirm">
-          <template #title>OwnerRegistration</template>
-          <template #closeIcon>
-            <v-spacer></v-spacer>
-            <v-btn icon @click="closeRegisterDialog"
-              ><v-icon>mdi-window-close</v-icon></v-btn
-            ></template
-          >
-        </FormRegister>
-      </v-dialog>
-
-      <DialogConfirm
-        ref="dialogConfirm"
-        :tableData="confirmDialogData"
-        cancellButtonText="修正"
-      >
-        <template #title>登録内容の確認</template>
-        <template #actionButton
-          ><v-btn color="amber" class="white--text" @click="register"
-            >登録</v-btn
+    <v-dialog max-width="600" persistent v-model="registerDialog">
+      <FormRegister ref="formRegister" @confirm="confirm">
+        <template #title>OwnerRegistration</template>
+        <template #closeIcon>
+          <v-spacer></v-spacer>
+          <v-btn icon @click="closeRegisterDialog"
+            ><v-icon>mdi-window-close</v-icon></v-btn
           ></template
         >
-      </DialogConfirm>
+      </FormRegister>
+    </v-dialog>
 
-      <BaseDialog ref="baseDialog">
-        <template #message>店舗代表者を登録しました</template>
-      </BaseDialog>
-    </v-container>
-  </v-main>
+    <DialogConfirm
+      ref="dialogConfirm"
+      :tableData="confirmDialogData"
+      cancellButtonText="修正"
+    >
+      <template #title>登録内容の確認</template>
+      <template #actionButton
+        ><v-btn color="amber" class="white--text" @click="register"
+          >登録</v-btn
+        ></template
+      >
+    </DialogConfirm>
+
+    <BaseDialog ref="baseDialog">
+      <template #message>店舗代表者を登録しました</template>
+    </BaseDialog>
+  </v-container>
 </template>
 
 <script>

@@ -1,26 +1,24 @@
 <template>
-  <v-main>
-    <v-container class="py-4 px-6" fluid>
-      <DataTable
-        ref="dataTable"
-        label="ID・店名・エリア・ジャンルで検索"
-        v-bind="{
-          tableData: shops,
-          headers: headers,
-          loading: loading,
-          avatar: true,
-          detail: true,
-        }"
-        @move-page="moveShopDetail"
-      >
-        <template #title>
-          店舗リスト
-        </template>
-        <template #noData>店舗はありません</template>
-        <template #noResults>検索条件に当てはまる店舗はありません</template>
-      </DataTable>
-    </v-container>
-  </v-main>
+  <v-container class="py-4 px-6" fluid>
+    <DataTable
+      ref="dataTable"
+      label="ID・店名・エリア・ジャンルで検索"
+      v-bind="{
+        tableData: shops,
+        headers: headers,
+        loading: loading,
+        avatar: true,
+        detail: true,
+      }"
+      @move-page="moveShopDetail"
+    >
+      <template #title>
+        店舗リスト
+      </template>
+      <template #noData>店舗はありません</template>
+      <template #noResults>検索条件に当てはまる店舗はありません</template>
+    </DataTable>
+  </v-container>
 </template>
 
 <script>
