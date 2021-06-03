@@ -8,7 +8,9 @@
           tableData: admins,
           headers: headers,
           loading: loading,
+          deletion: true,
         }"
+        @open-delete-dialog="openDeleteDialog"
       >
         <template #title>
           管理者リスト
@@ -50,6 +52,34 @@
       <BaseDialog ref="baseDialog">
         <template #message>管理者を登録しました</template>
       </BaseDialog>
+
+      <v-dialog max-width="500px" v-model="deleteDialog">
+        <v-card :loading="deleteLoading">
+          <v-card-title class="justify-center">
+            この管理者を削除しますか？
+          </v-card-title>
+          <v-card-actions class="justify-center">
+            <v-btn
+              color="red lighten-1"
+              class="white--text"
+              @click="deleteUser"
+            >
+              削除
+            </v-btn>
+            <v-btn
+              color="amber"
+              class="white--text"
+              @click="deleteDialog = false"
+            >
+              キャンセル
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <BaseDialog ref="baseDialog">
+        <template #message>管理者を削除しました</template>
+      </BaseDialog>
     </v-container>
   </v-main>
 </template>
@@ -72,10 +102,14 @@ export default {
       admins: [],
       registerDialog: false,
       loading: true,
+      deleteId: "",
+      deleteDialog: false,
+      deleteLoading: false,
       headers: [
         { text: "管理者ID", value: "id" },
         { text: "名前", value: "name" },
         { text: "メールアドレス", value: "email" },
+        { text: "", value: "delete", sortable: false },
       ],
       confirmDialogData: [],
       registerData: "",
@@ -130,6 +164,20 @@ export default {
       this.$refs.dialogConfirm.closeDialog();
       this.registerDialog = false;
       this.$refs.dialogConfirm.stopLoading();
+    },
+
+    openDeleteDialog(adminId) {
+      this.deleteDialog = true;
+      this.deleteId = adminId;
+    },
+
+    async deleteUser() {
+      this.deleteLoading = true;
+      await adminsRepository.deleteAdmin(this.deleteId);
+      this.$refs.baseDialog.openDialog();
+      this.getAdmins();
+      this.deleteDialog = false;
+      this.deleteLoading = false;
     },
   },
 };
