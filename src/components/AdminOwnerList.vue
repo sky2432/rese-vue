@@ -86,8 +86,6 @@ export default {
     };
   },
 
-  computed: {},
-
   created() {
     this.getOwners();
   },

@@ -8,14 +8,14 @@
           tableData: admins,
           headers: headers,
           loading: loading,
-          deletion: true,
+          deletion: showdeletion,
         }"
         @open-delete-dialog="openDeleteDialog"
       >
         <template #title>
           管理者リスト
         </template>
-        <template #addButton>
+        <template #addButton v-if="user.role === 1">
           <v-btn @click="registerDialog = true">
             管理者登録
           </v-btn>
@@ -89,6 +89,7 @@ import adminsRepository from "../repositories/adminsRepository";
 import DataTable from "../components/DataTable";
 import DialogConfirm from "../components/DialogConfirm";
 import FormRegister from "../components/FormRegister";
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -109,6 +110,7 @@ export default {
         { text: "管理者ID", value: "id" },
         { text: "名前", value: "name" },
         { text: "メールアドレス", value: "email" },
+        { text: "権限", value: "role" },
         { text: "", value: "delete", sortable: false },
       ],
       confirmDialogData: [],
@@ -116,7 +118,17 @@ export default {
     };
   },
 
-  computed: {},
+  computed: {
+    ...mapGetters(['user']),
+
+    showdeletion() {
+      if(this.user.role === 1) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
 
   created() {
     this.getAdmins();
