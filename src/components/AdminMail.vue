@@ -44,7 +44,7 @@
       </v-card>
 
       <DialogConfirm
-        ref="DialogConfirm"
+        ref="dialogConfirm"
         cancellButtonText="修正"
         :tableData="confirmDialogData"
         color="color: rgba(0, 0, 0, 0.6);"
@@ -99,7 +99,7 @@ export default {
 
   methods: {
     confirmMailContent() {
-      this.$refs.DialogConfirm.openDialog();
+      this.$refs.dialogConfirm.openDialog();
       this.createConfirmDialogData();
     },
 
@@ -128,7 +128,7 @@ export default {
       if (this.destination === 2) {
         mailsRepository.sendMailForOwners(sendData);
       }
-      this.$refs.DialogConfirm.closeDialog();
+      this.$refs.dialogConfirm.closeDialog();
       this.$refs.baseDialog.openDialog();
       this.resetData();
     },

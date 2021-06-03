@@ -8,13 +8,15 @@
         </FormRegister>
 
         <DialogConfirm
-          ref="DialogConfirm"
+          ref="dialogConfirm"
           :tableData="confirmDialogData"
           cancellButtonText="修正"
         >
           <template #title>登録内容の確認</template>
           <template #actionButton
-            ><v-btn color="amber" class="white--text" @click="register">登録</v-btn></template
+            ><v-btn color="amber" class="white--text" @click="register"
+              >登録</v-btn
+            ></template
           >
         </DialogConfirm>
       </div>
@@ -47,7 +49,7 @@ export default {
         .confirmUser(sendData)
         .then(() => {
           this.registerData = sendData;
-          this.$refs.DialogConfirm.openDialog();
+          this.$refs.dialogConfirm.openDialog();
           this.createConfirmDialogData();
         })
         .catch((e) => {
@@ -65,7 +67,7 @@ export default {
     },
 
     async register() {
-      this.$refs.DialogConfirm.startLoading();
+      this.$refs.dialogConfirm.startLoading();
       await usersRepository.createUser(this.registerData);
       this.$router.replace("/thanks");
     },

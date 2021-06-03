@@ -37,7 +37,7 @@
       </v-dialog>
 
       <DialogConfirm
-        ref="DialogConfirm"
+        ref="dialogConfirm"
         :tableData="confirmDialogData"
         cancellButtonText="修正"
       >
@@ -109,7 +109,7 @@ export default {
         .confirmOwner(sendData)
         .then(() => {
           this.registerData = sendData;
-          this.$refs.DialogConfirm.openDialog();
+          this.$refs.dialogConfirm.openDialog();
           this.createConfirmDialogData();
         })
         .catch((e) => {
@@ -127,13 +127,13 @@ export default {
     },
 
     async register() {
-      this.$refs.DialogConfirm.startLoading();
+      this.$refs.dialogConfirm.startLoading();
       await ownersRepository.createOwner(this.registerData);
       this.$refs.baseDialog.openDialog();
       this.getOwners();
-      this.$refs.DialogConfirm.closeDialog();
+      this.$refs.dialogConfirm.closeDialog();
       this.registerDialog = false;
-      this.$refs.DialogConfirm.stopLoading();
+      this.$refs.dialogConfirm.stopLoading();
     },
 
     moveOwnerDetail(ownerId) {

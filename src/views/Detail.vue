@@ -45,7 +45,7 @@
               <template #title>予約</template>
             </FormReservation>
 
-            <DialogConfirm ref="DialogConfirm" :tableData="confirmDialogData">
+            <DialogConfirm ref="dialogConfirm" :tableData="confirmDialogData">
               <template #title>予約内容の確認</template>
               <template #actionButton
                 ><v-btn
@@ -113,7 +113,7 @@ export default {
       }
       if (!result) {
         this.reservationData = sendData;
-        this.$refs.DialogConfirm.openDialog();
+        this.$refs.dialogConfirm.openDialog();
         this.createConfirmDialogData(sendData);
       }
     },
@@ -128,7 +128,7 @@ export default {
     },
 
     async createReservation() {
-      this.$refs.DialogConfirm.startLoading();
+      this.$refs.dialogConfirm.startLoading();
       const sendData = {
         user_id: this.user.id,
         shop_id: this.shop.id,

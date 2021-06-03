@@ -5,12 +5,10 @@
         ref="dataTable"
         label="ID・名前・メールアドレスで検索"
         v-bind="{
-          tableData: owners,
+          tableData: admins,
           headers: headers,
           loading: loading,
-          detail: true,
         }"
-        @move-page="moveOwnerDetail"
       >
         <template #title>
           管理者リスト
@@ -37,7 +35,7 @@
       </v-dialog>
 
       <DialogConfirm
-        ref="DialogConfirm"
+        ref="dialogConfirm"
         :tableData="confirmDialogData"
         cancellButtonText="修正"
       >
@@ -50,14 +48,14 @@
       </DialogConfirm>
 
       <BaseDialog ref="baseDialog">
-        <template #message>店舗代表者を登録しました</template>
+        <template #message>管理者を登録しました</template>
       </BaseDialog>
     </v-container>
   </v-main>
 </template>
 
 <script>
-import ownersRepository from "../repositories/ownersRepository.js";
+import adminsRepository from "../repositories/adminsRepository";
 import DataTable from "../components/DataTable";
 import DialogConfirm from "../components/DialogConfirm";
 import FormRegister from "../components/FormRegister";
@@ -71,7 +69,7 @@ export default {
 
   data() {
     return {
-      owners: [],
+      admins: [],
       registerDialog: false,
       loading: true,
       headers: [
@@ -87,13 +85,13 @@ export default {
   computed: {},
 
   created() {
-    this.getOwners();
+    this.getAdmins();
   },
 
   methods: {
-    async getOwners() {
-      const resData = await ownersRepository.getOwners();
-      this.owners = resData.data.data;
+    async getAdmins() {
+      const resData = await adminsRepository.getAdmins();
+      this.admins = resData.data.data;
       this.loading = false;
     },
 
@@ -103,11 +101,11 @@ export default {
     },
 
     confirm(sendData) {
-      ownersRepository
-        .confirmOwner(sendData)
+      adminsRepository
+        .confirmAdmin(sendData)
         .then(() => {
           this.registerData = sendData;
-          this.$refs.DialogConfirm.openDialog();
+          this.$refs.dialogConfirm.openDialog();
           this.createConfirmDialogData();
         })
         .catch((e) => {
@@ -125,17 +123,13 @@ export default {
     },
 
     async register() {
-      this.$refs.DialogConfirm.startLoading();
-      await ownersRepository.createOwner(this.registerData);
+      this.$refs.dialogConfirm.startLoading();
+      await adminsRepository.createAdmin(this.registerData);
       this.$refs.baseDialog.openDialog();
-      this.getOwners();
-      this.$refs.DialogConfirm.closeDialog();
+      this.getAdmins();
+      this.$refs.dialogConfirm.closeDialog();
       this.registerDialog = false;
-      this.$refs.DialogConfirm.stopLoading();
-    },
-
-    moveOwnerDetail(ownerId) {
-      this.$helpers.$_movePageWithPram("OwnerDetail", "ownerId", ownerId);
+      this.$refs.dialogConfirm.stopLoading();
     },
   },
 };
