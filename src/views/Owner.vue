@@ -35,6 +35,8 @@
             </v-list-item-content>
           </v-list-item>
 
+          <v-divider></v-divider>
+
           <v-list-item @click="currentComponent = 'OwnerAccount'">
             <v-list-item-icon>
               <v-icon>mdi-account</v-icon>
@@ -43,8 +45,6 @@
               <v-list-item-title>アカウント</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-
-          <v-divider></v-divider>
 
           <v-list-item @click="logout">
             <v-list-item-icon>

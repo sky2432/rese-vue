@@ -3,7 +3,6 @@ import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import router from "../router/index";
 import authRepository from "../repositories/authRepository";
-import Repository from "../repositories/Repository";
 
 Vue.use(Vuex);
 
@@ -55,10 +54,6 @@ export default new Vuex.Store({
   actions: {
     async login({ commit }, resData) {
       if (resData.auth === true) {
-        Repository.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${resData.token}`;
-
         commit("auth", resData.auth);
         commit("role", resData.role);
         commit("apiToken", resData.token);

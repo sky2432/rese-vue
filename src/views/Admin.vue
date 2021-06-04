@@ -42,7 +42,10 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item @click="currentComponent = 'AdminList'">
+          <v-list-item
+            @click="currentComponent = 'AdminList'"
+            v-if="user.role === 1"
+          >
             <v-list-item-icon>
               <v-icon>mdi-account</v-icon>
             </v-list-item-icon>
@@ -96,6 +99,7 @@ import AdminShopList from "../components/AdminShopList";
 import AdminList from "../components/AdminList";
 import AdminMail from "../components/AdminMail";
 import OwnerAccount from "../components/OwnerAccount";
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -113,6 +117,10 @@ export default {
       selectedItem: 0,
       currentComponent: AdminShopList,
     };
+  },
+
+  computed: {
+    ...mapGetters(["user"]),
   },
 
   methods: {
