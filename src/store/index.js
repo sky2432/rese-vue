@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import router from "../router/index";
 import authRepository from "../repositories/authRepository";
+import Repository from "../repositories/Repository";
 
 Vue.use(Vuex);
 

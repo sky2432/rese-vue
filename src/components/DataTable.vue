@@ -43,6 +43,13 @@
       <template v-slot:[`item.delete`]="{ item }" v-if="deletion">
         <v-icon @click="openDeleteDialog(item.id)">mdi-delete</v-icon>
       </template>
+      <template v-slot:[`item.edit`]="{ item }" v-if="edit">
+        <v-icon
+          @click="openEditDialog(item.reservation.id)"
+          v-if="item.reservation.status === '来店済み'"
+          >mdi-pencil</v-icon
+        >
+      </template>
       <template
         v-if="reservationStatus"
         v-slot:[`item.reservation.status`]="{ item }"
@@ -95,6 +102,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    edit: {
+      type: Boolean,
+      default: false,
+    },
     reservationStatus: {
       type: Boolean,
       default: false,
@@ -133,6 +144,9 @@ export default {
           return "amber";
         }
         if (status === "キャンセル") {
+          return "grey";
+        }
+        if (status === "非来店") {
           return "red";
         }
       };
@@ -146,6 +160,10 @@ export default {
 
     openDeleteDialog(itemId) {
       this.$emit("open-delete-dialog", itemId);
+    },
+
+    openEditDialog(reservaitonId) {
+      this.$emit("open-edit-dialog", reservaitonId);
     },
   },
 };
