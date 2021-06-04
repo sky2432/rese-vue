@@ -5,7 +5,7 @@
       <div class="wrapper" v-if="loading">
         <v-progress-circular color="amber" indeterminate></v-progress-circular>
       </div>
-      <v-container class="mt-5" v-if="loaded">
+      <v-container class="mt-5" v-show="loaded">
         <v-row>
           <v-col cols="6">
             <div class="d-flex">
@@ -14,7 +14,9 @@
               </v-btn>
               <h1 class="ml-5">{{ shop.name }}</h1>
             </div>
-            <v-img class="mt-5" :src="shop.image_url"> </v-img>
+            <v-card elevation="5">
+              <v-img class="mt-5" :src="shop.image_url"> </v-img>
+            </v-card>
             <v-row class="mx-0 mt-5" align="center">
               <v-rating
                 color="amber"
@@ -33,7 +35,9 @@
               </div>
             </v-row>
             <p class="mt-5" v-if="shop">
-              エリア：{{ shop.area.name }}<br />ジャンル：{{ shop.genre.name }}
+              エリア：{{ shop.area.name }}<br />ジャンル：{{
+                shop.genre.name
+              }}住所
             </p>
             <p>
               {{ shop.overview }}
@@ -58,6 +62,10 @@
             </DialogConfirm>
           </v-col>
         </v-row>
+        <p>住所：{{ shop.address }}</p>
+        <v-card>
+          <div ref="map" id="map" style="height:500px;width:100%;"></div>
+        </v-card>
       </v-container>
     </v-main>
   </div>
@@ -96,6 +104,45 @@ export default {
 
   computed: {
     ...mapGetters(["user"]),
+  },
+
+  watch: {
+    shop() {
+      const geocoder = new google.maps.Geocoder();
+
+      let timer = setInterval(() => {
+        if (window.google) {
+          clearInterval(timer);
+          geocoder.geocode({ address: this.shop.address }, function(
+            results,
+            status
+          ) {
+            if (status === "OK" && results[0]) {
+              console.log(results[0]);
+              const location = results[0].geometry.location;
+              const map = new google.maps.Map(document.getElementById("map"), {
+                center: location,
+                zoom: 16,
+              });
+              const marker = new google.maps.Marker({
+                position: location,
+                map: map,
+              });
+              const infoWindow = new google.maps.InfoWindow({
+                content: results[0].formatted_address,
+                pixelOffset: new google.maps.Size(0, 5),
+              });
+              marker.addListener("click", function() {
+                infoWindow.open(map, marker);
+              });
+            } else {
+              alert("失敗しました。理由: " + status);
+              return;
+            }
+          });
+        }
+      }, 500);
+    },
   },
 
   created() {

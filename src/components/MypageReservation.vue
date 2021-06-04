@@ -274,6 +274,9 @@ export default {
         if (reservation.status === "visited") {
           return "来店済み";
         }
+        if (reservation.status === "noVisited") {
+          return "非来店";
+        }
       };
     },
 
