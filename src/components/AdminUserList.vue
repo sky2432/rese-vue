@@ -18,25 +18,14 @@
       <template #noResults>検索条件に当てはまるユーザーはいません</template>
     </DataTable>
 
-    <v-dialog max-width="500px" v-model="deleteDialog">
-      <v-card :loading="deleteLoading">
-        <v-card-title class="justify-center">
-          このユーザーを削除しますか？
-        </v-card-title>
-        <v-card-actions class="justify-center">
-          <v-btn color="red lighten-1" class="white--text" @click="deleteUser">
-            削除
-          </v-btn>
-          <v-btn
-            color="amber"
-            class="white--text"
-            @click="deleteDialog = false"
-          >
-            キャンセル
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <BaseDialog ref="deleteDialog" baseButtonText="いいえ">
+      <template #message>このユーザーを削除しますか？</template>
+      <template #leftButton>
+        <v-btn color="red" class="white--text" @click="deleteUser">
+          削除
+        </v-btn>
+      </template>
+    </BaseDialog>
 
     <BaseDialog ref="baseDialog">
       <template #message>ユーザーを削除しました</template>
@@ -81,17 +70,17 @@ export default {
     },
 
     openDeleteDialog(userId) {
-      this.deleteDialog = true;
+      this.$refs.deleteDialog.openDialog();
       this.deleteId = userId;
     },
 
     async deleteUser() {
-      this.deleteLoading = true;
+      this.$refs.deleteDialog.startLoading();
       await usersRepository.deleteUser(this.deleteId);
-      this.$refs.baseDialog.openDialog();
       this.getUsers();
-      this.deleteDialog = false;
-      this.deleteLoading = false;
+      this.$refs.baseDialog.openDialog();
+      this.$refs.deleteDialog.stopLoading();
+      this.$refs.deleteDialog.closeDialog();
     },
   },
 };
