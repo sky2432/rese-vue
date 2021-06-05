@@ -118,7 +118,6 @@ export default {
             status
           ) {
             if (status === "OK" && results[0]) {
-              console.log(results[0]);
               const location = results[0].geometry.location;
               const map = new google.maps.Map(document.getElementById("map"), {
                 center: location,

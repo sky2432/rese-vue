@@ -67,6 +67,7 @@
       <slot name="tab"></slot>
     </template>
   </v-app-bar>
+
 </template>
 
 <script>
@@ -75,6 +76,7 @@ export default {
   props: {
     showTab: {
       type: Boolean,
+      default: false,
     },
   },
 

@@ -14,6 +14,9 @@
         </v-col>
       </v-row>
     </v-container>
+    <template #extension v-if="showTab">
+      <slot name="tab"></slot>
+    </template>
   </v-app-bar>
 </template>
 
@@ -23,6 +26,10 @@ export default {
     type: {
       type: String,
       default: "default",
+    },
+    showTab: {
+      type: Boolean,
+      default: false,
     },
   },
 

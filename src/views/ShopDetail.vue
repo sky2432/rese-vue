@@ -1,23 +1,19 @@
 <template>
   <div>
-    <TheHeader type="admin"></TheHeader>
+    <TheHeader type="admin" :showTab="true">
+      <template #tab>
+        <v-tabs slider-color="grey" centered>
+          <v-tab @click="currentComponent = 'ShopDetailInfo'">店舗情報</v-tab>
+          <v-tab @click="currentComponent = 'ShopDetailReservation'"
+            >予約一覧</v-tab
+          >
+        </v-tabs>
+      </template>
+    </TheHeader>
     <v-main>
-      <div class="wrapper">
-        <v-container>
-
-          <v-card tile>
-            <v-tabs>
-              <v-tab @click="currentComponent = 'ShopDetailInfo'"
-                >店舗情報</v-tab
-              >
-              <v-tab @click="currentComponent = 'ShopDetailReservation'"
-                >予約一覧</v-tab
-              >
-            </v-tabs>
-          </v-card>
-          <component :is="currentComponent" :shopId="shopId"></component>
-        </v-container>
-      </div>
+      <v-container>
+        <component :is="currentComponent" :shopId="shopId"></component>
+      </v-container>
     </v-main>
   </div>
 </template>

@@ -2,7 +2,7 @@
   <ReservationList
     ref="reservationList"
     titleColor="white"
-    v-bind="{ perPage: 5, ownerType: false, detailType: true }"
+    v-bind="{ perPage: 10, ownerType: false, detailType: true }"
   ></ReservationList>
 </template>
 

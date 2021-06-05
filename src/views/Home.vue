@@ -46,7 +46,7 @@
         <v-row>
           <v-col cols="3" v-for="shop in filteredShops" :key="shop.id">
             <v-card height="300">
-              <v-img height="125" :src="shop.image_url"></v-img>
+              <v-img height="140" :src="shop.image_url"></v-img>
               <v-card-title>{{ shop.name }}</v-card-title>
               <v-card-text>
                 <v-row class="mx-0" align="center">

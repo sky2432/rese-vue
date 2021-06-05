@@ -1,35 +1,41 @@
 <template>
   <div>
-    <v-card tile height="400px">
-      <div
-        class="d-flex justify-center align-center"
-        style="height: 100%"
-        v-if="loading"
-      >
-        <v-progress-circular indeterminate color="amber"></v-progress-circular>
-      </div>
-      <v-row class="ma-0" v-if="loaded">
-        <v-col cols="6">
-          <v-hover>
-            <template #default="{ hover }">
-              <v-card elevation="0" tile>
-                <v-img :src="shop.image_url" height="370"></v-img>
-                <v-fade-transition>
-                  <v-overlay color="#036358" absolute v-if="hover">
-                    <v-btn
-                      color="amber"
-                      class="white--text"
-                      @click="downloadImage"
-                      >店舗画像をダウンロード</v-btn
-                    >
-                  </v-overlay>
-                </v-fade-transition>
-              </v-card>
-            </template>
-          </v-hover>
+    <div
+      class="d-flex justify-center align-center"
+      style="height: calc(100vh - 118px)"
+      v-if="loading"
+    >
+      <v-progress-circular indeterminate color="amber"></v-progress-circular>
+    </div>
+    <div v-if="loaded">
+      <v-row class="ma-0">
+        <v-col cols="6" class="pl-0">
+          <v-card>
+            <v-hover>
+              <template #default="{ hover }">
+                <v-card elevation="0">
+                  <v-img
+                    class="image"
+                    :src="shop.image_url"
+                    height="370"
+                  ></v-img>
+                  <v-fade-transition>
+                    <v-overlay color="#036358" absolute v-if="hover">
+                      <v-btn
+                        color="amber"
+                        class="white--text"
+                        @click="downloadImage"
+                        >店舗画像をダウンロード</v-btn
+                      >
+                    </v-overlay>
+                  </v-fade-transition>
+                </v-card>
+              </template>
+            </v-hover>
+          </v-card>
         </v-col>
-        <v-col cols="6">
-          <v-card elevation="0" tile>
+        <v-col cols="6" class="pr-0">
+          <v-card>
             <v-card-title class="amber">{{ shop.name }}</v-card-title>
             <v-card-text>
               <v-row class="mx-0 mt-5" align="center">
@@ -51,9 +57,8 @@
               </v-row>
               <p class="mt-5" v-if="shop">
                 オーナー：{{ shop.owner.name }}<br />
-                エリア：{{ shop.area.name }}<br />ジャンル：{{
-                  shop.genre.name
-                }}
+                エリア：{{ shop.area.name }}<br />ジャンル：{{ shop.genre.name
+                }}<br />住所：{{ shop.address }}
               </p>
               <p>
                 {{ shop.overview }}
@@ -70,7 +75,10 @@
           </v-card>
         </v-col>
       </v-row>
-    </v-card>
+      <v-card>
+        <div ref="map" id="map" style="height:500px;width:100%;"></div>
+      </v-card>
+    </div>
 
     <v-dialog width="500px" v-model="warnDialog">
       <v-card>
@@ -135,11 +143,70 @@ export default {
     };
   },
 
+  watch: {
+    shop() {
+      const geocoder = new google.maps.Geocoder();
+
+      let timer = setInterval(() => {
+        if (window.google) {
+          clearInterval(timer);
+          geocoder.geocode({ address: this.shop.address }, function(
+            results,
+            status
+          ) {
+            if (status === "OK" && results[0]) {
+              const location = results[0].geometry.location;
+              const map = new google.maps.Map(document.getElementById("map"), {
+                center: location,
+                zoom: 16,
+              });
+              const marker = new google.maps.Marker({
+                position: location,
+                map: map,
+              });
+              const infoWindow = new google.maps.InfoWindow({
+                content: results[0].formatted_address,
+                pixelOffset: new google.maps.Size(0, 5),
+              });
+              marker.addListener("click", function() {
+                infoWindow.open(map, marker);
+              });
+            } else {
+              alert("失敗しました。理由: " + status);
+              return;
+            }
+          });
+        }
+      }, 500);
+    },
+  },
+
   created() {
     this.getShop();
   },
 
   methods: {
+    async getShop() {
+      const resData = await shopsRepository.getShop(this.shopId);
+      this.shop = resData.data.data;
+      this.loading = false;
+      this.loaded = true;
+    },
+
+    async deleteShop() {
+      this.$refs.dialogConfirmDeletionShop.startLoading();
+      await shopsRepository.deleteShop(this.shopId);
+      this.$refs.dialogConfirmDeletionShop.stopLoading();
+      this.DeletionShop.closeDialog();
+      this.warnDialog = false;
+      this.$router.push("/admin");
+    },
+
+    closeDeleteDialog() {
+      this.warnDialog = false;
+      this.$refs.dialogConfirmDeletionShop.closeDialog();
+    },
+
     async downloadImage() {
       const resData = await shopsRepository.downloadImage(this.shopId);
       if (resData.status === 200) {
@@ -155,27 +222,6 @@ export default {
       }
     },
 
-    async getShop() {
-      const resData = await shopsRepository.getShop(this.shopId);
-      this.shop = resData.data.data;
-      this.loading = false;
-      this.loaded = true;
-    },
-
-    async deleteShop() {
-      this.$refs.dialogConfirmDeletionShop.startLoading();
-      await shopsRepository.deleteShop(this.shopId);
-      this.$refs.dialogConfirmDeletionShop.stopLoading();
-      this.$refs.dialogConfirmDeletionShop.closeDialog();
-      this.warnDialog = false;
-      this.$router.push("/admin");
-    },
-
-    closeDeleteDialog() {
-      this.warnDialog = false;
-      this.$refs.dialogConfirmDeletionShop.closeDialog();
-    },
-
     moveOwnerDetail() {
       this.$helpers.$_movePageWithPram(
         "OwnerDetail",
@@ -187,4 +233,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.image {
+  border-radius: 5px;
+}
+</style>
