@@ -61,6 +61,9 @@
           {{ item.reservation.status }}
         </v-chip>
       </template>
+      <template v-if="role" v-slot:[`item.role`]="{ item }">
+        {{ showRoleText(item.role) }}
+      </template>
       <template v-slot:no-data>
         <slot name="noData"></slot>
       </template>
@@ -110,6 +113,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    role: {
+      type: Boolean,
+      default: false,
+    },
     itemKey: {
       type: String,
       default: "id",
@@ -148,6 +155,17 @@ export default {
         }
         if (status === "非来店") {
           return "red";
+        }
+      };
+    },
+
+    showRoleText() {
+      return function(role) {
+        if (role === 1) {
+          return "Top";
+        }
+        if (role === 0) {
+          return "Sub";
         }
       };
     },

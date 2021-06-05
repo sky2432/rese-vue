@@ -2,11 +2,12 @@
   <v-container class="py-4 px-6" fluid>
     <DataTable
       ref="dataTable"
-      label="ID・名前・メールアドレスで検索"
+      label="ID・名前・メールアドレス・権限で検索"
       v-bind="{
         tableData: admins,
         headers: headers,
         loading: loading,
+        role: true,
         deletion: true,
       }"
       @open-delete-dialog="openDeleteDialog"
