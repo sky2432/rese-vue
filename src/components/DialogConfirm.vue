@@ -9,7 +9,7 @@
     titleClass="amber"
     textClass="pt-5 pb-0"
   >
-    <template #message>
+    <template #title>
       <slot name="title"></slot>
     </template>
     <template #body>

@@ -81,7 +81,7 @@
     </v-dialog>
 
     <BaseDialog ref="imageBaseDialog">
-      <template #message>店舗画像を変更しました</template>
+      <template #title>店舗画像を変更しました</template>
     </BaseDialog>
 
     <v-dialog max-width="700px" v-model="updateDialog">
@@ -121,7 +121,7 @@
     </v-dialog>
 
     <BaseDialog ref="updateBaseDialog">
-      <template #message>店舗情報を変更しました</template>
+      <template #title>店舗情報を変更しました</template>
     </BaseDialog>
 
     <v-card v-if="!existsShop">

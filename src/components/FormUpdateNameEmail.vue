@@ -21,7 +21,7 @@
         </validation-observer>
 
         <BaseDialog ref="baseDialog">
-          <template #message>名前・メールアドレスを更新しました</template>
+          <template #title>名前・メールアドレスを更新しました</template>
         </BaseDialog>
       </div>
     </v-card>

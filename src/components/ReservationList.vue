@@ -40,7 +40,7 @@
     </DataTable>
 
     <BaseDialog ref="editDialog" baseButtonText="いいえ">
-      <template #message>予約状況を非来店にしますか？</template>
+      <template #title>予約状況を非来店にしますか？</template>
       <template #leftButton>
         <v-btn color="red" class="white--text" @click="changeReservationStatus">
           はい
@@ -49,7 +49,7 @@
     </BaseDialog>
 
     <BaseDialog ref="messageDialog">
-      <template #message>予約状況を非来店にしました</template>
+      <template #title>予約状況を非来店にしました</template>
     </BaseDialog>
   </div>
 </template>

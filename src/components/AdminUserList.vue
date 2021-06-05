@@ -19,7 +19,7 @@
     </DataTable>
 
     <BaseDialog ref="deleteDialog" baseButtonText="キャンセル">
-      <template #message>このユーザーを削除しますか？</template>
+      <template #title>このユーザーを削除しますか？</template>
       <template #leftButton>
         <v-btn color="red" class="white--text" @click="deleteUser">
           削除
@@ -28,7 +28,7 @@
     </BaseDialog>
 
     <BaseDialog ref="baseDialog">
-      <template #message>ユーザーを削除しました</template>
+      <template #title>ユーザーを削除しました</template>
     </BaseDialog>
   </v-container>
 </template>

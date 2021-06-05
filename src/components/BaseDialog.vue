@@ -2,7 +2,7 @@
   <v-dialog max-width="500px" v-model="dialog">
     <v-card :loading="loading">
       <v-card-title :class="titleClass">
-        <slot name="message"></slot>
+        <slot name="title"></slot>
         <template v-if="closeIcon">
           <v-spacer></v-spacer>
           <v-btn icon @click="dialog = false"
@@ -14,7 +14,7 @@
         <slot name="body"></slot>
       </v-card-text>
       <v-divider v-if="divider"></v-divider>
-      <v-card-actions class="justify-center">
+      <v-card-actions :class="actionsClass">
         <slot name="leftButton"></slot>
         <slot name="baseButton">
           <v-btn color="amber" class="white--text" @click="dialog = false">
@@ -47,6 +47,10 @@ export default {
       default: false,
     },
     titleClass: {
+      type: String,
+      default: "justify-center",
+    },
+    actionsClass: {
       type: String,
       default: "justify-center",
     },

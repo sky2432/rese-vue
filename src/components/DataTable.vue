@@ -40,8 +40,9 @@
           >詳細</v-btn
         >
       </template>
+
       <template v-slot:[`item.delete`]="{ item }" v-if="deletion">
-        <v-icon @click="openDeleteDialog(item.id)">mdi-delete</v-icon>
+        <v-icon v-if="item.role !== 1" @click="openDeleteDialog(item.id)">mdi-delete</v-icon>
       </template>
       <template v-slot:[`item.edit`]="{ item }" v-if="edit">
         <v-icon

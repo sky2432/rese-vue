@@ -65,7 +65,10 @@
               </p>
             </v-card-text>
             <v-card-actions class="justify-center">
-              <v-btn color="red" class="white--text" @click="warnDialog = true"
+              <v-btn
+                color="red"
+                class="white--text"
+                @click="$refs.dialogWarning.openDialog()"
                 >店舗の削除</v-btn
               >
               <v-btn color="amber" class="white--text" @click="moveOwnerDetail"
@@ -80,36 +83,13 @@
       </v-card>
     </div>
 
-    <v-dialog width="500px" v-model="warnDialog">
-      <v-card>
-        <v-card-title class="amber"
-          >※注意事項
-          <v-spacer></v-spacer>
-          <v-btn icon @click="warnDialog = false"
-            ><v-icon>mdi-window-close</v-icon></v-btn
-          >
-        </v-card-title>
-        <v-card-text class="mt-4">
-          <v-alert class="text-center mb-0" type="error"  text>
-            <h3>必ずご確認ください</h3>
-            <p class="mb-0">
-              店舗を削除すると、店舗に関係する全ての情報が削除されます。
-            </p>
-          </v-alert>
-        </v-card-text>
-        <v-card-actions class="justify-center pt-0">
-          <v-btn
-            class="white--text"
-            color="red lighten-1"
-            @click="$refs.dialogConfirmDeletionShop.openDialog()"
-            >店舗を削除</v-btn
-          >
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <DialogWarning
+      ref="dialogWarning"
+      @open-dialog="$refs.dialogConfirmDeletionShop.openDialog()"
+    ></DialogWarning>
 
     <BaseDialog ref="dialogConfirmDeletionShop" baseButtonText="キャンセル">
-      <template #message>本当に店舗を削除しますか？</template>
+      <template #title>本当に店舗を削除しますか？</template>
       <template #leftButton>
         <v-btn color="red lighten-1" class="white--text" @click="deleteShop">
           削除
@@ -126,9 +106,12 @@
 
 <script>
 import shopsRepository from "../repositories/shopsRepository.js";
+import DialogWarning from "../components/DialogWarning";
 
 export default {
-  components: {},
+  components: {
+    DialogWarning,
+  },
 
   props: {
     shopId: {
@@ -204,7 +187,7 @@ export default {
     },
 
     closeDeleteDialog() {
-      this.warnDialog = false;
+      this.$refs.dialogWarning.closeDialog();
       this.$refs.dialogConfirmDeletionShop.closeDialog();
     },
 

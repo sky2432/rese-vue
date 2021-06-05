@@ -63,7 +63,7 @@
     </DialogConfirm>
 
     <BaseDialog ref="baseDialog">
-      <template #message>メールを送信しました</template>
+      <template #title>メールを送信しました</template>
     </BaseDialog>
   </v-container>
 </template>

@@ -120,7 +120,7 @@
       </v-col>
 
       <BaseDialog ref="dialogConfirmCancelReservation" baseButtonText="いいえ">
-        <template #message>本当にキャンセルしますか？</template>
+        <template #title>本当にキャンセルしますか？</template>
         <template #leftButton>
           <v-btn color="red" class="white--text" @click="deleteReservation">
             はい
@@ -129,7 +129,7 @@
       </BaseDialog>
 
       <BaseDialog ref="cancelBaseDialog">
-        <template #message>予約をキャンセルしました</template>
+        <template #title>予約をキャンセルしました</template>
       </BaseDialog>
 
       <v-dialog width="500" persistent v-model="DialogUpdateReservation">
@@ -165,7 +165,7 @@
       </DialogConfirm>
 
       <BaseDialog ref="updateBaseDialog">
-        <template #message>予約を変更しました</template>
+        <template #title>予約を変更しました</template>
       </BaseDialog>
 
       <DialogEvaluation ref="DialogCreateEvaluation" v-model="evaluation">

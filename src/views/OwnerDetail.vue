@@ -69,7 +69,10 @@
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions class="justify-center">
-              <v-btn color="red" class="white--text" @click="warnDialog = true"
+              <v-btn
+                color="red"
+                class="white--text"
+                @click="$refs.dialogWarning.openDialog()"
                 >オーナー削除</v-btn
               >
               <v-btn
@@ -82,37 +85,16 @@
             </v-card-actions>
           </v-card>
 
-          <v-dialog width="500px" v-model="warnDialog">
-            <v-card>
-              <v-card-title class="amber"
-                >※注意事項
-                <v-spacer></v-spacer>
-                <v-btn icon @click="warnDialog = false"
-                  ><v-icon>mdi-window-close</v-icon></v-btn
-                >
-              </v-card-title>
-              <v-card-text class="mt-4">
-                <v-alert class="text-center mb-0" type="error" text prominent>
-                  <h3>必ずご確認ください</h3>
-                  <p>
-                    オーナーを削除すると、オーナーが所有する店舗、店舗関連情報全てが削除されます
-                  </p>
-                  <v-btn
-                    class="mt-2"
-                    color="red lighten-1"
-                    @click="$refs.dialogConfirmDeletionOwner.openDialog()"
-                    >オーナーを削除</v-btn
-                  >
-                </v-alert>
-              </v-card-text>
-            </v-card>
-          </v-dialog>
+          <DialogWarning
+            ref="dialogWarning"
+            @open-dialog="$refs.dialogConfirmDeletionOwner.openDialog()"
+          ></DialogWarning>
 
           <BaseDialog
             ref="dialogConfirmDeletionOwner"
             baseButtonText="キャンセル"
           >
-            <template #message>本当にオーナーを削除しますか？</template>
+            <template #title>本当にオーナーを削除しますか？</template>
             <template #leftButton>
               <v-btn
                 color="red lighten-1"
@@ -140,8 +122,13 @@
 
 <script>
 import ownersRepository from "../repositories/ownersRepository.js";
+import DialogWarning from "../components/DialogWarning";
 
 export default {
+  components: {
+    DialogWarning,
+  },
+
   props: {
     ownerId: {
       type: Number,
@@ -174,13 +161,12 @@ export default {
       this.$refs.dialogConfirmDeletionOwner.startLoading();
       await ownersRepository.deleteOwner(this.ownerId);
       this.$refs.dialogConfirmDeletionOwner.stopLoading();
-      this.$refs.dialogConfirmDeletionOwner.closeDialog();
-      this.warnDialog = false;
+      this.closeDeleteDialog();
       this.$router.push("/admin");
     },
 
     closeDeleteDialog() {
-      this.warnDialog = false;
+      this.$refs.dialogWarning.closeDialog();
       this.$refs.dialogConfirmDeletionOwner.closeDialog();
     },
 

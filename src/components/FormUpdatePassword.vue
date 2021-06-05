@@ -30,7 +30,7 @@
         </validation-observer>
 
         <BaseDialog ref="baseDialog">
-          <template #message>パスワードを更新しました</template>
+          <template #title>パスワードを更新しました</template>
         </BaseDialog>
       </div>
     </v-card>

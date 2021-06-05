@@ -20,7 +20,7 @@
         </v-alert>
 
         <BaseDialog ref="baseDialog">
-          <template #message>本当にアカウントを削除しますか？</template>
+          <template #title>本当にアカウントを削除しますか？</template>
           <template #leftButton>
             <v-btn
               color="red lighten-1"

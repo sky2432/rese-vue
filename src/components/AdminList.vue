@@ -51,11 +51,11 @@
     </DialogConfirm>
 
     <BaseDialog ref="addMessageDialog">
-      <template #message>管理者を登録しました</template>
+      <template #title>管理者を登録しました</template>
     </BaseDialog>
 
     <BaseDialog ref="deleteDialog" baseButtonText="キャンセル">
-      <template #message>この管理者を削除しますか？</template>
+      <template #title>この管理者を削除しますか？</template>
       <template #leftButton>
         <v-btn color="red" class="white--text" @click="deleteAdmin">
           削除
@@ -64,7 +64,7 @@
     </BaseDialog>
 
     <BaseDialog ref="baseDialog">
-      <template #message>管理者を削除しました</template>
+      <template #title>管理者を削除しました</template>
     </BaseDialog>
   </v-container>
 </template>

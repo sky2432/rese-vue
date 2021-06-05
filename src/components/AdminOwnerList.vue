@@ -49,7 +49,7 @@
     </DialogConfirm>
 
     <BaseDialog ref="baseDialog">
-      <template #message>店舗代表者を登録しました</template>
+      <template #title>店舗代表者を登録しました</template>
     </BaseDialog>
   </v-container>
 </template>
