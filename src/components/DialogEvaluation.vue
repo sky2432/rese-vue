@@ -1,28 +1,32 @@
 <template>
-  <v-dialog max-width="500" persistent v-model="dialog">
-    <v-card :loading="loading">
-      <v-card-title class="amber">
-        <slot name="title"></slot>
-        <v-spacer></v-spacer>
-        <v-btn icon @click="dialog = false"
-          ><v-icon>mdi-window-close</v-icon></v-btn
-        >
-      </v-card-title>
-      <v-card-text class="text-center mt-4">
-        <v-rating
-          color="amber"
-          half-increments
-          hover
-          :value="value"
-          @input="$emit('input', $event)"
-        ></v-rating>
-      </v-card-text>
-      <v-card-actions class="justify-center">
-        <slot name="leftButton"></slot>
-        <slot name="rightButton"></slot>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+  <BaseDialog
+    ref="baseDialog"
+    v-bind="{
+      body: true,
+      closeIcon: true,
+    }"
+    titleClass="amber"
+    textClass="text-center mt-4"
+  >
+    <template #title>
+      <slot name="title"></slot>
+    </template>
+    <template #body>
+      <v-rating
+        color="amber"
+        half-increments
+        hover
+        :value="value"
+        @input="$emit('input', $event)"
+      ></v-rating>
+    </template>
+    <template #leftButton>
+      <slot name="leftButton"></slot>
+    </template>
+    <template #baseButton>
+      <slot name="rightButton"></slot>
+    </template>
+  </BaseDialog>
 </template>
 
 <script>
@@ -42,19 +46,19 @@ export default {
 
   methods: {
     openDialog() {
-      this.dialog = true;
+      this.$refs.baseDialog.openDialog();
     },
 
     closeDialog() {
-      this.dialog = false;
+      this.$refs.baseDialog.closeDialog();
     },
 
     startLoading() {
-      this.loading = true;
+      this.$refs.baseDialog.startLoading();
     },
 
     stopLoading() {
-      this.loading = false;
+      this.$refs.baseDialog.stopLoading();
     },
   },
 };
