@@ -7,6 +7,7 @@
         tableData: admins,
         headers: headers,
         loading: loading,
+
         role: true,
         deletion: true,
       }"
@@ -49,7 +50,7 @@
       >
     </DialogConfirm>
 
-    <BaseDialog ref="baseDialog">
+    <BaseDialog ref="addMessageDialog">
       <template #message>管理者を登録しました</template>
     </BaseDialog>
 
@@ -147,11 +148,11 @@ export default {
     async register() {
       this.$refs.dialogConfirm.startLoading();
       await adminsRepository.createAdmin(this.registerData);
-      this.$refs.baseDialog.openDialog();
       this.getAdmins();
+      this.$refs.dialogConfirm.stopLoading();
+      this.$refs.addMessageDialog.openDialog();
       this.$refs.dialogConfirm.closeDialog();
       this.registerDialog = false;
-      this.$refs.dialogConfirm.stopLoading();
     },
 
     openDeleteDialog(adminId) {

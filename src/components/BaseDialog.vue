@@ -1,9 +1,19 @@
 <template>
   <v-dialog max-width="500px" v-model="dialog">
     <v-card :loading="loading">
-      <v-card-title class="justify-center">
+      <v-card-title :class="titleClass">
         <slot name="message"></slot>
+        <template v-if="closeIcon">
+          <v-spacer></v-spacer>
+          <v-btn icon @click="dialog = false"
+            ><v-icon>mdi-window-close</v-icon></v-btn
+          >
+        </template>
       </v-card-title>
+      <v-card-text v-if="body" :class="textClass">
+        <slot name="body"></slot>
+      </v-card-text>
+      <v-divider v-if="divider"></v-divider>
       <v-card-actions class="justify-center">
         <slot name="leftButton"></slot>
         <slot name="baseButton">
@@ -23,6 +33,25 @@ export default {
     baseButtonText: {
       type: String,
       default: "閉じる",
+    },
+    body: {
+      type: Boolean,
+      default: false,
+    },
+    divider: {
+      type: Boolean,
+      default: false,
+    },
+    closeIcon: {
+      type: Boolean,
+      default: false,
+    },
+    titleClass: {
+      type: String,
+      default: "justify-center",
+    },
+    textClass: {
+      type: String,
     },
   },
 

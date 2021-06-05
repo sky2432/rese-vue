@@ -90,19 +90,21 @@
           >
         </v-card-title>
         <v-card-text class="mt-4">
-          <v-alert class="text-center mb-0" type="error" prominent text>
+          <v-alert class="text-center mb-0" type="error"  text>
             <h3>必ずご確認ください</h3>
-            <p>
+            <p class="mb-0">
               店舗を削除すると、店舗に関係する全ての情報が削除されます。
             </p>
-            <v-btn
-              class="mt-2"
-              color="red lighten-1"
-              @click="$refs.dialogConfirmDeletionShop.openDialog()"
-              >店舗を削除</v-btn
-            >
           </v-alert>
         </v-card-text>
+        <v-card-actions class="justify-center pt-0">
+          <v-btn
+            class="white--text"
+            color="red lighten-1"
+            @click="$refs.dialogConfirmDeletionShop.openDialog()"
+            >店舗を削除</v-btn
+          >
+        </v-card-actions>
       </v-card>
     </v-dialog>
 
@@ -197,8 +199,7 @@ export default {
       this.$refs.dialogConfirmDeletionShop.startLoading();
       await shopsRepository.deleteShop(this.shopId);
       this.$refs.dialogConfirmDeletionShop.stopLoading();
-      this.DeletionShop.closeDialog();
-      this.warnDialog = false;
+      this.closeDeleteDialog();
       this.$router.push("/admin");
     },
 

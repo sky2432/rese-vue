@@ -1,33 +1,34 @@
 <template>
-  <v-dialog max-width="500" persistent v-model="dialog">
-    <v-card :loading="loading">
-      <v-card-title class="amber">
-        <slot name="title"></slot>
-      </v-card-title>
-      <v-card-text class="pt-5 pb-0">
-        <v-simple-table>
-          <template #default>
-            <tbody>
-              <tr v-for="item in tableData" :key="item.header">
-                <th>{{ item.header }}</th>
-                <td :style="color">{{ item.data }}</td>
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
-        <slot name="additional"></slot>
-      </v-card-text>
-
-      <v-divider></v-divider>
-
-      <v-card-actions class="pb-6 justify-center">
-        <v-btn color="red" class="white--text" @click="dialog = false">{{
-          cancellButtonText
-        }}</v-btn>
-        <slot name="actionButton"></slot>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+  <BaseDialog
+    ref="baseDialog"
+    v-bind="{
+      body: true,
+      divider: true,
+      baseButtonText: cancellButtonText,
+    }"
+    titleClass="amber"
+    textClass="pt-5 pb-0"
+  >
+    <template #message>
+      <slot name="title"></slot>
+    </template>
+    <template #body>
+      <v-simple-table>
+        <template #default>
+          <tbody>
+            <tr v-for="item in tableData" :key="item.header">
+              <th>{{ item.header }}</th>
+              <td :style="color">{{ item.data }}</td>
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
+      <slot name="additional"></slot>
+    </template>
+    <template #lightButton>
+      <slot name="actionButton"></slot>
+    </template>
+  </BaseDialog>
 </template>
 
 <script>
@@ -55,19 +56,19 @@ export default {
 
   methods: {
     openDialog() {
-      this.dialog = true;
+      this.$refs.baseDialog.openDialog();
     },
 
     closeDialog() {
-      this.dialog = false;
+      this.$refs.baseDialog.closeDialog();
     },
 
     startLoading() {
-      this.loading = true;
+      this.$refs.baseDialog.startLoading();
     },
 
     stopLoading() {
-      this.loading = false;
+      this.$refs.baseDialog.stopLoading();
     },
   },
 };
