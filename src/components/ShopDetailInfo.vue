@@ -35,7 +35,7 @@
           </v-card>
         </v-col>
         <v-col cols="6" class="pr-0">
-          <v-card>
+          <v-card height="370">
             <v-card-title class="amber">{{ shop.name }}</v-card-title>
             <v-card-text>
               <v-row class="mx-0 mt-5" align="center">
@@ -79,7 +79,7 @@
         </v-col>
       </v-row>
       <v-card>
-        <div ref="map" id="map" style="height:500px;width:100%;"></div>
+        <div id="map" style="height:500px;width:100%;"></div>
       </v-card>
     </div>
 
@@ -107,11 +107,14 @@
 <script>
 import shopsRepository from "../repositories/shopsRepository.js";
 import DialogWarning from "../components/DialogWarning";
+import googleMapMixin from "../mixins/googleMapMixin.js";
 
 export default {
   components: {
     DialogWarning,
   },
+
+  mixins: [googleMapMixin],
 
   props: {
     shopId: {
@@ -126,44 +129,6 @@ export default {
       loaded: false,
       warnDialog: false,
     };
-  },
-
-  watch: {
-    shop() {
-      const geocoder = new google.maps.Geocoder();
-
-      let timer = setInterval(() => {
-        if (window.google) {
-          clearInterval(timer);
-          geocoder.geocode({ address: this.shop.address }, function(
-            results,
-            status
-          ) {
-            if (status === "OK" && results[0]) {
-              const location = results[0].geometry.location;
-              const map = new google.maps.Map(document.getElementById("map"), {
-                center: location,
-                zoom: 16,
-              });
-              const marker = new google.maps.Marker({
-                position: location,
-                map: map,
-              });
-              const infoWindow = new google.maps.InfoWindow({
-                content: results[0].formatted_address,
-                pixelOffset: new google.maps.Size(0, 5),
-              });
-              marker.addListener("click", function() {
-                infoWindow.open(map, marker);
-              });
-            } else {
-              alert("失敗しました。理由: " + status);
-              return;
-            }
-          });
-        }
-      }, 500);
-    },
   },
 
   created() {

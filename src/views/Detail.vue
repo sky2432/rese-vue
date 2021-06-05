@@ -35,9 +35,8 @@
               </div>
             </v-row>
             <p class="mt-5" v-if="shop">
-              エリア：{{ shop.area.name }}<br />ジャンル：{{
-                shop.genre.name
-              }}住所
+              エリア：{{ shop.area.name }}<br />ジャンル：{{ shop.genre.name
+              }}<br />住所：{{ shop.address }}
             </p>
             <p>
               {{ shop.overview }}
@@ -62,7 +61,6 @@
             </DialogConfirm>
           </v-col>
         </v-row>
-        <p>住所：{{ shop.address }}</p>
         <v-card>
           <div ref="map" id="map" style="height:500px;width:100%;"></div>
         </v-card>
@@ -76,14 +74,18 @@ import "../plugins/veeValidate.js";
 import { mapGetters } from "vuex";
 import shopsRepository from "../repositories/shopsRepository.js";
 import reservationsRepository from "../repositories/reservationsRepository";
+import googleMapMixin from "../mixins/googleMapMixin.js";
 import DialogConfirm from "../components/DialogConfirm";
 import FormReservation from "../components/FormReservation";
+
 
 export default {
   components: {
     FormReservation,
     DialogConfirm,
   },
+
+  mixins: [googleMapMixin],
 
   props: {
     shopId: {
@@ -104,44 +106,6 @@ export default {
 
   computed: {
     ...mapGetters(["user"]),
-  },
-
-  watch: {
-    shop() {
-      const geocoder = new google.maps.Geocoder();
-
-      let timer = setInterval(() => {
-        if (window.google) {
-          clearInterval(timer);
-          geocoder.geocode({ address: this.shop.address }, function(
-            results,
-            status
-          ) {
-            if (status === "OK" && results[0]) {
-              const location = results[0].geometry.location;
-              const map = new google.maps.Map(document.getElementById("map"), {
-                center: location,
-                zoom: 16,
-              });
-              const marker = new google.maps.Marker({
-                position: location,
-                map: map,
-              });
-              const infoWindow = new google.maps.InfoWindow({
-                content: results[0].formatted_address,
-                pixelOffset: new google.maps.Size(0, 5),
-              });
-              marker.addListener("click", function() {
-                infoWindow.open(map, marker);
-              });
-            } else {
-              alert("失敗しました。理由: " + status);
-              return;
-            }
-          });
-        }
-      }, 500);
-    },
   },
 
   created() {
