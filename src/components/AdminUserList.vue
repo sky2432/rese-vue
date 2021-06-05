@@ -18,7 +18,7 @@
       <template #noResults>検索条件に当てはまるユーザーはいません</template>
     </DataTable>
 
-    <BaseDialog ref="deleteDialog" baseButtonText="いいえ">
+    <BaseDialog ref="deleteDialog" baseButtonText="キャンセル">
       <template #message>このユーザーを削除しますか？</template>
       <template #leftButton>
         <v-btn color="red" class="white--text" @click="deleteUser">

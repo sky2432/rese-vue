@@ -53,25 +53,14 @@
       <template #message>管理者を登録しました</template>
     </BaseDialog>
 
-    <v-dialog max-width="500px" v-model="deleteDialog">
-      <v-card :loading="deleteLoading">
-        <v-card-title class="justify-center">
-          この管理者を削除しますか？
-        </v-card-title>
-        <v-card-actions class="justify-center">
-          <v-btn color="red lighten-1" class="white--text" @click="deleteUser">
-            削除
-          </v-btn>
-          <v-btn
-            color="amber"
-            class="white--text"
-            @click="deleteDialog = false"
-          >
-            キャンセル
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <BaseDialog ref="deleteDialog" baseButtonText="キャンセル">
+      <template #message>この管理者を削除しますか？</template>
+      <template #leftButton>
+        <v-btn color="red" class="white--text" @click="deleteAdmin">
+          削除
+        </v-btn>
+      </template>
+    </BaseDialog>
 
     <BaseDialog ref="baseDialog">
       <template #message>管理者を削除しました</template>
@@ -166,17 +155,17 @@ export default {
     },
 
     openDeleteDialog(adminId) {
-      this.deleteDialog = true;
+      this.$refs.deleteDialog.openDialog();
       this.deleteId = adminId;
     },
 
-    async deleteUser() {
-      this.deleteLoading = true;
+    async deleteAdmin() {
+      this.$refs.deleteDialog.startLoading();
       await adminsRepository.deleteAdmin(this.deleteId);
-      this.$refs.baseDialog.openDialog();
       this.getAdmins();
-      this.deleteDialog = false;
-      this.deleteLoading = false;
+      this.$refs.baseDialog.openDialog();
+      this.$refs.deleteDialog.stopLoading();
+      this.$refs.deleteDialog.closeDialog();
     },
   },
 };
