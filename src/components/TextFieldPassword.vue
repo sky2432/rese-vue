@@ -2,7 +2,7 @@
   <validation-provider
     v-slot="{ errors }"
     :name="name"
-    rules="required|min:4"
+    rules="required|min:4|regex:^[0-9a-zA-Z]*$"
     :vid="vid"
   >
     <v-text-field

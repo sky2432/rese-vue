@@ -1,6 +1,13 @@
 import Vue from "vue";
 
-import { required, email, max, min, image } from "vee-validate/dist/rules";
+import {
+  required,
+  email,
+  max,
+  min,
+  image,
+  regex,
+} from "vee-validate/dist/rules";
 import {
   extend,
   ValidationObserver,
@@ -41,4 +48,9 @@ extend("email", {
 extend("image", {
   ...image,
   message: "画像ファイルを選択してください",
+});
+
+extend("regex", {
+  ...regex,
+  message: "{_field_}は半角英数字で入力してください",
 });
