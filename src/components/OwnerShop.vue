@@ -375,6 +375,7 @@ export default {
         area_id: this.area,
         genre_id: this.genre,
         overview: this.overview,
+        address: this.prefectures + this.building,
       };
       await shopsRepository.updateShop(this.shopId, sendData);
       this.$emit("reload");
