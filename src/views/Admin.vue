@@ -1,6 +1,6 @@
 <template>
-  <v-app>
-    <v-navigation-drawer app v-model="drawer">
+  <div>
+    <v-navigation-drawer app permanent>
       <v-sheet class="pa-8" color="amber">
         <v-row class="align-center">
           <v-avatar color="white" size="64">
@@ -89,7 +89,7 @@
     <v-main>
       <component :is="currentComponent"></component>
     </v-main>
-  </v-app>
+  </div>
 </template>
 
 <script>
@@ -99,7 +99,7 @@ import AdminShopList from "../components/AdminShopList";
 import AdminList from "../components/AdminList";
 import AdminMail from "../components/AdminMail";
 import OwnerAccount from "../components/OwnerAccount";
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -113,7 +113,6 @@ export default {
 
   data() {
     return {
-      drawer: null,
       selectedItem: 0,
       currentComponent: AdminShopList,
     };

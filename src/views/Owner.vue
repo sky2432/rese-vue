@@ -1,6 +1,6 @@
 <template>
-  <v-app>
-    <v-navigation-drawer app v-model="drawer">
+  <div>
+    <v-navigation-drawer app permanent>
       <v-sheet class="pa-8" color="amber">
         <v-row class="align-center">
           <v-avatar color="white" size="64">
@@ -66,7 +66,7 @@
         @reload="getOwnerShop"
       ></component>
     </v-main>
-  </v-app>
+  </div>
 </template>
 
 <script>
@@ -89,7 +89,6 @@ export default {
       shopArea: "",
       shopGenre: "",
       existsShop: true,
-      drawer: null,
       selectedItem: 0,
       currentComponent: OwnerReservation,
     };

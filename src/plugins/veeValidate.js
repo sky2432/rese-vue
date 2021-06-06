@@ -54,3 +54,8 @@ extend("regex", {
   ...regex,
   message: "{_field_}は半角英数字で入力してください",
 });
+
+extend("postCodeRegex", {
+  ...regex,
+  message: "ハイフンなしの数字のみで入力してください",
+});

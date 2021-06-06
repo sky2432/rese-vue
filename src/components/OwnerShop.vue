@@ -89,12 +89,12 @@
       <template #title>店舗画像を変更しました</template>
     </BaseDialog>
 
-    <v-dialog max-width="700px" v-model="updateDialog">
+    <v-dialog max-width="700px" v-model="updateDialog" persistent>
       <v-card :loading="updateLoading">
         <v-card-title class="amber">
           店舗情報の更新
           <v-spacer></v-spacer>
-          <v-btn icon @click="updateDialog = false"
+          <v-btn icon @click="closeUpdateDialog"
             ><v-icon>mdi-window-close</v-icon></v-btn
           >
         </v-card-title>
@@ -108,16 +108,16 @@
                   genre: genre,
                   overview: overview,
                   postCode: postCode,
-                  prefectures: prefectures,
-                  building: building,
+                  mainAddress: mainAddress,
+                  optionAddress: optionAddress,
                 }"
                 @setName="name = $event"
                 @setArea="area = $event"
                 @setGenre="genre = $event"
                 @setOverview="overview = $event"
                 @setPostCode="postCode = $event"
-                @setPrefectures="prefectures = $event"
-                @setBuilding="building = $event"
+                @setPrefectures="mainAddress = $event"
+                @setBuilding="optionAddress = $event"
                 @search-address="searchAdress"
               ></FormShopInfo>
 
@@ -150,16 +150,16 @@
                 genre: genre,
                 overview: overview,
                 postCode: postCode,
-                prefectures: prefectures,
-                building: building,
+                mainAddress: mainAddress,
+                optionAddress: optionAddress,
               }"
               @setName="name = $event"
               @setArea="area = $event"
               @setGenre="genre = $event"
               @setOverview="overview = $event"
               @setPostCode="postCode = $event"
-              @setPrefectures="prefectures = $event"
-              @setBuilding="building = $event"
+              @setPrefectures="mainAddress = $event"
+              @setBuilding="optionAddress = $event"
               @search-address="searchAdress"
             >
               <template #file
@@ -255,8 +255,8 @@ export default {
       overview: "",
       image: null,
       postCode: "",
-      prefectures: "",
-      building: "",
+      mainAddress: "",
+      optionAddress: "",
       imageUrl: "",
       formValid: false,
       updateDialog: false,
@@ -286,7 +286,7 @@ export default {
       const resData = await axios.get(
         `https://apis.postcode-jp.com/api/v4/postcodes/${this.postCode}?apikey=UuqgYKMuxKCuqFJFGBEBFPkZmIMxGV4bBdBetew`
       );
-      this.prefectures = resData.data[0].allAddress;
+      this.mainAddress = resData.data[0].allAddress;
     },
 
     async createShop() {
@@ -298,7 +298,7 @@ export default {
         area_id: this.area,
         genre_id: this.genre,
         overview: this.overview,
-        address: this.prefectures + this.building,
+        address: this.mainAddress + this.optionAddress,
       };
       const data = JSON.stringify(sendData);
       formData.append("sendData", data);
@@ -316,8 +316,8 @@ export default {
       this.image = null;
       this.imageUrl = "";
       this.postCode = "";
-      this.prefectures = "";
-      this.building = "";
+      this.mainAddress = "";
+      this.optionAddress = "";
       this.$refs.addObserver.reset();
     },
 
@@ -361,14 +361,6 @@ export default {
       this.area = this.areaId;
       this.genre = this.genreId;
       this.overview = this.shopOverview;
-      if (
-        this.postCode !== "" ||
-        this.prefectures !== "" ||
-        this.building !== ""
-      ) {
-        this.postCode = this.prefectures = this.building = "";
-        this.$refs.editObserver.reset();
-      }
     },
 
     async updateShop() {
@@ -378,13 +370,19 @@ export default {
         area_id: this.area,
         genre_id: this.genre,
         overview: this.overview,
-        address: this.prefectures + this.building,
+        address: this.mainAddress + this.optionAddress,
       };
       await shopsRepository.updateShop(this.shopId, sendData);
       this.$emit("reload");
       this.updateDialog = false;
       this.updateLoading = false;
       this.$refs.updateBaseDialog.openDialog();
+    },
+
+    closeUpdateDialog() {
+      this.updateDialog = false;
+      this.postCode = this.mainAddress = this.optionAddress = "";
+      this.$refs.editObserver.reset();
     },
   },
 };

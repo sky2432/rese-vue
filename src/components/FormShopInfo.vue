@@ -49,7 +49,7 @@
       <v-col cols="3" class="pl-0">
         <BaseTextField
           name="郵便番号"
-          rules="required"
+          rules="required|postCodeRegex:^[0-9]*$"
           label="PostCode"
           :value="postCode"
           @input="$emit('setPostCode', $event)"
@@ -64,14 +64,14 @@
       name="都道府県・市区町村・番地"
       rules="required"
       label="Prefectures/Municipality/HouseNumber"
-      :value="prefectures"
+      :value="mainAddress"
       @input="$emit('setPrefectures', $event)"
     ></BaseTextField>
 
     <BaseTextField
       name="建物・号室"
-      label="building/RoomNumber"
-      :value="building"
+      label="Building/RoomNumber"
+      :value="optionAddress"
       @input="$emit('setBuilding', $event)"
     ></BaseTextField>
   </div>
@@ -109,10 +109,10 @@ export default {
     postCode: {
       type: String,
     },
-    prefectures: {
+    mainAddress: {
       type: String,
     },
-    building: {
+    optionAddress: {
       type: String,
     },
   },
