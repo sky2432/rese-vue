@@ -26,7 +26,6 @@ export default {
     },
     rules: {
       type: String,
-      default: "required",
     },
     vid: {
       type: String,

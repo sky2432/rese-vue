@@ -62,7 +62,7 @@
           </v-col>
         </v-row>
         <v-card>
-          <div ref="map" id="map" style="height:500px;width:100%;"></div>
+          <div id="map" style="height:500px;width:100%;"></div>
         </v-card>
       </v-container>
     </v-main>
@@ -106,6 +106,12 @@ export default {
 
   computed: {
     ...mapGetters(["user"]),
+  },
+
+  watch: {
+    shop() {
+      this.showGoogleMap();
+    },
   },
 
   created() {

@@ -91,7 +91,7 @@ export default {
       existsShop: true,
       drawer: null,
       selectedItem: 0,
-      currentComponent: OwnerReservation,
+      currentComponent: OwnerShop,
     };
   },
 
@@ -106,6 +106,7 @@ export default {
         genre_id: genreId,
         overview: shopOverview,
         image_url: shopImageUrl,
+        address: shopAddress,
       } = this.shop;
       const { name: areaName } = this.shopArea;
       const { name: genreName } = this.shopGenre;
@@ -116,6 +117,7 @@ export default {
         genreId,
         shopOverview,
         shopImageUrl,
+        shopAddress,
         areaName,
         genreName,
       };

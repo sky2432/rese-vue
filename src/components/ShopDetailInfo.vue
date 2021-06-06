@@ -131,6 +131,12 @@ export default {
     };
   },
 
+  watch: {
+    shop() {
+      this.showGoogleMap();
+    },
+  },
+
   created() {
     this.getShop();
   },

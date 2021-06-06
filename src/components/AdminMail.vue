@@ -14,7 +14,7 @@
               v-model="destination"
             ></BaseSelector>
 
-            <BaseTextField name="件名" label="件名" v-model="subject">
+            <BaseTextField rules="required" name="件名" label="件名" v-model="subject">
             </BaseTextField>
 
             <div class="mt-4">

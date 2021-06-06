@@ -34,12 +34,17 @@
               <th>ジャンル</th>
               <td class="table-data">{{ genreName }}</td>
             </tr>
+            <tr>
+              <th>住所</th>
+              <td class="table-data">{{ shopAddress }}</td>
+            </tr>
           </tbody>
         </template>
       </v-simple-table>
       <v-subheader class="black--text">店舗概要</v-subheader>
       <v-card-text class="py-0">
-        {{ shopOverview }}
+        <p>{{ shopOverview }}</p>
+        <div id="map" style="height:400px;width:100%;"></div>
       </v-card-text>
       <v-card-actions class="justify-center">
         <v-btn color="amber" class="white--text" @click="setShopData"
@@ -102,11 +107,18 @@
                   area: area,
                   genre: genre,
                   overview: overview,
+                  postCode: postCode,
+                  prefectures: prefectures,
+                  building: building,
                 }"
                 @setName="name = $event"
                 @setArea="area = $event"
                 @setGenre="genre = $event"
                 @setOverview="overview = $event"
+                @setPostCode="postCode = $event"
+                @setPrefectures="prefectures = $event"
+                @setBuilding="building = $event"
+                @search-address="searchAdress"
               ></FormShopInfo>
 
               <v-card-actions class="justify-center">
@@ -137,22 +149,30 @@
                 area: area,
                 genre: genre,
                 overview: overview,
+                postCode: postCode,
+                prefectures: prefectures,
+                building: building,
               }"
               @setName="name = $event"
               @setArea="area = $event"
               @setGenre="genre = $event"
               @setOverview="overview = $event"
-            ></FormShopInfo>
-
-            <FileInputImage
-              :value="image"
-              @setImage="setImage"
-            ></FileInputImage>
-
-            <div v-if="imageUrl" class="text-center">
-              <v-subheader>プレビュー</v-subheader>
-              <img :src="imageUrl" width="50%" />
-            </div>
+              @setPostCode="postCode = $event"
+              @setPrefectures="prefectures = $event"
+              @setBuilding="building = $event"
+              @search-address="searchAdress"
+            >
+              <template #file
+                ><FileInputImage
+                  :value="image"
+                  @setImage="setImage"
+                ></FileInputImage>
+                <div v-if="imageUrl" class="text-center">
+                  <v-subheader>プレビュー</v-subheader>
+                  <img :src="imageUrl" width="50%" />
+                </div>
+              </template>
+            </FormShopInfo>
 
             <v-card-actions class="justify-center">
               <v-btn color="amber" :disabled="invalid" @click="createShop">
@@ -171,14 +191,18 @@ import "../plugins/veeValidate.js";
 import { mapGetters } from "vuex";
 import config from "../config/const.js";
 import shopsRepository from "../repositories/shopsRepository.js";
+import googleMapMixin from "../mixins/googleMapMixin.js";
 import FileInputImage from "../components/FileInputImage";
 import FormShopInfo from "../components/FormShopInfo";
+import axios from "axios";
 
 export default {
   components: {
     FileInputImage,
     FormShopInfo,
   },
+
+  mixins: [googleMapMixin],
 
   props: {
     shopId: {
@@ -213,6 +237,10 @@ export default {
       type: String,
       require: true,
     },
+    shopAddress: {
+      type: String,
+      require: true,
+    },
     existsShop: {
       type: Boolean,
       require: true,
@@ -226,6 +254,9 @@ export default {
       genre: null,
       overview: "",
       image: null,
+      postCode: "",
+      prefectures: "",
+      building: "",
       imageUrl: "",
       formValid: false,
       updateDialog: false,
@@ -241,7 +272,20 @@ export default {
     ...mapGetters(["user"]),
   },
 
+  watch: {
+    shopAddress() {
+      this.showGoogleMap();
+    },
+  },
+
   methods: {
+    async searchAdress() {
+      const resData = await axios.get(
+        `https://apis.postcode-jp.com/api/v4/postcodes/${this.postCode}?apikey=UuqgYKMuxKCuqFJFGBEBFPkZmIMxGV4bBdBetew`
+      );
+      this.prefectures = resData.data[0].allAddress;
+    },
+
     async createShop() {
       const formData = new FormData();
       formData.append("image", this.image);
@@ -251,6 +295,7 @@ export default {
         area_id: this.area,
         genre_id: this.genre,
         overview: this.overview,
+        address: this.prefectures + this.building,
       };
       const data = JSON.stringify(sendData);
       formData.append("sendData", data);
@@ -267,6 +312,10 @@ export default {
       this.overview = "";
       this.image = null;
       this.imageUrl = "";
+      this.postCode = "";
+      this.prefectures = "";
+      this.building = "";
+      this.$refs.addObserver.reset();
     },
 
     showImageDialog() {
@@ -309,6 +358,14 @@ export default {
       this.area = this.areaId;
       this.genre = this.genreId;
       this.overview = this.shopOverview;
+      if (
+        this.postCode !== "" ||
+        this.prefectures !== "" ||
+        this.building !== ""
+      ) {
+        this.postCode = this.prefectures = this.building = "";
+        this.$refs.editObserver.reset();
+      }
     },
 
     async updateShop() {
