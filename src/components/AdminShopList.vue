@@ -39,7 +39,7 @@ export default {
         { text: "店名", value: "name" },
         { text: "エリア", value: "area.name" },
         { text: "ジャンル", value: "genre.name" },
-        { text: "", value: "detail", sortable: false },
+        { text: "", value: "detail", sortable: false, filterable: false },
       ],
     };
   },

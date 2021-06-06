@@ -35,7 +35,7 @@
           </v-card>
         </v-col>
         <v-col cols="6" class="pr-0">
-          <v-card height="370">
+          <v-card>
             <v-card-title class="amber">{{ shop.name }}</v-card-title>
             <v-card-text>
               <v-row class="mx-0 mt-5" align="center">
@@ -101,6 +101,20 @@
         </v-btn>
       </template>
     </BaseDialog>
+
+    <BaseDialog
+      ref="messageDialog"
+      v-bind="{ body: true, persistent: true }"
+      textClass="text-center"
+    >
+      <template #title>店舗を削除しました</template>
+      <template #body>5秒後にも自動的にトップページへ戻ります</template>
+      <template #baseButton>
+        <v-btn color="amber" class="white--text" @click="moveTopPage"
+          >トップページへ戻る</v-btn
+        >
+      </template>
+    </BaseDialog>
   </div>
 </template>
 
@@ -128,11 +142,13 @@ export default {
       loading: true,
       loaded: false,
       warnDialog: false,
+      timeoutId: "",
     };
   },
 
   watch: {
     shop() {
+      //googleMapMixinのメソッド
       this.showGoogleMap();
     },
   },
@@ -152,14 +168,20 @@ export default {
     async deleteShop() {
       this.$refs.dialogConfirmDeletionShop.startLoading();
       await shopsRepository.deleteShop(this.shopId);
+      this.$refs.messageDialog.openDialog();
       this.$refs.dialogConfirmDeletionShop.stopLoading();
       this.closeDeleteDialog();
-      this.$router.push("/admin");
+      this.timeoutId = setTimeout(this.moveTopPage, 5000);
     },
 
     closeDeleteDialog() {
       this.$refs.dialogWarning.closeDialog();
       this.$refs.dialogConfirmDeletionShop.closeDialog();
+    },
+
+    moveTopPage() {
+      clearTimeout(this.timeoutId);
+      this.$router.push("/admin");
     },
 
     async downloadImage() {

@@ -1,5 +1,5 @@
 <template>
-  <v-dialog max-width="500px" v-model="dialog">
+  <v-dialog max-width="500px" v-model="dialog" :persistent="persistent">
     <v-card :loading="loading">
       <v-card-title :class="titleClass">
         <slot name="title"></slot>
@@ -57,6 +57,10 @@ export default {
     textClass: {
       type: String,
     },
+    persistent: {
+      type: Boolean,
+      default: false,
+    }
   },
 
   data() {

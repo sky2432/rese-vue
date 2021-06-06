@@ -119,6 +119,20 @@
               </v-btn>
             </template>
           </BaseDialog>
+
+          <BaseDialog
+            ref="messageDialog"
+            v-bind="{ body: true, persistent: true }"
+            textClass="text-center"
+          >
+            <template #title>オーナーを削除しました</template>
+            <template #body>5秒後にも自動的にトップページへ戻ります</template>
+            <template #baseButton>
+              <v-btn color="amber" class="white--text" @click="moveTopPage"
+                >トップページへ戻る</v-btn
+              >
+            </template>
+          </BaseDialog>
         </v-container>
       </v-main>
     </div>
@@ -147,6 +161,7 @@ export default {
       warnDialog: false,
       loading: true,
       loaded: false,
+      timeoutId: "",
     };
   },
 
@@ -165,14 +180,20 @@ export default {
     async deleteOwner() {
       this.$refs.dialogConfirmDeletionOwner.startLoading();
       await ownersRepository.deleteOwner(this.ownerId);
+      this.$refs.messageDialog.openDialog();
       this.$refs.dialogConfirmDeletionOwner.stopLoading();
       this.closeDeleteDialog();
-      this.$router.push("/admin");
+      this.timeoutId = setTimeout(this.moveTopPage, 5000);
     },
 
     closeDeleteDialog() {
       this.$refs.dialogWarning.closeDialog();
       this.$refs.dialogConfirmDeletionOwner.closeDialog();
+    },
+
+    moveTopPage() {
+      this.$router.push("/admin");
+      clearTimeout(this.timeoutId);
     },
 
     moveShopDetail() {

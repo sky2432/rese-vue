@@ -276,6 +276,7 @@ export default {
     let timer = setInterval(() => {
       if (window.google) {
         clearInterval(timer);
+        //googleMapMixinのメソッド
         this.showGoogleMap();
       }
     }, 500);

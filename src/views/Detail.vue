@@ -110,6 +110,7 @@ export default {
 
   watch: {
     shop() {
+      //googleMapMixinのメソッド
       this.showGoogleMap();
     },
   },

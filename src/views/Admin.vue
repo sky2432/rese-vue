@@ -114,7 +114,7 @@ export default {
   data() {
     return {
       selectedItem: 0,
-      currentComponent: AdminUserList,
+      currentComponent: AdminShopList,
     };
   },
 
