@@ -70,6 +70,7 @@ export default {
     ...mapGetters(["user"]),
   },
 
+
   created() {
     this.getUserFavorites();
   },

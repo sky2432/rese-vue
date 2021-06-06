@@ -1,8 +1,6 @@
 export default {
   methods: {
     showGoogleMap() {
-      const geocoder = new google.maps.Geocoder();
-
       let mapAddress;
       if (this.$route.name === "Owner") {
         mapAddress = this.shopAddress;
@@ -10,6 +8,7 @@ export default {
         mapAddress = this.shop.address;
       }
 
+      const geocoder = new google.maps.Geocoder();
       geocoder.geocode({ address: mapAddress }, function(results, status) {
         if (status === "OK" && results[0]) {
           const location = results[0].geometry.location;

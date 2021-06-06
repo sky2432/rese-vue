@@ -91,7 +91,7 @@ export default {
       existsShop: true,
       drawer: null,
       selectedItem: 0,
-      currentComponent: OwnerShop,
+      currentComponent: OwnerReservation,
     };
   },
 

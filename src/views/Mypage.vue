@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import MypageFavorite from "../components/MypageFavorite.vue";
+import MypageFavorite from "../components/MypageFavorite";
 import MypageReservation from "../components/MypageReservation";
 
 export default {
@@ -31,7 +31,7 @@ export default {
 
   data() {
     return {
-      currentComponent: MypageReservation,
+      currentComponent: MypageFavorite,
     };
   },
 };

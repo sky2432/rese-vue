@@ -272,10 +272,13 @@ export default {
     ...mapGetters(["user"]),
   },
 
-  watch: {
-    shopAddress() {
-      this.showGoogleMap();
-    },
+  mounted() {
+    let timer = setInterval(() => {
+      if (window.google) {
+        clearInterval(timer);
+        this.showGoogleMap();
+      }
+    }, 500);
   },
 
   methods: {
