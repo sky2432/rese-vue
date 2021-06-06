@@ -16,7 +16,9 @@
       <v-alert class="text-center mb-0" type="error" text>
         <h3>必ずご確認ください</h3>
         <p class="mb-0">
-          店舗を削除すると、店舗に関係する全ての情報が削除されます。
+          <slot name="message">
+            店舗を削除すると、店舗に関連する全ての情報が削除されます。
+          </slot>
         </p>
       </v-alert>
     </template>
@@ -25,8 +27,9 @@
         class="white--text"
         color="red lighten-1"
         @click="$emit('open-dialog')"
-        >店舗を削除</v-btn
       >
+        <slot name="buttonText">店舗を削除</slot>
+      </v-btn>
     </template>
   </BaseDialog>
 </template>

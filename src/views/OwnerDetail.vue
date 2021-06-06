@@ -80,7 +80,7 @@
                 class="white--text"
                 :disabled="!owner.shop"
                 @click="moveShopDetail"
-                >店舗詳細へ</v-btn
+                >店舗詳細</v-btn
               >
             </v-card-actions>
           </v-card>
@@ -88,7 +88,12 @@
           <DialogWarning
             ref="dialogWarning"
             @open-dialog="$refs.dialogConfirmDeletionOwner.openDialog()"
-          ></DialogWarning>
+          >
+            <template #message
+              >オーナーを削除すると、オーナーが所有する店舗、その店舗に関連する全ての情報が削除されます。</template
+            >
+            <template #buttonText>オーナーを削除</template>
+          </DialogWarning>
 
           <BaseDialog
             ref="dialogConfirmDeletionOwner"

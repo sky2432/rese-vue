@@ -69,7 +69,7 @@
                 color="red"
                 class="white--text"
                 @click="$refs.dialogWarning.openDialog()"
-                >店舗の削除</v-btn
+                >店舗削除</v-btn
               >
               <v-btn color="amber" class="white--text" @click="moveOwnerDetail"
                 >オーナー詳細</v-btn
