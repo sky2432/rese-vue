@@ -18,11 +18,26 @@
       <template #noResults>検索条件に当てはまるユーザーはいません</template>
     </DataTable>
 
+    <DialogWarning
+      ref="dialogWarning"
+      @open-dialog="$refs.deleteDialog.openDialog()"
+    >
+      <template #message
+        >ユーザーを削除すると、そのユーザーに関連する全ての情報が削除されます。</template
+      >
+      <template #buttonText>ユーザーを削除</template>
+    </DialogWarning>
+
     <BaseDialog ref="deleteDialog" baseButtonText="キャンセル">
-      <template #title>このユーザーを削除しますか？</template>
+      <template #title>本当にこのユーザーを削除しますか？</template>
       <template #leftButton>
         <v-btn color="red" class="white--text" @click="deleteUser">
           削除
+        </v-btn>
+      </template>
+      <template #baseButton>
+        <v-btn color="amber" class="white--text" @click="closeDeleteDialog">
+          キャンセル
         </v-btn>
       </template>
     </BaseDialog>
@@ -36,10 +51,12 @@
 <script>
 import usersRepository from "../repositories/usersRepository";
 import DataTable from "../components/DataTable";
+import DialogWarning from "../components/DialogWarning";
 
 export default {
   components: {
     DataTable,
+    DialogWarning,
   },
 
   data() {
@@ -70,8 +87,13 @@ export default {
     },
 
     openDeleteDialog(userId) {
-      this.$refs.deleteDialog.openDialog();
+      this.$refs.dialogWarning.openDialog();
       this.deleteId = userId;
+    },
+
+    closeDeleteDialog() {
+      this.$refs.dialogWarning.closeDialog();
+      this.$refs.deleteDialog.closeDialog();
     },
 
     async deleteUser() {
@@ -81,6 +103,7 @@ export default {
       this.$refs.baseDialog.openDialog();
       this.$refs.deleteDialog.stopLoading();
       this.$refs.deleteDialog.closeDialog();
+      this.$refs.dialogWarning.closeDialog();
     },
   },
 };
