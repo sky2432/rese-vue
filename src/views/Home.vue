@@ -43,51 +43,11 @@
         <v-progress-circular color="amber" indeterminate></v-progress-circular>
       </div>
       <v-container class="mt-2" v-if="loaded">
-        <v-row>
-          <v-col cols="3" v-for="shop in filteredShops" :key="shop.id">
-            <v-card height="300">
-              <v-img height="140" :src="shop.image_url"></v-img>
-              <v-card-title>{{ shop.name }}</v-card-title>
-              <v-card-text>
-                <v-row class="mx-0" align="center">
-                  <v-rating
-                    color="amber"
-                    :value="shop.evaluation"
-                    size="14"
-                    dense
-                    half-increments
-                    readonly
-                  ></v-rating>
-
-                  <div class="ml-1">
-                    {{ shop.evaluation
-                    }}<span class="grey--text ml-2"
-                      >({{ shop.evaluation_count }}件)</span
-                    >
-                  </div>
-                </v-row>
-              </v-card-text>
-              <v-card-subtitle class="py-1">
-                #{{ shop.area.name }}＃{{ shop.genre.name }}
-              </v-card-subtitle>
-              <v-card-actions>
-                <v-btn
-                  color="amber"
-                  class="white--text"
-                  rounded
-                  @click="moveShopDetail(shop.id)"
-                  >詳細
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-btn text icon>
-                  <v-icon color="red" large @click="changeFavorite(shop.id)">{{
-                    showFavoriteIcon(shop.id)
-                  }}</v-icon>
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-col>
-        </v-row>
+        <ShopCardList
+          :shops="filteredShops"
+          :favorites="favorites"
+          @reload-favorites="getUserFavorites"
+        ></ShopCardList>
       </v-container>
     </v-main>
   </div>
@@ -97,8 +57,13 @@
 import { mapGetters } from "vuex";
 import shopsRepository from "../repositories/shopsRepository.js";
 import favoritesRepository from "../repositories/favoritesRepository";
+import ShopCardList from "../components/ShopCardList";
 
 export default {
+  components: {
+    ShopCardList,
+  },
+
   data() {
     return {
       shops: [],
@@ -108,8 +73,6 @@ export default {
       selectedArea: "All area",
       selectedGenre: "All genre",
       keyword: "",
-      favoriteIcon: "mdi-heart",
-      notFavoriteIcon: "mdi-heart-outline",
       loading: true,
       loaded: false,
     };
@@ -176,17 +139,6 @@ export default {
       }
       return this.shops;
     },
-
-    showFavoriteIcon() {
-      return function(shopId) {
-        const result = this.isFavorite(shopId);
-        if (result === true) {
-          return this.favoriteIcon;
-        } else {
-          return this.notFavoriteIcon;
-        }
-      };
-    },
   },
 
   created() {
@@ -217,47 +169,6 @@ export default {
       return filteredShops;
     },
 
-    changeFavorite(shopId) {
-      const result = this.isFavorite(shopId);
-      if (result === false) {
-        this.addFavorite(shopId);
-      } else if (result === true) {
-        this.removeFavorite(shopId);
-      }
-    },
-
-    isFavorite(shopId) {
-      for (let i in this.favorites) {
-        if (shopId === this.favorites[i].id) {
-          return true;
-        }
-      }
-      return false;
-    },
-
-    async addFavorite(shopId) {
-      const sendData = {
-        user_id: this.user.id,
-        shop_id: shopId,
-      };
-      await favoritesRepository.addFavorite(sendData);
-      this.getUserFavorites();
-    },
-
-    async removeFavorite(shopId) {
-      const favoriteId = this.getFavoriteId(shopId);
-      await favoritesRepository.removeFavorite(favoriteId);
-      this.getUserFavorites();
-    },
-
-    getFavoriteId(shopId) {
-      for (let i in this.favorites) {
-        if (shopId === this.favorites[i].id) {
-          return this.favorites[i].favorite.id;
-        }
-      }
-    },
-
     async getUserFavorites() {
       const resData = await favoritesRepository.getUserFavorites(this.user.id);
       this.favorites = resData.data.data;
@@ -271,7 +182,6 @@ export default {
       this.shops = shops;
       this.createSerchOptions(shops, "areaOptions", "area");
       this.createSerchOptions(shops, "genreOptions", "genre");
-      // console.log(resData.data);
     },
 
     //エリア・ジャンル検索における選択肢を作成する
@@ -282,14 +192,6 @@ export default {
           this[options].push(shops[i][itemName].name);
         }
       }
-    },
-
-    moveShopDetail(shopId) {
-      this.$helpers.$_movePageWithPram("Detail", "shopId", shopId);
-    },
-
-    logout() {
-      this.$store.dispatch("logout");
     },
   },
 };
