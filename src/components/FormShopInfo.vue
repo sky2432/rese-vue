@@ -24,40 +24,17 @@
     ></BaseSelector>
 
     <template v-if="formAddress">
-      <p class="mb-0 mt-6" style="font-size: 16px">
-        <v-icon class="mr-1">mdi-mailbox</v-icon>address
-      </p>
-
-      <v-row class="ma-0 ml-6 align-center">
-        <v-col cols="3" class="pl-0">
-          <BaseTextField
-            name="郵便番号"
-            rules="required|postCodeRegex:^[0-9]*$"
-            label="PostCode"
-            v-model="postCode"
-          ></BaseTextField>
-        </v-col>
-        <v-col cols="9">
-          <v-btn @click="searchAdress">郵便番号から住所を検索</v-btn>
-        </v-col>
-      </v-row>
-
-      <div class="ml-6">
-        <BaseTextField
-          name="都道府県・市区町村・番地"
-          rules="required"
-          label="Prefectures/Municipality/HouseNumber"
-          v-model="mainAddress"
-        ></BaseTextField>
-      </div>
-
-      <div class="ml-6">
-        <BaseTextField
-          name="建物・号室"
-          label="Building/RoomNumber"
-          v-model="optionAddress"
-        ></BaseTextField>
-      </div>
+      <FormAddress
+        v-bind="{
+          shopPostCode: postCode,
+          shopMainAddress: mainAddress,
+          shopOptionAddress: optionAddress,
+        }"
+        @setPostCode="postCode = $event"
+        @setMainAddress="mainAddress = $event"
+        @setOptionAddress="optionAddress = $event"
+        @auto-set-address="mainAddress = $event"
+      ></FormAddress>
     </template>
 
     <div class="mt-4">
@@ -83,7 +60,7 @@ import TextFieldName from "../components/TextFieldName";
 import BaseSelector from "../components/BaseSelector";
 import BaseTextArea from "../components/BaseTextArea";
 import BaseTextField from "../components/BaseTextField";
-import axios from "axios";
+import FormAddress from "../components/FormAddress";
 
 export default {
   components: {
@@ -91,6 +68,7 @@ export default {
     TextFieldName,
     BaseTextArea,
     BaseTextField,
+    FormAddress,
   },
 
   props: {
@@ -134,19 +112,6 @@ export default {
   },
 
   methods: {
-    async searchAdress() {
-      axios
-        .get(
-          `https://apis.postcode-jp.com/api/v4/postcodes/${this.postCode}?apikey=UuqgYKMuxKCuqFJFGBEBFPkZmIMxGV4bBdBetew`
-        )
-        .then((reponse) => {
-          this.mainAddress = reponse.data[0].allAddress;
-        })
-        .catch(() => {
-          return;
-        });
-    },
-
     sendUpdateData() {
       const sendData = {
         name: this.name,

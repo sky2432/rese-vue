@@ -194,7 +194,7 @@
         <v-divider class="my-2"></v-divider>
         <v-subheader class="black--text">住所</v-subheader>
         <v-card-text class="py-0">
-          {{ shopData.name }}
+          {{ shopData.address }}
         </v-card-text>
         <v-divider class="my-2"></v-divider>
         <v-subheader class="black--text">店舗概要</v-subheader>
