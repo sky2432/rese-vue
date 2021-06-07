@@ -77,7 +77,7 @@ export default {
         { text: "名前", value: "name" },
         { text: "メールアドレス", value: "email" },
         { text: "店舗名", value: "shop.name" },
-        { text: "", value: "detail", sortable: false },
+        { text: "", value: "detail", sortable: false, filterable: false },
       ],
       confirmDialogData: [],
       registerData: "",

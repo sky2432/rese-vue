@@ -5,19 +5,18 @@ const baseDomain = "http://127.0.0.1:8000";
 
 const baseURL = `${baseDomain}/api`;
 
-let url;
 const token = store.getters.apiToken;
-if (token) {
-  url = axios.create({
-    baseURL: baseURL,
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-} else {
-  url = axios.create({
-    baseURL: baseURL,
-  });
-}
+
+let url = axios.create({
+  baseURL: baseURL,
+});
+
+url.interceptors.request.use((config) => {
+  if (token) {
+    config.headers["Authorization"] = `Bearer ${token}`;
+    return config;
+  }
+  return config;
+});
 
 export default url;

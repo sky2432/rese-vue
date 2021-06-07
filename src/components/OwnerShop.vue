@@ -243,7 +243,6 @@ export default {
     },
     existsShop: {
       type: Boolean,
-      require: true,
     },
   },
 
@@ -277,9 +276,17 @@ export default {
       if (window.google) {
         clearInterval(timer);
         //googleMapMixinのメソッド
-        this.showGoogleMap();
+        if (this.existsShop === true) {
+          this.showGoogleMap();
+        }
       }
     }, 500);
+  },
+
+  watch: {
+    shopAddress() {
+      this.showGoogleMap();
+    },
   },
 
   methods: {

@@ -70,7 +70,7 @@ export default {
         { text: "ユーザーID", value: "id" },
         { text: "名前", value: "name" },
         { text: "メールアドレス", value: "email" },
-        { text: "", value: "delete", sortable: false },
+        { text: "", value: "delete", sortable: false, filterable: false },
       ],
     };
   },
