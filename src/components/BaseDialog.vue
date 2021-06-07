@@ -1,5 +1,5 @@
 <template>
-  <v-dialog max-width="500px" v-model="dialog" :persistent="persistent">
+  <v-dialog :max-width="maxWidth" v-model="dialog" :persistent="persistent">
     <v-card :loading="loading">
       <v-card-title :class="titleClass">
         <slot name="title"></slot>
@@ -60,6 +60,10 @@ export default {
     persistent: {
       type: Boolean,
       default: false,
+    },
+    maxWidth: {
+      type: String,
+      default: "500px",
     }
   },
 

@@ -62,6 +62,8 @@
       <component
         v-bind="childComponentProps"
         :existsShop="existsShop"
+        :loading="loading"
+        :loaded="loaded"
         :is="currentComponent"
         @reload="getOwnerShop"
       ></component>
@@ -88,9 +90,11 @@ export default {
       shop: "",
       shopArea: "",
       shopGenre: "",
-      existsShop: true,
+      existsShop: null,
+      loading: true,
+      loaded: false,
       selectedItem: 0,
-      currentComponent: OwnerReservation,
+      currentComponent: OwnerShop,
     };
   },
 
@@ -129,6 +133,8 @@ export default {
 
   methods: {
     async getOwnerShop() {
+      this.loading = true;
+      this.loaded = false;
       const resData = await ownersRepository.getOwnerShop(this.user.id);
       if (resData.status === 200) {
         const shop = resData.data.data;
@@ -136,10 +142,17 @@ export default {
         this.shopArea = shop.area;
         this.shopGenre = shop.genre;
         this.existsShop = true;
+        this.changeLoading();
       }
       if (resData.status === 204) {
         this.existsShop = false;
+        this.changeLoading();
       }
+    },
+
+    changeLoading() {
+      this.loading = false;
+      this.loaded = true;
     },
 
     logout() {

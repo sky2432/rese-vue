@@ -5,6 +5,7 @@
       body: true,
       divider: true,
       baseButtonText: cancellButtonText,
+      maxWidth: maxWidth
     }"
     titleClass="amber"
     textClass="pt-5 pb-0"
@@ -45,6 +46,9 @@ export default {
     color: {
       type: String,
     },
+    maxWidth: {
+      type: String,
+    }
   },
 
   data() {
