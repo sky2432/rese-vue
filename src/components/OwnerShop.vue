@@ -3,7 +3,7 @@
     <div class="wrapper" v-if="loading">
       <v-progress-circular color="amber" indeterminate></v-progress-circular>
     </div>
-    <v-container class="py-4 px-6" fluid v-if="loaded">
+    <v-container class="py-4 px-6" fluid v-show="loaded">
       <v-card v-if="existsShop">
         <v-card-title class="amber">店舗情報</v-card-title>
         <v-hover>
@@ -370,7 +370,7 @@ export default {
     }, 500);
   },
 
-  //最初のロードで発火
+  //住所が変更された際に発火
   watch: {
     shopAddress() {
       //googleMapMixinのメソッド

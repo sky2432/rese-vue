@@ -13,7 +13,9 @@
 
     <v-main>
       <v-container>
-        <component :is="currentComponent"></component>
+        <keep-alive>
+          <component :is="currentComponent"></component>
+        </keep-alive>
       </v-container>
     </v-main>
   </div>

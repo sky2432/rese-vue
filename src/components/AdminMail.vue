@@ -3,6 +3,10 @@
     <v-card>
       <v-card-title class="amber">
         メール送信
+        <v-spacer> </v-spacer>
+        <v-btn @click="resetData">
+          フォームクリア
+        </v-btn>
       </v-card-title>
       <v-card-text class="mt-4">
         <validation-observer ref="observer" v-slot="{ invalid }">
@@ -14,7 +18,12 @@
               v-model="destination"
             ></BaseSelector>
 
-            <BaseTextField rules="required" name="件名" label="件名" v-model="subject">
+            <BaseTextField
+              rules="required"
+              name="件名"
+              label="件名"
+              v-model="subject"
+            >
             </BaseTextField>
 
             <div class="mt-4">

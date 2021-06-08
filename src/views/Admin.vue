@@ -87,7 +87,9 @@
     </v-navigation-drawer>
 
     <v-main>
-      <component :is="currentComponent"></component>
+      <keep-alive>
+        <component :is="currentComponent"></component>
+      </keep-alive>
     </v-main>
   </div>
 </template>

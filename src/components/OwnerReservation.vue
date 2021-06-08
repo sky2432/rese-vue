@@ -1,6 +1,10 @@
 <template>
   <v-container class="py-4 px-6" fluid>
-    <ReservationList ref="reservationList" :edit="true" :shopId="shopId"></ReservationList>
+    <ReservationList
+      ref="reservationList"
+      :edit="true"
+      :shopId="shopId"
+    ></ReservationList>
   </v-container>
 </template>
 

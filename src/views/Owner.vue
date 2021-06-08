@@ -59,14 +59,16 @@
     </v-navigation-drawer>
 
     <v-main>
-      <component
-        v-bind="childComponentProps"
-        :existsShop="existsShop"
-        :loading="loading"
-        :loaded="loaded"
-        :is="currentComponent"
-        @reload="getOwnerShop"
-      ></component>
+      <keep-alive>
+        <component
+          v-bind="childComponentProps"
+          :existsShop="existsShop"
+          :loading="loading"
+          :loaded="loaded"
+          :is="currentComponent"
+          @reload="getOwnerShop"
+        ></component>
+      </keep-alive>
     </v-main>
   </div>
 </template>
@@ -94,7 +96,7 @@ export default {
       loading: true,
       loaded: false,
       selectedItem: 0,
-      currentComponent: OwnerShop,
+      currentComponent: OwnerReservation,
     };
   },
 
