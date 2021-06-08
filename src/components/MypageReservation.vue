@@ -6,9 +6,14 @@
     <v-row class="mt-1" v-if="loaded">
       <v-col cols="12" v-for="shop in shops" :key="shop.reservation.id">
         <v-card class="card" height="300">
-          <v-card-title class="amber">{{
-            showReservationStatus(shop.reservation)
-          }}</v-card-title>
+          <v-card-title class="amber pa-2" style="height: 64px">
+            <v-chip
+              class="white--text ml-2"
+              :color="showStatusColor(shop.reservation.status)"
+            >
+              {{ showReservationStatus(shop.reservation.status) }}
+            </v-chip>
+          </v-card-title>
           <v-row class="row">
             <v-col cols="4" class="pa-0 image-wrap">
               <v-img class="image" :src="shop.image_url" height="236px"></v-img>
@@ -263,18 +268,35 @@ export default {
       }
     },
 
+    showStatusColor() {
+      return function(status) {
+        if (status === "reserving") {
+          return "green";
+        }
+        if (status === "visited") {
+          return "orange darken-1";
+        }
+        if (status === "cancelled") {
+          return "grey";
+        }
+        if (status === "noVisited") {
+          return "red";
+        }
+      };
+    },
+
     showReservationStatus() {
-      return function(reservation) {
-        if (reservation.status === "reserving") {
+      return function(status) {
+        if (status === "reserving") {
           return "予約中";
         }
-        if (reservation.status === "cancelled") {
-          return "キャンセル";
-        }
-        if (reservation.status === "visited") {
+        if (status === "visited") {
           return "来店済み";
         }
-        if (reservation.status === "noVisited") {
+        if (status === "cancelled") {
+          return "キャンセル";
+        }
+        if (status === "noVisited") {
           return "非来店";
         }
       };
