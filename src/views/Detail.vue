@@ -48,7 +48,11 @@
               <template #title>予約</template>
             </FormReservation>
 
-            <DialogConfirm ref="dialogConfirm" :tableData="confirmDialogData">
+            <DialogConfirm
+              ref="dialogConfirm"
+              :tableData="confirmDialogData"
+              cancellButtonText="修正"
+            >
               <template #title>予約内容の確認</template>
               <template #actionButton
                 ><v-btn
@@ -77,7 +81,6 @@ import reservationsRepository from "../repositories/reservationsRepository";
 import googleMapMixin from "../mixins/googleMapMixin.js";
 import DialogConfirm from "../components/DialogConfirm";
 import FormReservation from "../components/FormReservation";
-
 
 export default {
   components: {

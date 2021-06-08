@@ -357,7 +357,7 @@ export default {
     ...mapGetters(["user"]),
   },
 
-  //タブ移動の際に発火
+  //タブ切り替えの際に発火
   mounted() {
     let timer = setInterval(() => {
       if (window.google) {

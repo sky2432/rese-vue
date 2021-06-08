@@ -12,7 +12,9 @@
     </TheHeader>
     <v-main>
       <v-container>
-        <component :is="currentComponent" :shopId="shopId"></component>
+        <keep-alive>
+          <component :is="currentComponent" :shopId="shopId"></component>
+        </keep-alive>
       </v-container>
     </v-main>
   </div>

@@ -11,7 +11,6 @@ export default {
       const geocoder = new google.maps.Geocoder();
       geocoder.geocode({ address: mapAddress }, function(results, status) {
         if (status === "OK" && results[0]) {
-          console.log('hi');
           const location = results[0].geometry.location;
           const map = new google.maps.Map(document.getElementById("map"), {
             center: location,

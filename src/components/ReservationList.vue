@@ -7,7 +7,6 @@
         headers: headers,
         loading: loading,
         reservationStatus: true,
-        perPage: perPage,
         titleColor: titleColor,
         tile: true,
         edit: edit,
@@ -69,10 +68,6 @@ export default {
     },
     titleColor: {
       type: String,
-    },
-    perPage: {
-      type: Number,
-      default: 10,
     },
     ownerType: {
       type: Boolean,

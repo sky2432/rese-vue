@@ -128,7 +128,7 @@ export default {
     },
     perPage: {
       type: Number,
-      default: 10,
+      default: -1,
     },
     tile: {
       type: Boolean,
