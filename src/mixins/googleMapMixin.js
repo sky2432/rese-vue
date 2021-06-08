@@ -8,21 +8,21 @@ export default {
         mapAddress = this.shop.address;
       }
 
-      const geocoder = new google.maps.Geocoder();
+      const geocoder = new window.google.maps.Geocoder();
       geocoder.geocode({ address: mapAddress }, function(results, status) {
         if (status === "OK" && results[0]) {
           const location = results[0].geometry.location;
-          const map = new google.maps.Map(document.getElementById("map"), {
+          const map = new window.google.maps.Map(document.getElementById("map"), {
             center: location,
             zoom: 16,
           });
-          const marker = new google.maps.Marker({
+          const marker = new window.google.maps.Marker({
             position: location,
             map: map,
           });
-          const infoWindow = new google.maps.InfoWindow({
+          const infoWindow = new window.google.maps.InfoWindow({
             content: results[0].formatted_address,
-            pixelOffset: new google.maps.Size(0, 5),
+            pixelOffset: new window.google.maps.Size(0, 5),
           });
           marker.addListener("click", function() {
             infoWindow.open(map, marker);

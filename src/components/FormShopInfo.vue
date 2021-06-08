@@ -59,7 +59,6 @@ import config from "../config/const.js";
 import TextFieldName from "../components/TextFieldName";
 import BaseSelector from "../components/BaseSelector";
 import BaseTextArea from "../components/BaseTextArea";
-import BaseTextField from "../components/BaseTextField";
 import FormAddress from "../components/FormAddress";
 
 export default {
@@ -67,7 +66,6 @@ export default {
     BaseSelector,
     TextFieldName,
     BaseTextArea,
-    BaseTextField,
     FormAddress,
   },
 
