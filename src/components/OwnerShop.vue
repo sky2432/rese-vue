@@ -58,88 +58,14 @@
         </v-card-text>
         <div id="map" style="height:400px;width:100%;"></div>
         <v-card-actions class="justify-center mt-2">
-          <v-btn color="amber" class="white--text" @click="setShopData"
+          <v-btn
+            color="amber"
+            class="white--text"
+            @click="$refs.updateAddressDialog.openDialog()"
             >住所の編集</v-btn
           >
         </v-card-actions>
       </v-card>
-
-      <v-dialog max-width="700px" v-model="imageDialog">
-        <v-card :loading="imageLoading">
-          <v-card-title class="amber">
-            店舗画像の更新
-            <v-spacer></v-spacer>
-            <v-btn icon @click="imageDialog = false"
-              ><v-icon>mdi-window-close</v-icon></v-btn
-            >
-          </v-card-title>
-          <v-card-text>
-            <validation-observer ref="editImageObserver" v-slot="{ invalid }">
-              <v-form>
-                <FileInputImage
-                  :value="image"
-                  @setImage="setImage"
-                ></FileInputImage>
-
-                <div v-if="imageUrl" class="text-center">
-                  <v-subheader>プレビュー</v-subheader>
-                  <img :src="imageUrl" width="50%" />
-                </div>
-                <v-card-actions class="justify-center">
-                  <v-btn color="amber" :disabled="invalid" @click="updateImage">
-                    更新
-                  </v-btn>
-                </v-card-actions>
-              </v-form>
-            </validation-observer>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
-
-      <BaseDialog ref="imageBaseDialog">
-        <template #title>店舗画像を変更しました</template>
-      </BaseDialog>
-
-      <v-dialog max-width="700px" v-model="updateDialog" persistent>
-        <v-card :loading="updateLoading">
-          <v-card-title class="amber">
-            店舗情報の更新
-            <v-spacer></v-spacer>
-            <v-btn icon @click="closeUpdateDialog"
-              ><v-icon>mdi-window-close</v-icon></v-btn
-            >
-          </v-card-title>
-          <v-card-text class="mt-4">
-            <validation-observer ref="editObserver" v-slot="{ invalid }">
-              <v-form v-model="formValid">
-                <FormShopInfo
-                  ref="updateFormShopInfo"
-                  v-bind="{
-                    shopName: name,
-                    shopArea: area,
-                    shopGenre: genre,
-                    shopOverview: overview,
-                  }"
-                  @send-update-data="updateShop"
-                ></FormShopInfo>
-                <v-card-actions class="justify-center">
-                  <v-btn
-                    color="amber"
-                    :disabled="invalid"
-                    @click="getUpdateData"
-                  >
-                    更新
-                  </v-btn>
-                </v-card-actions>
-              </v-form>
-            </validation-observer>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
-
-      <BaseDialog ref="updateBaseDialog">
-        <template #title>店舗情報を変更しました</template>
-      </BaseDialog>
 
       <v-card v-if="!existsShop">
         <v-card-title class="amber">
@@ -181,6 +107,121 @@
         </v-card-text>
       </v-card>
     </v-container>
+
+    <v-dialog max-width="700px" v-model="imageDialog">
+      <v-card :loading="imageLoading">
+        <v-card-title class="amber">
+          店舗画像の更新
+          <v-spacer></v-spacer>
+          <v-btn icon @click="imageDialog = false"
+            ><v-icon>mdi-window-close</v-icon></v-btn
+          >
+        </v-card-title>
+        <v-card-text>
+          <validation-observer ref="editImageObserver" v-slot="{ invalid }">
+            <v-form>
+              <FileInputImage
+                :value="image"
+                @setImage="setImage"
+              ></FileInputImage>
+
+              <div v-if="imageUrl" class="text-center">
+                <v-subheader>プレビュー</v-subheader>
+                <img :src="imageUrl" width="50%" />
+              </div>
+              <v-card-actions class="justify-center">
+                <v-btn color="amber" :disabled="invalid" @click="updateImage">
+                  更新
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </validation-observer>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+
+    <BaseDialog ref="imageBaseDialog">
+      <template #title>店舗画像を変更しました</template>
+    </BaseDialog>
+
+    <v-dialog max-width="700px" v-model="updateDialog" persistent>
+      <v-card :loading="updateLoading">
+        <v-card-title class="amber">
+          店舗情報の更新
+          <v-spacer></v-spacer>
+          <v-btn icon @click="closeUpdateDialog"
+            ><v-icon>mdi-window-close</v-icon></v-btn
+          >
+        </v-card-title>
+        <v-card-text class="mt-4">
+          <validation-observer ref="editObserver" v-slot="{ invalid }">
+            <v-form v-model="formValid">
+              <FormShopInfo
+                ref="updateFormShopInfo"
+                v-bind="{
+                  shopName: name,
+                  shopArea: area,
+                  shopGenre: genre,
+                  shopOverview: overview,
+                }"
+                @send-update-data="updateShop"
+              ></FormShopInfo>
+              <v-card-actions class="justify-center">
+                <v-btn color="amber" :disabled="invalid" @click="getUpdateData">
+                  更新
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </validation-observer>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+
+    <BaseDialog ref="updateBaseDialog">
+      <template #title>店舗情報を変更しました</template>
+    </BaseDialog>
+
+    <BaseDialog
+      ref="updateAddressDialog"
+      v-bind="{ body: true, persistent: true, closeIcon: true, button: false }"
+      maxWidht="700px"
+      titleClass="amber"
+    >
+      <template #title>店舗住所の更新</template>
+      <template #closeIcon
+        ><v-btn icon @click="closeUpdateAddressDialog"
+          ><v-icon>mdi-window-close</v-icon></v-btn
+        ></template
+      >
+      <template #body>
+        <validation-observer ref="addressObserver" v-slot="{ invalid }">
+          <FormAddress
+            v-bind="{
+              shopPostCode: postCode,
+              shopMainAddress: mainAddress,
+              shopOptionAddress: optionAddress,
+            }"
+            @setPostCode="postCode = $event"
+            @setMainAddress="mainAddress = $event"
+            @setOptionAddress="optionAddress = $event"
+            @auto-set-address="mainAddress = $event"
+          ></FormAddress>
+          <v-card-actions class="justify-center">
+            <v-btn
+              class="white--text"
+              color="amber"
+              :disabled="invalid"
+              @click="updateAddress"
+              >更新</v-btn
+            >
+          </v-card-actions>
+        </validation-observer>
+      </template>
+    </BaseDialog>
+
+    <BaseDialog ref="messageUpdateAddressDialog">
+      <template #title>店舗住所を変更しました</template>
+    </BaseDialog>
 
     <DialogConfirm
       ref="dialogConfirm"
@@ -229,11 +270,13 @@ import googleMapMixin from "../mixins/googleMapMixin.js";
 import FileInputImage from "../components/FileInputImage";
 import FormShopInfo from "../components/FormShopInfo";
 import DialogConfirm from "../components/DialogConfirm";
+import FormAddress from "../components/FormAddress";
 
 export default {
   components: {
-    FileInputImage,
     FormShopInfo,
+    FormAddress,
+    FileInputImage,
     DialogConfirm,
   },
 
@@ -314,25 +357,46 @@ export default {
     ...mapGetters(["user"]),
   },
 
+  //タブ移動の際に発火
   mounted() {
     let timer = setInterval(() => {
       if (window.google) {
         clearInterval(timer);
-        //googleMapMixinのメソッド
         if (this.existsShop === true) {
+          //googleMapMixinのメソッド
           this.showGoogleMap();
         }
       }
     }, 500);
   },
 
+  //最初のロードで発火
   watch: {
     shopAddress() {
+      //googleMapMixinのメソッド
       this.showGoogleMap();
     },
   },
 
   methods: {
+    closeUpdateAddressDialog() {
+      this.$refs.updateAddressDialog.closeDialog();
+      this.postCode = this.mainAddress = this.optionAddress = "";
+      this.$refs.addressObserver.reset();
+    },
+
+    async updateAddress() {
+      this.$refs.updateAddressDialog.startLoading();
+      const sendData = {
+        address: this.mainAddress + this.optionAddress,
+      };
+      await shopsRepository.updateAddress(this.shopId, sendData);
+      this.$emit("reload");
+      this.$refs.updateAddressDialog.stopLoading();
+      this.$refs.updateAddressDialog.closeDialog();
+      this.$refs.messageUpdateAddressDialog.openDialog();
+    },
+
     openConfirmDialog(sendData) {
       this.shopData = sendData;
       this.createConfirmDialogData();

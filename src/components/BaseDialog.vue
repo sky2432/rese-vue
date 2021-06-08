@@ -5,16 +5,18 @@
         <slot name="title"></slot>
         <template v-if="closeIcon">
           <v-spacer></v-spacer>
-          <v-btn icon @click="dialog = false"
-            ><v-icon>mdi-window-close</v-icon></v-btn
-          >
+          <slot name="closeIcon">
+            <v-btn icon @click="dialog = false"
+              ><v-icon>mdi-window-close</v-icon></v-btn
+            >
+          </slot>
         </template>
       </v-card-title>
       <v-card-text v-if="body" :class="textClass">
         <slot name="body"></slot>
       </v-card-text>
       <v-divider v-if="divider"></v-divider>
-      <v-card-actions :class="actionsClass">
+      <v-card-actions :class="actionsClass" v-if="button">
         <slot name="leftButton"></slot>
         <slot name="baseButton">
           <v-btn color="amber" class="white--text" @click="dialog = false">
@@ -37,6 +39,10 @@ export default {
     body: {
       type: Boolean,
       default: false,
+    },
+    button: {
+      type: Boolean,
+      default: true,
     },
     divider: {
       type: Boolean,
@@ -64,7 +70,7 @@ export default {
     maxWidth: {
       type: String,
       default: "500px",
-    }
+    },
   },
 
   data() {

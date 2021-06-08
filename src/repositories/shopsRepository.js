@@ -19,6 +19,10 @@ export default {
     return Repository.put(`${resource}/${shop_id}`, payload);
   },
 
+  updateAddress(shop_id, payload) {
+    return Repository.put(`${resource}/${shop_id}/address`, payload);
+  },
+
   updateImage(shop_id, payload) {
     const config = {
       headers: {
