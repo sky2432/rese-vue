@@ -187,6 +187,10 @@
         </template>
       </DialogEvaluation>
 
+      <BaseDialog ref="addEvaluationDialog">
+        <template #title>評価を投稿しました</template>
+      </BaseDialog>
+
       <DialogEvaluation
         ref="DialogUpdateEvaluation"
         v-model="updatedEvaluation"
@@ -203,6 +207,14 @@
           </v-btn>
         </template>
       </DialogEvaluation>
+
+      <BaseDialog ref="updateEvaluationDialog">
+        <template #title>評価を更新しました</template>
+      </BaseDialog>
+
+      <BaseDialog ref="deleteEvaluationDialog">
+        <template #title>評価を削除しました</template>
+      </BaseDialog>
     </v-row>
   </div>
 </template>
@@ -384,6 +396,7 @@ export default {
         evaluation: this.evaluation,
       };
       await evaluationsRepository.createEvaluation(sendData);
+      this.$refs.addEvaluationDialog.openDialog();
       this.$refs.DialogCreateEvaluation.closeDialog();
       this.$refs.DialogCreateEvaluation.stopLoading();
       this.selectedShop = "";
@@ -413,6 +426,7 @@ export default {
         this.selectedEvaluation.id,
         sendData
       );
+      this.$refs.updateEvaluationDialog.openDialog();
       this.$refs.DialogUpdateEvaluation.closeDialog();
       this.$refs.DialogUpdateEvaluation.stopLoading();
       this.getUserReservations();
@@ -421,6 +435,7 @@ export default {
     async deleteEvaluation() {
       this.$refs.DialogUpdateEvaluation.startLoading();
       await evaluationsRepository.deleteEvaluation(this.selectedEvaluation.id);
+      this.$refs.deleteEvaluationDialog.openDialog();
       this.$refs.DialogUpdateEvaluation.closeDialog();
       this.$refs.DialogUpdateEvaluation.stopLoading();
       this.getUserReservations();
