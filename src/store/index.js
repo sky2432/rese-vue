@@ -55,6 +55,10 @@ export default new Vuex.Store({
   actions: {
     async login({ commit }, resData) {
       if (resData.auth === true) {
+        Repository.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${resData.token}`;
+
         commit("auth", resData.auth);
         commit("role", resData.role);
         commit("apiToken", resData.token);
@@ -73,9 +77,9 @@ export default new Vuex.Store({
     },
 
     async logout({ commit }) {
-      const resData = await authRepository.logout();
+      delete Repository.defaults.headers.common["Authorization"];
 
-      Repository.defaults.headers.common["Authorization"] = null;
+      const resData = await authRepository.logout();
 
       commit("auth", resData.data.auth);
       commit("resetLoginData");

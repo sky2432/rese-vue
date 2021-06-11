@@ -7,6 +7,12 @@ import TheHeader from "./components/TheHeader.vue";
 import TheHomeHeader from "./components/TheHomeHeader.vue";
 import BaseDialog from "./components/BaseDialog.vue";
 import helpers from "./helpers/helper";
+import Repository from "./repositories/Repository";
+
+const token = store.getters.apiToken;
+if (token) {
+  Repository.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+}
 
 const plugin = {
   install() {
