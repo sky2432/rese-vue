@@ -5,10 +5,15 @@ export default {
       if (this.$route.name === "Owner") {
         if (this.shopOptionAddress === null) {
           mapAddress = this.shopMainAddress;
+        } else {
+          mapAddress = this.shopMainAddress + this.shopOptionAddress;
         }
-        mapAddress = this.shopMainAddress + this.shopOptionAddress;
       } else {
-        mapAddress = this.shop.address;
+        if (this.shop.option_address === null) {
+          mapAddress = this.shop.main_address;
+        } else {
+          mapAddress = this.shop.main_address + this.shop.option_address;
+        }
       }
 
       const geocoder = new window.google.maps.Geocoder();

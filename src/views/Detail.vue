@@ -35,8 +35,9 @@
               </div>
             </v-row>
             <p class="mt-5" v-if="shop">
-              エリア：{{ shop.area.name }}<br />ジャンル：{{ shop.genre.name
-              }}<br />住所：{{ shop.address }}
+              エリア：{{ shop.main_address.substr(0, 3) }}<br />ジャンル：{{
+                shop.genre.name
+              }}
             </p>
             <p>
               {{ shop.overview }}
@@ -65,6 +66,7 @@
             </DialogConfirm>
           </v-col>
         </v-row>
+        <p>住所：{{ showAddress }}</p>
         <v-card>
           <div id="map" style="height:500px;width:100%;"></div>
         </v-card>
@@ -109,6 +111,17 @@ export default {
 
   computed: {
     ...mapGetters(["user"]),
+
+    showAddress() {
+      if (this.shop.option_address === null) {
+        return this.shop.postal_code + this.shop.main_address;
+      }
+      return (
+        this.shop.postal_code +
+        this.shop.main_address +
+        this.shop.option_address
+      );
+    },
   },
 
   watch: {

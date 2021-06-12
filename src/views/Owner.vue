@@ -137,7 +137,6 @@ export default {
       this.loading = true;
       this.loaded = false;
       const resData = await ownersRepository.getOwnerShop(this.user.id);
-      console.log(resData);
       if (resData.status === 200) {
         const shop = resData.data.data;
         this.shop = shop;
