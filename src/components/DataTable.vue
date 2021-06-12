@@ -31,6 +31,9 @@
         </v-avatar>
         {{ item.name }}
       </template>
+      <template v-slot:[`item.main_address`]="{ item }" v-if="area">
+        {{ item.main_address.substr(0, 3) }}
+      </template>
       <template v-slot:[`item.detail`]="{ item }" v-if="detail">
         <v-btn
           color="amber"
@@ -40,9 +43,10 @@
           >詳細</v-btn
         >
       </template>
-
       <template v-slot:[`item.delete`]="{ item }" v-if="deletion">
-        <v-icon v-if="item.role !== 1" @click="openDeleteDialog(item.id)">mdi-delete</v-icon>
+        <v-icon v-if="item.role !== 1" @click="openDeleteDialog(item.id)"
+          >mdi-delete</v-icon
+        >
       </template>
       <template v-slot:[`item.edit`]="{ item }" v-if="edit">
         <v-icon
@@ -95,6 +99,10 @@ export default {
       default: true,
     },
     avatar: {
+      type: Boolean,
+      default: false,
+    },
+    area: {
       type: Boolean,
       default: false,
     },

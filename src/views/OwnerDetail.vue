@@ -48,7 +48,7 @@
                         </tr>
                         <tr>
                           <th>エリア</th>
-                          <td>{{ owner.shop.area.name }}</td>
+                          <td>{{ owner.shop.main_address.substr(0, 3) }}</td>
                         </tr>
                         <tr>
                           <th>ジャンル</th>

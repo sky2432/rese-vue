@@ -8,6 +8,7 @@
         headers: headers,
         loading: loading,
         avatar: true,
+        area: true,
         detail: true,
       }"
       @move-page="moveShopDetail"
@@ -37,7 +38,7 @@ export default {
       headers: [
         { text: "店舗ID", value: "id" },
         { text: "店名", value: "name" },
-        { text: "エリア", value: "area.name" },
+        { text: "エリア", value: "main_address" },
         { text: "ジャンル", value: "genre.name" },
         { text: "", value: "detail", sortable: false, filterable: false },
       ],

@@ -57,7 +57,8 @@
               </v-row>
               <p class="mt-5" v-if="shop">
                 オーナー：{{ shop.owner.name }}<br />
-                エリア：{{ shop.area.name }}<br />ジャンル：{{ shop.genre.name
+                エリア：{{ shop.main_address.substr(0, 3) }}<br />ジャンル：{{
+                  shop.genre.name
                 }}<br />住所：{{ showAddress }}
               </p>
               <p>
