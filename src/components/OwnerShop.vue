@@ -285,7 +285,6 @@ export default {
       imageDialog: false,
       updateLoading: false,
       imageLoading: false,
-      areaOptions: config.areaOptions,
       genreOptions: config.genreOptions,
       confirmDialogData: [],
       shopData: "",

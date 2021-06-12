@@ -94,7 +94,6 @@ export default {
 
   data() {
     return {
-      areaOptions: config.areaOptions,
       genreOptions: config.genreOptions,
       name: "",
       area: null,
