@@ -32,7 +32,7 @@
               </tr>
               <tr>
                 <th>エリア</th>
-                <td class="table-data">{{ areaName }}</td>
+                <td class="table-data">{{ showArea }}</td>
               </tr>
               <tr>
                 <th>ジャンル</th>
@@ -47,42 +47,25 @@
           <p>{{ shopOverview }}</p>
         </v-card-text>
         <v-divider class="my-2"></v-divider>
+        <v-subheader class="black--text">住所</v-subheader>
+        <v-card-text class="py-0 mb-2">
+          {{ showAddress }}
+        </v-card-text>
+        <div id="map" style="height:400px;width:100%;"></div>
         <v-card-actions class="justify-center">
           <v-btn color="amber" class="white--text" @click="setShopData"
             >編集</v-btn
           >
         </v-card-actions>
-        <v-subheader class="black--text">住所</v-subheader>
-        <v-card-text class="py-0 mb-2">
-          {{ shopAddress }}
-        </v-card-text>
-        <div id="map" style="height:400px;width:100%;"></div>
-        <v-card-actions class="justify-center mt-2">
-          <v-btn
-            color="amber"
-            class="white--text"
-            @click="$refs.updateAddressDialog.openDialog()"
-            >住所の編集</v-btn
-          >
-        </v-card-actions>
       </v-card>
 
       <v-card v-if="!existsShop">
-        <v-card-title class="amber">
-          店舗情報の登録
-        </v-card-title>
+        <v-card-title class="amber">店舗情報の登録</v-card-title>
         <v-card-text class="mt-4">
           <validation-observer ref="addObserver" v-slot="{ invalid }">
             <v-form v-model="formValid">
               <FormShopInfo
                 ref="createFormShopInfo"
-                v-bind="{
-                  shopName: name,
-                  shopArea: area,
-                  shopGenre: genre,
-                  shopOverview: overview,
-                  formAddress: true,
-                }"
                 @send-create-data="openConfirmDialog"
               >
                 <template #file
@@ -159,10 +142,12 @@
               <FormShopInfo
                 ref="updateFormShopInfo"
                 v-bind="{
-                  shopName: name,
-                  shopArea: area,
-                  shopGenre: genre,
-                  shopOverview: overview,
+                  shopName: shopName,
+                  shopGenreId: shopGenreId,
+                  shopOverview: shopOverview,
+                  shopPostalCode: shopPostalCode,
+                  shopMainAddress: shopMainAddress,
+                  shopOptionAddress: shopOptionAddress,
                 }"
                 @send-update-data="updateShop"
               ></FormShopInfo>
@@ -181,48 +166,6 @@
       <template #title>店舗情報を変更しました</template>
     </BaseDialog>
 
-    <BaseDialog
-      ref="updateAddressDialog"
-      v-bind="{ body: true, persistent: true, closeIcon: true, button: false }"
-      maxWidht="700px"
-      titleClass="amber"
-    >
-      <template #title>店舗住所の更新</template>
-      <template #closeIcon
-        ><v-btn icon @click="closeUpdateAddressDialog"
-          ><v-icon>mdi-window-close</v-icon></v-btn
-        ></template
-      >
-      <template #body>
-        <validation-observer ref="addressObserver" v-slot="{ invalid }">
-          <FormAddress
-            v-bind="{
-              shopPostCode: postCode,
-              shopMainAddress: mainAddress,
-              shopOptionAddress: optionAddress,
-            }"
-            @setPostCode="postCode = $event"
-            @setMainAddress="mainAddress = $event"
-            @setOptionAddress="optionAddress = $event"
-            @auto-set-address="mainAddress = $event"
-          ></FormAddress>
-          <v-card-actions class="justify-center">
-            <v-btn
-              class="white--text"
-              color="amber"
-              :disabled="invalid"
-              @click="updateAddress"
-              >更新</v-btn
-            >
-          </v-card-actions>
-        </validation-observer>
-      </template>
-    </BaseDialog>
-
-    <BaseDialog ref="messageUpdateAddressDialog">
-      <template #title>店舗住所を変更しました</template>
-    </BaseDialog>
-
     <DialogConfirm
       ref="dialogConfirm"
       cancellButtonText="修正"
@@ -233,14 +176,14 @@
       <template #title>店舗登録内容の確認</template>
       <template #additional>
         <v-divider class="my-2"></v-divider>
-        <v-subheader class="black--text">住所</v-subheader>
-        <v-card-text class="py-0">
-          {{ shopData.address }}
-        </v-card-text>
-        <v-divider class="my-2"></v-divider>
         <v-subheader class="black--text">店舗概要</v-subheader>
         <v-card-text class="py-0">
           {{ shopData.overview }}
+        </v-card-text>
+        <v-divider class="my-2"></v-divider>
+        <v-subheader class="black--text">住所</v-subheader>
+        <v-card-text class="py-0">
+          {{ showConfirmAddress }}
         </v-card-text>
         <v-divider class="my-2"></v-divider>
         <div v-if="imageUrl" class="text-center">
@@ -263,7 +206,6 @@
 
 <script>
 import "../plugins/veeValidate.js";
-import { mapGetters } from "vuex";
 import config from "../config/const.js";
 import shopsRepository from "../repositories/shopsRepository.js";
 import googleMapMixin from "../mixins/googleMapMixin.js";
@@ -287,11 +229,7 @@ export default {
       type: Number,
       require: true,
     },
-    areaId: {
-      type: Number,
-      require: true,
-    },
-    genreId: {
+    shopGenreId: {
       type: Number,
       require: true,
     },
@@ -315,7 +253,15 @@ export default {
       type: String,
       require: true,
     },
-    shopAddress: {
+    shopPostalCode: {
+      type: String,
+      require: true,
+    },
+    shopMainAddress: {
+      type: String,
+      require: true,
+    },
+    shopOptionAddress: {
       type: String,
       require: true,
     },
@@ -332,13 +278,6 @@ export default {
 
   data() {
     return {
-      name: "",
-      area: null,
-      genre: null,
-      overview: "",
-      postCode: "",
-      mainAddress: "",
-      optionAddress: "",
       image: null,
       imageUrl: "",
       formValid: false,
@@ -353,16 +292,12 @@ export default {
     };
   },
 
-  computed: {
-    ...mapGetters(["user"]),
-  },
-
   //タブ切り替えの際に発火
   mounted() {
     let timer = setInterval(() => {
       if (window.google) {
         clearInterval(timer);
-        if (this.existsShop === true) {
+        if (this.existsShop === true && this.shopMainAddress) {
           //googleMapMixinのメソッド
           this.showGoogleMap();
         }
@@ -370,33 +305,55 @@ export default {
     }, 500);
   },
 
+  computed: {
+    showArea() {
+      if (this.shopMainAddress) {
+        return this.shopMainAddress.substr(0, 3);
+      }
+    },
+
+    showAddress() {
+      if (this.shopOptionAddress === null) {
+        return this.shopPostalCode + this.shopMainAddress;
+      }
+      return (
+        this.shopPostalCode + this.shopMainAddress + this.shopOptionAddress
+      );
+    },
+
+    showConfirmAddress() {
+      if (
+        this.shopData.option_address === undefined ||
+        this.shopData.option_address === "none"
+      ) {
+        return this.shopData.postal_code + this.shopData.main_address;
+      }
+      return (
+        this.shopData.postal_code +
+        this.shopData.main_address +
+        this.shopData.option_address
+      );
+    },
+
+    //住所監視用のメソッド
+    watchAddress() {
+      return [
+        this.shopPostalCode,
+        this.shopMainAddress,
+        this.shopOptionAddress,
+      ];
+    },
+  },
+
   //住所が変更された際に発火
   watch: {
-    shopAddress() {
+    watchAddress() {
       //googleMapMixinのメソッド
       this.showGoogleMap();
     },
   },
 
   methods: {
-    closeUpdateAddressDialog() {
-      this.$refs.updateAddressDialog.closeDialog();
-      this.postCode = this.mainAddress = this.optionAddress = "";
-      this.$refs.addressObserver.reset();
-    },
-
-    async updateAddress() {
-      this.$refs.updateAddressDialog.startLoading();
-      const sendData = {
-        address: this.mainAddress + this.optionAddress,
-      };
-      await shopsRepository.updateAddress(this.shopId, sendData);
-      this.$emit("reload");
-      this.$refs.updateAddressDialog.stopLoading();
-      this.$refs.updateAddressDialog.closeDialog();
-      this.$refs.messageUpdateAddressDialog.openDialog();
-    },
-
     openConfirmDialog(sendData) {
       this.shopData = sendData;
       this.createConfirmDialogData();
@@ -408,10 +365,6 @@ export default {
         {
           header: "店舗名",
           data: this.shopData.name,
-        },
-        {
-          header: "エリア",
-          data: config.areaOptions[this.shopData.area_id - 1].state,
         },
         {
           header: "ジャンル",
@@ -426,11 +379,7 @@ export default {
 
     async createShop() {
       this.$refs.dialogConfirm.startLoading();
-      const formData = new FormData();
-      formData.append("image", this.image);
-      this.shopData["owner_id"] = this.user.id;
-      const data = JSON.stringify(this.shopData);
-      formData.append("sendData", data);
+      const formData = this.createFormData();
       await shopsRepository.createShop(formData);
       this.resetShopData();
       this.$emit("reload");
@@ -439,16 +388,23 @@ export default {
       this.$refs.dialogConfirm.closeDialog();
     },
 
+    createFormData() {
+      const formData = new FormData();
+      this.shopData["owner_id"] = this.$store.getters.user.id;
+      if (this.shopData.option_address === undefined) {
+        this.shopData.option_address = "none";
+      }
+      const data = JSON.stringify(this.shopData);
+
+      formData.append("sendData", data);
+      formData.append("image", this.image);
+
+      return formData;
+    },
+
     resetShopData() {
-      this.name = "";
-      this.area = null;
-      this.genre = null;
-      this.overview = "";
       this.image = null;
       this.imageUrl = "";
-      this.postCode = "";
-      this.mainAddress = "";
-      this.optionAddress = "";
       this.$refs.addObserver.reset();
     },
 
@@ -488,10 +444,6 @@ export default {
 
     setShopData() {
       this.updateDialog = true;
-      this.name = this.shopName;
-      this.area = this.areaId;
-      this.genre = this.genreId;
-      this.overview = this.shopOverview;
     },
 
     getUpdateData() {

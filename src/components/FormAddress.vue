@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p class="mb-0 mt-6" style="font-size: 16px">
+    <p class="mb-0" style="font-size: 16px">
       <v-icon class="mr-1">mdi-mailbox</v-icon>address
     </p>
 
@@ -74,17 +74,6 @@ export default {
         .catch(() => {
           return;
         });
-    },
-
-    sendCreateData() {
-      const sendData = {
-        name: this.name,
-        area_id: this.area,
-        genre_id: this.genre,
-        overview: this.overview,
-        address: this.mainAddress + this.optionAddress,
-      };
-      this.$emit("send-create-data", sendData);
     },
   },
 };

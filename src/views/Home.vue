@@ -99,7 +99,7 @@ export default {
         this.selectedArea !== "All area" &&
         this.selectedGenre === "All genre"
       ) {
-        shops = this.fileterShops(this.shops, "area", this.selectedArea);
+        shops = this.fileterShopsByArea(this.shops, this.selectedArea);
         if (this.keyword === "") {
           return shops;
         } else {
@@ -112,7 +112,7 @@ export default {
         this.selectedArea === "All area" &&
         this.selectedGenre !== "All genre"
       ) {
-        shops = this.fileterShops(this.shops, "genre", this.selectedGenre);
+        shops = this.fileterShopsByGenre(this.shops, this.selectedGenre);
         if (this.keyword === "") {
           return shops;
         } else {
@@ -125,10 +125,9 @@ export default {
         this.selectedArea !== "All area" &&
         this.selectedGenre !== "All genre"
       ) {
-        shops = this.fileterShops(this.shops, "area", this.selectedArea);
-        const filteredShops = this.fileterShops(
+        shops = this.fileterShopsByArea(this.shops, this.selectedArea);
+        const filteredShops = this.fileterShopsByGenre(
           shops,
-          "genre",
           this.selectedGenre
         );
         if (this.keyword === "") {
@@ -147,11 +146,22 @@ export default {
   },
 
   methods: {
-    fileterShops(shops, itemName, target) {
+    fileterShopsByGenre(shops, target) {
       let filteredShops = [];
       for (let i in shops) {
         let shop = shops[i];
-        if (shop[itemName].name.indexOf(target) !== -1) {
+        if (shop.genre.name.indexOf(target) !== -1) {
+          filteredShops.push(shop);
+        }
+      }
+      return filteredShops;
+    },
+
+    fileterShopsByArea(shops, target) {
+      let filteredShops = [];
+      for (let i in shops) {
+        let shop = shops[i];
+        if (shop.main_address.indexOf(target) !== -1) {
           filteredShops.push(shop);
         }
       }

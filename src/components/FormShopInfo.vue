@@ -8,34 +8,12 @@
     ></TextFieldName>
 
     <BaseSelector
-      :options="areaOptions"
-      name="エリア"
-      label="Area"
-      icon="mdi-map-marker"
-      v-model="area"
-    ></BaseSelector>
-
-    <BaseSelector
       :options="genreOptions"
       name="ジャンル"
       label="Genre"
       icon="mdi-silverware-fork-knife"
       v-model="genre"
     ></BaseSelector>
-
-    <template v-if="formAddress">
-      <FormAddress
-        v-bind="{
-          shopPostCode: postCode,
-          shopMainAddress: mainAddress,
-          shopOptionAddress: optionAddress,
-        }"
-        @setPostCode="postCode = $event"
-        @setMainAddress="mainAddress = $event"
-        @setOptionAddress="optionAddress = $event"
-        @auto-set-address="mainAddress = $event"
-      ></FormAddress>
-    </template>
 
     <div class="mt-4">
       <BaseTextArea
@@ -48,6 +26,18 @@
         v-model="overview"
       ></BaseTextArea>
     </div>
+
+    <FormAddress
+      v-bind="{
+        shopPostCode: postalCode,
+        shopMainAddress: mainAddress,
+        shopOptionAddress: optionAddress,
+      }"
+      @setPostCode="postalCode = $event"
+      @setMainAddress="mainAddress = $event"
+      @setOptionAddress="optionAddress = $event"
+      @auto-set-address="mainAddress = $event"
+    ></FormAddress>
 
     <slot name="file"></slot>
   </div>
@@ -73,26 +63,33 @@ export default {
     shopName: {
       type: String,
     },
-    shopArea: {
-      type: Number,
-    },
-    shopGenre: {
+    shopGenreId: {
       type: Number,
     },
     shopOverview: {
       type: String,
     },
-    formAddress: {
-      type: Boolean,
-      default: false,
+    shopPostalCode: {
+      type: String,
+      require: true,
+    },
+    shopMainAddress: {
+      type: String,
+      require: true,
+    },
+    shopOptionAddress: {
+      type: String,
+      require: true,
     },
   },
 
   created() {
     this.name = this.shopName;
-    this.area = this.shopArea;
-    this.genre = this.shopGenre;
+    this.genre = this.shopGenreId;
     this.overview = this.shopOverview;
+    this.postalCode = this.shopPostalCode;
+    this.mainAddress = this.shopMainAddress;
+    this.optionAddress = this.shopOptionAddress;
   },
 
   data() {
@@ -103,7 +100,7 @@ export default {
       area: null,
       genre: null,
       overview: "",
-      postCode: "",
+      postalCode: "",
       mainAddress: "",
       optionAddress: "",
     };
@@ -111,24 +108,25 @@ export default {
 
   methods: {
     sendUpdateData() {
-      const sendData = {
-        name: this.name,
-        area_id: this.area,
-        genre_id: this.genre,
-        overview: this.overview,
-      };
+      const sendData = this.createSendData();
       this.$emit("send-update-data", sendData);
     },
 
     sendCreateData() {
+      const sendData = this.createSendData();
+      this.$emit("send-create-data", sendData);
+    },
+
+    createSendData() {
       const sendData = {
         name: this.name,
-        area_id: this.area,
         genre_id: this.genre,
         overview: this.overview,
-        address: this.mainAddress + this.optionAddress,
+        postal_code: this.postalCode,
+        main_address: this.mainAddress,
+        option_address: this.optionAddress,
       };
-      this.$emit("send-create-data", sendData);
+      return sendData;
     },
   },
 };

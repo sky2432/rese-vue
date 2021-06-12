@@ -25,7 +25,7 @@
             </v-row>
           </v-card-text>
           <v-card-subtitle class="py-1">
-            #{{ shop.area.name }}＃{{ shop.genre.name }}
+            #{{ shop.main_address.substr(0, 3) }}＃{{ shop.genre.name }}
           </v-card-subtitle>
           <v-card-actions>
             <v-btn

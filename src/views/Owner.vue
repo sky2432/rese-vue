@@ -90,9 +90,8 @@ export default {
   data() {
     return {
       shop: "",
-      shopArea: "",
       shopGenre: "",
-      existsShop: null,
+      existsShop: true,
       loading: true,
       loaded: false,
       selectedItem: 0,
@@ -107,23 +106,23 @@ export default {
       const {
         id: shopId,
         name: shopName,
-        area_id: areaId,
-        genre_id: genreId,
+        genre_id: shopGenreId,
         overview: shopOverview,
         image_url: shopImageUrl,
-        address: shopAddress,
+        postal_code: shopPostalCode,
+        main_address: shopMainAddress,
+        option_address: shopOptionAddress,
       } = this.shop;
-      const { name: areaName } = this.shopArea;
       const { name: genreName } = this.shopGenre;
       return {
         shopId,
         shopName,
-        areaId,
-        genreId,
+        shopGenreId,
         shopOverview,
         shopImageUrl,
-        shopAddress,
-        areaName,
+        shopPostalCode,
+        shopMainAddress,
+        shopOptionAddress,
         genreName,
       };
     },
@@ -138,10 +137,10 @@ export default {
       this.loading = true;
       this.loaded = false;
       const resData = await ownersRepository.getOwnerShop(this.user.id);
+      console.log(resData);
       if (resData.status === 200) {
         const shop = resData.data.data;
         this.shop = shop;
-        this.shopArea = shop.area;
         this.shopGenre = shop.genre;
         this.existsShop = true;
         this.changeLoading();

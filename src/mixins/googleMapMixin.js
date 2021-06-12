@@ -3,7 +3,10 @@ export default {
     showGoogleMap() {
       let mapAddress;
       if (this.$route.name === "Owner") {
-        mapAddress = this.shopAddress;
+        if (this.shopOptionAddress === null) {
+          mapAddress = this.shopMainAddress;
+        }
+        mapAddress = this.shopMainAddress + this.shopOptionAddress;
       } else {
         mapAddress = this.shop.address;
       }
@@ -12,10 +15,13 @@ export default {
       geocoder.geocode({ address: mapAddress }, function(results, status) {
         if (status === "OK" && results[0]) {
           const location = results[0].geometry.location;
-          const map = new window.google.maps.Map(document.getElementById("map"), {
-            center: location,
-            zoom: 16,
-          });
+          const map = new window.google.maps.Map(
+            document.getElementById("map"),
+            {
+              center: location,
+              zoom: 16,
+            }
+          );
           const marker = new window.google.maps.Marker({
             position: location,
             map: map,
