@@ -190,16 +190,28 @@ export default {
       const resData = await shopsRepository.getShops();
       const shops = resData.data.data;
       this.shops = shops;
-      this.createSerchOptions(shops, "areaOptions", "area");
-      this.createSerchOptions(shops, "genreOptions", "genre");
+      this.createAreaSerchOptions(shops);
+      this.createGenreSerchOptions(shops);
     },
 
-    //エリア・ジャンル検索における選択肢を作成する
-    createSerchOptions(shops, options, itemName) {
+    //ジャンル検索における選択肢を作成する
+    createGenreSerchOptions(shops) {
       for (let i in shops) {
-        let result = this[options].includes(shops[i][itemName].name);
+        let genre = shops[i].genre.name;
+        let result = this.genreOptions.includes(genre);
         if (result === false) {
-          this[options].push(shops[i][itemName].name);
+          this.genreOptions.push(genre);
+        }
+      }
+    },
+
+    //エリア検索における選択肢を作成する
+    createAreaSerchOptions(shops) {
+      for (let i in shops) {
+        let area = shops[i].main_address.substr(0, 3);
+        let result = this.areaOptions.includes(area);
+        if (result === false) {
+          this.areaOptions.push(area);
         }
       }
     },
