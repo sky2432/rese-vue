@@ -58,7 +58,7 @@
               <p class="mt-5" v-if="shop">
                 オーナー：{{ shop.owner.name }}<br />
                 エリア：{{ shop.area.name }}<br />ジャンル：{{ shop.genre.name
-                }}<br />住所：{{ shop.address }}
+                }}<br />住所：{{ showAddress }}
               </p>
               <p>
                 {{ shop.overview }}
@@ -144,6 +144,19 @@ export default {
       warnDialog: false,
       timeoutId: "",
     };
+  },
+
+  computed: {
+    showAddress() {
+      if (this.shop.option_address === null) {
+        return this.shop.postal_code + this.shop.main_address;
+      }
+      return (
+        this.shop.postal_code +
+        this.shop.main_address +
+        this.shop.option_address
+      );
+    },
   },
 
   watch: {
