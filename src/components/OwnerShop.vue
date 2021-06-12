@@ -212,12 +212,10 @@ import googleMapMixin from "../mixins/googleMapMixin.js";
 import FileInputImage from "../components/FileInputImage";
 import FormShopInfo from "../components/FormShopInfo";
 import DialogConfirm from "../components/DialogConfirm";
-import FormAddress from "../components/FormAddress";
 
 export default {
   components: {
     FormShopInfo,
-    FormAddress,
     FileInputImage,
     DialogConfirm,
   },
@@ -309,6 +307,7 @@ export default {
       if (this.shopMainAddress) {
         return this.shopMainAddress.substr(0, 3);
       }
+      return "";
     },
 
     showAddress() {
