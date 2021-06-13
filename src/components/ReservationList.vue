@@ -38,11 +38,33 @@
       <template #noResults>検索条件に当てはまる予約はありません</template>
     </DataTable>
 
-    <BaseDialog ref="editDialog" baseButtonText="いいえ">
-      <template #title>予約状況を非来店にしますか？</template>
+    <BaseDialog ref="editDialog" v-bind="{ body: true, closeIcon: true }" titleClass="amber justify-center" textClass="mt-4 text-center">
+      <template #title>お客様が来店されませんでしたか？</template>
+      <template #body>
+        来店されなかった場合はこちらから予約状況を非来店にしてください。
+        ※一度非来店にすると来店済みに戻すことはできません。
+      </template>
+      <template #baseButton>
+        <v-btn
+          color="red"
+          class="white--text"
+          @click="$refs.confirmEditDialog.openDialog()"
+        >
+          非来店にする
+        </v-btn>
+      </template>
+    </BaseDialog>
+
+    <BaseDialog ref="confirmEditDialog" baseButtonText="いいえ">
+      <template #title>本当にこの予約を非来店にしますか？</template>
       <template #leftButton>
         <v-btn color="red" class="white--text" @click="changeReservationStatus">
           はい
+        </v-btn>
+      </template>
+      <template #baseButton>
+        <v-btn color="amber" class="white--text" @click="closeDialog">
+          いいえ
         </v-btn>
       </template>
     </BaseDialog>
@@ -109,6 +131,11 @@ export default {
     openEditDialog(reservationId) {
       this.$refs.editDialog.openDialog();
       this.reservationId = reservationId;
+    },
+
+    closeDialog() {
+      this.$refs.confirmEditDialog.closeDialog();
+      this.$refs.editDialog.closeDialog();
     },
 
     async changeReservationStatus() {
