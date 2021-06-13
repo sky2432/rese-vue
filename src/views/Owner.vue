@@ -61,10 +61,20 @@
     <v-main>
       <keep-alive>
         <component
-          v-bind="childComponentProps"
-          :existsShop="existsShop"
-          :loading="loading"
-          :loaded="loaded"
+          v-bind="{
+            shopId: shop.id,
+            shopName: shop.name,
+            shopGenreId: shop.genre_id,
+            genreName: shopGenre.name,
+            shopOverview: shop.overview,
+            shopImageUrl: shop.image_url,
+            shopPostalCode: shop.postal_code,
+            shopMainAddress: shop.main_address,
+            shopOptionAddress: shop.option_address,
+            existsShop: existsShop,
+            loading: loading,
+            loaded: loaded,
+          }"
           :is="currentComponent"
           @reload="getOwnerShop"
         ></component>
@@ -101,31 +111,6 @@ export default {
 
   computed: {
     ...mapGetters(["user"]),
-
-    childComponentProps() {
-      const {
-        id: shopId,
-        name: shopName,
-        genre_id: shopGenreId,
-        overview: shopOverview,
-        image_url: shopImageUrl,
-        postal_code: shopPostalCode,
-        main_address: shopMainAddress,
-        option_address: shopOptionAddress,
-      } = this.shop;
-      const { name: genreName } = this.shopGenre;
-      return {
-        shopId,
-        shopName,
-        shopGenreId,
-        shopOverview,
-        shopImageUrl,
-        shopPostalCode,
-        shopMainAddress,
-        shopOptionAddress,
-        genreName,
-      };
-    },
   },
 
   created() {
