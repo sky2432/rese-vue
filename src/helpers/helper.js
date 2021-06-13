@@ -53,4 +53,9 @@ export default {
       { header: "Password", data: "表示されません" },
     ];
   },
+
+  $_stringInsert(string, index, value) {
+    var res = string.slice(0, index) + value + string.slice(index);
+    return res;
+  },
 };

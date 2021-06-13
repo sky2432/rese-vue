@@ -311,12 +311,18 @@ export default {
     },
 
     showAddress() {
-      if (this.shopOptionAddress === null) {
-        return this.shopPostalCode + this.shopMainAddress;
+      if (this.shopMainAddress) {
+        const postalCode = this.$helpers.$_stringInsert(
+          this.shopPostalCode,
+          3,
+          "-"
+        );
+        if (this.shopOptionAddress === null) {
+          return `〒${postalCode} ${this.shopMainAddress}`;
+        }
+        return `〒${postalCode} ${this.shopMainAddress} ${this.shopOptionAddress}`;
       }
-      return (
-        this.shopPostalCode + this.shopMainAddress + this.shopOptionAddress
-      );
+      return "";
     },
 
     showConfirmAddress() {

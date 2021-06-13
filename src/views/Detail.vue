@@ -113,14 +113,18 @@ export default {
     ...mapGetters(["user"]),
 
     showAddress() {
-      if (this.shop.option_address === null) {
-        return this.shop.postal_code + this.shop.main_address;
+      if (this.shop) {
+        const postalCode = this.$helpers.$_stringInsert(
+          this.shop.postal_code,
+          3,
+          "-"
+        );
+        if (this.shop.option_address === null) {
+          return `〒${postalCode} ${this.shop.main_address}`;
+        }
+        return `〒${postalCode} ${this.shop.main_address} ${this.shop.option_address}`;
       }
-      return (
-        this.shop.postal_code +
-        this.shop.main_address +
-        this.shop.option_address
-      );
+      return "";
     },
   },
 
