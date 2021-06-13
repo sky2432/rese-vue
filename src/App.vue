@@ -6,6 +6,15 @@
 
 <script>
 export default {
+  created() {
+    let script = document.createElement("script");
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.VUE_APP_GOOGLE_MAP_API_KEY}`;
+    script.setAttribute("async", "");
+    script.setAttribute("defer", "");
+    script.type = "text/javascript";
+    document.body.appendChild(script);
+  },
+
   mounted() {
     var routeInstance = this.$route;
     this.createTitleDesc(routeInstance);

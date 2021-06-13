@@ -190,8 +190,8 @@ export default {
       const resData = await shopsRepository.getShops();
       const shops = resData.data.data;
       this.shops = shops;
-      this.createAreaSerchOptions(shops);
       this.createGenreSerchOptions(shops);
+      this.createAreaSerchOptions(shops);
     },
 
     //ジャンル検索における選択肢を作成する
