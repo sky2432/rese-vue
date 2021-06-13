@@ -1,7 +1,7 @@
 <template>
   <div>
     <DataTable
-      label="検索"
+      label="ID・予約状況・予約者名・人数・日時で検索"
       v-bind="{
         tableData: sendReservations,
         headers: headers,
@@ -155,8 +155,9 @@ export default {
     async getShopReservations(shopId) {
       const resData = await reservationsRepository.getShopReservations(shopId);
       const reservaitons = this.convetReservationStatus(resData.data.data);
-      this.reservations = reservaitons;
-      this.sendReservations = reservaitons;
+      const convertedReservaitons = this.convetVisitsNumber(reservaitons);
+      this.reservations = convertedReservaitons;
+      this.sendReservations = convertedReservaitons;
       this.loading = false;
     },
 
@@ -174,6 +175,14 @@ export default {
         if (data[i].reservation.status === "notVisited") {
           data[i].reservation.status = "非来店";
         }
+      }
+      return data;
+    },
+
+    convetVisitsNumber(data) {
+      for (let i in data) {
+        data[i].reservation.number_of_visiters =
+          data[i].reservation.number_of_visiters + "名";
       }
       return data;
     },
