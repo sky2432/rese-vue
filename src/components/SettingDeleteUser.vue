@@ -19,7 +19,7 @@
           >
         </v-alert>
 
-        <BaseDialog ref="baseDialog">
+        <BaseDialog ref="baseDialog" baseButtonText="キャンセル">
           <template #title>本当にアカウントを削除しますか？</template>
           <template #leftButton>
             <v-btn
@@ -47,12 +47,15 @@ export default {
 
   methods: {
     async deleteUser() {
+      this.$refs.baseDialog.startLoading();
       await usersRepository.deleteUser(this.user.id);
+      this.$refs.baseDialog.stopLoading();
       this.logout();
     },
 
     logout() {
       this.$store.dispatch("logout");
+      this.$router.replace("/accountDelete");
     },
   },
 };

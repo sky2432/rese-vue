@@ -83,7 +83,6 @@ export default new Vuex.Store({
 
       commit("auth", resData.data.auth);
       commit("resetLoginData");
-      router.replace("/");
     },
 
     updateUser({ commit }, data) {

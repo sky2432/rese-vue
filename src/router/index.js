@@ -13,6 +13,7 @@ import Owner from "../views/Owner.vue";
 import Admin from "../views/Admin.vue";
 import ShopDetail from "../views/ShopDetail.vue";
 import OwnerDetail from "../views/OwnerDetail.vue";
+import AccountDelete from "../views/AccountDelete.vue";
 import store from "../store/index";
 import multiguard from "vue-router-multiguard";
 
@@ -117,11 +118,19 @@ const routes = [
     path: "/setting",
     name: "Setting",
     component: Setting,
-    props: true,
     meta: {
       requiresAuth: true,
       title: "設定ページ",
       desc: "設定ぺージです。",
+    },
+  },
+  {
+    path: "/accountDelete",
+    name: "AccountDelete",
+    component: AccountDelete,
+    meta: {
+      title: "アカウント削除完了",
+      desc: "アカウント削除完了ぺージです。",
     },
   },
   {
@@ -195,7 +204,7 @@ router.beforeEach((to, from, next) => {
       to.name === "Owner" ||
       to.name === "Admin" ||
       to.name === "ShopDetail" ||
-      to.name === "OwnerDetail"
+      to.name === "OwnerDetail" 
     ) {
       next("/home");
     }
@@ -220,7 +229,8 @@ router.beforeEach((to, from, next) => {
       to.name === "Detail" ||
       to.name === "Done" ||
       to.name === "Mypage" ||
-      to.name === "Setting"
+      to.name === "Setting" ||
+      to.name === "AccountDelete"
     ) {
       if (store.state.role === "owner") next("/owner");
       if (store.state.role === "admin") next("/admin");
