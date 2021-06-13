@@ -18,7 +18,7 @@
         <v-list-item-group color="amber" v-model="selectedItem">
           <v-list-item @click="currentComponent = 'OwnerReservation'">
             <v-list-item-icon>
-              <v-icon>mdi-inbox-arrow-down</v-icon>
+              <v-icon>mdi-format-list-bulleted</v-icon>
             </v-list-item-icon>
 
             <v-list-item-content>
@@ -28,7 +28,7 @@
 
           <v-list-item @click="currentComponent = 'OwnerShop'">
             <v-list-item-icon>
-              <v-icon>mdi-inbox-arrow-down</v-icon>
+              <v-icon>mdi-store</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
               <v-list-item-title>店舗情報</v-list-item-title>
@@ -39,7 +39,7 @@
 
           <v-list-item @click="currentComponent = 'OwnerAccount'">
             <v-list-item-icon>
-              <v-icon>mdi-account</v-icon>
+              <v-icon>mdi-cog</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
               <v-list-item-title>アカウント</v-list-item-title>
