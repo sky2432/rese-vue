@@ -66,7 +66,7 @@ export default {
     async searchAdress() {
       axios
         .get(
-          `https://apis.postcode-jp.com/api/v4/postcodes/${this.shopPostCode}?apikey=UuqgYKMuxKCuqFJFGBEBFPkZmIMxGV4bBdBetew`
+          `https://apis.postcode-jp.com/api/v4/postcodes/${this.shopPostCode}?apikey=${process.env.VUE_APP_POST_CODE_API_KEY}`
         )
         .then((reponse) => {
           this.$emit("auto-set-address", reponse.data[0].allAddress);
