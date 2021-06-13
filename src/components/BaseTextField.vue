@@ -8,6 +8,7 @@
     <v-text-field
       :counter="counter"
       :error-messages="errors"
+      :hint="hint"
       :label="label"
       :prepend-icon="icon"
       required
@@ -33,6 +34,9 @@ export default {
     },
     counter: {
       type: Number,
+    },
+    hint: {
+      type: String,
     },
     label: {
       type: String,

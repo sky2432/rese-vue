@@ -9,6 +9,7 @@
         <BaseTextField
           name="郵便番号"
           rules="required|postCodeRegex:^[0-9]*$"
+          hint="ハイフンなしで入力してください"
           label="PostCode"
           :value="shopPostCode"
           @input="$emit('setPostCode', $event)"
