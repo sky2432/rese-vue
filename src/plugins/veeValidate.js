@@ -7,6 +7,8 @@ import {
   min,
   image,
   regex,
+  length,
+  alpha_num,
 } from "vee-validate/dist/rules";
 import {
   extend,
@@ -55,7 +57,17 @@ extend("regex", {
   message: "{_field_}は半角英数字で入力してください",
 });
 
+extend("alpha_num", {
+  ...alpha_num,
+  message: "{_field_}は半角英数字で入力してください",
+});
+
 extend("postCodeRegex", {
   ...regex,
   message: "ハイフンなしの数字のみで入力してください",
+});
+
+extend("length", {
+  ...length,
+  message: "{_field_}は{length}文字で入力してください",
 });

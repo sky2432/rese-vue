@@ -94,7 +94,6 @@ export default {
 
   data() {
     return {
-      genreOptions: config.genreOptions,
       name: "",
       area: null,
       genre: null,
@@ -102,6 +101,7 @@ export default {
       postalCode: "",
       mainAddress: "",
       optionAddress: "",
+      genreOptions: config.genreOptions,
     };
   },
 

@@ -1,7 +1,7 @@
 <template>
   <BaseTextField
     name="メールアドレス"
-    rules="required|email"
+    rules="required|email|max:255"
     vid="email"
     icon="mdi-email"
     label="E-mail"

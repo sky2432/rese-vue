@@ -8,7 +8,7 @@
       <v-col cols="3" class="pl-0">
         <BaseTextField
           name="郵便番号"
-          rules="required|postCodeRegex:^[0-9]*$"
+          rules="required|postCodeRegex:^[0-9]*$|length:7"
           hint="ハイフンなしで入力してください"
           label="PostCode"
           :value="shopPostCode"
@@ -23,7 +23,7 @@
     <div class="ml-6">
       <BaseTextField
         name="都道府県・市区町村・番地"
-        rules="required"
+        rules="required|max:255"
         label="Prefectures/Municipality/HouseNumber"
         :value="shopMainAddress"
         @input="$emit('setMainAddress', $event)"
@@ -33,6 +33,7 @@
     <div class="ml-6">
       <BaseTextField
         name="建物・号室"
+        rules="max:255"
         label="Building/RoomNumber"
         :value="shopOptionAddress"
         @input="$emit('setOptionAddress', $event)"
