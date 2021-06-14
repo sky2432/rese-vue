@@ -14,7 +14,7 @@
               {{ showReservationStatus(shop.reservation.status) }}
             </v-chip>
           </v-card-title>
-          <v-row class="row">
+          <v-row class="row ma-0" style="height: 236px">
             <v-col cols="4" class="pa-0 image-wrap">
               <v-img class="image" :src="shop.image_url" height="236px"></v-img>
             </v-col>
