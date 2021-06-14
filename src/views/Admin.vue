@@ -125,8 +125,9 @@ export default {
   },
 
   methods: {
-    logout() {
-      this.$store.dispatch("logout");
+    async logout() {
+      await this.$store.dispatch("logout");
+      this.$router.replace("/");
     },
   },
 };
