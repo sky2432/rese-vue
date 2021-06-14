@@ -119,13 +119,26 @@ export default {
     return {
       visitsDate: "",
       visitsTime: "",
-      visitsNumber: "",
+      visitsNumber: 0,
       formValid: false,
       showdatePickerMenu: false,
       today: config.today,
       timeOptions: config.timeOptions,
       numberOptions: config.numberOptions,
     };
+  },
+
+  computed: {
+    //propsの監視用メソッド
+    watchData() {
+      return [this.date, this.time, this.number];
+    }
+  },
+
+  watch: {
+    watchData() {
+      this.setUpdateData();
+    }
   },
 
   created() {

@@ -52,11 +52,6 @@ extend("image", {
   message: "画像ファイルを選択してください",
 });
 
-extend("regex", {
-  ...regex,
-  message: "{_field_}は半角英数字で入力してください",
-});
-
 extend("alpha_num", {
   ...alpha_num,
   message: "{_field_}は半角英数字で入力してください",
