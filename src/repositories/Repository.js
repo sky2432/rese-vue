@@ -24,7 +24,10 @@ url.interceptors.response.use(
 
 async function redirect() {
   await store.dispatch("logout");
-  router.replace("/login");
+  await router.replace("/login");
+  alert(
+    "認証エラーが発生したためログイン画面に移ります。再度ログインをお願いします"
+  );
 }
 
 export default url;
