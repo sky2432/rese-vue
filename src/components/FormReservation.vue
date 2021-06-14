@@ -29,7 +29,7 @@
                     prepend-icon="mdi-calendar"
                     v-on="on"
                     readonly
-                    v-model="visitsDate"
+                    :value="visitsDate"
                   ></v-text-field>
                 </validation-provider>
               </template>
@@ -103,23 +103,11 @@ export default {
     BaseSelector,
   },
 
-  props: {
-    date: {
-      type: String,
-    },
-    time: {
-      type: String,
-    },
-    number: {
-      type: Number,
-    },
-  },
-
   data() {
     return {
       visitsDate: "",
       visitsTime: "",
-      visitsNumber: 0,
+      visitsNumber: null,
       formValid: false,
       showdatePickerMenu: false,
       today: config.today,
@@ -128,28 +116,11 @@ export default {
     };
   },
 
-  computed: {
-    //propsの監視用メソッド
-    watchData() {
-      return [this.date, this.time, this.number];
-    }
-  },
-
-  watch: {
-    watchData() {
-      this.setUpdateData();
-    }
-  },
-
-  created() {
-    this.setUpdateData();
-  },
-
   methods: {
-    setUpdateData() {
-      this.visitsDate = this.date;
-      this.visitsTime = this.time;
-      this.visitsNumber = this.number;
+    setUpdateData(reservationData) {
+      this.visitsDate = reservationData.visitsDate;
+      this.visitsTime = reservationData.visitsTime;
+      this.visitsNumber = reservationData.visitsNumber;
     },
 
     checkTime() {
