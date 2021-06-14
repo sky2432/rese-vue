@@ -54,7 +54,6 @@ export default new Vuex.Store({
 
   actions: {
     async login({ commit }, resData) {
-      console.log('vuex');
       if (resData.auth === true) {
         Repository.defaults.headers.common[
           "Authorization"

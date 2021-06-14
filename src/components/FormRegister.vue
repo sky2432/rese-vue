@@ -57,6 +57,7 @@ export default {
     confirm() {
       const sendData = {
         name: this.name,
+
         email: this.email,
         password: this.password,
       };

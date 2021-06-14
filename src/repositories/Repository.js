@@ -18,7 +18,7 @@ url.interceptors.response.use(
     if (error.response.status === 401) {
       redirect();
     }
-    return error;
+    return Promise.reject(error);
   }
 );
 
