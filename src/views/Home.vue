@@ -182,8 +182,8 @@ export default {
     async getUserFavorites() {
       const resData = await favoritesRepository.getUserFavorites(this.user.id);
       this.favorites = resData.data.data;
-      this.loading = false;
       this.loaded = true;
+      this.loading = false;
     },
 
     async getShops() {
