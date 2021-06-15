@@ -142,7 +142,7 @@ export default {
         if (this.keyword === "") {
           return filteredShops;
         } else {
-          return this.fileterShopsByKeyword(this.shops, this.keyword);
+          return this.fileterShopsByKeyword(filteredShops, this.keyword);
         }
       }
       return this.shops;

@@ -38,7 +38,12 @@
       <template #noResults>検索条件に当てはまる予約はありません</template>
     </DataTable>
 
-    <BaseDialog ref="editDialog" v-bind="{ body: true, closeIcon: true }" titleClass="amber justify-center" textClass="mt-4 text-center">
+    <BaseDialog
+      ref="editDialog"
+      v-bind="{ body: true, closeIcon: true }"
+      titleClass="amber justify-center"
+      textClass="mt-4 text-center"
+    >
       <template #title>お客様が来店されませんでしたか？</template>
       <template #body>
         来店されなかった場合はこちらから予約状況を非来店にしてください。
@@ -133,13 +138,8 @@ export default {
       this.reservationId = reservationId;
     },
 
-    closeDialog() {
-      this.$refs.confirmEditDialog.closeDialog();
-      this.$refs.editDialog.closeDialog();
-    },
-
     async changeReservationStatus() {
-      this.$refs.editDialog.startLoading();
+      this.$refs.confirmEditDialog.startLoading();
       const sendData = {
         status: "notVisited",
       };
@@ -148,9 +148,14 @@ export default {
         sendData
       );
       this.getShopReservations(this.shopId);
-      this.$refs.editDialog.stopLoading();
+      this.$refs.confirmEditDialog.stopLoading();
       this.$refs.messageDialog.openDialog();
+      this.closeDialog();
+    },
+
+    closeDialog() {
       this.$refs.editDialog.closeDialog();
+      this.$refs.confirmEditDialog.closeDialog();
     },
 
     stopLoading() {
