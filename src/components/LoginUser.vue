@@ -1,6 +1,6 @@
 <template>
   <div>
-    <FormLogin ref="formLogin" @login="login">
+    <FormLogin ref="formLogin" titleClass="amber" @login="login">
       <template #title>UserLogin</template>
     </FormLogin>
   </div>

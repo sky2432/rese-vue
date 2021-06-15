@@ -1,10 +1,10 @@
 <template>
   <div>
     <v-card class="white pa-5" elevation="2" width="600px" outlined shaped tile>
-      <v-card-title>
+      <v-card-title :class="titleClass">
         <slot name="title"></slot>
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="mt-4 pb-0">
         <validation-observer ref="observer" v-slot="{ invalid }">
           <v-form v-model="formValid">
             <TextFieldEmail v-model="email"></TextFieldEmail>
@@ -34,6 +34,12 @@ export default {
     TextFieldPassword,
   },
 
+  props: {
+    titleClass: {
+      type: String,
+    }
+  },
+
   data() {
     return {
       email: "",
@@ -41,7 +47,7 @@ export default {
       formValid: false,
     };
   },
-  
+
   methods: {
     login() {
       const sendData = {
