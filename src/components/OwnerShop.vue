@@ -448,6 +448,12 @@ export default {
 
     setShopData() {
       this.updateDialog = true;
+      let timer = setInterval(() => {
+        if (this.$refs.updateFormShopInfo) {
+          clearInterval(timer);
+          this.$refs.updateFormShopInfo.setUpdateData();
+        }
+      }, 100);
     },
 
     getUpdateData() {

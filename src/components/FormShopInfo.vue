@@ -83,15 +83,6 @@ export default {
     },
   },
 
-  created() {
-    this.name = this.shopName;
-    this.genre = this.shopGenreId;
-    this.overview = this.shopOverview;
-    this.postalCode = this.shopPostalCode;
-    this.mainAddress = this.shopMainAddress;
-    this.optionAddress = this.shopOptionAddress;
-  },
-
   data() {
     return {
       name: "",
@@ -105,7 +96,20 @@ export default {
     };
   },
 
+  created() {
+    this.setUpdateData();
+  },
+
   methods: {
+    setUpdateData() {
+      this.name = this.shopName;
+      this.genre = this.shopGenreId;
+      this.overview = this.shopOverview;
+      this.postalCode = this.shopPostalCode;
+      this.mainAddress = this.shopMainAddress;
+      this.optionAddress = this.shopOptionAddress;
+    },
+
     sendUpdateData() {
       const sendData = this.createSendData();
       this.$emit("send-update-data", sendData);
