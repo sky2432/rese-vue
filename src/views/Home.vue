@@ -3,7 +3,7 @@
     <TheHomeHeader>
       <template #search>
         <v-row>
-          <v-col cols="3" class="px-0">
+          <v-col cols="2" class="px-0">
             <v-select
               class="rounded-r-0"
               :items="areaOptions"
@@ -13,7 +13,7 @@
               v-model="selectedArea"
             ></v-select>
           </v-col>
-          <v-col cols="3" class="px-0">
+          <v-col cols="2" class="px-0">
             <v-select
               class="rounded-0"
               :items="genreOptions"
@@ -25,7 +25,7 @@
           </v-col>
           <v-col cols="6" class="px-0">
             <v-text-field
-              class="rounded-l-0"
+              class="rounded-0"
               label="Enter shop name"
               prepend-inner-icon="mdi-magnify"
               dense
@@ -33,6 +33,15 @@
               solo
               v-model="keyword"
             ></v-text-field>
+          </v-col>
+          <v-col cols="2" class="px-0">
+            <v-btn
+              class="rounded-l-0"
+              color="white"
+              height="38"
+              @click="resetSearchBox"
+              >reset</v-btn
+            >
           </v-col>
         </v-row>
       </template>
@@ -146,6 +155,12 @@ export default {
   },
 
   methods: {
+    resetSearchBox() {
+      this.selectedArea = "All area";
+      this.selectedGenre = "All genre";
+      this.keyword = "";
+    },
+
     fileterShopsByGenre(shops, target) {
       let filteredShops = [];
       for (let i in shops) {

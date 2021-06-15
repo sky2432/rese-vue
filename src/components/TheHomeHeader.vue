@@ -2,14 +2,14 @@
   <v-app-bar app class="amber" light>
     <v-container>
       <v-row class="align-center">
-        <v-col cols="4">
+        <v-col cols="3">
           <div class="header-logo d-flex">
             <v-icon class="mr-1" large>mdi-silverware-variant</v-icon>
             <h1 class="header-txt" @click="$router.push('/home')">Rese</h1>
           </div>
         </v-col>
         <v-spacer></v-spacer>
-        <v-col cols="8">
+        <v-col cols="9">
           <v-row>
             <v-col cols="10">
               <slot name="search"></slot>
