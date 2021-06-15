@@ -68,6 +68,13 @@
                   class="white--text"
                   color="amber"
                   width="100"
+                  @click="$helpers.$_movePageWithPram('Detail', 'shopId', shop.id)"
+                  >店舗詳細へ
+                </v-btn>
+                <v-btn
+                  class="white--text mt-2 ml-0"
+                  color="amber"
+                  width="100"
                   @click="displayDialogUpdateReservation(shop)"
                   >変更
                 </v-btn>
