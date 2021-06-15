@@ -26,7 +26,9 @@
                   <v-list-item-group color="primary">
                     <v-list-item
                       class="menu-item"
-                      @click="$router.push('/mypage')"
+                      @click="
+                        $helpers.$_movePageWithPram('Mypage', 'tabIndex', 0)
+                      "
                     >
                       <v-list-item-icon class="mr-2">
                         <v-icon>mdi-account</v-icon>

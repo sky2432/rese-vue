@@ -2,11 +2,9 @@
   <div>
     <TheHomeHeader :showTab="true">
       <template #tab>
-        <v-tabs slider-color="grey" centered>
-          <v-tab @click="currentComponent = 'MypageFavorite'">お気に入り</v-tab>
-          <v-tab @click="currentComponent = 'MypageReservation'"
-            >予約一覧</v-tab
-          >
+        <v-tabs slider-color="grey" centered v-model="tab">
+          <v-tab @click="tab = 0">お気に入り</v-tab>
+          <v-tab @click="tab = 1">予約一覧</v-tab>
         </v-tabs>
       </template>
     </TheHomeHeader>
@@ -31,10 +29,38 @@ export default {
     MypageReservation,
   },
 
+  props: {
+    tabIndex: {
+      type: Number,
+    },
+  },
+
   data() {
     return {
-      currentComponent: MypageReservation,
+      tab: 0,
+      currentComponent: MypageFavorite,
     };
+  },
+
+  watch: {
+    tab() {
+      this.changeComponent();
+    },
+  },
+
+  created() {
+    this.tab = this.tabIndex;
+  },
+
+  methods: {
+    changeComponent() {
+      if (this.tab === 0) {
+        this.currentComponent = "MypageFavorite";
+      }
+      if (this.tab === 1) {
+        this.currentComponent = "MypageReservation";
+      }
+    },
   },
 };
 </script>

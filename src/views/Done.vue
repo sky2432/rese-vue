@@ -5,11 +5,19 @@
       <div class="wrapper">
         <BaseCard padding="pa-16" v-bind="{ outlined: true, tile: true }">
           <template #title>ご予約ありがとうございます</template>
-          <template #rightButton
-            ><v-btn color="amber" @click="$router.push('/home')">
-              戻る
-            </v-btn></template
-          >
+          <template #leftButton>
+            <v-btn class="mr-2" color="amber" @click="$router.push('/home')">
+              ホームへ
+            </v-btn>
+          </template>
+          <template #rightButton>
+            <v-btn
+              color="amber"
+              @click="$helpers.$_movePageWithPram('Mypage', 'tabIndex', 1)"
+            >
+              予約一覧へ
+            </v-btn>
+          </template>
         </BaseCard>
       </div>
     </v-main>

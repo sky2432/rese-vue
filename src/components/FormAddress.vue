@@ -70,8 +70,8 @@ export default {
         .get(
           `https://apis.postcode-jp.com/api/v4/postcodes/${this.shopPostCode}?apikey=${process.env.VUE_APP_POST_CODE_API_KEY}`
         )
-        .then((reponse) => {
-          this.$emit("auto-set-address", reponse.data[0].allAddress);
+        .then((response) => {
+          this.$emit("auto-set-address", response.data[0].allAddress);
         })
         .catch(() => {
           return;

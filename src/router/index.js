@@ -105,9 +105,10 @@ const routes = [
     },
   },
   {
-    path: "/mypage",
+    path: "/mypage/:tabIndex",
     name: "Mypage",
     component: Mypage,
+    props: true,
     meta: {
       requiresAuth: true,
       title: "マイページ",
@@ -204,7 +205,7 @@ router.beforeEach((to, from, next) => {
       to.name === "Owner" ||
       to.name === "Admin" ||
       to.name === "ShopDetail" ||
-      to.name === "OwnerDetail" 
+      to.name === "OwnerDetail"
     ) {
       next("/home");
     }
