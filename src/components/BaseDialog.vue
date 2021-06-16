@@ -19,7 +19,7 @@
       <v-card-actions :class="actionsClass" v-if="button">
         <slot name="leftButton"></slot>
         <slot name="baseButton">
-          <v-btn color="amber" class="white--text" @click="dialog = false">
+          <v-btn color="amber white--text" @click="dialog = false">
             {{ baseButtonText }}
           </v-btn>
         </slot>

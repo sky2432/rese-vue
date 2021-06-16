@@ -68,8 +68,7 @@
                 v-if="showButtonInReserving(shop.reservation.status)"
               >
                 <v-btn
-                  class="white--text"
-                  color="amber"
+                  color="amber white--text"
                   width="100"
                   @click="
                     $helpers.$_movePageWithPram('Detail', 'shopId', shop.id)
@@ -139,7 +138,7 @@
       <BaseDialog ref="dialogConfirmCancelReservation" baseButtonText="いいえ">
         <template #title>本当にこの予約をキャンセルしますか？</template>
         <template #leftButton>
-          <v-btn color="red" class="white--text" @click="deleteReservation">
+          <v-btn color="red white--text" @click="deleteReservation">
             はい
           </v-btn>
         </template>
@@ -177,7 +176,7 @@
       >
         <template #title>変更内容の確認</template>
         <template #actionButton
-          ><v-btn color="amber" class="white--text" @click="updateReservation"
+          ><v-btn color="amber white--text" @click="updateReservation"
             >変更</v-btn
           ></template
         >
@@ -191,8 +190,7 @@
         <template #title>評価</template>
         <template #rightButton>
           <v-btn
-            class="white--text"
-            color="amber"
+            color="amber white--text"
             :disabled="isEvaluated"
             @click="createEvaluation"
           >
@@ -211,12 +209,12 @@
       >
         <template #title>評価を編集</template>
         <template #leftButton>
-          <v-btn color="red" class="white--text" @click="deleteEvaluation">
+          <v-btn color="red white--text" @click="deleteEvaluation">
             削除
           </v-btn>
         </template>
         <template #rightButton>
-          <v-btn color="amber" class="white--text" @click="updateEvaluation">
+          <v-btn color="amber white--text" @click="updateEvaluation">
             更新
           </v-btn>
         </template>

@@ -29,8 +29,7 @@
           </v-card-subtitle>
           <v-card-actions>
             <v-btn
-              color="amber"
-              class="white--text"
+              color="amber white--text"
               rounded
               @click="moveShopDetail(shop.id)"
               >詳細

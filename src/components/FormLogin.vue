@@ -12,7 +12,11 @@
             <TextFieldPassword v-model="password"></TextFieldPassword>
 
             <v-card-actions class="justify-center">
-              <v-btn color="amber" :disabled="invalid" @click="login">
+              <v-btn
+                color="amber white--text"
+                :disabled="invalid"
+                @click="login"
+              >
                 ログイン
               </v-btn>
             </v-card-actions>
@@ -37,7 +41,7 @@ export default {
   props: {
     titleClass: {
       type: String,
-    }
+    },
   },
 
   data() {

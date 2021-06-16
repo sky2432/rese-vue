@@ -38,8 +38,7 @@
 
             <v-card-actions class="justify-center">
               <v-btn
-                color="amber"
-                class="white--text"
+                color="amber white--text"
                 :disabled="invalid"
                 @click="confirmMailContent"
               >
@@ -64,7 +63,7 @@
         </v-card-text>
       </template>
       <template #actionButton
-        ><v-btn color="amber" class="white--text" @click="sendMail"
+        ><v-btn color="amber white--text" @click="sendMail"
           >送信</v-btn
         ></template
       >

@@ -13,7 +13,8 @@
             <TextFieldEmail v-model="email"></TextFieldEmail>
 
             <v-card-actions class="justify-center">
-              <v-btn color="amber" :disabled="invalid" @click="updateUser">
+              <v-btn color="amber white--text" :disabled="invalid" @click="updateUser">
+
                 更新
               </v-btn>
             </v-card-actions>

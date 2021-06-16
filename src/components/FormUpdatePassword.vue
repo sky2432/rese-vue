@@ -22,7 +22,7 @@
             ></TextFieldPassword>
 
             <v-card-actions class="justify-center">
-              <v-btn color="amber" :disabled="invalid" @click="updatePassword">
+              <v-btn color="amber white--text" :disabled="invalid" @click="updatePassword">
                 更新
               </v-btn>
             </v-card-actions>

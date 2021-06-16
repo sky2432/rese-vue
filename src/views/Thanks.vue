@@ -6,7 +6,7 @@
         <BaseCard padding="pa-16" v-bind="{ outlined: true, tile: true }">
           <template #title>会員登録ありがとうございます</template>
           <template #rightButton
-            ><v-btn color="amber" @click="$router.push('/login')">
+            ><v-btn color="amber white--text" @click="$router.push('/login')">
               ログイン
             </v-btn></template
           >

@@ -31,12 +31,12 @@
     <BaseDialog ref="deleteDialog" baseButtonText="キャンセル">
       <template #title>本当にこのユーザーを削除しますか？</template>
       <template #leftButton>
-        <v-btn color="red" class="white--text" @click="deleteUser">
+        <v-btn color="red white--text" @click="deleteUser">
           削除
         </v-btn>
       </template>
       <template #baseButton>
-        <v-btn color="amber" class="white--text" @click="closeDeleteDialog">
+        <v-btn color="amber white--text" @click="closeDeleteDialog">
           キャンセル
         </v-btn>
       </template>

@@ -13,8 +13,7 @@
               <v-fade-transition>
                 <v-overlay color="#036358" absolute v-if="hover">
                   <v-btn
-                    color="amber"
-                    class="white--text"
+                    color="amber white--text"
                     @click="showImageDialog"
                     >店舗画像の更新</v-btn
                   >
@@ -53,7 +52,7 @@
         </v-card-text>
         <div id="map" style="height:400px;width:100%;"></div>
         <v-card-actions class="justify-center">
-          <v-btn color="amber" class="white--text" @click="setShopData"
+          <v-btn color="amber white--text" @click="setShopData"
             >編集</v-btn
           >
         </v-card-actions>
@@ -81,7 +80,7 @@
               </FormShopInfo>
 
               <v-card-actions class="justify-center">
-                <v-btn color="amber" :disabled="invalid" @click="getCreateData">
+                <v-btn color="amber white--text" :disabled="invalid" @click="getCreateData">
                   確認
                 </v-btn>
               </v-card-actions>
@@ -152,7 +151,7 @@
                 @send-update-data="updateShop"
               ></FormShopInfo>
               <v-card-actions class="justify-center">
-                <v-btn color="amber" :disabled="invalid" @click="getUpdateData">
+                <v-btn color="amber white--text" :disabled="invalid" @click="getUpdateData">
                   更新
                 </v-btn>
               </v-card-actions>
@@ -191,7 +190,7 @@
         </div>
       </template>
       <template #actionButton
-        ><v-btn color="amber" class="white--text" @click="createShop"
+        ><v-btn color="amber white--text" @click="createShop"
           >登録</v-btn
         ></template
       >

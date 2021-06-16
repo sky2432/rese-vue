@@ -11,10 +11,7 @@
         >
           <h3>必ずご確認ください</h3>
           <p>アカウントを削除すると、これまでのデータはすべて削除されます。</p>
-          <v-btn
-            class="mt-2"
-            color="red lighten-1"
-            @click="$refs.baseDialog.openDialog()"
+          <v-btn class="mt-2" color="red" @click="$refs.baseDialog.openDialog()"
             >アカウントを削除</v-btn
           >
         </v-alert>
@@ -22,11 +19,7 @@
         <BaseDialog ref="baseDialog" baseButtonText="キャンセル">
           <template #title>本当にアカウントを削除しますか？</template>
           <template #leftButton>
-            <v-btn
-              color="red lighten-1"
-              class="white--text"
-              @click="deleteUser"
-            >
+            <v-btn color="red white--text" @click="deleteUser">
               削除
             </v-btn>
           </template>

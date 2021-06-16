@@ -74,7 +74,7 @@
 
           <v-card-actions class="justify-center pb-5">
             <v-btn
-              color="amber"
+              color="amber white--text"
               :disabled="invalid"
               @click="checkTime"
               >確認</v-btn

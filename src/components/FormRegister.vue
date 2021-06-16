@@ -4,7 +4,7 @@
       <slot name="title"></slot>
       <slot name="closeIcon"></slot>
     </v-card-title>
-    <v-card-text> 
+    <v-card-text>
       <validation-observer ref="observer" v-slot="{ invalid }">
         <v-form v-model="formValid">
           <TextFieldName v-model="name"></TextFieldName>
@@ -14,7 +14,7 @@
           <TextFieldPassword v-model="password"></TextFieldPassword>
 
           <v-card-actions class="justify-center">
-            <v-btn color="amber" :disabled="invalid" @click="confirm">
+            <v-btn color="amber white--text" :disabled="invalid" @click="confirm">
               確認
             </v-btn>
           </v-card-actions>

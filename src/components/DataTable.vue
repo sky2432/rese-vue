@@ -36,8 +36,7 @@
       </template>
       <template v-slot:[`item.detail`]="{ item }" v-if="detail">
         <v-btn
-          color="amber"
-          class="white--text"
+          color="amber white--text"
           outlined
           @click="movePage(item.id)"
           >詳細</v-btn

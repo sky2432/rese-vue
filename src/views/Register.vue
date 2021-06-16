@@ -13,7 +13,7 @@
         >
           <template #title>登録内容の確認</template>
           <template #actionButton
-            ><v-btn color="amber" class="white--text" @click="register"
+            ><v-btn color="amber white--text" @click="register"
               >登録</v-btn
             ></template
           >

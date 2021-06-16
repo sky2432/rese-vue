@@ -49,16 +49,10 @@
               <template #title>予約</template>
             </FormReservation>
 
-            <DialogConfirm
-              ref="dialogConfirm"
-              :tableData="confirmDialogData"
-            >
+            <DialogConfirm ref="dialogConfirm" :tableData="confirmDialogData">
               <template #title>予約内容の確認</template>
               <template #actionButton
-                ><v-btn
-                  color="amber"
-                  class="white--text"
-                  @click="createReservation"
+                ><v-btn color="amber white--text" @click="createReservation"
                   >予約</v-btn
                 ></template
               >

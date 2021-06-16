@@ -23,11 +23,7 @@
       </v-alert>
     </template>
     <template #baseButton>
-      <v-btn
-        class="white--text"
-        color="red lighten-1"
-        @click="$emit('open-dialog')"
-      >
+      <v-btn color="red white--text" @click="$emit('open-dialog')">
         <slot name="buttonText">店舗を削除</slot>
       </v-btn>
     </template>

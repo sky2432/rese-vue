@@ -70,14 +70,12 @@
             <v-divider></v-divider>
             <v-card-actions class="justify-center">
               <v-btn
-                color="red"
-                class="white--text"
+                color="red white--text"
                 @click="$refs.dialogWarning.openDialog()"
                 >オーナー削除</v-btn
               >
               <v-btn
-                color="amber"
-                class="white--text"
+                color="amber white--text"
                 :disabled="!owner.shop"
                 @click="moveShopDetail"
                 >店舗詳細</v-btn
@@ -102,8 +100,7 @@
             <template #title>本当にこのオーナーを削除しますか？</template>
             <template #leftButton>
               <v-btn
-                color="red lighten-1"
-                class="white--text"
+                color="red white--text"
                 @click="deleteOwner"
               >
                 削除
@@ -111,8 +108,7 @@
             </template>
             <template #baseButton>
               <v-btn
-                color="amber"
-                class="white--text"
+                color="amber white--text"
                 @click="closeDeleteDialog"
               >
                 キャンセル
@@ -128,7 +124,7 @@
             <template #title>オーナーを削除しました</template>
             <template #body>5秒後にも自動的にトップページへ戻ります</template>
             <template #baseButton>
-              <v-btn color="amber" class="white--text" @click="moveTopPage"
+              <v-btn color="amber white--text" @click="moveTopPage"
                 >トップページへ戻る</v-btn
               >
             </template>

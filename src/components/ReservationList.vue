@@ -51,8 +51,7 @@
       </template>
       <template #baseButton>
         <v-btn
-          color="red"
-          class="white--text"
+          color="red white--text"
           @click="$refs.confirmEditDialog.openDialog()"
         >
           非来店にする
@@ -63,12 +62,12 @@
     <BaseDialog ref="confirmEditDialog" baseButtonText="いいえ">
       <template #title>本当にこの予約を非来店にしますか？</template>
       <template #leftButton>
-        <v-btn color="red" class="white--text" @click="changeReservationStatus">
+        <v-btn color="red white--text" @click="changeReservationStatus">
           はい
         </v-btn>
       </template>
       <template #baseButton>
-        <v-btn color="amber" class="white--text" @click="closeDialog">
+        <v-btn color="amber white--text" @click="closeDialog">
           いいえ
         </v-btn>
       </template>
