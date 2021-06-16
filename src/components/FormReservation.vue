@@ -10,7 +10,7 @@
             <v-menu
               :close-on-content-click="false"
               min-width="auto"
-              :return-value.sync="visitsDate"
+              :return-value.sync="date"
               ref="datePickerMenu"
               transition="scale-transition"
               offset-y
@@ -29,16 +29,11 @@
                     prepend-icon="mdi-calendar"
                     v-on="on"
                     readonly
-                    :value="visitsDate"
+                    :value="date"
                   ></v-text-field>
                 </validation-provider>
               </template>
-              <v-date-picker
-                :min="today"
-                no-title
-                scrollable
-                v-model="visitsDate"
-              >
+              <v-date-picker :min="today" no-title scrollable v-model="date">
                 <v-spacer></v-spacer>
                 <v-btn color="primary" text @click="showdatePickerMenu = false">
                   キャンセル
@@ -46,7 +41,7 @@
                 <v-btn
                   color="primary"
                   text
-                  @click="$refs.datePickerMenu.save(visitsDate)"
+                  @click="$refs.datePickerMenu.save(date)"
                 >
                   選択
                 </v-btn>
@@ -64,7 +59,7 @@
                 :items="timeOptions"
                 label="時刻を選択"
                 prepend-icon="mdi-clock-time-eight-outline"
-                v-model="visitsTime"
+                v-model="time"
               ></v-select>
             </validation-provider>
 
@@ -73,7 +68,7 @@
               label="人数を選択"
               name="人数"
               :options="numberOptions"
-              v-model="visitsNumber"
+              v-model="number"
             ></BaseSelector>
           </v-card-text>
 
@@ -103,11 +98,23 @@ export default {
     BaseSelector,
   },
 
+  props: {
+    visitsDate: {
+      type: String,
+    },
+    visitsTime: {
+      type: String,
+    },
+    visitsNumber: {
+      type: Number,
+    },
+  },
+
   data() {
     return {
-      visitsDate: "",
-      visitsTime: "",
-      visitsNumber: null,
+      date: "",
+      time: "",
+      number: null,
       formValid: false,
       showdatePickerMenu: false,
       today: config.today,
@@ -116,18 +123,22 @@ export default {
     };
   },
 
+  created() {
+    this.setUpdateData();
+  },
+
   methods: {
-    setUpdateData(reservationData) {
-      this.visitsDate = reservationData.visitsDate;
-      this.visitsTime = reservationData.visitsTime;
-      this.visitsNumber = reservationData.visitsNumber;
+    setUpdateData() {
+      this.date = this.visitsDate;
+      this.time = this.visitsTime;
+      this.number = this.visitsNumber;
     },
 
     checkTime() {
       const sendData = {
-        visitsDate: this.visitsDate,
-        visitsTime: this.visitsTime,
-        visitsNumber: this.visitsNumber,
+        visitsDate: this.date,
+        visitsTime: this.time,
+        visitsNumber: this.number,
       };
       this.$emit("check-time", sendData);
     },

@@ -68,7 +68,9 @@
                   class="white--text"
                   color="amber"
                   width="100"
-                  @click="$helpers.$_movePageWithPram('Detail', 'shopId', shop.id)"
+                  @click="
+                    $helpers.$_movePageWithPram('Detail', 'shopId', shop.id)
+                  "
                   >店舗詳細へ
                 </v-btn>
                 <v-btn
@@ -145,7 +147,15 @@
       </BaseDialog>
 
       <v-dialog width="500" persistent v-model="DialogUpdateReservation">
-        <FormReservation ref="formReservation" @check-time="checkTime">
+        <FormReservation
+          ref="formReservation"
+          v-bind="{
+            visitsDate: visitsDate,
+            visitsTime: visitsTime,
+            visitsNumber: visitsNumber
+          }"
+          @check-time="checkTime"
+        >
           <template #title>予約の変更</template>
           <template #leftButton>
             <v-btn
@@ -238,6 +248,9 @@ export default {
     return {
       shops: [],
       selectedShop: "",
+      visitsDate: "",
+      visitsTime: "",
+      visitsNumber: null,
       selectedEvaluation: "",
       slectedReservation: "",
       evaluation: 0,
@@ -445,15 +458,13 @@ export default {
 
     setReservationUpdateData(shop) {
       this.selectedShop = shop;
-      const reservationData = {
-        visitsDate: shop.reservation.visited_on.substr(0, 10),
-        visitsTime: shop.reservation.visited_on.substr(11, 5),
-        visitsNumber: shop.reservation.number_of_visiters,
-      };
+      this.visitsDate = shop.reservation.visited_on.substr(0, 10);
+      this.visitsTime = shop.reservation.visited_on.substr(11, 5);
+      this.visitsNumber = shop.reservation.number_of_visiters;
       let timer = setInterval(() => {
         if (this.$refs.formReservation) {
           clearInterval(timer);
-          this.$refs.formReservation.setUpdateData(reservationData);
+          this.$refs.formReservation.setUpdateData();
         }
       }, 100);
     },
