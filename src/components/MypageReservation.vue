@@ -137,7 +137,7 @@
       </v-col>
 
       <BaseDialog ref="dialogConfirmCancelReservation" baseButtonText="いいえ">
-        <template #title>本当にキャンセルしますか？</template>
+        <template #title>本当にこの予約をキャンセルしますか？</template>
         <template #leftButton>
           <v-btn color="red" class="white--text" @click="deleteReservation">
             はい
@@ -174,7 +174,6 @@
       <DialogConfirm
         ref="dialogConfirm"
         :tableData="confirmDialogData"
-        cancellButtonText="修正"
       >
         <template #title>変更内容の確認</template>
         <template #actionButton

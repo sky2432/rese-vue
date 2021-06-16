@@ -90,7 +90,7 @@
     ></DialogWarning>
 
     <BaseDialog ref="dialogConfirmDeletionShop" baseButtonText="キャンセル">
-      <template #title>本当に店舗を削除しますか？</template>
+      <template #title>本当にこの店舗を削除しますか？</template>
       <template #leftButton>
         <v-btn color="red lighten-1" class="white--text" @click="deleteShop">
           削除

@@ -4,9 +4,9 @@
     v-bind="{
       body: true,
       divider: true,
-      baseButtonText: cancellButtonText,
       maxWidth: maxWidth
     }"
+    baseButtonText="修正"
     titleClass="amber"
     textClass="pt-5 pb-0"
   >
@@ -38,10 +38,6 @@ export default {
     tableData: {
       type: Array,
       require: true,
-    },
-    cancellButtonText: {
-      type: String,
-      default: "キャンセル",
     },
     color: {
       type: String,

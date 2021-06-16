@@ -53,7 +53,6 @@
 
     <DialogConfirm
       ref="dialogConfirm"
-      cancellButtonText="修正"
       :tableData="confirmDialogData"
       color="color: rgba(0, 0, 0, 0.6);"
     >

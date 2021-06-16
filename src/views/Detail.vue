@@ -52,7 +52,6 @@
             <DialogConfirm
               ref="dialogConfirm"
               :tableData="confirmDialogData"
-              cancellButtonText="修正"
             >
               <template #title>予約内容の確認</template>
               <template #actionButton

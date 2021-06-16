@@ -99,7 +99,7 @@
             ref="dialogConfirmDeletionOwner"
             baseButtonText="キャンセル"
           >
-            <template #title>本当にオーナーを削除しますか？</template>
+            <template #title>本当にこのオーナーを削除しますか？</template>
             <template #leftButton>
               <v-btn
                 color="red lighten-1"
