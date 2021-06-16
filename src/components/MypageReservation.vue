@@ -3,6 +3,9 @@
     <div class="wrapper" v-if="loading">
       <v-progress-circular color="amber" indeterminate></v-progress-circular>
     </div>
+    <div class="wrapper" v-if="notExits">
+      <p>予約はありません</p>
+    </div>
     <v-row class="mt-1" v-if="loaded">
       <v-col cols="12" v-for="shop in shops" :key="shop.reservation.id">
         <v-card class="card" height="300">
@@ -261,6 +264,7 @@ export default {
       DialogUpdateReservation: false,
       loading: true,
       loaded: false,
+      notExits: false,
       reservationData: "",
       confirmDialogData: [],
     };
@@ -546,9 +550,14 @@ export default {
       const resData = await reservationsRepository.getUserReservations(
         this.user.id
       );
-      this.shops = this.sortReservations(resData.data.data);
       this.loading = false;
-      this.loaded = true;
+      const reservations = resData.data.data;
+      if (reservations.length === 0) {
+        this.notExits = true;
+      } else {
+        this.shops = this.sortReservations(reservations);
+        this.loaded = true;
+      }
     },
 
     //予約中の昇順、その後に来店済みとキャンセルの降順で配列を並び替え
@@ -589,6 +598,10 @@ export default {
 </script>
 
 <style scoped>
+.wrapper {
+  height: calc(100vh - 136px);
+}
+
 .card {
   position: relative;
 }
