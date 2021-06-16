@@ -152,24 +152,27 @@
           v-bind="{
             visitsDate: visitsDate,
             visitsTime: visitsTime,
-            visitsNumber: visitsNumber
+            visitsNumber: visitsNumber,
           }"
           @check-time="checkTime"
         >
-          <template #title>予約の変更</template>
-          <template #leftButton>
-            <v-btn
-              color="red"
-              class="white--text"
-              @click="DialogUpdateReservation = false"
-            >
-              キャンセル
-            </v-btn>
+          <template #title>
+            予約の変更
+            <v-spacer></v-spacer>
+            <slot name="closeIcon">
+              <v-btn icon @click="DialogUpdateReservation = false">
+                <v-icon>mdi-window-close</v-icon>
+              </v-btn>
+            </slot>
           </template>
         </FormReservation>
       </v-dialog>
 
-      <DialogConfirm ref="dialogConfirm" :tableData="confirmDialogData">
+      <DialogConfirm
+        ref="dialogConfirm"
+        :tableData="confirmDialogData"
+        cancellButtonText="修正"
+      >
         <template #title>変更内容の確認</template>
         <template #actionButton
           ><v-btn color="amber" class="white--text" @click="updateReservation"
