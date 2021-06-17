@@ -26,13 +26,24 @@
         ></v-switch>
       </template>
       <template #top v-if="ownerType">
-        <v-switch
-          class="pa-3"
-          :value="showTodayReservations"
-          label="本日の予約"
-          v-model="showTodayReservations"
-          @change="showReservations($event)"
-        ></v-switch>
+        <v-row class="ma-0">
+          <v-btn
+            class="ml-2"
+            style="margin-top: 22px"
+            color="grey darken-1"
+            outlined
+            @click="getShopReservations(shopId)"
+          >
+            <v-icon>mdi-autorenew</v-icon>
+          </v-btn>
+          <v-switch
+            class="pa-3"
+            :value="showTodayReservations"
+            label="本日の予約"
+            v-model="showTodayReservations"
+            @change="showReservations($event)"
+          ></v-switch>
+        </v-row>
       </template>
       <template #noData>予約はありません</template>
       <template #noResults>検索条件に当てはまる予約はありません</template>
@@ -184,6 +195,7 @@ export default {
     },
 
     async getShopReservations(shopId) {
+      this.loading = true;
       const resData = await reservationsRepository.getShopReservations(shopId);
       const reservaitons = this.convetReservationStatus(resData.data.data);
       const convertedReservaitons = this.convetVisitsNumber(reservaitons);
