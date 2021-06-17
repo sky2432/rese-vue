@@ -6,6 +6,7 @@
     :counter="10"
     :icon="icon"
     :label="label"
+    :mode="mode"
     :value="value"
     @input="$emit('input', $event)"
   ></BaseTextField>
@@ -34,6 +35,10 @@ export default {
       type: String,
       default: "mdi-account",
     },
+    mode: {
+      type: String,
+
+    }
   },
 };
 </script>

@@ -11,6 +11,7 @@
           rules="required|postCodeRegex:^[0-9]*$|length:7"
           hint="ハイフンなしで入力してください"
           label="郵便番号"
+          mode="aggressive"
           :value="shopPostCode"
           @input="$emit('setPostCode', $event)"
         ></BaseTextField>
@@ -25,6 +26,7 @@
         name="都道府県・市区町村・番地"
         rules="required|max:255"
         label="都道府県・市区町村・番地"
+        mode="aggressive"
         :value="shopMainAddress"
         @input="$emit('setMainAddress', $event)"
       ></BaseTextField>

@@ -4,6 +4,7 @@
     :name="name"
     :rules="rules"
     :vid="vid"
+    :mode="mode"
   >
     <v-text-field
       :counter="counter"
@@ -45,10 +46,12 @@ export default {
     icon: {
       type: String,
     },
-
     value: {
       type: String,
     },
+    mode: {
+      type: String,
+    }
   },
 };
 </script>
