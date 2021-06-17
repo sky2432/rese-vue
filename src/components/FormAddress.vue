@@ -1,7 +1,7 @@
 <template>
   <div>
     <p class="mb-0" style="font-size: 16px">
-      <v-icon class="mr-1">mdi-mailbox</v-icon>address
+      <v-icon class="mr-1 pb-1">mdi-mailbox</v-icon>住所
     </p>
 
     <v-row class="ma-0 ml-6 align-center">
@@ -10,7 +10,7 @@
           name="郵便番号"
           rules="required|postCodeRegex:^[0-9]*$|length:7"
           hint="ハイフンなしで入力してください"
-          label="PostCode"
+          label="郵便番号"
           :value="shopPostCode"
           @input="$emit('setPostCode', $event)"
         ></BaseTextField>
@@ -24,7 +24,7 @@
       <BaseTextField
         name="都道府県・市区町村・番地"
         rules="required|max:255"
-        label="Prefectures/Municipality/HouseNumber"
+        label="都道府県・市区町村・番地"
         :value="shopMainAddress"
         @input="$emit('setMainAddress', $event)"
       ></BaseTextField>
@@ -32,9 +32,9 @@
 
     <div class="ml-6">
       <BaseTextField
-        name="建物・号室"
+        name="建物・部屋番号"
         rules="max:255"
-        label="Building/RoomNumber"
+        label="建物・部屋番号"
         :value="shopOptionAddress"
         @input="$emit('setOptionAddress', $event)"
       ></BaseTextField>

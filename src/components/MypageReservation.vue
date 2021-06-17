@@ -100,7 +100,7 @@
                   width="100"
                   v-if="showAddEvaluationButton(shop.evaluations)"
                   @click="displayEvaluationDialog(shop)"
-                  >評価
+                  >評価する
                 </v-btn>
                 <v-btn
                   class="white--text mt-2 ml-0"

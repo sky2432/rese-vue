@@ -2,7 +2,7 @@
   <div>
     <TextFieldName
       name="店名"
-      label="ShopName"
+      label="店名"
       icon="mdi-store"
       v-model="name"
     ></TextFieldName>
@@ -10,7 +10,7 @@
     <BaseSelector
       :options="genreOptions"
       name="ジャンル"
-      label="Genre"
+      label="ジャンル"
       icon="mdi-silverware-fork-knife"
       v-model="genre"
     ></BaseSelector>
@@ -19,10 +19,10 @@
       <BaseTextArea
         name="店舗概要"
         rules="required|max:255"
-        vid="overview"
         :counter="255"
-        label="Overview"
+        label="店舗概要"
         icon="mdi-storefront"
+        vid="overview"
         v-model="overview"
       ></BaseTextArea>
     </div>

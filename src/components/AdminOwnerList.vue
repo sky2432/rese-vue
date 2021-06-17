@@ -48,7 +48,7 @@
     </DialogConfirm>
 
     <BaseDialog ref="baseDialog">
-      <template #title>店舗代表者を登録しました</template>
+      <template #title>オーナーを登録しました</template>
     </BaseDialog>
   </v-container>
 </template>

@@ -8,7 +8,7 @@
     <v-file-input
       accept="image/*"
       :error-messages="errors"
-      label="Select Image"
+      label="店舗画像を選択"
       chips
       :value="value"
       @change="$emit('setImage', $event)"

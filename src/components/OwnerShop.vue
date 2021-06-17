@@ -118,15 +118,15 @@
         </v-card-text>
         <v-divider class="my-2"></v-divider>
         <div v-if="imageUrl">
-          <p class="table-header">画像</p>
+          <p class="table-header">店舗画像</p>
           <div class="text-center"><img :src="imageUrl" width="50%" /></div>
         </div>
       </template>
-      <template #actionButton
-        ><v-btn color="amber white--text" @click="createShop"
-          >登録</v-btn
-        ></template
-      >
+      <template #actionButton>
+        <v-btn color="amber white--text" @click="createShop">
+          登録
+        </v-btn>
+      </template>
     </DialogConfirm>
 
     <BaseDialog ref="addShopMessageDialog">
@@ -183,9 +183,9 @@
         <v-card-title class="amber">
           店舗画像の更新
           <v-spacer></v-spacer>
-          <v-btn icon @click="imageDialog = false"
-            ><v-icon>mdi-window-close</v-icon></v-btn
-          >
+          <v-btn icon @click="imageDialog = false">
+            <v-icon>mdi-window-close</v-icon>
+          </v-btn>
         </v-card-title>
         <v-card-text>
           <validation-observer ref="editImageObserver" v-slot="{ invalid }">
