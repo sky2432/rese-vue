@@ -38,13 +38,13 @@
             </tbody>
           </template>
         </v-simple-table>
-        <v-divider class="my-2"></v-divider>
-        <v-subheader class="black--text">店舗概要</v-subheader>
+        <v-divider class="my-1"></v-divider>
+        <p class="table-header">店舗概要</p>
         <v-card-text class="py-0">
           <p>{{ shopOverview }}</p>
         </v-card-text>
         <v-divider class="my-2"></v-divider>
-        <v-subheader class="black--text">住所</v-subheader>
+        <p class="table-header">住所</p>
         <v-card-text class="py-0 mb-2">
           {{ showAddress }}
         </v-card-text>
@@ -100,20 +100,20 @@
     >
       <template #title>店舗登録内容の確認</template>
       <template #additional>
-        <v-divider class="my-2"></v-divider>
-        <v-subheader class="black--text">店舗概要</v-subheader>
+        <v-divider class="my-1"></v-divider>
+        <p class="table-header">店舗概要</p>
         <v-card-text class="py-0">
           {{ shopData.overview }}
         </v-card-text>
         <v-divider class="my-2"></v-divider>
-        <v-subheader class="black--text">住所</v-subheader>
+        <p class="table-header">住所</p>
         <v-card-text class="py-0">
           {{ showConfirmAddress }}
         </v-card-text>
         <v-divider class="my-2"></v-divider>
-        <div v-if="imageUrl" class="text-center">
-          <v-subheader class="black--text">画像</v-subheader>
-          <img :src="imageUrl" width="50%" />
+        <div v-if="imageUrl">
+          <p class="table-header">画像</p>
+          <div class="text-center"><img :src="imageUrl" width="50%" /></div>
         </div>
       </template>
       <template #actionButton

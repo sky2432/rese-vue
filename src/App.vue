@@ -253,4 +253,11 @@ h1 {
 .table-line {
   line-height: 50px;
 }
+
+.table-header {
+  margin: 18px 16px 0 16px;
+  font-weight: bold;
+  font-size: 12px;
+  color: #000000DE;
+}
 </style>

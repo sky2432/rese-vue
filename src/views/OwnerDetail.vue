@@ -202,3 +202,13 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.theme--light.v-data-table
+  > .v-data-table__wrapper
+  > table
+  > tbody
+  > tr:hover:not(.v-data-table__expanded__content):not(.v-data-table__empty-wrapper) {
+  background-color: white;
+}
+</style>

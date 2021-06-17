@@ -57,7 +57,8 @@
     >
       <template #title>メール内容の確認</template>
       <template #additional>
-        <v-subheader class="black--text">本文</v-subheader>
+        <v-divider class="my-1"></v-divider>
+        <p class="table-header">本文</p>
         <v-card-text class="py-0">
           {{ content }}
         </v-card-text>
