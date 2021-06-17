@@ -133,6 +133,13 @@ export default {
   },
 
   methods: {
+    async getShop() {
+      const resData = await shopsRepository.getShop(this.shopId);
+      this.shop = resData.data.data;
+      this.loading = false;
+      this.loaded = true;
+    },
+
     checkTime(sendData) {
       const dateTime = `${sendData.visitsDate} ${sendData.visitsTime}`;
       const result = this.$helpers.$_isBeforeThanNow(dateTime);
@@ -167,13 +174,6 @@ export default {
       };
       await reservationsRepository.createReservation(sendData);
       this.$router.push("/done");
-    },
-
-    async getShop() {
-      const resData = await shopsRepository.getShop(this.shopId);
-      this.shop = resData.data.data;
-      this.loading = false;
-      this.loaded = true;
     },
   },
 };

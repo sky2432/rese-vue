@@ -93,9 +93,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.header-txt {
-  cursor: pointer;
-}
-</style>

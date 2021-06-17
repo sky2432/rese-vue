@@ -85,28 +85,6 @@ export default {
   },
 
   methods: {
-    fileterShops(shops, itemName, target) {
-      let filteredShops = [];
-      for (let i in shops) {
-        let shop = shops[i];
-        if (shop[itemName].name.indexOf(target) !== -1) {
-          filteredShops.push(shop);
-        }
-      }
-      return filteredShops;
-    },
-
-    fileterShopsByKeyword(shops, keyword) {
-      let filteredShops = [];
-      for (let i in shops) {
-        let shop = shops[i];
-        if (shop.name.indexOf(keyword) !== -1) {
-          filteredShops.push(shop);
-        }
-      }
-      return filteredShops;
-    },
-
     changeFavorite(shopId) {
       const result = this.isFavorite(shopId);
       if (result === false) {

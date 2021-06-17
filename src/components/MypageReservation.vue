@@ -170,10 +170,7 @@
         </FormReservation>
       </v-dialog>
 
-      <DialogConfirm
-        ref="dialogConfirm"
-        :tableData="confirmDialogData"
-      >
+      <DialogConfirm ref="dialogConfirm" :tableData="confirmDialogData">
         <template #title>変更内容の確認</template>
         <template #actionButton
           ><v-btn color="amber white--text" @click="updateReservation"
@@ -270,29 +267,6 @@ export default {
   computed: {
     ...mapGetters(["user"]),
 
-    getVisitsDate() {
-      return function(visitedOn) {
-        const date = visitedOn.substr(0, 10);
-        const convertedDate = this.convertDateFormat(date, "YYYY年MM月DD日");
-        return convertedDate;
-      };
-    },
-
-    getVisitsTime() {
-      return function(visitedOn) {
-        const time = visitedOn.substr(11, 5);
-        return time;
-      };
-    },
-
-    isEvaluated() {
-      if (this.evaluation > 0) {
-        return false;
-      } else {
-        return true;
-      }
-    },
-
     showStatusColor() {
       return function(status) {
         if (status === "reserving") {
@@ -327,6 +301,21 @@ export default {
       };
     },
 
+    getVisitsDate() {
+      return function(visitedOn) {
+        const date = visitedOn.substr(0, 10);
+        const convertedDate = this.convertDateFormat(date, "YYYY年MM月DD日");
+        return convertedDate;
+      };
+    },
+
+    getVisitsTime() {
+      return function(visitedOn) {
+        const time = visitedOn.substr(11, 5);
+        return time;
+      };
+    },
+
     showButtonInReserving() {
       return function(reservationStatus) {
         if (reservationStatus === "reserving") {
@@ -354,12 +343,6 @@ export default {
       };
     },
 
-    showEditEvaluationButton() {
-      return function(evaluations) {
-        return this.exisitsUserEvaluation(evaluations);
-      };
-    },
-
     showAddEvaluationButton() {
       return function(evaluations) {
         const result = this.exisitsUserEvaluation(evaluations);
@@ -370,6 +353,20 @@ export default {
         }
       };
     },
+
+    isEvaluated() {
+      if (this.evaluation > 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+
+    showEditEvaluationButton() {
+      return function(evaluations) {
+        return this.exisitsUserEvaluation(evaluations);
+      };
+    },
   },
 
   created() {
@@ -377,84 +374,51 @@ export default {
   },
 
   methods: {
-    convertDateFormat(date, format) {
-      format = format.replace(/YYYY/, date.substr(0, 4));
-      format = format.replace(/MM/, date.substr(5, 2));
-      format = format.replace(/DD/, date.substr(8, 2));
-
-      return format;
-    },
-
-    exisitsUserEvaluation(evaluations) {
-      for (let i in evaluations) {
-        if (this.user.id === evaluations[i].user_id) {
-          return true;
-        }
-      }
-      return false;
-    },
-
-    //評価
-    displayEvaluationDialog(shop) {
-      this.$refs.DialogCreateEvaluation.openDialog();
-      this.selectedShop = shop;
-      this.evaluation = 0;
-    },
-
-    async createEvaluation() {
-      this.$refs.DialogCreateEvaluation.startLoading();
-      const sendData = {
-        user_id: this.user.id,
-        shop_id: this.selectedShop.id,
-        evaluation: this.evaluation,
-      };
-      await evaluationsRepository.createEvaluation(sendData);
-      this.$refs.addEvaluationDialog.openDialog();
-      this.$refs.DialogCreateEvaluation.closeDialog();
-      this.$refs.DialogCreateEvaluation.stopLoading();
-      this.selectedShop = "";
-      this.getUserReservations();
-    },
-
-    displayDialogEditEvaluation(evaluations) {
-      this.$refs.DialogUpdateEvaluation.openDialog();
-      this.serchUserEvaluation(evaluations);
-    },
-
-    serchUserEvaluation(evaluations) {
-      for (let i in evaluations) {
-        if (this.user.id === evaluations[i].user_id) {
-          this.updatedEvaluation = parseFloat(evaluations[i].evaluation);
-          this.selectedEvaluation = evaluations[i];
-        }
-      }
-    },
-
-    async updateEvaluation() {
-      this.$refs.DialogUpdateEvaluation.startLoading();
-      const sendData = {
-        evaluation: this.updatedEvaluation,
-      };
-      await evaluationsRepository.updateEvaluation(
-        this.selectedEvaluation.id,
-        sendData
+    async getUserReservations() {
+      const resData = await reservationsRepository.getUserReservations(
+        this.user.id
       );
-      this.$refs.updateEvaluationDialog.openDialog();
-      this.$refs.DialogUpdateEvaluation.closeDialog();
-      this.$refs.DialogUpdateEvaluation.stopLoading();
-      this.getUserReservations();
+      this.loading = false;
+      const reservations = resData.data.data;
+      if (reservations.length === 0) {
+        this.notExits = true;
+      } else {
+        this.shops = this.sortReservations(reservations);
+        this.loaded = true;
+      }
     },
 
-    async deleteEvaluation() {
-      this.$refs.DialogUpdateEvaluation.startLoading();
-      await evaluationsRepository.deleteEvaluation(this.selectedEvaluation.id);
-      this.$refs.deleteEvaluationDialog.openDialog();
-      this.$refs.DialogUpdateEvaluation.closeDialog();
-      this.$refs.DialogUpdateEvaluation.stopLoading();
-      this.getUserReservations();
+    //予約中の昇順、その後に来店済みとキャンセルの降順で配列を並び替え
+    sortReservations(reservations) {
+      let reserving = [];
+      for (let i in reservations) {
+        if (reservations[i].reservation.status === "reserving") {
+          reserving.push(reservations[i]);
+        }
+      }
+      let visitedAndCancelled = [];
+      for (let i in reservations) {
+        if (
+          reservations[i].reservation.status === "visited" ||
+          reservations[i].reservation.status === "cancelled"
+        ) {
+          visitedAndCancelled.push(reservations[i]);
+        }
+      }
+      visitedAndCancelled.sort(function(a, b) {
+        if (a.reservation.visited_on > b.reservation.visited_on) {
+          return -1;
+        } else {
+          return 1;
+        }
+      });
+      for (let i in visitedAndCancelled) {
+        reserving.push(visitedAndCancelled[i]);
+      }
+      return reserving;
     },
 
-    //予約
+    //予約の変更
     displayDialogUpdateReservation(shop) {
       this.DialogUpdateReservation = true;
       this.setReservationUpdateData(shop);
@@ -543,48 +507,82 @@ export default {
       this.getUserReservations();
     },
 
-    async getUserReservations() {
-      const resData = await reservationsRepository.getUserReservations(
-        this.user.id
-      );
-      this.loading = false;
-      const reservations = resData.data.data;
-      if (reservations.length === 0) {
-        this.notExits = true;
-      } else {
-        this.shops = this.sortReservations(reservations);
-        this.loaded = true;
+    //評価
+    displayEvaluationDialog(shop) {
+      this.$refs.DialogCreateEvaluation.openDialog();
+      this.selectedShop = shop;
+      this.evaluation = 0;
+    },
+
+    async createEvaluation() {
+      this.$refs.DialogCreateEvaluation.startLoading();
+      const sendData = {
+        user_id: this.user.id,
+        shop_id: this.selectedShop.id,
+        evaluation: this.evaluation,
+      };
+      await evaluationsRepository.createEvaluation(sendData);
+      this.$refs.addEvaluationDialog.openDialog();
+      this.$refs.DialogCreateEvaluation.closeDialog();
+      this.$refs.DialogCreateEvaluation.stopLoading();
+      this.selectedShop = "";
+      this.getUserReservations();
+    },
+
+    displayDialogEditEvaluation(evaluations) {
+      this.$refs.DialogUpdateEvaluation.openDialog();
+      this.serchUserEvaluation(evaluations);
+    },
+
+    serchUserEvaluation(evaluations) {
+      for (let i in evaluations) {
+        if (this.user.id === evaluations[i].user_id) {
+          this.updatedEvaluation = parseFloat(evaluations[i].evaluation);
+          this.selectedEvaluation = evaluations[i];
+        }
       }
     },
 
-    //予約中の昇順、その後に来店済みとキャンセルの降順で配列を並び替え
-    sortReservations(reservations) {
-      let reserving = [];
-      for (let i in reservations) {
-        if (reservations[i].reservation.status === "reserving") {
-          reserving.push(reservations[i]);
+    async updateEvaluation() {
+      this.$refs.DialogUpdateEvaluation.startLoading();
+      const sendData = {
+        evaluation: this.updatedEvaluation,
+      };
+      await evaluationsRepository.updateEvaluation(
+        this.selectedEvaluation.id,
+        sendData
+      );
+      this.$refs.updateEvaluationDialog.openDialog();
+      this.$refs.DialogUpdateEvaluation.closeDialog();
+      this.$refs.DialogUpdateEvaluation.stopLoading();
+      this.getUserReservations();
+    },
+
+    async deleteEvaluation() {
+      this.$refs.DialogUpdateEvaluation.startLoading();
+      await evaluationsRepository.deleteEvaluation(this.selectedEvaluation.id);
+      this.$refs.deleteEvaluationDialog.openDialog();
+      this.$refs.DialogUpdateEvaluation.closeDialog();
+      this.$refs.DialogUpdateEvaluation.stopLoading();
+      this.getUserReservations();
+    },
+
+    //Computed用メソッド
+    convertDateFormat(date, format) {
+      format = format.replace(/YYYY/, date.substr(0, 4));
+      format = format.replace(/MM/, date.substr(5, 2));
+      format = format.replace(/DD/, date.substr(8, 2));
+
+      return format;
+    },
+
+    exisitsUserEvaluation(evaluations) {
+      for (let i in evaluations) {
+        if (this.user.id === evaluations[i].user_id) {
+          return true;
         }
       }
-      let visitedAndCancelled = [];
-      for (let i in reservations) {
-        if (
-          reservations[i].reservation.status === "visited" ||
-          reservations[i].reservation.status === "cancelled"
-        ) {
-          visitedAndCancelled.push(reservations[i]);
-        }
-      }
-      visitedAndCancelled.sort(function(a, b) {
-        if (a.reservation.visited_on > b.reservation.visited_on) {
-          return -1;
-        } else {
-          return 1;
-        }
-      });
-      for (let i in visitedAndCancelled) {
-        reserving.push(visitedAndCancelled[i]);
-      }
-      return reserving;
+      return false;
     },
 
     moveShopDeatail(shopId) {

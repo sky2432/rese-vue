@@ -143,57 +143,6 @@ export default {
   },
 
   methods: {
-    openEditDialog(reservationId) {
-      this.$refs.editDialog.openDialog();
-      this.reservationId = reservationId;
-    },
-
-    async changeReservationStatus() {
-      this.$refs.confirmEditDialog.startLoading();
-      const sendData = {
-        status: "notVisited",
-      };
-      await reservationsRepository.updateReservation(
-        this.reservationId,
-        sendData
-      );
-      this.getShopReservations(this.shopId);
-      this.$refs.confirmEditDialog.stopLoading();
-      this.$refs.messageDialog.openDialog();
-      this.closeDialog();
-    },
-
-    closeDialog() {
-      this.$refs.editDialog.closeDialog();
-      this.$refs.confirmEditDialog.closeDialog();
-    },
-
-    stopLoading() {
-      this.loading = false;
-    },
-
-    showReservations(event) {
-      this.showTodayReservations = event;
-      if (this.showTodayReservations === null) {
-        this.sendReservations = this.reservations;
-      }
-      //本日の予約のみを表示
-      if (this.showTodayReservations === true) {
-        let todayReservations = [];
-        const today = this.$helpers.$_createToday();
-        for (let i in this.reservations) {
-          const reservations = this.reservations[i];
-          const reserveDate = this.$helpers.$_createSpecificDate(
-            reservations.reservation.visited_on
-          );
-          if (today.getTime() === reserveDate.getTime()) {
-            todayReservations.push(reservations);
-          }
-        }
-        this.sendReservations = todayReservations;
-      }
-    },
-
     async getShopReservations(shopId) {
       this.loading = true;
       const resData = await reservationsRepository.getShopReservations(shopId);
@@ -228,6 +177,57 @@ export default {
           data[i].reservation.number_of_visiters + "名";
       }
       return data;
+    },
+
+    showReservations(event) {
+      this.showTodayReservations = event;
+      if (this.showTodayReservations === null) {
+        this.sendReservations = this.reservations;
+      }
+      //本日の予約のみを表示
+      if (this.showTodayReservations === true) {
+        let todayReservations = [];
+        const today = this.$helpers.$_createToday();
+        for (let i in this.reservations) {
+          const reservations = this.reservations[i];
+          const reserveDate = this.$helpers.$_createSpecificDate(
+            reservations.reservation.visited_on
+          );
+          if (today.getTime() === reserveDate.getTime()) {
+            todayReservations.push(reservations);
+          }
+        }
+        this.sendReservations = todayReservations;
+      }
+    },
+
+    openEditDialog(reservationId) {
+      this.$refs.editDialog.openDialog();
+      this.reservationId = reservationId;
+    },
+
+    async changeReservationStatus() {
+      this.$refs.confirmEditDialog.startLoading();
+      const sendData = {
+        status: "notVisited",
+      };
+      await reservationsRepository.updateReservation(
+        this.reservationId,
+        sendData
+      );
+      this.getShopReservations(this.shopId);
+      this.$refs.confirmEditDialog.stopLoading();
+      this.$refs.messageDialog.openDialog();
+      this.closeDialog();
+    },
+
+    closeDialog() {
+      this.$refs.editDialog.closeDialog();
+      this.$refs.confirmEditDialog.closeDialog();
+    },
+
+    stopLoading() {
+      this.loading = false;
     },
   },
 };

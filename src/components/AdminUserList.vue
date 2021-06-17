@@ -91,19 +91,18 @@ export default {
       this.deleteId = userId;
     },
 
-    closeDeleteDialog() {
-      this.$refs.dialogWarning.closeDialog();
-      this.$refs.deleteDialog.closeDialog();
-    },
-
     async deleteUser() {
       this.$refs.deleteDialog.startLoading();
       await usersRepository.deleteUser(this.deleteId);
       this.getUsers();
       this.$refs.baseDialog.openDialog();
       this.$refs.deleteDialog.stopLoading();
-      this.$refs.deleteDialog.closeDialog();
+      this.closeDeleteDialog();
+    },
+
+    closeDeleteDialog() {
       this.$refs.dialogWarning.closeDialog();
+      this.$refs.deleteDialog.closeDialog();
     },
   },
 };

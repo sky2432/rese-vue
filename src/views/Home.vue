@@ -155,45 +155,6 @@ export default {
   },
 
   methods: {
-    resetSearchBox() {
-      this.selectedArea = "All area";
-      this.selectedGenre = "All genre";
-      this.keyword = "";
-    },
-
-    fileterShopsByGenre(shops, target) {
-      let filteredShops = [];
-      for (let i in shops) {
-        let shop = shops[i];
-        if (shop.genre.name.indexOf(target) !== -1) {
-          filteredShops.push(shop);
-        }
-      }
-      return filteredShops;
-    },
-
-    fileterShopsByArea(shops, target) {
-      let filteredShops = [];
-      for (let i in shops) {
-        let shop = shops[i];
-        if (shop.main_address.indexOf(target) !== -1) {
-          filteredShops.push(shop);
-        }
-      }
-      return filteredShops;
-    },
-
-    fileterShopsByKeyword(shops, keyword) {
-      let filteredShops = [];
-      for (let i in shops) {
-        let shop = shops[i];
-        if (shop.name.indexOf(keyword) !== -1) {
-          filteredShops.push(shop);
-        }
-      }
-      return filteredShops;
-    },
-
     async getUserFavorites() {
       const resData = await favoritesRepository.getUserFavorites(this.user.id);
       this.favorites = resData.data.data;
@@ -229,6 +190,45 @@ export default {
           this.areaOptions.push(area);
         }
       }
+    },
+
+    fileterShopsByGenre(shops, target) {
+      let filteredShops = [];
+      for (let i in shops) {
+        let shop = shops[i];
+        if (shop.genre.name.indexOf(target) !== -1) {
+          filteredShops.push(shop);
+        }
+      }
+      return filteredShops;
+    },
+
+    fileterShopsByArea(shops, target) {
+      let filteredShops = [];
+      for (let i in shops) {
+        let shop = shops[i];
+        if (shop.main_address.indexOf(target) !== -1) {
+          filteredShops.push(shop);
+        }
+      }
+      return filteredShops;
+    },
+
+    fileterShopsByKeyword(shops, keyword) {
+      let filteredShops = [];
+      for (let i in shops) {
+        let shop = shops[i];
+        if (shop.name.indexOf(keyword) !== -1) {
+          filteredShops.push(shop);
+        }
+      }
+      return filteredShops;
+    },
+
+    resetSearchBox() {
+      this.selectedArea = "All area";
+      this.selectedGenre = "All genre";
+      this.keyword = "";
     },
   },
 };

@@ -100,15 +100,6 @@ export default {
   },
 
   methods: {
-    resetData() {
-      this.name = "";
-      this.genre = null;
-      this.overview = "";
-      this.postalCode = "";
-      this.mainAddress = "";
-      this.optionAddress = "";
-    },
-
     setUpdateData() {
       this.name = this.shopName;
       this.genre = this.shopGenreId;
@@ -138,6 +129,15 @@ export default {
         option_address: this.optionAddress,
       };
       return sendData;
+    },
+
+    resetData() {
+      this.name = "";
+      this.genre = null;
+      this.overview = "";
+      this.postalCode = "";
+      this.mainAddress = "";
+      this.optionAddress = "";
     },
   },
 };

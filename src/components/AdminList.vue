@@ -117,11 +117,6 @@ export default {
       this.loading = false;
     },
 
-    closeRegisterDialog() {
-      this.registerDialog = false;
-      this.$refs.formRegister.resetData();
-    },
-
     confirm(sendData) {
       adminsRepository
         .confirmAdmin(sendData)
@@ -150,8 +145,13 @@ export default {
       this.getAdmins();
       this.$refs.dialogConfirm.stopLoading();
       this.$refs.addMessageDialog.openDialog();
+      this.closeRegisterDialog();
       this.$refs.dialogConfirm.closeDialog();
+    },
+
+    closeRegisterDialog() {
       this.registerDialog = false;
+      this.$refs.formRegister.resetData();
     },
 
     openDeleteDialog(adminId) {

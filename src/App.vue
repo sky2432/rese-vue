@@ -15,15 +15,15 @@ export default {
     document.body.appendChild(script);
   },
 
-  mounted() {
-    var routeInstance = this.$route;
-    this.createTitleDesc(routeInstance);
-  },
-
   watch: {
     $route(routeInstance) {
       this.createTitleDesc(routeInstance);
     },
+  },
+
+  mounted() {
+    var routeInstance = this.$route;
+    this.createTitleDesc(routeInstance);
   },
 
   methods: {
@@ -259,5 +259,9 @@ h1 {
   font-weight: bold;
   font-size: 12px;
   color: #000000DE;
+}
+
+.header-txt{
+  cursor: pointer;
 }
 </style>

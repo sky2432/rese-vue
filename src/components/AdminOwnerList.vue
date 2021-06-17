@@ -94,11 +94,6 @@ export default {
       this.loading = false;
     },
 
-    closeRegisterDialog() {
-      this.registerDialog = false;
-      this.$refs.formRegister.resetData();
-    },
-
     confirm(sendData) {
       ownersRepository
         .confirmOwner(sendData)
@@ -124,11 +119,16 @@ export default {
     async register() {
       this.$refs.dialogConfirm.startLoading();
       await ownersRepository.createOwner(this.registerData);
-      this.$refs.baseDialog.openDialog();
       this.getOwners();
+      this.$refs.baseDialog.openDialog();
+      this.closeRegisterDialog();
       this.$refs.dialogConfirm.closeDialog();
-      this.registerDialog = false;
       this.$refs.dialogConfirm.stopLoading();
+    },
+
+    closeRegisterDialog() {
+      this.registerDialog = false;
+      this.$refs.formRegister.resetData();
     },
 
     moveOwnerDetail(ownerId) {

@@ -363,13 +363,6 @@ export default {
   },
 
   methods: {
-    resetData() {
-      this.$refs.createFormShopInfo.resetData();
-      this.image = null;
-      this.imageUrl = "";
-      this.$refs.addObserver.reset();
-    },
-
     openConfirmDialog(sendData) {
       this.shopData = sendData;
       this.createConfirmDialogData();
@@ -420,6 +413,13 @@ export default {
     },
 
     resetShopData() {
+      this.image = null;
+      this.imageUrl = "";
+      this.$refs.addObserver.reset();
+    },
+
+    formClear() {
+      this.$refs.createFormShopInfo.resetData();
       this.image = null;
       this.imageUrl = "";
       this.$refs.addObserver.reset();
@@ -484,6 +484,10 @@ export default {
 
     closeUpdateDialog() {
       this.updateDialog = false;
+      this.resetAddressForm();
+    },
+
+    resetAddressForm() {
       this.postCode = this.mainAddress = this.optionAddress = "";
       this.$refs.editObserver.reset();
     },

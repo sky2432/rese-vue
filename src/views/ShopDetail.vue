@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TheHeader type="admin" :showTab="true">
+    <TheHeader :showTab="true" type="admin">
       <template #tab>
         <v-tabs slider-color="grey" centered>
           <v-tab @click="currentComponent = 'ShopDetailInfo'">店舗情報</v-tab>
