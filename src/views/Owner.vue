@@ -4,11 +4,11 @@
       <v-sheet class="pa-8" color="amber">
         <v-row class="align-center">
           <v-avatar color="white" size="64">
-            <v-img :src="shop.image_url" v-if="user.shop_present"></v-img>
-            <v-icon v-if="!user.shop_present">mdi-silverware-variant</v-icon>
+            <v-img :src="shop.image_url" v-if="user.has_shop"></v-img>
+            <v-icon v-if="!user.has_shop">mdi-silverware-variant</v-icon>
           </v-avatar>
-          <div class="pl-4" v-if="user.shop_present">{{ shop.name }}</div>
-          <div class="pl-4" v-if="!user.shop_present">Rese</div>
+          <div class="pl-4" v-if="user.has_shop">{{ shop.name }}</div>
+          <div class="pl-4" v-if="!user.has_shop">Rese</div>
         </v-row>
       </v-sheet>
 
@@ -112,7 +112,7 @@ export default {
   },
 
   created() {
-    if (this.user.shop_present) {
+    if (this.user.has_shop) {
       this.getOwnerShop();
     } else {
       this.changeLoading();

@@ -4,9 +4,9 @@
       ref="reservationList"
       :edit="true"
       :shopId="shopId"
-      v-show="user.shop_present"
+      v-show="user.has_shop"
     ></ReservationList>
-    <div class="wrapper" v-if="!user.shop_present">
+    <div class="wrapper" v-if="!user.has_shop">
       <v-card class="pa-16">
         <v-card-text>店舗情報タブより店舗を登録してください</v-card-text>
       </v-card>
@@ -37,7 +37,7 @@ export default {
   //createdの段階だとまだ親のデータが送られてきていないのでwatchで親のデータが来るタイミングを監視して処理を実行している
   watch: {
     shopId() {
-      if (this.user.shop_present) {
+      if (this.user.has_shop) {
         this.getShopReservations();
       }
     },
@@ -45,10 +45,10 @@ export default {
 
   //タブ切り替えした際に発火
   mounted() {
-    if (this.shopId && this.user.shop_present) {
+    if (this.shopId && this.user.has_shop) {
       this.getShopReservations();
     }
-    if (!this.user.shop_present) {
+    if (!this.user.has_shop) {
       this.stopLoading();
     }
   },
