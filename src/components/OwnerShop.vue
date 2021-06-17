@@ -20,7 +20,7 @@
             </v-card>
           </template>
         </v-hover>
-        <v-simple-table>
+        <v-simple-table class="shopInfoTable">
           <template #default>
             <tbody>
               <tr>
@@ -481,5 +481,13 @@ export default {
 <style scoped>
 .table-data {
   color: rgba(0, 0, 0, 0.6);
+}
+
+.theme--light.v-data-table
+  > .v-data-table__wrapper
+  > table
+  > tbody
+  > tr:hover:not(.v-data-table__expanded__content):not(.v-data-table__empty-wrapper) {
+  background-color: white;
 }
 </style>
