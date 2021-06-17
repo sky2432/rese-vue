@@ -350,17 +350,10 @@ export default {
     },
   },
 
-  //タブ切り替えの際に発火
-  mounted() {
-    let timer = setInterval(() => {
-      if (window.google) {
-        clearInterval(timer);
-        if (this.user.shop_present && this.shopMainAddress) {
-          //googleMapMixinのメソッド
-          this.showGoogleMap();
-        }
-      }
-    }, 500);
+  activated() {
+    if (this.user.shop_present) {
+      this.showGoogleMap();
+    }
   },
 
   methods: {

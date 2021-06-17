@@ -7,8 +7,8 @@
       v-show="user.shop_present"
     ></ReservationList>
     <div class="wrapper" v-if="!user.shop_present">
-      <v-card>
-        <v-card-title>店舗情報タブより店舗を登録してください</v-card-title>
+      <v-card class="pa-16">
+        <v-card-text>店舗情報タブより店舗を登録してください</v-card-text>
       </v-card>
     </div>
   </v-container>
