@@ -12,9 +12,7 @@
               <v-img :src="shopImageUrl" height="400px"></v-img>
               <v-fade-transition>
                 <v-overlay color="#036358" absolute v-if="hover">
-                  <v-btn
-                    color="amber white--text"
-                    @click="showImageDialog"
+                  <v-btn color="amber white--text" @click="showImageDialog"
                     >店舗画像の更新</v-btn
                   >
                 </v-overlay>
@@ -52,12 +50,11 @@
         </v-card-text>
         <div id="map" style="height:400px;width:100%;"></div>
         <v-card-actions class="justify-center">
-          <v-btn color="amber white--text" @click="setShopData"
-            >編集</v-btn
-          >
+          <v-btn color="amber white--text" @click="setShopData">編集</v-btn>
         </v-card-actions>
       </v-card>
 
+      <!-- 店舗情報の登録 -->
       <v-card v-if="!existsShop">
         <v-card-title class="amber">店舗情報の登録</v-card-title>
         <v-card-text class="mt-4">
@@ -80,7 +77,11 @@
               </FormShopInfo>
 
               <v-card-actions class="justify-center">
-                <v-btn color="amber white--text" :disabled="invalid" @click="getCreateData">
+                <v-btn
+                  color="amber white--text"
+                  :disabled="invalid"
+                  @click="getCreateData"
+                >
                   確認
                 </v-btn>
               </v-card-actions>
@@ -90,81 +91,7 @@
       </v-card>
     </v-container>
 
-    <v-dialog max-width="700px" v-model="imageDialog">
-      <v-card :loading="imageLoading">
-        <v-card-title class="amber">
-          店舗画像の更新
-          <v-spacer></v-spacer>
-          <v-btn icon @click="imageDialog = false"
-            ><v-icon>mdi-window-close</v-icon></v-btn
-          >
-        </v-card-title>
-        <v-card-text>
-          <validation-observer ref="editImageObserver" v-slot="{ invalid }">
-            <v-form>
-              <FileInputImage
-                :value="image"
-                @setImage="setImage"
-              ></FileInputImage>
-
-              <div v-if="imageUrl" class="text-center">
-                <v-subheader>プレビュー</v-subheader>
-                <img :src="imageUrl" width="50%" />
-              </div>
-              <v-card-actions class="justify-center">
-                <v-btn color="amber" :disabled="invalid" @click="updateImage">
-                  更新
-                </v-btn>
-              </v-card-actions>
-            </v-form>
-          </validation-observer>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-
-    <BaseDialog ref="imageBaseDialog">
-      <template #title>店舗画像を変更しました</template>
-    </BaseDialog>
-
-    <v-dialog max-width="700px" v-model="updateDialog" persistent>
-      <v-card :loading="updateLoading">
-        <v-card-title class="amber">
-          店舗情報の更新
-          <v-spacer></v-spacer>
-          <v-btn icon @click="closeUpdateDialog"
-            ><v-icon>mdi-window-close</v-icon></v-btn
-          >
-        </v-card-title>
-        <v-card-text class="mt-4">
-          <validation-observer ref="editObserver" v-slot="{ invalid }">
-            <v-form v-model="formValid">
-              <FormShopInfo
-                ref="updateFormShopInfo"
-                v-bind="{
-                  shopName: shopName,
-                  shopGenreId: shopGenreId,
-                  shopOverview: shopOverview,
-                  shopPostalCode: shopPostalCode,
-                  shopMainAddress: shopMainAddress,
-                  shopOptionAddress: shopOptionAddress,
-                }"
-                @send-update-data="updateShop"
-              ></FormShopInfo>
-              <v-card-actions class="justify-center">
-                <v-btn color="amber white--text" :disabled="invalid" @click="getUpdateData">
-                  更新
-                </v-btn>
-              </v-card-actions>
-            </v-form>
-          </validation-observer>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-
-    <BaseDialog ref="updateBaseDialog">
-      <template #title>店舗情報を変更しました</template>
-    </BaseDialog>
-
+    <!-- 店舗登録内容の確認 -->
     <DialogConfirm
       ref="dialogConfirm"
       :tableData="confirmDialogData"
@@ -198,6 +125,87 @@
 
     <BaseDialog ref="addShopMessageDialog">
       <template #title>店舗を登録しました</template>
+    </BaseDialog>
+
+    <!-- 店舗情報の更新 -->
+    <v-dialog max-width="700px" v-model="updateDialog" persistent>
+      <v-card :loading="updateLoading">
+        <v-card-title class="amber">
+          店舗情報の更新
+          <v-spacer></v-spacer>
+          <v-btn icon @click="closeUpdateDialog"
+            ><v-icon>mdi-window-close</v-icon></v-btn
+          >
+        </v-card-title>
+        <v-card-text class="mt-4">
+          <validation-observer ref="editObserver" v-slot="{ invalid }">
+            <v-form v-model="formValid">
+              <FormShopInfo
+                ref="updateFormShopInfo"
+                v-bind="{
+                  shopName: shopName,
+                  shopGenreId: shopGenreId,
+                  shopOverview: shopOverview,
+                  shopPostalCode: shopPostalCode,
+                  shopMainAddress: shopMainAddress,
+                  shopOptionAddress: shopOptionAddress,
+                }"
+                @send-update-data="updateShop"
+              ></FormShopInfo>
+              <v-card-actions class="justify-center">
+                <v-btn
+                  color="amber white--text"
+                  :disabled="invalid"
+                  @click="getUpdateData"
+                >
+                  更新
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </validation-observer>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+
+    <BaseDialog ref="updateBaseDialog">
+      <template #title>店舗情報を更新しました</template>
+    </BaseDialog>
+
+    <!-- 店舗画像の更新 -->
+    <v-dialog max-width="700px" v-model="imageDialog" persistent>
+      <v-card :loading="imageLoading">
+        <v-card-title class="amber">
+          店舗画像の更新
+          <v-spacer></v-spacer>
+          <v-btn icon @click="imageDialog = false"
+            ><v-icon>mdi-window-close</v-icon></v-btn
+          >
+        </v-card-title>
+        <v-card-text>
+          <validation-observer ref="editImageObserver" v-slot="{ invalid }">
+            <v-form>
+              <FileInputImage
+                :value="image"
+                @setImage="setImage"
+              ></FileInputImage>
+
+              <div v-if="imageUrl" class="text-center">
+                <v-subheader>プレビュー</v-subheader>
+                <img :src="imageUrl" width="50%" />
+              </div>
+              <v-card-actions class="justify-center">
+                <v-btn color="amber" :disabled="invalid" @click="updateImage">
+                  更新
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </validation-observer>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+
+    <BaseDialog ref="imageBaseDialog">
+      <template #title>店舗画像を更新しました</template>
     </BaseDialog>
   </div>
 </template>

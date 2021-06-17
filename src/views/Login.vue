@@ -4,7 +4,7 @@
     <v-main>
       <div class="wrapper">
         <div>
-          <v-card tile>
+          <v-card tile width="600px">
             <v-tabs>
               <v-tab @click="currentComponent = 'LoginUser'">ユーザー</v-tab>
               <v-tab @click="currentComponent = 'LoginOwner'">オーナー</v-tab>

@@ -29,10 +29,10 @@ export default {
   //タブ切り替えした際に発火
   mounted() {
     if (this.shopId && this.existsShop) {
-      this.$refs.reservationList.getShopReservations(this.shopId);
+      this.getShopReservations();
     }
     if (!this.existsShop) {
-      this.$refs.reservationList.stopLoading();
+      this.stopLoading();
     }
   },
 
@@ -41,13 +41,23 @@ export default {
   watch: {
     shopId() {
       if (this.existsShop) {
-        this.$refs.reservationList.getShopReservations(this.shopId);
+        this.getShopReservations();
       }
     },
     existsShop() {
       if (!this.existsShop) {
-        this.$refs.reservationList.stopLoading();
+        this.stopLoading();
       }
+    },
+  },
+
+  methods: {
+    getShopReservations() {
+      this.$refs.reservationList.getShopReservations(this.shopId);
+    },
+
+    stopLoading() {
+      this.$refs.reservationList.stopLoading();
     },
   },
 };
