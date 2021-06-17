@@ -56,7 +56,13 @@
 
       <!-- 店舗情報の登録 -->
       <v-card v-if="!user.shop_present">
-        <v-card-title class="amber">店舗情報の登録</v-card-title>
+        <v-card-title class="amber">
+          店舗情報の登録
+          <v-spacer></v-spacer>
+          <v-btn @click="resetData">
+            フォームクリア
+          </v-btn>
+        </v-card-title>
         <v-card-text class="mt-4">
           <validation-observer ref="addObserver" v-slot="{ invalid }">
             <v-form v-model="formValid">
@@ -357,6 +363,13 @@ export default {
   },
 
   methods: {
+    resetData() {
+      this.$refs.createFormShopInfo.resetData();
+      this.image = null;
+      this.imageUrl = "";
+      this.$refs.addObserver.reset();
+    },
+
     openConfirmDialog(sendData) {
       this.shopData = sendData;
       this.createConfirmDialogData();
