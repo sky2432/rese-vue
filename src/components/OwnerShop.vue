@@ -4,7 +4,7 @@
       <v-progress-circular color="amber" indeterminate></v-progress-circular>
     </div>
     <v-container class="py-4 px-6" fluid v-show="loaded">
-      <v-card v-if="existsShop">
+      <v-card v-if="user.shop_present">
         <v-card-title class="amber">店舗情報</v-card-title>
         <v-hover>
           <template #default="{ hover }">
@@ -55,7 +55,7 @@
       </v-card>
 
       <!-- 店舗情報の登録 -->
-      <v-card v-if="!existsShop">
+      <v-card v-if="!user.shop_present">
         <v-card-title class="amber">店舗情報の登録</v-card-title>
         <v-card-text class="mt-4">
           <validation-observer ref="addObserver" v-slot="{ invalid }">
@@ -211,6 +211,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import "../plugins/veeValidate.js";
 import config from "../config/const.js";
 import shopsRepository from "../repositories/shopsRepository.js";
@@ -269,9 +270,6 @@ export default {
       type: String,
       require: true,
     },
-    existsShop: {
-      type: Boolean,
-    },
     loading: {
       type: Boolean,
     },
@@ -295,20 +293,9 @@ export default {
     };
   },
 
-  //タブ切り替えの際に発火
-  mounted() {
-    let timer = setInterval(() => {
-      if (window.google) {
-        clearInterval(timer);
-        if (this.existsShop === true && this.shopMainAddress) {
-          //googleMapMixinのメソッド
-          this.showGoogleMap();
-        }
-      }
-    }, 500);
-  },
-
   computed: {
+    ...mapGetters(["user"]),
+
     showArea() {
       if (this.shopMainAddress) {
         return this.shopMainAddress.substr(0, 3);
@@ -363,6 +350,19 @@ export default {
     },
   },
 
+  //タブ切り替えの際に発火
+  mounted() {
+    let timer = setInterval(() => {
+      if (window.google) {
+        clearInterval(timer);
+        if (this.user.shop_present && this.shopMainAddress) {
+          //googleMapMixinのメソッド
+          this.showGoogleMap();
+        }
+      }
+    }, 500);
+  },
+
   methods: {
     openConfirmDialog(sendData) {
       this.shopData = sendData;
@@ -390,7 +390,8 @@ export default {
     async createShop() {
       this.$refs.dialogConfirm.startLoading();
       const formData = this.createFormData();
-      await shopsRepository.createShop(formData);
+      const resData = await shopsRepository.createShop(formData);
+      this.$store.dispatch("updateUser", resData.data.data);
       this.resetShopData();
       this.$emit("reload");
       this.$refs.dialogConfirm.stopLoading();

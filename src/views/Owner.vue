@@ -4,11 +4,11 @@
       <v-sheet class="pa-8" color="amber">
         <v-row class="align-center">
           <v-avatar color="white" size="64">
-            <v-img :src="shop.image_url" v-if="existsShop"></v-img>
-            <v-icon v-if="!existsShop">mdi-silverware-variant</v-icon>
+            <v-img :src="shop.image_url" v-if="user.shop_present"></v-img>
+            <v-icon v-if="!user.shop_present">mdi-silverware-variant</v-icon>
           </v-avatar>
-          <div class="pl-4" v-if="existsShop">{{ shop.name }}</div>
-          <div class="pl-4" v-if="!existsShop">Rese</div>
+          <div class="pl-4" v-if="user.shop_present">{{ shop.name }}</div>
+          <div class="pl-4" v-if="!user.shop_present">Rese</div>
         </v-row>
       </v-sheet>
 
@@ -71,7 +71,6 @@
             shopPostalCode: shop.postal_code,
             shopMainAddress: shop.main_address,
             shopOptionAddress: shop.option_address,
-            existsShop: existsShop,
             loading: loading,
             loaded: loaded,
           }"
@@ -101,9 +100,8 @@ export default {
     return {
       shop: "",
       shopGenre: "",
-      existsShop: true,
-      loading: true,
-      loaded: false,
+      loading: null,
+      loaded: null,
       selectedItem: 0,
       currentComponent: OwnerReservation,
     };
@@ -114,7 +112,11 @@ export default {
   },
 
   created() {
-    this.getOwnerShop();
+    if (this.user.shop_present) {
+      this.getOwnerShop();
+    } else {
+      this.changeLoading();
+    }
   },
 
   methods: {
@@ -122,17 +124,11 @@ export default {
       this.loading = true;
       this.loaded = false;
       const resData = await ownersRepository.getOwnerShop(this.user.id);
-      if (resData.status === 200) {
-        const shop = resData.data.data;
-        this.shop = shop;
-        this.shopGenre = shop.genre;
-        this.existsShop = true;
-        this.changeLoading();
-      }
-      if (resData.status === 204) {
-        this.existsShop = false;
-        this.changeLoading();
-      }
+      const shop = resData.data.data;
+      this.shop = shop;
+      this.shopGenre = shop.genre;
+      this.loading = false;
+      this.loaded = true;
     },
 
     changeLoading() {
