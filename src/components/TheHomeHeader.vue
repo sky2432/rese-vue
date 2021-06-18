@@ -12,7 +12,7 @@
         <v-col cols="10">
           <v-row class="ma-0 flex-nowrap justify-end">
             <slot name="search"></slot>
-            <v-menu offset-y >
+            <v-menu offset-y>
               <template v-slot:activator="{ on, attrs }">
                 <v-btn class="white align-self-center" v-bind="attrs" v-on="on">
                   <span class="amber--text">{{ user.name }}</span>

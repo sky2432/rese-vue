@@ -351,9 +351,11 @@ export default {
     },
 
     showConfirmAddress() {
+      console.log(this.shopData.option_address);
       if (
         this.shopData.option_address === undefined ||
-        this.shopData.option_address === "none"
+        this.shopData.option_address === "" ||
+        this.shopData.option_address === null
       ) {
         return this.shopData.postal_code + this.shopData.main_address;
       }
@@ -416,7 +418,7 @@ export default {
       const formData = new FormData();
       this.shopData["owner_id"] = this.$store.getters.user.id;
       if (this.shopData.option_address === undefined) {
-        this.shopData.option_address = "none";
+        this.shopData.option_address = "";
       }
       const data = JSON.stringify(this.shopData);
 
