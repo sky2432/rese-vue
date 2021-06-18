@@ -48,7 +48,9 @@
                         </tr>
                         <tr>
                           <th>エリア</th>
-                          <td>{{ owner.shop.main_address.substr(0, 3) }}</td>
+                          <td>
+                            {{ $helpers.$_showArea(owner.shop.main_address) }}
+                          </td>
                         </tr>
                         <tr>
                           <th>ジャンル</th>
@@ -99,18 +101,12 @@
           >
             <template #title>本当にこのオーナーを削除しますか？</template>
             <template #leftButton>
-              <v-btn
-                color="red white--text"
-                @click="deleteOwner"
-              >
+              <v-btn color="red white--text" @click="deleteOwner">
                 削除
               </v-btn>
             </template>
             <template #baseButton>
-              <v-btn
-                color="amber white--text"
-                @click="closeDeleteDialog"
-              >
+              <v-btn color="amber white--text" @click="closeDeleteDialog">
                 キャンセル
               </v-btn>
             </template>

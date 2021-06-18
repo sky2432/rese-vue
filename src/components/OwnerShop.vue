@@ -323,6 +323,7 @@ export default {
       confirmDialogData: [],
       shopData: "",
     };
+    
   },
 
   computed: {
@@ -330,7 +331,7 @@ export default {
 
     showArea() {
       if (this.shopMainAddress) {
-        return this.shopMainAddress.substr(0, 3);
+        return this.$helpers.$_showArea(this.shopMainAddress);
       }
       return "";
     },
@@ -351,7 +352,6 @@ export default {
     },
 
     showConfirmAddress() {
-      console.log(this.shopData.option_address);
       if (
         this.shopData.option_address === undefined ||
         this.shopData.option_address === "" ||

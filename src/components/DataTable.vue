@@ -32,7 +32,7 @@
         {{ item.name }}
       </template>
       <template v-slot:[`item.main_address`]="{ item }" v-if="area">
-        {{ item.main_address.substr(0, 3) }}
+        {{ $helpers.$_showArea(item.main_address) }}
       </template>
       <template v-slot:[`item.detail`]="{ item }" v-if="detail">
         <v-btn color="amber white--text" outlined @click="movePage(item.id)"

@@ -35,7 +35,7 @@
               </div>
             </v-row>
             <p class="mt-5" v-if="shop">
-              エリア：{{ shop.main_address.substr(0, 3) }}<br />ジャンル：{{
+              エリア：{{ $helpers.$_showArea(shop.main_address) }}<br />ジャンル：{{
                 shop.genre.name
               }}
             </p>

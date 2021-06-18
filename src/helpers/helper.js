@@ -1,4 +1,5 @@
 import router from "../router/index";
+import config from "../config/const.js";
 
 export default {
   $_movePageWithPram(pageName, paramName, param) {
@@ -57,5 +58,17 @@ export default {
   $_stringInsert(string, index, value) {
     var res = string.slice(0, index) + value + string.slice(index);
     return res;
+  },
+
+  $_showArea(mainAddress) {
+    let index;
+    for (let i in config.Prefectures) {
+      let result = mainAddress.indexOf(config.Prefectures[i]);
+      if (result !== -1) {
+        index = i;
+        break;
+      }
+    }
+    return config.Prefectures[index];
   },
 };
