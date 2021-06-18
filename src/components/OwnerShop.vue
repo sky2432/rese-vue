@@ -4,7 +4,7 @@
       <v-progress-circular color="amber" indeterminate></v-progress-circular>
     </div>
     <v-container class="py-4 px-6" fluid v-show="loaded">
-      <v-card v-if="user.has_shop">
+      <v-card v-if="user.is_shop">
         <v-card-title class="amber">店舗情報</v-card-title>
         <v-hover>
           <template #default="{ hover }">
@@ -55,7 +55,7 @@
       </v-card>
 
       <!-- 店舗情報の登録 -->
-      <v-card v-if="!user.has_shop">
+      <v-card v-if="!user.is_shop">
         <v-card-title class="amber">
           店舗情報の登録
           <v-spacer></v-spacer>
@@ -323,7 +323,6 @@ export default {
       confirmDialogData: [],
       shopData: "",
     };
-    
   },
 
   computed: {
@@ -385,7 +384,7 @@ export default {
   },
 
   activated() {
-    if (this.user.has_shop) {
+    if (this.user.is_shop) {
       this.showGoogleMap();
     }
   },
