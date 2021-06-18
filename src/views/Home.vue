@@ -2,7 +2,7 @@
   <div>
     <TheHomeHeader>
       <template #search>
-        <v-row>
+        <v-row class="ma-0">
           <v-col cols="2" class="px-0">
             <v-select
               class="rounded-r-0"
