@@ -16,6 +16,11 @@
       <template #title>
         店舗リスト
       </template>
+      <template #addButton>
+        <v-btn @click="getShops">
+          <v-icon>mdi-autorenew</v-icon>
+        </v-btn>
+      </template>
       <template #noData>店舗はありません</template>
       <template #noResults>検索条件に当てはまる店舗はありません</template>
     </DataTable>
@@ -51,6 +56,7 @@ export default {
 
   methods: {
     async getShops() {
+      this.loading = true;
       const resData = await shopsRepository.getShops();
       this.shops = resData.data.data;
       this.loading = false;

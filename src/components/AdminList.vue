@@ -20,6 +20,9 @@
         <v-btn @click="registerDialog = true">
           管理者登録
         </v-btn>
+        <v-btn class="ml-2" @click="getAdmins">
+          <v-icon>mdi-autorenew</v-icon>
+        </v-btn>
       </template>
       <template #noData>管理者はいません</template>
       <template #noResults>検索条件に当てはまる管理者はいません</template>
@@ -37,10 +40,7 @@
       </FormRegister>
     </v-dialog>
 
-    <DialogConfirm
-      ref="dialogConfirm"
-      :tableData="confirmDialogData"
-    >
+    <DialogConfirm ref="dialogConfirm" :tableData="confirmDialogData">
       <template #title>登録内容の確認</template>
       <template #actionButton
         ><v-btn color="amber white--text" @click="register"
@@ -112,6 +112,7 @@ export default {
 
   methods: {
     async getAdmins() {
+      this.loading = true;
       const resData = await adminsRepository.getAdmins();
       this.admins = resData.data.data;
       this.loading = false;

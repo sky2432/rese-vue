@@ -35,10 +35,7 @@
         {{ item.main_address.substr(0, 3) }}
       </template>
       <template v-slot:[`item.detail`]="{ item }" v-if="detail">
-        <v-btn
-          color="amber white--text"
-          outlined
-          @click="movePage(item.id)"
+        <v-btn color="amber white--text" outlined @click="movePage(item.id)"
           >詳細</v-btn
         >
       </template>

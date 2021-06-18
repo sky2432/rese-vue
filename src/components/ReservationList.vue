@@ -18,8 +18,8 @@
         <span v-if="ownerType">予約一覧</span>
         <v-switch
           class="pa-3"
-          :value="showTodayReservations"
           label="本日の予約"
+          :value="showTodayReservations"
           v-if="detailType"
           v-model="showTodayReservations"
           @change="showReservations($event)"
@@ -27,23 +27,19 @@
       </template>
       <template #top v-if="ownerType">
         <v-row class="ma-0">
-          <v-btn
-            class="ml-2"
-            style="margin-top: 22px"
-            color="grey darken-1"
-            outlined
-            @click="getShopReservations(shopId)"
-          >
-            <v-icon>mdi-autorenew</v-icon>
-          </v-btn>
           <v-switch
             class="pa-3"
-            :value="showTodayReservations"
             label="本日の予約"
+            :value="showTodayReservations"
             v-model="showTodayReservations"
             @change="showReservations($event)"
           ></v-switch>
         </v-row>
+      </template>
+      <template #addButton>
+        <v-btn @click="getShopReservations(shopId)">
+          <v-icon>mdi-autorenew</v-icon>
+        </v-btn>
       </template>
       <template #noData>予約はありません</template>
       <template #noResults>検索条件に当てはまる予約はありません</template>

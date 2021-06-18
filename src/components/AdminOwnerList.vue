@@ -18,6 +18,9 @@
         <v-btn @click="registerDialog = true">
           オーナー登録
         </v-btn>
+        <v-btn class="ml-2" @click="getOwners">
+          <v-icon>mdi-autorenew</v-icon>
+        </v-btn>
       </template>
       <template #noData>オーナーはいません</template>
       <template #noResults>検索条件に当てはまるオーナーはいません</template>
@@ -35,10 +38,7 @@
       </FormRegister>
     </v-dialog>
 
-    <DialogConfirm
-      ref="dialogConfirm"
-      :tableData="confirmDialogData"
-    >
+    <DialogConfirm ref="dialogConfirm" :tableData="confirmDialogData">
       <template #title>登録内容の確認</template>
       <template #actionButton
         ><v-btn color="amber white--text" @click="register"
@@ -89,6 +89,7 @@ export default {
 
   methods: {
     async getOwners() {
+      this.loading = true;
       const resData = await ownersRepository.getOwners();
       this.owners = resData.data.data;
       this.loading = false;

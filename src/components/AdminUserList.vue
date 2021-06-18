@@ -14,6 +14,11 @@
       <template #title>
         ユーザーリスト
       </template>
+      <template #addButton>
+        <v-btn class="ml-2" @click="getUsers">
+          <v-icon>mdi-autorenew</v-icon>
+        </v-btn>
+      </template>
       <template #noData>ユーザーはいません</template>
       <template #noResults>検索条件に当てはまるユーザーはいません</template>
     </DataTable>
@@ -81,6 +86,7 @@ export default {
 
   methods: {
     async getUsers() {
+      this.loading = true;
       const resData = await usersRepository.getUsers();
       this.users = resData.data.data;
       this.loading = false;
