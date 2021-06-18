@@ -59,7 +59,7 @@
         <v-card-title class="amber">
           店舗情報の登録
           <v-spacer></v-spacer>
-          <v-btn @click="formClear">
+          <v-btn @click="resetShopData">
             フォームクリア
           </v-btn>
         </v-card-title>
@@ -139,7 +139,7 @@
         <v-card-title class="amber">
           店舗情報の更新
           <v-spacer></v-spacer>
-          <v-btn icon @click="closeUpdateDialog"
+          <v-btn icon @click="updateDialog = false"
             ><v-icon>mdi-window-close</v-icon></v-btn
           >
         </v-card-title>
@@ -156,7 +156,7 @@
                   shopMainAddress: shopMainAddress,
                   shopOptionAddress: shopOptionAddress,
                 }"
-                @send-update-data="updateShop"
+                @send-update-data="openConfirmUpdateDialog"
               ></FormShopInfo>
               <v-card-actions class="justify-center">
                 <v-btn
@@ -164,7 +164,7 @@
                   :disabled="invalid"
                   @click="getUpdateData"
                 >
-                  更新
+                  確認
                 </v-btn>
               </v-card-actions>
             </v-form>
@@ -172,6 +172,32 @@
         </v-card-text>
       </v-card>
     </v-dialog>
+
+    <DialogConfirm
+      ref="dialogConfirmUpdateShop"
+      :tableData="confirmDialogData"
+      color="color: rgba(0, 0, 0, 0.6);"
+      maxWidth="700px"
+    >
+      <template #title>更新内容の確認</template>
+      <template #additional>
+        <v-divider class="my-1"></v-divider>
+        <p class="table-header">店舗概要</p>
+        <v-card-text class="py-0">
+          {{ shopData.overview }}
+        </v-card-text>
+        <v-divider class="my-2"></v-divider>
+        <p class="table-header">住所</p>
+        <v-card-text class="py-0">
+          {{ showConfirmAddress }}
+        </v-card-text>
+      </template>
+      <template #actionButton>
+        <v-btn color="amber white--text" @click="updateShop">
+          更新
+        </v-btn>
+      </template>
+    </DialogConfirm>
 
     <BaseDialog ref="updateBaseDialog">
       <template #title>店舗情報を更新しました</template>
@@ -363,23 +389,11 @@ export default {
   },
 
   methods: {
+    //店舗情報の登録
     openConfirmDialog(sendData) {
       this.shopData = sendData;
       this.createConfirmDialogData();
       this.$refs.dialogConfirm.openDialog();
-    },
-
-    createConfirmDialogData() {
-      this.confirmDialogData = [
-        {
-          header: "店舗名",
-          data: this.shopData.name,
-        },
-        {
-          header: "ジャンル",
-          data: config.genreOptions[this.shopData.genre_id - 1].state,
-        },
-      ];
     },
 
     getCreateData() {
@@ -412,19 +426,6 @@ export default {
       return formData;
     },
 
-    resetShopData() {
-      this.image = null;
-      this.imageUrl = "";
-      this.$refs.addObserver.reset();
-    },
-
-    formClear() {
-      this.$refs.createFormShopInfo.resetData();
-      this.image = null;
-      this.imageUrl = "";
-      this.$refs.addObserver.reset();
-    },
-
     showImageDialog() {
       this.imageDialog = true;
       if (this.image) {
@@ -448,6 +449,7 @@ export default {
       }
     },
 
+    // 店舗画像の更新
     async updateImage() {
       this.imageLoading = true;
       const formData = new FormData();
@@ -459,6 +461,7 @@ export default {
       this.$refs.imageBaseDialog.openDialog();
     },
 
+    //店舗情報の更新
     setShopData() {
       this.updateDialog = true;
       let timer = setInterval(() => {
@@ -473,23 +476,46 @@ export default {
       this.$refs.updateFormShopInfo.sendUpdateData();
     },
 
-    async updateShop(sendData) {
-      this.updateLoading = true;
-      await shopsRepository.updateShop(this.shopId, sendData);
+    openConfirmUpdateDialog(sendData) {
+      this.shopData = sendData;
+      this.createConfirmDialogData();
+      this.$refs.dialogConfirmUpdateShop.openDialog();
+    },
+
+    async updateShop() {
+      this.$refs.dialogConfirmUpdateShop.startLoading();
+      await shopsRepository.updateShop(this.shopId, this.shopData);
       this.$emit("reload");
-      this.updateDialog = false;
-      this.updateLoading = false;
+      this.$refs.dialogConfirmUpdateShop.stopLoading();
       this.$refs.updateBaseDialog.openDialog();
-    },
-
-    closeUpdateDialog() {
       this.updateDialog = false;
-      this.resetAddressForm();
+      this.$refs.dialogConfirmUpdateShop.closeDialog();
     },
 
-    resetAddressForm() {
-      this.postCode = this.mainAddress = this.optionAddress = "";
-      this.$refs.editObserver.reset();
+    createConfirmDialogData() {
+      this.confirmDialogData = [
+        {
+          header: "店舗名",
+          data: this.shopData.name,
+        },
+        {
+          header: "ジャンル",
+          data: config.genreOptions[this.shopData.genre_id - 1].state,
+        },
+      ];
+    },
+
+    resetShopData() {
+      this.$refs.createFormShopInfo.resetData();
+      this.resetForm();
+    },
+
+    resetForm() {
+      this.image = null;
+      this.imageUrl = "";
+      this.shopData = "";
+      this.confirmDialogData = [];
+      this.$refs.addObserver.reset();
     },
   },
 };
