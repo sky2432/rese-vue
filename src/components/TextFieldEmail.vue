@@ -5,6 +5,7 @@
     vid="email"
     icon="mdi-email"
     label="E-mail"
+    :mode="mode"
     :value="value"
     @input="$emit('input', $event)"
   ></BaseTextField>
@@ -20,6 +21,9 @@ export default {
 
   props: {
     value: {
+      type: String,
+    },
+    mode: {
       type: String,
     },
   },

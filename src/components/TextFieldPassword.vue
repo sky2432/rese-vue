@@ -3,6 +3,7 @@
     v-slot="{ errors }"
     :name="name"
     rules="required|min:4|max:255|alpha_num"
+    :mode="mode"
     :vid="vid"
   >
     <v-text-field
@@ -36,6 +37,9 @@ export default {
     vid: {
       type: String,
       default: "password",
+    },
+    mode: {
+      type: String,
     },
   },
 

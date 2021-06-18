@@ -3,7 +3,6 @@
     v-slot="{ errors }"
     :name="name"
     :rules="rules"
-    :mode="mode"
     :vid="vid"
   >
     <v-textarea
@@ -51,9 +50,6 @@ export default {
       type: String,
     },
     value: {
-      type: String,
-    },
-    mode: {
       type: String,
     },
   },

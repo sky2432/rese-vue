@@ -6,9 +6,9 @@
     <v-card-text class="mt-4 pb-0">
       <validation-observer ref="observer" v-slot="{ invalid }">
         <v-form v-model="formValid">
-          <TextFieldEmail v-model="email"></TextFieldEmail>
+          <TextFieldEmail mode="eager" v-model="email"></TextFieldEmail>
 
-          <TextFieldPassword v-model="password"></TextFieldPassword>
+          <TextFieldPassword mode="eager" v-model="password"></TextFieldPassword>
 
           <v-card-actions class="justify-center">
             <v-btn color="amber white--text" :disabled="invalid" @click="login">

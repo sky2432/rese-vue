@@ -9,7 +9,7 @@
         <v-form v-model="formValid">
           <TextFieldName v-model="name"></TextFieldName>
 
-          <TextFieldEmail v-model="email"></TextFieldEmail>
+          <TextFieldEmail mode="eager" v-model="email"></TextFieldEmail>
 
           <TextFieldPassword v-model="password"></TextFieldPassword>
 

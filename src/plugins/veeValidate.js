@@ -20,7 +20,7 @@ import {
 Vue.component("ValidationObserver", ValidationObserver);
 Vue.component("ValidationProvider", ValidationProvider);
 
-setInteractionMode("eager");
+setInteractionMode("aggressive");
 
 extend("required", {
   ...required,

@@ -4,7 +4,6 @@
       name="店名"
       label="店名"
       icon="mdi-store"
-      mode="aggressive"
       v-model="name"
     ></TextFieldName>
 
@@ -23,7 +22,6 @@
         :counter="255"
         label="店舗概要"
         icon="mdi-storefront"
-        mode="aggressive"
         vid="overview"
         v-model="overview"
       ></BaseTextArea>
