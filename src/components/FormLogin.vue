@@ -8,11 +8,22 @@
         <v-form v-model="formValid">
           <TextFieldEmail mode="eager" v-model="email"></TextFieldEmail>
 
-          <TextFieldPassword mode="eager" v-model="password"></TextFieldPassword>
+          <TextFieldPassword
+            mode="eager"
+            v-model="password"
+          ></TextFieldPassword>
 
           <v-card-actions class="justify-center">
             <v-btn color="amber white--text" :disabled="invalid" @click="login">
               ログイン
+            </v-btn>
+            <v-btn
+              class="ml-2"
+              color="amber white--text"
+              v-if="guestLoginButton"
+              @click="guestLogin"
+            >
+              ゲストログイン
             </v-btn>
           </v-card-actions>
         </v-form>
@@ -36,6 +47,10 @@ export default {
     titleClass: {
       type: String,
     },
+    guestLoginButton: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data() {
@@ -53,6 +68,14 @@ export default {
         password: this.password,
       };
       this.$emit("login", sendData);
+    },
+
+    guestLogin() {
+      const sendData = {
+        email: "guest@guest.com",
+        password: "1234",
+      };
+      this.$emit("guest-login", sendData);
     },
   },
 };

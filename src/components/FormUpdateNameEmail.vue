@@ -13,7 +13,11 @@
             <TextFieldEmail v-model="email"></TextFieldEmail>
 
             <v-card-actions class="justify-center">
-              <v-btn color="amber white--text" :disabled="invalid" @click="updateUser">
+              <v-btn
+                color="amber white--text"
+                :disabled="disableButton(invalid)"
+                @click="updateUser"
+              >
                 更新
               </v-btn>
             </v-card-actions>
@@ -54,6 +58,15 @@ export default {
 
   computed: {
     ...mapGetters(["user", "role"]),
+
+    disableButton() {
+      return function(invalid) {
+        if(this.user.email === "guest@guest.com") {
+          return true;
+        }
+        return invalid;
+      };
+    },
   },
 
   created() {

@@ -1,5 +1,11 @@
 <template>
-  <FormLogin ref="formLogin" titleClass="amber" @login="login">
+  <FormLogin
+    ref="formLogin"
+    titleClass="amber"
+    :guestLoginButton="true"
+    @login="login"
+    @guest-login="guestLogin"
+  >
     <template #title>UserLogin</template>
   </FormLogin>
 </template>
@@ -23,6 +29,12 @@ export default {
         .catch((e) => {
           this.$refs.formLogin.$refs.observer.setErrors(e.response.data.errors);
         });
+    },
+
+    guestLogin(sendData) {
+      authRepository.login("user", sendData).then((response) => {
+        this.$store.dispatch("login", response.data);
+      });
     },
   },
 };

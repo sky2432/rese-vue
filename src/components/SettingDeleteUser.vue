@@ -2,29 +2,37 @@
   <div>
     <v-card class="setting-card" tile>
       <div class="setting-content">
-        <v-alert
-          class="text-center mx-auto mb-0"
-          type="error"
-          width="85%"
-          prominent
-          text
-        >
-          <h3>必ずご確認ください</h3>
-          <p>アカウントを削除すると、これまでのデータはすべて削除されます。</p>
-          <v-btn class="mt-2" color="red" @click="$refs.baseDialog.openDialog()"
-            >アカウントを削除</v-btn
+        <div>
+          <v-alert
+            class="text-center mx-auto mb-0"
+            type="error"
+            width="85%"
+            text
           >
-        </v-alert>
-
-        <BaseDialog ref="baseDialog" baseButtonText="キャンセル">
-          <template #title>本当にアカウントを削除しますか？</template>
-          <template #leftButton>
-            <v-btn color="red white--text" @click="deleteUser">
-              削除
-            </v-btn>
-          </template>
-        </BaseDialog>
+            <h3>必ずご確認ください</h3>
+            <p class="mb-0 mt-1">
+              アカウントを削除すると、これまでのデータはすべて削除されます。
+            </p>
+          </v-alert>
+          <div class="text-center">
+            <v-btn
+              class="mt-2"
+              color="red white--text"
+              :disabled="disableButton"
+              @click="$refs.baseDialog.openDialog()"
+              >アカウントを削除</v-btn
+            >
+          </div>
+        </div>
       </div>
+      <BaseDialog ref="baseDialog" baseButtonText="キャンセル">
+        <template #title>本当にアカウントを削除しますか？</template>
+        <template #leftButton>
+          <v-btn color="red white--text" @click="deleteUser">
+            削除
+          </v-btn>
+        </template>
+      </BaseDialog>
     </v-card>
   </div>
 </template>
@@ -36,6 +44,13 @@ import usersRepository from "../repositories/usersRepository.js";
 export default {
   computed: {
     ...mapGetters(["user"]),
+
+    disableButton() {
+      if (this.user.email === "guest@guest.com") {
+        return true;
+      }
+      return false;
+    },
   },
 
   methods: {

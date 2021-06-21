@@ -35,7 +35,7 @@ export default {
         document.title = "Rese";
       }
       if (routeInstance.meta.desc) {
-        var setDesc = routeInstance.meta.desc + " | MIYACHIN VUE";
+        var setDesc = routeInstance.meta.desc + " | Rese";
         document
           .querySelector("meta[name='description']")
           .setAttribute("content", setDesc);
