@@ -41,7 +41,10 @@
     <DialogConfirm ref="dialogConfirm" :tableData="confirmDialogData">
       <template #title>登録内容の確認</template>
       <template #actionButton
-        ><v-btn color="amber white--text" @click="register"
+        ><v-btn
+          color="amber white--text"
+          :disabled="disableButton"
+          @click="register"
           >登録</v-btn
         ></template
       >
@@ -58,6 +61,7 @@ import ownersRepository from "../repositories/ownersRepository.js";
 import DataTable from "../components/DataTable";
 import DialogConfirm from "../components/DialogConfirm";
 import FormRegister from "../components/FormRegister";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -85,6 +89,14 @@ export default {
 
   created() {
     this.getOwners();
+  },
+
+  computed: {
+    ...mapGetters(["user", "role"]),
+
+    disableButton() {
+      return this.$helpers.$_disableButton(this.role);
+    },
   },
 
   methods: {

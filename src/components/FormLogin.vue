@@ -25,6 +25,9 @@
               ゲストログイン
             </v-btn>
           </v-card-actions>
+          <v-card-text class="text-center">
+            ※ゲストログインでは一部機能が制限されています
+          </v-card-text>
         </v-form>
       </validation-observer>
     </v-card-text>
@@ -46,10 +49,6 @@ export default {
     titleClass: {
       type: String,
     },
-    // guestLoginButton: {
-    //   type: Boolean,
-    //   default: false,
-    // },
   },
 
   data() {

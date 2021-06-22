@@ -54,9 +54,10 @@
               </v-row>
               <p class="mt-5" v-if="shop">
                 オーナー：{{ shop.owner.name }}<br />
-                エリア：{{ $helpers.$_showArea(shop.main_address) }}<br />ジャンル：{{
-                  shop.genre.name
-                }}<br />住所：{{ showAddress }}
+                エリア：{{ $helpers.$_showArea(shop.main_address)
+                }}<br />ジャンル：{{ shop.genre.name }}<br />住所：{{
+                  showAddress
+                }}
               </p>
               <p>
                 {{ shop.overview }}
@@ -88,7 +89,11 @@
     <BaseDialog ref="dialogConfirmDeletionShop" baseButtonText="キャンセル">
       <template #title>本当にこの店舗を削除しますか？</template>
       <template #leftButton>
-        <v-btn color="red white--text" @click="deleteShop">
+        <v-btn
+          color="red white--text"
+          :disabled="disableButton"
+          @click="deleteShop"
+        >
           削除
         </v-btn>
       </template>
@@ -119,6 +124,7 @@
 import shopsRepository from "../repositories/shopsRepository.js";
 import DialogWarning from "../components/DialogWarning";
 import googleMapMixin from "../mixins/googleMapMixin.js";
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -144,6 +150,12 @@ export default {
   },
 
   computed: {
+    ...mapGetters(["user", "role"]),
+
+    disableButton() {
+      return this.$helpers.$_disableButton(this.role);
+    },
+
     showAddress() {
       if (this.shop) {
         const postalCode = this.$helpers.$_stringInsert(

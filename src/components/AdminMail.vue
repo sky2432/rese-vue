@@ -64,7 +64,10 @@
         </v-card-text>
       </template>
       <template #actionButton
-        ><v-btn color="amber white--text" @click="sendMail"
+        ><v-btn
+          color="amber white--text"
+          :disabled="disableButton"
+          @click="sendMail"
           >送信</v-btn
         ></template
       >
@@ -83,6 +86,7 @@ import BaseTextField from "../components/BaseTextField";
 import BaseTextArea from "../components/BaseTextArea";
 import BaseSelector from "../components/BaseSelector";
 import DialogConfirm from "../components/DialogConfirm";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -101,6 +105,14 @@ export default {
       destinationOptions: config.destinationOptions,
       confirmDialogData: [],
     };
+  },
+
+  computed: {
+    ...mapGetters(["role"]),
+
+    disableButton() {
+      return this.$helpers.$_disableButton(this.role);
+    },
   },
 
   methods: {

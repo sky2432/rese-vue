@@ -101,7 +101,11 @@
           >
             <template #title>本当にこのオーナーを削除しますか？</template>
             <template #leftButton>
-              <v-btn color="red white--text" @click="deleteOwner">
+              <v-btn
+                color="red white--text"
+                :disabled="disableButton"
+                @click="deleteOwner"
+              >
                 削除
               </v-btn>
             </template>
@@ -134,6 +138,7 @@
 <script>
 import ownersRepository from "../repositories/ownersRepository.js";
 import DialogWarning from "../components/DialogWarning";
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -159,6 +164,14 @@ export default {
 
   created() {
     this.getOwner();
+  },
+
+  computed: {
+    ...mapGetters(["role"]),
+
+    disableButton() {
+      return this.$helpers.$_disableButton(this.role);
+    },
   },
 
   methods: {

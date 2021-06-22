@@ -8,6 +8,7 @@
         headers: headers,
         loading: loading,
         deletion: true,
+        email: true,
       }"
       @open-delete-dialog="openDeleteDialog"
     >
@@ -36,7 +37,11 @@
     <BaseDialog ref="deleteDialog" baseButtonText="キャンセル">
       <template #title>本当にこのユーザーを削除しますか？</template>
       <template #leftButton>
-        <v-btn color="red white--text" @click="deleteUser">
+        <v-btn
+          color="red white--text"
+          :disabled="disableButton"
+          @click="deleteUser"
+        >
           削除
         </v-btn>
       </template>
@@ -57,6 +62,7 @@
 import usersRepository from "../repositories/usersRepository";
 import DataTable from "../components/DataTable";
 import DialogWarning from "../components/DialogWarning";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -78,6 +84,14 @@ export default {
         { text: "", value: "delete", sortable: false, filterable: false },
       ],
     };
+  },
+
+  computed: {
+    ...mapGetters(["role"]),
+
+    disableButton() {
+      return this.$helpers.$_disableButton(this.role);
+    },
   },
 
   created() {

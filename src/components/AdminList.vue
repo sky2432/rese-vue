@@ -43,7 +43,10 @@
     <DialogConfirm ref="dialogConfirm" :tableData="confirmDialogData">
       <template #title>登録内容の確認</template>
       <template #actionButton
-        ><v-btn color="amber white--text" @click="register"
+        ><v-btn
+          color="amber white--text"
+          :disabled="disableButton"
+          @click="register"
           >登録</v-btn
         ></template
       >
@@ -56,7 +59,11 @@
     <BaseDialog ref="deleteDialog" baseButtonText="キャンセル">
       <template #title>この管理者を削除しますか？</template>
       <template #leftButton>
-        <v-btn color="red white--text" @click="deleteAdmin">
+        <v-btn
+          color="red white--text"
+          :disabled="disableButton"
+          @click="deleteAdmin"
+        >
           削除
         </v-btn>
       </template>
@@ -103,7 +110,11 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["user"]),
+    ...mapGetters(["user", "role"]),
+
+    disableButton() {
+      return this.$helpers.$_disableButton(this.role);
+    },
   },
 
   created() {

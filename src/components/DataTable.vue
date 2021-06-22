@@ -62,6 +62,9 @@
           {{ item.reservation.status }}
         </v-chip>
       </template>
+      <template v-if="email" v-slot:[`item.email`]>
+        *******
+      </template>
       <template v-if="role" v-slot:[`item.role`]="{ item }">
         {{ showRoleText(item.role) }}
       </template>
@@ -132,9 +135,13 @@ export default {
     },
     perPage: {
       type: Number,
-      default: 10,
+      default: -1,
     },
     tile: {
+      type: Boolean,
+      default: false,
+    },
+    email: {
       type: Boolean,
       default: false,
     },
