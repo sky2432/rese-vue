@@ -18,7 +18,7 @@
             <v-btn
               class="mt-2"
               color="red white--text"
-              :disabled="disableButton"
+              :disabled="isGuest"
               @click="$refs.baseDialog.openDialog()"
               >アカウントを削除</v-btn
             >
@@ -45,8 +45,8 @@ export default {
   computed: {
     ...mapGetters(["user", "role"]),
 
-    disableButton() {
-      return this.$helpers.$_disableButton(this.role);
+    isGuest() {
+      return this.$helpers.$_isGuest(this.role);
     },
   },
 

@@ -9,6 +9,8 @@
         reservationStatus: true,
         titleColor: titleColor,
         tile: true,
+        name: isGuest,
+        userName: isGuest,
         edit: edit,
       }"
       itemKey="reservaiton.id"
@@ -71,7 +73,7 @@
       <template #leftButton>
         <v-btn
           color="red white--text"
-          :disabled="disableButton"
+          :disabled="isGuest"
           @click="changeReservationStatus"
         >
           はい
@@ -93,7 +95,7 @@
 <script>
 import reservationsRepository from "../repositories/reservationsRepository";
 import DataTable from "../components/DataTable";
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -146,8 +148,8 @@ export default {
   computed: {
     ...mapGetters(["user", "role"]),
 
-    disableButton() {
-      return this.$helpers.$_disableButton(this.role);
+    isGuest() {
+      return this.$helpers.$_isGuest(this.role);
     },
   },
 

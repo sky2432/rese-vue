@@ -195,7 +195,7 @@
       <template #actionButton>
         <v-btn
           color="amber white--text"
-          :disabled="disableButton"
+          :disabled="isGuest"
           @click="updateShop"
         >
           更新
@@ -231,7 +231,7 @@
               </div>
               <v-card-actions class="justify-center">
                 <v-btn
-                  color="amber"
+                  color="amber white--text"
                   :disabled="disableFormButton(invalid)"
                   @click="updateImage"
                 >
@@ -336,8 +336,8 @@ export default {
   computed: {
     ...mapGetters(["user", "role"]),
 
-    disableButton() {
-      return this.$helpers.$_disableButton(this.role);
+    isGuest() {
+      return this.$helpers.$_isGuest(this.role);
     },
 
     disableFormButton() {

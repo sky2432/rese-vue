@@ -103,7 +103,7 @@
             <template #leftButton>
               <v-btn
                 color="red white--text"
-                :disabled="disableButton"
+                :disabled="isGuest"
                 @click="deleteOwner"
               >
                 削除
@@ -138,7 +138,7 @@
 <script>
 import ownersRepository from "../repositories/ownersRepository.js";
 import DialogWarning from "../components/DialogWarning";
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -169,8 +169,8 @@ export default {
   computed: {
     ...mapGetters(["role"]),
 
-    disableButton() {
-      return this.$helpers.$_disableButton(this.role);
+    isGuest() {
+      return this.$helpers.$_isGuest(this.role);
     },
   },
 

@@ -64,10 +64,7 @@
         </v-card-text>
       </template>
       <template #actionButton
-        ><v-btn
-          color="amber white--text"
-          :disabled="disableButton"
-          @click="sendMail"
+        ><v-btn color="amber white--text" :disabled="isGuest" @click="sendMail"
           >送信</v-btn
         ></template
       >
@@ -110,8 +107,8 @@ export default {
   computed: {
     ...mapGetters(["role"]),
 
-    disableButton() {
-      return this.$helpers.$_disableButton(this.role);
+    isGuest() {
+      return this.$helpers.$_isGuest(this.role);
     },
   },
 

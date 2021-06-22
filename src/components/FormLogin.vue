@@ -14,15 +14,15 @@
           ></TextFieldPassword>
 
           <v-card-actions class="justify-center">
-            <v-btn color="amber white--text" :disabled="invalid" @click="login">
-              ログイン
-            </v-btn>
             <v-btn
               class="ml-2"
               color="amber white--text"
               @click="guestLogin"
             >
               ゲストログイン
+            </v-btn>
+            <v-btn color="amber white--text" :disabled="invalid" @click="login">
+              ログイン
             </v-btn>
           </v-card-actions>
           <v-card-text class="text-center">

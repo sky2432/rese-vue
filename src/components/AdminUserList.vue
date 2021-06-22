@@ -7,8 +7,10 @@
         tableData: users,
         headers: headers,
         loading: loading,
+        name: isGuest,
+        userName: isGuest,
+        email: isGuest,
         deletion: true,
-        email: true,
       }"
       @open-delete-dialog="openDeleteDialog"
     >
@@ -37,11 +39,7 @@
     <BaseDialog ref="deleteDialog" baseButtonText="キャンセル">
       <template #title>本当にこのユーザーを削除しますか？</template>
       <template #leftButton>
-        <v-btn
-          color="red white--text"
-          :disabled="disableButton"
-          @click="deleteUser"
-        >
+        <v-btn color="red white--text" :disabled="isGuest" @click="deleteUser">
           削除
         </v-btn>
       </template>
@@ -89,8 +87,8 @@ export default {
   computed: {
     ...mapGetters(["role"]),
 
-    disableButton() {
-      return this.$helpers.$_disableButton(this.role);
+    isGuest() {
+      return this.$helpers.$_isGuest(this.role);
     },
   },
 

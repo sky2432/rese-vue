@@ -25,11 +25,16 @@
       <template v-slot:top>
         <slot name="top"></slot>
       </template>
-      <template v-slot:[`item.name`]="{ item }" v-if="avatar">
-        <v-avatar color="white" size="35">
-          <v-img :src="item.image_url"></v-img>
-        </v-avatar>
-        {{ item.name }}
+      <template v-slot:[`item.name`]="{ item }" v-if="name">
+        <div v-if="shopName">
+          <v-avatar color="white" size="35">
+            <v-img :src="item.image_url"></v-img>
+          </v-avatar>
+          {{ item.name }}
+        </div>
+        <div v-if="userName">
+          {{ maskUserName(item.name) }}
+        </div>
       </template>
       <template v-slot:[`item.main_address`]="{ item }" v-if="area">
         {{ $helpers.$_showArea(item.main_address) }}
@@ -97,7 +102,15 @@ export default {
       type: Boolean,
       default: true,
     },
-    avatar: {
+    name: {
+      type: Boolean,
+      default: false,
+    },
+    shopName: {
+      type: Boolean,
+      default: false,
+    },
+    userName: {
       type: Boolean,
       default: false,
     },
@@ -154,6 +167,17 @@ export default {
   },
 
   computed: {
+    maskUserName() {
+      return function(name) {
+        const length = name.length;
+        let mask = name.substr(0, 1);
+        for (let i = 0; i < length - 1; i++) {
+          mask = mask + "*";
+        }
+        return mask;
+      };
+    },
+
     getStatusColor() {
       return function(status) {
         if (status === "予約中") {

@@ -7,7 +7,8 @@
         tableData: shops,
         headers: headers,
         loading: loading,
-        avatar: true,
+        name: true,
+        shopName: true,
         area: true,
         detail: true,
       }"
