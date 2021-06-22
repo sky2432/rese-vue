@@ -20,22 +20,15 @@ import multiguard from "vue-router-multiguard";
 Vue.use(VueRouter);
 
 const loginedAccount = function(to, from, next) {
-  if (
-    (store.state.auth && store.state.role === "user") ||
-    (store.state.auth && store.state.role === "guestUser")
-  ) {
+  const auth = store.getters.auth;
+  const role = store.getters.role;
+  if ((auth && role === "user") || (auth && role === "guestUser")) {
     next("/home");
   }
-  if (
-    (store.state.auth && store.state.role === "owner") ||
-    (store.state.auth && store.state.role === "guestOwner")
-  ) {
+  if ((auth && role === "owner") || (auth && role === "guestOwner")) {
     next("/owner");
   }
-  if (
-    (store.state.auth && store.state.role === "admin") ||
-    (store.state.auth && store.state.role === "guestAdmin")
-  ) {
+  if ((auth && role === "admin") || (auth && role === "guestAdmin")) {
     next("/admin");
   }
   next();
@@ -209,7 +202,8 @@ router.beforeEach((to, from, next) => {
       },
     });
   }
-  if (store.state.role === "user" || store.state.role === "guest") {
+  const role = store.getters.role;
+  if (role === "user" || role === "guestUser") {
     if (
       to.name === "Owner" ||
       to.name === "Admin" ||
@@ -219,7 +213,7 @@ router.beforeEach((to, from, next) => {
       next("/home");
     }
   }
-  if (store.state.role === "owner" || store.state.role === "guestOwner") {
+  if (role === "owner" || role === "guestOwner") {
     if (
       to.name === "Admin" ||
       to.name === "ShopDetail" ||
@@ -228,16 +222,16 @@ router.beforeEach((to, from, next) => {
       next("/owner");
     }
   }
-  if (store.state.role === "admin" || store.state.role === "guestAdmin") {
+  if (role === "admin" || role === "guestAdmin") {
     if (to.name === "Owner") {
       next("/admin");
     }
   }
   if (
-    store.state.role === "owner" ||
-    store.state.role === "guestOwner" ||
-    store.state.role === "admin" ||
-    store.state.role === "guestAdmin"
+    role === "owner" ||
+    role === "guestOwner" ||
+    role === "admin" ||
+    role === "guestAdmin"
   ) {
     if (
       to.name === "Home" ||
@@ -247,8 +241,8 @@ router.beforeEach((to, from, next) => {
       to.name === "Setting" ||
       to.name === "AccountDelete"
     ) {
-      if (store.state.role === "owner") next("/owner");
-      if (store.state.role === "admin") next("/admin");
+      if (role === "owner" || role === "guestOwner") next("/owner");
+      if (role === "admin" || role === "guestAdmin") next("/admin");
     }
   }
   next();
