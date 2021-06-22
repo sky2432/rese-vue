@@ -61,7 +61,7 @@ export default {
 
     disableButton() {
       return function(invalid) {
-        if (this.role === "guest") {
+        if (this.role.indexOf("guest") !== -1) {
           return true;
         }
         return invalid;

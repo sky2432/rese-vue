@@ -64,13 +64,13 @@ export default new Vuex.Store({
         commit("apiToken", resData.token);
         commit("user", resData.data);
 
-        if (resData.role === "user" || resData.role === "guest") {
+        if (resData.role === "user" || resData.role === "guestUser") {
           router.replace("/home");
         }
-        if (resData.role === "owner") {
+        if (resData.role === "owner" || resData.role === "guestOwner") {
           router.replace("/owner");
         }
-        if (resData.role === "admin") {
+        if (resData.role === "admin" || resData.role === "guestAdmin") {
           router.replace("/admin");
         }
       }

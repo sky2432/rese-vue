@@ -20,7 +20,6 @@
             <v-btn
               class="ml-2"
               color="amber white--text"
-              v-if="guestLoginButton"
               @click="guestLogin"
             >
               ゲストログイン
@@ -47,10 +46,10 @@ export default {
     titleClass: {
       type: String,
     },
-    guestLoginButton: {
-      type: Boolean,
-      default: false,
-    },
+    // guestLoginButton: {
+    //   type: Boolean,
+    //   default: false,
+    // },
   },
 
   data() {
@@ -71,11 +70,7 @@ export default {
     },
 
     guestLogin() {
-      const sendData = {
-        email: "guest@user.com",
-        password: "1234",
-      };
-      this.$emit("guest-login", sendData);
+      this.$emit("guest-login");
     },
   },
 };

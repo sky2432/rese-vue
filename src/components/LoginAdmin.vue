@@ -1,6 +1,11 @@
 <template>
   <div>
-    <FormLogin ref="formLogin" titleClass="purple lighten-2" @login="login">
+    <FormLogin
+      ref="formLogin"
+      titleClass="purple lighten-2"
+      @login="login"
+      @guest-login="guestAdminLogin"
+    >
       <template #title>AdminLogin</template>
     </FormLogin>
   </div>
@@ -25,6 +30,16 @@ export default {
         .catch((e) => {
           this.$refs.formLogin.$refs.observer.setErrors(e.response.data.errors);
         });
+    },
+
+    guestAdminLogin() {
+      const sendData = {
+        email: "guest@admin.com",
+        password: 1234,
+      };
+      authRepository.login("admin", sendData).then((response) => {
+        this.$store.dispatch("login", response.data);
+      });
     },
   },
 };

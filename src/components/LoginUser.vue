@@ -2,9 +2,8 @@
   <FormLogin
     ref="formLogin"
     titleClass="amber"
-    :guestLoginButton="true"
     @login="login"
-    @guest-login="guestLogin"
+    @guest-login="guestUserLogin"
   >
     <template #title>UserLogin</template>
   </FormLogin>
@@ -31,7 +30,11 @@ export default {
         });
     },
 
-    guestLogin(sendData) {
+    guestUserLogin() {
+      const sendData = {
+        email: "guest@user.com",
+        password: 1234,
+      };
       authRepository.login("user", sendData).then((response) => {
         this.$store.dispatch("login", response.data);
       });

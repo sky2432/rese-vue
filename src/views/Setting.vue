@@ -67,7 +67,7 @@ export default {
   },
 
   created() {
-    if (this.role === "guest") {
+    if (this.role.indexOf("guest") !== -1) {
       setTimeout(function() {
         alert("ゲストユーザーはアカウントの編集・削除はできません");
       }, 500);

@@ -20,13 +20,22 @@ import multiguard from "vue-router-multiguard";
 Vue.use(VueRouter);
 
 const loginedAccount = function(to, from, next) {
-  if (store.state.auth && store.state.role === "user") {
+  if (
+    (store.state.auth && store.state.role === "user") ||
+    (store.state.auth && store.state.role === "guestUser")
+  ) {
     next("/home");
   }
-  if (store.state.auth && store.state.role === "owner") {
+  if (
+    (store.state.auth && store.state.role === "owner") ||
+    (store.state.auth && store.state.role === "guestOwner")
+  ) {
     next("/owner");
   }
-  if (store.state.auth && store.state.role === "admin") {
+  if (
+    (store.state.auth && store.state.role === "admin") ||
+    (store.state.auth && store.state.role === "guestAdmin")
+  ) {
     next("/admin");
   }
   next();
@@ -210,7 +219,7 @@ router.beforeEach((to, from, next) => {
       next("/home");
     }
   }
-  if (store.state.role === "owner") {
+  if (store.state.role === "owner" || store.state.role === "guestOwner") {
     if (
       to.name === "Admin" ||
       to.name === "ShopDetail" ||
@@ -219,12 +228,17 @@ router.beforeEach((to, from, next) => {
       next("/owner");
     }
   }
-  if (store.state.role === "admin") {
+  if (store.state.role === "admin" || store.state.role === "guestAdmin") {
     if (to.name === "Owner") {
       next("/admin");
     }
   }
-  if (store.state.role === "owner" || store.state.role === "admin") {
+  if (
+    store.state.role === "owner" ||
+    store.state.role === "guestOwner" ||
+    store.state.role === "admin" ||
+    store.state.role === "guestAdmin"
+  ) {
     if (
       to.name === "Home" ||
       to.name === "Detail" ||
