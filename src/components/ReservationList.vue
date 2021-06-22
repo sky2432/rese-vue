@@ -69,7 +69,11 @@
     <BaseDialog ref="confirmEditDialog" baseButtonText="いいえ">
       <template #title>本当にこの予約を非来店にしますか？</template>
       <template #leftButton>
-        <v-btn color="red white--text" @click="changeReservationStatus">
+        <v-btn
+          color="red white--text"
+          :disabled="disableButton"
+          @click="changeReservationStatus"
+        >
           はい
         </v-btn>
       </template>
@@ -89,6 +93,7 @@
 <script>
 import reservationsRepository from "../repositories/reservationsRepository";
 import DataTable from "../components/DataTable";
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -136,6 +141,14 @@ export default {
       ],
       reservationId: "",
     };
+  },
+
+  computed: {
+    ...mapGetters(["user", "role"]),
+
+    disableButton() {
+      return this.$helpers.$_disableButton(this.role);
+    },
   },
 
   methods: {

@@ -193,7 +193,11 @@
         </v-card-text>
       </template>
       <template #actionButton>
-        <v-btn color="amber white--text" @click="updateShop">
+        <v-btn
+          color="amber white--text"
+          :disabled="disableButton"
+          @click="updateShop"
+        >
           更新
         </v-btn>
       </template>
@@ -226,7 +230,11 @@
                 <img :src="imageUrl" width="50%" />
               </div>
               <v-card-actions class="justify-center">
-                <v-btn color="amber" :disabled="invalid" @click="updateImage">
+                <v-btn
+                  color="amber"
+                  :disabled="disableFormButton(invalid)"
+                  @click="updateImage"
+                >
                   更新
                 </v-btn>
               </v-card-actions>
@@ -326,7 +334,17 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["user"]),
+    ...mapGetters(["user", "role"]),
+
+    disableButton() {
+      return this.$helpers.$_disableButton(this.role);
+    },
+
+    disableFormButton() {
+      return function(invalid) {
+        return this.$helpers.$_disableFormButton(this.role, invalid);
+      };
+    },
 
     showArea() {
       if (this.shopMainAddress) {

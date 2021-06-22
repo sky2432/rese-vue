@@ -46,10 +46,7 @@ export default {
     ...mapGetters(["user", "role"]),
 
     disableButton() {
-      if (this.role === "guestUser") {
-        return true;
-      }
-      return false;
+      return this.$helpers.$_disableButton(this.role);
     },
   },
 

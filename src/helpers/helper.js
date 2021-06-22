@@ -71,4 +71,18 @@ export default {
     }
     return config.Prefectures[index];
   },
+
+  $_disableButton(role) {
+    if (role.indexOf("guest") !== -1) {
+      return true;
+    }
+    return false;
+  },
+
+  $_disableFormButton(role, invalid) {
+    if (role.indexOf("guest") !== -1) {
+      return true;
+    }
+    return invalid;
+  },
 };

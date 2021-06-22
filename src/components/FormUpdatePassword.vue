@@ -25,7 +25,7 @@
             <v-card-actions class="justify-center">
               <v-btn
                 color="amber white--text"
-                :disabled="disableButton(invalid)"
+                :disabled="disableFormButton(invalid)"
                 @click="updatePassword"
               >
                 更新
@@ -68,12 +68,9 @@ export default {
   computed: {
     ...mapGetters(["user", "role"]),
 
-    disableButton() {
+    disableFormButton() {
       return function(invalid) {
-        if (this.role.indexOf("guest") !== -1) {
-          return true;
-        }
-        return invalid;
+        return this.$helpers.$_disableFormButton(this.role, invalid);
       };
     },
   },
