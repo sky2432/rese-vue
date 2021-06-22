@@ -200,7 +200,7 @@ router.beforeEach((to, from, next) => {
       },
     });
   }
-  if (store.state.role === "user") {
+  if (store.state.role === "user" || store.state.role === "guest") {
     if (
       to.name === "Owner" ||
       to.name === "Admin" ||

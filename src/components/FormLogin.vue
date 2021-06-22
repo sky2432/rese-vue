@@ -72,7 +72,7 @@ export default {
 
     guestLogin() {
       const sendData = {
-        email: "guest@guest.com",
+        email: "guest@user.com",
         password: "1234",
       };
       this.$emit("guest-login", sendData);

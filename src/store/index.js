@@ -64,7 +64,7 @@ export default new Vuex.Store({
         commit("apiToken", resData.token);
         commit("user", resData.data);
 
-        if (resData.role === "user") {
+        if (resData.role === "user" || resData.role === "guest") {
           router.replace("/home");
         }
         if (resData.role === "owner") {

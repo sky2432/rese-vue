@@ -43,10 +43,10 @@ import usersRepository from "../repositories/usersRepository.js";
 
 export default {
   computed: {
-    ...mapGetters(["user"]),
+    ...mapGetters(["user", "role"]),
 
     disableButton() {
-      if (this.user.email === "guest@guest.com") {
+      if (this.role === "guest") {
         return true;
       }
       return false;

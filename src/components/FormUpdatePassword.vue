@@ -70,7 +70,7 @@ export default {
 
     disableButton() {
       return function(invalid) {
-        if (this.user.email === "guest@guest.com") {
+        if (this.role === "guest") {
           return true;
         }
         return invalid;

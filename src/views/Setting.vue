@@ -50,6 +50,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import FormUpdateNameEmail from "../components/FormUpdateNameEmail";
 import FormUpdatePassword from "../components/FormUpdatePassword";
 import SettingDeleteUser from "../components/SettingDeleteUser";
@@ -59,6 +60,18 @@ export default {
     FormUpdateNameEmail,
     FormUpdatePassword,
     SettingDeleteUser,
+  },
+
+  computed: {
+    ...mapState(["role"]),
+  },
+
+  created() {
+    if (this.role === "guest") {
+      setTimeout(function() {
+        alert("ゲストユーザーはアカウントの編集・削除はできません");
+      }, 500);
+    }
   },
 
   data() {
