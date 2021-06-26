@@ -17,11 +17,17 @@
             <v-btn
               class="ml-2"
               color="amber white--text"
+              :loading="loading1"
               @click="guestLogin"
             >
               ゲストログイン
             </v-btn>
-            <v-btn color="amber white--text" :disabled="invalid" @click="login">
+            <v-btn
+              color="amber white--text"
+              :disabled="invalid"
+              :loading="loading2"
+              @click="login"
+            >
               ログイン
             </v-btn>
           </v-card-actions>
@@ -56,11 +62,19 @@ export default {
       email: "",
       password: "",
       formValid: false,
+      loading1: false,
+      loading2: false,
     };
   },
 
   methods: {
+    guestLogin() {
+      this.loading1 = true;
+      this.$emit("guest-login");
+    },
+
     login() {
+      this.loading2 = true;
       const sendData = {
         email: this.email,
         password: this.password,
@@ -68,8 +82,9 @@ export default {
       this.$emit("login", sendData);
     },
 
-    guestLogin() {
-      this.$emit("guest-login");
+    stopLoading() {
+      this.loading1 = false;
+      this.loading2 = false;
     },
   },
 };

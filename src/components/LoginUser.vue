@@ -24,9 +24,11 @@ export default {
         .login("user", sendData)
         .then((response) => {
           this.$store.dispatch("login", response.data);
+          this.stopLoginLoading();
         })
         .catch((e) => {
           this.$refs.formLogin.$refs.observer.setErrors(e.response.data.errors);
+          this.stopLoginLoading();
         });
     },
 
@@ -37,7 +39,12 @@ export default {
       };
       authRepository.login("user", sendData).then((response) => {
         this.$store.dispatch("login", response.data);
+        this.stopLoginLoading();
       });
+    },
+
+    stopLoginLoading() {
+      this.$refs.formLogin.stopLoading();
     },
   },
 };
