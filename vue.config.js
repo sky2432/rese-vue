@@ -6,4 +6,10 @@ module.exports = {
       title: "Rese",
     },
   },
+  devServer: {
+    watchOptions: {
+      poll: true,
+    },
+    host: "localhost",
+  },
 };
