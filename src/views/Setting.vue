@@ -6,7 +6,7 @@
       <div class="wrapper">
         <v-container>
           <v-row>
-            <v-col cols="4">
+            <v-col cols="12" sm="4">
               <v-card tile>
                 <v-list>
                   <v-subheader>設定</v-subheader>
@@ -39,7 +39,7 @@
               </v-card>
             </v-col>
 
-            <v-col cols="8">
+            <v-col cols="12" sm="8">
               <component :is="currentComponent"></component>
             </v-col>
           </v-row>
