@@ -6,9 +6,19 @@
 
 <script>
 export default {
+  data() {
+    return {
+      width: window.innerWidth,
+    };
+  },
+
   watch: {
     $route(routeInstance) {
       this.createTitleDesc(routeInstance);
+    },
+
+    width() {
+      this.setProperty();
     },
   },
 
@@ -20,9 +30,18 @@ export default {
   mounted() {
     let routeInstance = this.$route;
     this.createTitleDesc(routeInstance);
+    window.addEventListener("resize", this.handleResize);
+  },
+
+  beforeDestroy() {
+    window.removeEventListener("resize", this.handleResize);
   },
 
   methods: {
+    handleResize() {
+      this.width = window.innerWidth;
+    },
+
     setProperty() {
       let height = window.innerHeight;
       document.documentElement.style.setProperty("--vh", height / 100 + "px");
