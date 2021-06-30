@@ -21,8 +21,7 @@
             <v-col cols="12" sm="6" md="4" class="pa-0 image-wrap">
               <v-img class="image" :src="shop.image_url"></v-img>
             </v-col>
-            <!-- <v-col cols="6" class="reservation-col"></v-col> -->
-            <v-col cols="12" sm="6" md="4">
+            <v-col class="reservation-info" cols="12" sm="6" md="4">
               <v-row>
                 <v-col cols="12">
                   <v-card-title>{{ shop.name }}</v-card-title>
@@ -606,12 +605,6 @@ export default {
   position: relative;
 }
 
-/* .image-wrap {
-  position: absolute;
-  top: 64px;
-  left: 0;
-} */
-
 .image {
   border-radius: 0 0 0 5px;
   height: 266px;
@@ -627,5 +620,17 @@ export default {
 
 .reservation-col {
   height: 236px;
+}
+
+@media screen and (min-width: 600px) {
+  .reservation-info {
+    border-bottom: 1px solid rgb(191, 191, 191);
+  }
+}
+
+@media screen and (min-width: 960px) {
+  .reservation-info {
+    border-bottom: none;
+  }
 }
 </style>

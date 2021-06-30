@@ -69,3 +69,18 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.wrapper {
+  height: 100%;
+}
+
+@media screen and (min-width: 600px) {
+  .wrapper {
+    height: calc(var(--vh) * 100 - 64px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+</style>

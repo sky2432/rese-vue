@@ -79,7 +79,7 @@
       <v-subheader class="amber">{{ user.name }}</v-subheader>
       <slot name="drawer-search"></slot>
       <v-list nav dense>
-        <v-list-item-group active-class="deep-purple--text text--accent-4">
+        <v-list-item-group color="amber">
           <v-list-item
             @click="$helpers.$_movePageWithPram('Mypage', 'tabIndex', 0)"
           >
