@@ -2,8 +2,8 @@
   <div>
     <TheHomeHeader>
       <template #search>
-        <v-row class="ma-0">
-          <v-col cols="2" class="px-0">
+        <v-row class="ma-0 search-bar">
+          <v-col cols="3" class="px-0">
             <v-select
               class="rounded-r-0"
               :items="areaOptions"
@@ -13,7 +13,7 @@
               v-model="selectedArea"
             ></v-select>
           </v-col>
-          <v-col cols="2" class="px-0">
+          <v-col cols="3" class="px-0">
             <v-select
               class="rounded-0"
               :items="genreOptions"
@@ -23,7 +23,7 @@
               v-model="selectedGenre"
             ></v-select>
           </v-col>
-          <v-col cols="6" class="px-0">
+          <v-col cols="4" class="px-0">
             <v-text-field
               class="rounded-0"
               label="Enter shop name"
@@ -44,6 +44,51 @@
             >
           </v-col>
         </v-row>
+      </template>
+      <template #drawer-search>
+        <v-divider class="mt-0"></v-divider>
+        <p class="px-4" style="color: rgba(0, 0, 0, 0.6);">店舗検索</p>
+        <p class="px-4">
+          <v-select
+            class="rounded-r-0"
+            :items="areaOptions"
+            dense
+            hide-details
+            solo
+            v-model="selectedArea"
+          ></v-select>
+        </p>
+        <p class="px-4">
+          <v-select
+            class="rounded-0"
+            :items="genreOptions"
+            dense
+            hide-details
+            solo
+            v-model="selectedGenre"
+          ></v-select>
+        </p>
+        <p class="px-4">
+          <v-text-field
+            class="rounded-0"
+            label="Enter shop name"
+            prepend-inner-icon="mdi-magnify"
+            dense
+            hide-details
+            solo
+            v-model="keyword"
+          ></v-text-field>
+        </p>
+        <p class="text-center">
+          <v-btn
+            class="rounded-l-0"
+            color="white"
+            height="38"
+            @click="resetSearchBox"
+            >reset</v-btn
+          >
+        </p>
+        <v-divider></v-divider>
       </template>
     </TheHomeHeader>
 
@@ -233,3 +278,15 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.search-bar {
+  display: none;
+}
+
+@media screen and (min-width: 960px) {
+  .search-bar {
+    display: flex;
+  }
+}
+</style>
