@@ -60,6 +60,6 @@ export default {
 
 <style scoped>
 .wrapper {
-  height: calc(100vh - 136px);
+  height: calc(var(--vh) * 100 - 136px);
 }
 </style>
