@@ -39,7 +39,7 @@
         </v-row>
       </template>
       <template #addButton>
-        <v-btn @click="getShopReservations(shopId)">
+        <v-btn class="reload-btn" @click="getShopReservations(shopId)">
           <v-icon>mdi-autorenew</v-icon>
         </v-btn>
       </template>
@@ -243,3 +243,15 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.reload-btn {
+  margin-top: 12px;
+}
+
+@media screen and (min-width: 436px) {
+  .reload-btn {
+    margin-top: 0px;
+  }
+}
+</style>

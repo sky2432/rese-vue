@@ -72,7 +72,7 @@ export default {
 
 <style scoped>
 .wrapper {
-  height: 100%;
+  padding-top: 64px;
 }
 
 @media screen and (min-width: 600px) {

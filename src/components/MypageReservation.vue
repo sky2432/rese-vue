@@ -618,10 +618,6 @@ export default {
   text-align: left;
 }
 
-.reservation-col {
-  height: 236px;
-}
-
 @media screen and (min-width: 600px) {
   .reservation-info {
     border-bottom: 1px solid rgb(191, 191, 191);

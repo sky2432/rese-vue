@@ -1,6 +1,17 @@
 <template>
   <div>
-    <v-navigation-drawer app permanent>
+    <v-app-bar color="amber" dense light app>
+      <v-app-bar-nav-icon
+        @click.stop="drawer = !drawer"
+        class="drawer-icon align-self-center"
+      ></v-app-bar-nav-icon>
+      <div class="d-flex">
+        <v-icon class="mr-1" medium>mdi-silverware-variant</v-icon>
+        <h2 class="header-txt" @click="$router.push('/home')">Rese</h2>
+      </div>
+    </v-app-bar>
+
+    <v-navigation-drawer app mobile-breakpoint="960" v-model="drawer">
       <v-sheet class="pa-8" color="amber">
         <v-row class="align-center">
           <v-avatar color="white" size="64">
@@ -15,7 +26,7 @@
       <v-divider></v-divider>
 
       <v-list>
-        <v-list-item-group color="amber" v-model="selectedItem">
+        <v-list-item-group color="amber" v-model="navItem">
           <v-list-item @click="currentComponent = 'OwnerReservation'">
             <v-list-item-icon>
               <v-icon>mdi-format-list-bulleted</v-icon>
@@ -88,6 +99,7 @@ import ownersRepository from "../repositories/ownersRepository.js";
 import OwnerReservation from "../components/OwnerReservation";
 import OwnerShop from "../components/OwnerShop";
 import OwnerAccount from "../components/OwnerAccount";
+import windowWidthMixin from "../mixins/windowWidthMixin.js";
 
 export default {
   components: {
@@ -96,15 +108,27 @@ export default {
     OwnerAccount,
   },
 
+  mixins: [windowWidthMixin],
+
   data() {
     return {
+      drawer: null,
+      navItem: 0,
       shop: "",
       shopGenre: "",
       loading: null,
       loaded: null,
-      selectedItem: 0,
       currentComponent: OwnerReservation,
     };
+  },
+
+  watch: {
+    navItem() {
+      //this.widthはwindowWidthMixinの変数
+      if (this.width < 960) {
+        this.drawer = false;
+      }
+    },
   },
 
   computed: {
@@ -116,6 +140,11 @@ export default {
       this.getOwnerShop();
     } else {
       this.changeLoading();
+    }
+    if (this.width < 960) {
+      this.drawer = false;
+    } else {
+      this.drawer = true;
     }
   },
 
