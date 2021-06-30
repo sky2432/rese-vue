@@ -183,10 +183,10 @@ export default {
   padding-top: 80px;
 }
 
-#map {
+/* #map {
   width: 100%;
   height: 500px;
-}
+} */
 
 @media screen and (max-width: 600px) {
   .reservation-form {
@@ -194,8 +194,8 @@ export default {
     padding-bottom: 28px;
   }
 
-  #map {
+  /* #map {
     height: 300px;
-  }
+  } */
 }
 </style>

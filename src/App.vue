@@ -199,14 +199,12 @@ a {
   background: transparent;
 }
 
-/* change colours to suit your needs */
 ins {
   background-color: #ff9;
   color: #000;
   text-decoration: none;
 }
 
-/* change colours to suit your needs */
 mark {
   background-color: #ff9;
   color: #000;
@@ -229,7 +227,6 @@ table {
   border-spacing: 0;
 }
 
-/* change border colour to suit your needs */
 hr {
   display: block;
   height: 1px;
@@ -292,5 +289,16 @@ h1 {
 
 .header-txt {
   cursor: pointer;
+}
+
+#map {
+  width: 100%;
+  height: 500px;
+}
+
+@media screen and (max-width: 600px) {
+  #map {
+    height: 300px;
+  }
 }
 </style>

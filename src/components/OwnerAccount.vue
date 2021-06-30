@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <div class="container">
+    <div class="wrap">
       <v-card tile>
         <v-tabs>
           <v-tab @click="currentComponent = 'FormUpdateNameEmail'"
@@ -35,7 +35,13 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  width: 80%;
+.wrap {
+  width: 100%;
+}
+
+@media screen and (min-width: 600px) {
+  .wrap {
+    width: 90%;
+  }
 }
 </style>

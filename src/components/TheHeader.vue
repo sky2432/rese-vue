@@ -3,7 +3,7 @@
     <v-container>
       <v-row class="align-center">
         <v-col>
-          <div class="header-logo d-flex">
+          <div class="d-flex">
             <v-icon class="mr-1 " large>mdi-silverware-variant</v-icon>
             <h1 class="header-txt" @click="movePage">Rese</h1>
           </div>

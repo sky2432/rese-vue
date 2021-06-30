@@ -9,7 +9,7 @@
         <v-hover>
           <template #default="{ hover }">
             <v-card elevation="0" tile>
-              <v-img :src="shopImageUrl" height="400px"></v-img>
+              <v-img class="shop-image" :src="shopImageUrl"></v-img>
               <v-fade-transition>
                 <v-overlay color="#036358" absolute v-if="hover">
                   <v-btn color="amber white--text" @click="showImageDialog"
@@ -48,7 +48,7 @@
         <v-card-text class="py-0 mb-2">
           {{ showAddress }}
         </v-card-text>
-        <div id="map" style="height:400px;width:100%;"></div>
+        <div id="map"></div>
         <v-card-actions class="justify-center">
           <v-btn color="amber white--text" @click="setShopData">編集</v-btn>
         </v-card-actions>
@@ -551,5 +551,19 @@ export default {
   > tbody
   > tr:hover:not(.v-data-table__expanded__content):not(.v-data-table__empty-wrapper) {
   background-color: white;
+}
+
+.shop-image {
+  height: 100%;
+}
+
+#map {
+  height: 400px;
+}
+
+@media screen and (min-width: 600px) {
+  .shop-image {
+    height: 350px;
+  }
 }
 </style>
