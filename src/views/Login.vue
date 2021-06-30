@@ -3,15 +3,17 @@
     <TheHeader></TheHeader>
     <v-main>
       <div class="wrapper">
-        <div>
-          <v-card tile width="600px">
-            <v-tabs>
-              <v-tab @click="currentComponent = 'LoginUser'">ユーザー</v-tab>
-              <v-tab @click="currentComponent = 'LoginOwner'">オーナー</v-tab>
-              <v-tab @click="currentComponent = 'LoginAdmin'">管理者</v-tab>
-            </v-tabs>
-          </v-card>
-          <component :is="currentComponent"></component>
+        <div class="login-form">
+          <div>
+            <v-card tile>
+              <v-tabs>
+                <v-tab @click="currentComponent = 'LoginUser'">ユーザー</v-tab>
+                <v-tab @click="currentComponent = 'LoginOwner'">オーナー</v-tab>
+                <v-tab @click="currentComponent = 'LoginAdmin'">管理者</v-tab>
+              </v-tabs>
+            </v-card>
+            <component :is="currentComponent"></component>
+          </div>
         </div>
       </div>
     </v-main>
@@ -37,3 +39,15 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.login-form {
+  width: 600px;
+}
+
+@media screen and (max-width: 600px) {
+  .login-form {
+    width: 100%;
+  }
+}
+</style>

@@ -6,36 +6,65 @@
 
 <script>
 export default {
-  created() {
-    let script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.VUE_APP_GOOGLE_MAP_API_KEY}`;
-    script.setAttribute("async", "");
-    script.setAttribute("defer", "");
-    script.type = "text/javascript";
-    document.body.appendChild(script);
+  data() {
+    return {
+      width: window.innerWidth,
+    };
   },
 
   watch: {
     $route(routeInstance) {
       this.createTitleDesc(routeInstance);
     },
+
+    width() {
+      this.setProperty();
+    },
+  },
+
+  created() {
+    this.setGoogleMapApi();
+    this.setProperty();
   },
 
   mounted() {
-    var routeInstance = this.$route;
+    let routeInstance = this.$route;
     this.createTitleDesc(routeInstance);
+    window.addEventListener("resize", this.handleResize);
+  },
+
+  beforeDestroy() {
+    window.removeEventListener("resize", this.handleResize);
   },
 
   methods: {
+    handleResize() {
+      this.width = window.innerWidth;
+    },
+
+    setProperty() {
+      let height = window.innerHeight;
+      document.documentElement.style.setProperty("--vh", height / 100 + "px");
+    },
+
+    setGoogleMapApi() {
+      let script = document.createElement("script");
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.VUE_APP_GOOGLE_MAP_API_KEY}`;
+      script.setAttribute("async", "");
+      script.setAttribute("defer", "");
+      script.type = "text/javascript";
+      document.body.appendChild(script);
+    },
+
     createTitleDesc: function(routeInstance) {
       if (routeInstance.meta.title) {
-        var setTitle = routeInstance.meta.title + " | Rese";
+        let setTitle = routeInstance.meta.title + " | Rese";
         document.title = setTitle;
       } else {
         document.title = "Rese";
       }
       if (routeInstance.meta.desc) {
-        var setDesc = routeInstance.meta.desc + " | Rese";
+        let setDesc = routeInstance.meta.desc + " | Rese";
         document
           .querySelector("meta[name='description']")
           .setAttribute("content", setDesc);
@@ -229,7 +258,7 @@ li {
 }
 
 .wrapper {
-  height: calc(100vh - 64px);
+  height: calc(var(--vh) * 100 - 64px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -258,10 +287,10 @@ h1 {
   margin: 18px 16px 0 16px;
   font-weight: bold;
   font-size: 12px;
-  color: #000000DE;
+  color: #000000de;
 }
 
-.header-txt{
+.header-txt {
   cursor: pointer;
 }
 </style>

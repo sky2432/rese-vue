@@ -7,10 +7,7 @@
           <template #title>Registration</template>
         </FormRegister>
 
-        <DialogConfirm
-          ref="dialogConfirm"
-          :tableData="confirmDialogData"
-        >
+        <DialogConfirm ref="dialogConfirm" :tableData="confirmDialogData">
           <template #title>登録内容の確認</template>
           <template #actionButton
             ><v-btn color="amber white--text" @click="register"

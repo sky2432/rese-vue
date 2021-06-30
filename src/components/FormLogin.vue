@@ -1,5 +1,5 @@
 <template>
-  <v-card class="white pa-5" elevation="2" width="600px" outlined shaped tile>
+  <v-card class="white pa-5" elevation="2"  outlined shaped tile>
     <v-card-title :class="titleClass">
       <slot name="title"></slot>
     </v-card-title>

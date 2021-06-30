@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row>
-      <v-col cols="3" v-for="shop in shops" :key="shop.id">
+      <v-col cols="12" sm="6" md="4" lg="3" v-for="shop in shops" :key="shop.id">
         <v-card height="300">
           <v-img height="140" :src="shop.image_url"></v-img>
           <v-card-title>{{ shop.name }}</v-card-title>

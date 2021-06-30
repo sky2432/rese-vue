@@ -7,7 +7,7 @@
       </div>
       <v-container class="mt-5" v-show="loaded">
         <v-row>
-          <v-col cols="6">
+          <v-col cols="12" sm="6">
             <div class="d-flex">
               <v-btn @click="$router.go(-1)">
                 <v-icon>mdi-chevron-left</v-icon>
@@ -35,16 +35,15 @@
               </div>
             </v-row>
             <p class="mt-5" v-if="shop">
-              エリア：{{ $helpers.$_showArea(shop.main_address) }}<br />ジャンル：{{
-                shop.genre.name
-              }}
+              エリア：{{ $helpers.$_showArea(shop.main_address)
+              }}<br />ジャンル：{{ shop.genre.name }}
             </p>
             <p>
               {{ shop.overview }}
             </p>
           </v-col>
 
-          <v-col cols="6" class="reservation-form">
+          <v-col cols="12" sm="6" class="reservation-form">
             <FormReservation ref="formReservation" @check-time="checkTime">
               <template #title>予約</template>
             </FormReservation>
@@ -61,7 +60,7 @@
         </v-row>
         <p>住所：{{ showAddress }}</p>
         <v-card>
-          <div id="map" style="height:500px;width:100%;"></div>
+          <div id="map" ></div>
         </v-card>
       </v-container>
     </v-main>
@@ -182,5 +181,21 @@ export default {
 <style scoped>
 .reservation-form {
   padding-top: 80px;
+}
+
+#map {
+  width: 100%;
+  height: 500px;
+}
+
+@media screen and (max-width: 600px) {
+  .reservation-form {
+    padding-top: 0px;
+    padding-bottom: 28px;
+  }
+
+  #map {
+    height: 300px;
+  }
 }
 </style>
