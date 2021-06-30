@@ -1,15 +1,6 @@
 <template>
   <div>
-    <v-app-bar color="amber" dense light app>
-      <v-app-bar-nav-icon
-        @click.stop="drawer = !drawer"
-        class="drawer-icon align-self-center"
-      ></v-app-bar-nav-icon>
-      <div class="d-flex">
-        <v-icon class="mr-1" medium>mdi-silverware-variant</v-icon>
-        <h2 class="header-txt" @click="$router.push('/home')">Rese</h2>
-      </div>
-    </v-app-bar>
+    <AppBar :drawer="drawer" @change-drawer="drawer = $event"></AppBar>
 
     <v-navigation-drawer app mobile-breakpoint="960" v-model="drawer">
       <v-sheet class="pa-8" color="amber">
@@ -96,16 +87,18 @@
 <script>
 import { mapGetters } from "vuex";
 import ownersRepository from "../repositories/ownersRepository.js";
+import windowWidthMixin from "../mixins/windowWidthMixin.js";
 import OwnerReservation from "../components/OwnerReservation";
 import OwnerShop from "../components/OwnerShop";
 import OwnerAccount from "../components/OwnerAccount";
-import windowWidthMixin from "../mixins/windowWidthMixin.js";
+import AppBar from "../components/AppBar";
 
 export default {
   components: {
     OwnerReservation,
     OwnerShop,
     OwnerAccount,
+    AppBar,
   },
 
   mixins: [windowWidthMixin],
