@@ -8,7 +8,7 @@
     </div>
     <v-row class="mt-1" v-if="loaded">
       <v-col cols="12" v-for="shop in shops" :key="shop.reservation.id">
-        <v-card class="card" height="300">
+        <v-card class="card">
           <v-card-title class="amber pa-2" style="height: 64px">
             <v-chip
               class="white--text ml-2"
@@ -17,60 +17,63 @@
               {{ showReservationStatus(shop.reservation.status) }}
             </v-chip>
           </v-card-title>
-          <v-row class="row ma-0" style="height: 236px">
-            <v-col cols="4" class="pa-0 image-wrap">
-              <v-img class="image" :src="shop.image_url" height="236px"></v-img>
+          <v-row class="row ma-0">
+            <v-col cols="12" sm="6" md="4" class="pa-0 image-wrap">
+              <v-img class="image" :src="shop.image_url"></v-img>
             </v-col>
-            <v-col cols="4" class="reservation-col"></v-col>
-            <v-col cols="4" class="reservation-col">
-              <v-card-title>{{ shop.name }}</v-card-title>
-              <v-card-text>
-                <v-row class="mx-0" align="center">
-                  <v-rating
-                    :value="shop.evaluation"
-                    color="amber"
-                    size="14"
-                    dense
-                    half-increments
-                    readonly
-                  ></v-rating>
+            <!-- <v-col cols="6" class="reservation-col"></v-col> -->
+            <v-col cols="12" sm="6" md="4">
+              <v-row>
+                <v-col cols="12">
+                  <v-card-title>{{ shop.name }}</v-card-title>
+                  <v-card-text>
+                    <v-row class="mx-0" align="center">
+                      <v-rating
+                        :value="shop.evaluation"
+                        color="amber"
+                        size="14"
+                        dense
+                        half-increments
+                        readonly
+                      ></v-rating>
 
-                  <div class="ml-1">
-                    {{ shop.evaluation
-                    }}<span class="grey--text ml-2"
-                      >({{ shop.evaluation_count }}件)</span
-                    >
-                  </div>
-                </v-row>
-              </v-card-text>
-              <v-card-subtitle class="py-1">
-                #{{ $helpers.$_showArea(shop.main_address) }}＃{{
-                  shop.genre.name
-                }}
-              </v-card-subtitle>
-              <v-card-text class="mt-6">
-                <p class="mb-1">
-                  来店日：{{ getVisitsDate(shop.reservation.visited_on) }}
-                </p>
-                <p class="mb-1">
-                  来店時刻：{{ getVisitsTime(shop.reservation.visited_on) }}
-                </p>
-                <p class="mb-1">
-                  来店人数：{{ shop.reservation.number_of_visiters }}名
-                </p>
-              </v-card-text>
+                      <div class="ml-1">
+                        {{ shop.evaluation
+                        }}<span class="grey--text ml-2"
+                          >({{ shop.evaluation_count }}件)</span
+                        >
+                      </div>
+                    </v-row>
+                  </v-card-text>
+                  <v-card-subtitle class="py-1">
+                    #{{ $helpers.$_showArea(shop.main_address) }}＃{{
+                      shop.genre.name
+                    }}
+                  </v-card-subtitle>
+                </v-col>
+                <v-col cols="12" class="py-0">
+                  <v-card-text class="py-0">
+                    <p class="mb-1">
+                      来店日：{{ getVisitsDate(shop.reservation.visited_on) }}
+                    </p>
+                    <p class="mb-1">
+                      来店時刻：{{ getVisitsTime(shop.reservation.visited_on) }}
+                    </p>
+                    <p class="mb-1">
+                      来店人数：{{ shop.reservation.number_of_visiters }}名
+                    </p>
+                  </v-card-text>
+                </v-col>
+              </v-row>
             </v-col>
 
-            <v-col
-              cols="4"
-              class="d-flex justify-center align-center reservation-col"
-            >
+            <v-col cols="12" md="4" class="d-flex justify-center align-center">
               <v-card-actions
-                class="flex-column"
+                class="flex-column flex-sm-row flex-md-column"
                 v-if="showButtonInReserving(shop.reservation.status)"
               >
                 <v-btn
-                  color="amber white--text"
+                  color="amber white--text mt-2"
                   width="100"
                   @click="
                     $helpers.$_movePageWithPram('Detail', 'shopId', shop.id)
@@ -78,14 +81,14 @@
                   >店舗詳細へ
                 </v-btn>
                 <v-btn
-                  class="white--text mt-2 ml-0"
+                  class="white--text mt-2 ml-0 ml-sm-2 ml-md-0"
                   color="amber"
                   width="100"
                   @click="displayDialogUpdateReservation(shop)"
                   >変更
                 </v-btn>
                 <v-btn
-                  class="white--text mt-2 ml-0"
+                  class="white--text mt-2 ml-0 ml-sm-2 ml-md-0"
                   color="red"
                   width="100"
                   @click="displayCancelDialog(shop.reservation)"
@@ -93,7 +96,7 @@
                 </v-btn>
               </v-card-actions>
               <v-card-actions
-                class="flex-column"
+                class="flex-column flex-sm-row flex-md-column"
                 v-if="showButtonInVisited(shop.reservation.status)"
               >
                 <v-btn
@@ -113,7 +116,7 @@
                   >評価を編集
                 </v-btn>
                 <v-btn
-                  class="white--text mt-2 ml-0"
+                  class="white--text mt-2 ml-0 ml-sm-2 ml-md-0"
                   color="amber"
                   width="100"
                   @click="moveShopDeatail(shop.id)"
@@ -121,7 +124,7 @@
                 </v-btn>
               </v-card-actions>
               <v-card-actions
-                class="flex-column"
+                class="flex-column flex-sm-row flex-md-column"
                 v-if="showButtonInCancelled(shop.reservation.status)"
               >
                 <v-btn
@@ -603,14 +606,15 @@ export default {
   position: relative;
 }
 
-.image-wrap {
+/* .image-wrap {
   position: absolute;
   top: 64px;
   left: 0;
-}
+} */
 
 .image {
   border-radius: 0 0 0 5px;
+  height: 266px;
 }
 
 .row {
