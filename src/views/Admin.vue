@@ -1,6 +1,8 @@
 <template>
   <div>
-    <v-navigation-drawer app permanent>
+    <AppBar :drawer="drawer" @change-drawer="drawer = $event"></AppBar>
+
+    <v-navigation-drawer app mobile-breakpoint="960" v-model="drawer">
       <v-sheet class="pa-8" color="amber">
         <v-row class="align-center">
           <v-avatar color="white" size="64">
@@ -13,7 +15,7 @@
       <v-divider></v-divider>
 
       <v-list>
-        <v-list-item-group color="amber" v-model="selectedItem">
+        <v-list-item-group color="amber" v-model="drawerItem">
           <v-list-item @click="currentComponent = 'AdminShopList'">
             <v-list-item-icon>
               <v-icon>mdi-store</v-icon>
@@ -95,13 +97,16 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import windowWidthMixin from "../mixins/windowWidthMixin.js";
 import AdminOwnerList from "../components/AdminOwnerList";
 import AdminUserList from "../components/AdminUserList";
 import AdminShopList from "../components/AdminShopList";
 import AdminList from "../components/AdminList";
 import AdminMail from "../components/AdminMail";
 import OwnerAccount from "../components/OwnerAccount";
-import { mapGetters } from "vuex";
+import AppBar from "../components/AppBar";
+
 
 export default {
   components: {
@@ -111,17 +116,30 @@ export default {
     AdminList,
     AdminMail,
     OwnerAccount,
+    AppBar
   },
+
+  mixins: [windowWidthMixin],
 
   data() {
     return {
-      selectedItem: 0,
+      drawer: null,
+      drawerItem: 0,
       currentComponent: AdminShopList,
     };
   },
 
   computed: {
     ...mapGetters(["user"]),
+  },
+
+  watch: {
+    drawerItem() {
+      //this.widthはwindowWidthMixinの変数
+      if (this.width < 960) {
+        this.drawer = false;
+      }
+    },
   },
 
   methods: {

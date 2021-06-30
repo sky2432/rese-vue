@@ -17,7 +17,7 @@
       <v-divider></v-divider>
 
       <v-list>
-        <v-list-item-group color="amber" v-model="navItem">
+        <v-list-item-group color="amber" v-model="drawerItem">
           <v-list-item @click="currentComponent = 'OwnerReservation'">
             <v-list-item-icon>
               <v-icon>mdi-format-list-bulleted</v-icon>
@@ -106,7 +106,7 @@ export default {
   data() {
     return {
       drawer: null,
-      navItem: 0,
+      drawerItem: 0,
       shop: "",
       shopGenre: "",
       loading: null,
@@ -116,7 +116,7 @@ export default {
   },
 
   watch: {
-    navItem() {
+    drawerItem() {
       //this.widthはwindowWidthMixinの変数
       if (this.width < 960) {
         this.drawer = false;
