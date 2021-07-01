@@ -3,7 +3,7 @@
     <TheHomeHeader></TheHomeHeader>
 
     <v-main>
-      <div class="wrapper">
+      <div class="responsive-wrapper">
         <v-container>
           <v-row>
             <v-col cols="12" sm="4">
@@ -71,16 +71,16 @@ export default {
 </script>
 
 <style scoped>
-.wrapper {
+/* .responsive-wrapper {
   margin-top: 64px;
 }
 
 @media screen and (min-width: 600px) {
-  .wrapper {
+  .responsive-wrapper {
     height: calc(var(--vh) * 100 - 64px);
     display: flex;
     justify-content: center;
     align-items: center;
   }
-}
+} */
 </style>

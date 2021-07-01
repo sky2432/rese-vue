@@ -1,13 +1,11 @@
 <template>
   <div>
     <TheHeader type="admin"></TheHeader>
-    <div class="wrapper">
-      <v-progress-circular
-        color="amber"
-        indeterminate
-        v-if="loading"
-      ></v-progress-circular>
-      <v-main v-if="loaded">
+    <div class="wrapper" v-if="loading">
+      <v-progress-circular color="amber" indeterminate></v-progress-circular>
+    </div>
+    <v-main v-if="loaded">
+      <div class="responsive-wrapper">
         <v-container>
           <v-card>
             <v-card-text v-if="owner">
@@ -130,8 +128,8 @@
             </template>
           </BaseDialog>
         </v-container>
-      </v-main>
-    </div>
+      </div>
+    </v-main>
   </div>
 </template>
 
