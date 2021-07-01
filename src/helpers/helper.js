@@ -18,7 +18,7 @@ export default {
   },
 
   $_createSpecificDate(value) {
-    const date = new Date(value);
+    const date = new Date(value.replace(/-/g, "/"));
     const specificDate = new Date(
       date.getFullYear(),
       date.getMonth(),
@@ -29,7 +29,7 @@ export default {
 
   $_isBeforeThanNow(dateTime) {
     const now = new Date();
-    const selected = new Date(dateTime);
+    const selected = new Date(dateTime.replace(/-/g, "/"));
     if (now > selected) {
       return true;
     }
