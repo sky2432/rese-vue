@@ -12,7 +12,7 @@
           <v-card>
             <v-card-text v-if="owner">
               <v-row>
-                <v-col>
+                <v-col cols="12" md="6">
                   <v-subheader>オーナー情報</v-subheader>
                   <v-simple-table>
                     <template #default>
@@ -33,7 +33,7 @@
                     </template>
                   </v-simple-table>
                 </v-col>
-                <v-col>
+                <v-col cols="12" md="6">
                   <v-subheader>店舗情報</v-subheader>
                   <v-simple-table v-if="owner.shop">
                     <template #default>
