@@ -1,17 +1,11 @@
 <template>
-  <v-app-bar class="amber" light app>
+  <v-app-bar class="amber" app light>
     <v-container>
-      <v-row class="align-center">
-        <v-col>
-          <div class="d-flex">
-            <v-icon class="mr-1 " large>mdi-silverware-variant</v-icon>
-            <h1 class="header-txt" @click="movePage">Rese</h1>
-          </div>
-        </v-col>
-        <v-spacer></v-spacer>
-        <v-col class="text-right">
-          <slot name="menu"></slot>
-        </v-col>
+      <v-row>
+        <div class="d-flex align-center header-txt" @click="movePage">
+          <v-icon class="mr-1 " large>mdi-silverware-variant</v-icon>
+          <h1>Rese</h1>
+        </div>
       </v-row>
     </v-container>
     <template #extension v-if="showTab">
@@ -45,4 +39,3 @@ export default {
   },
 };
 </script>
-

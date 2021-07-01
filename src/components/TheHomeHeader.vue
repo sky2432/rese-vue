@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar app class="amber" light>
+    <v-app-bar class="amber" app light>
       <v-container>
         <v-row class="align-center">
           <v-col cols="2" class="header-txt" @click="$router.push('/home')">
