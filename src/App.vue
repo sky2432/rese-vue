@@ -5,18 +5,17 @@
 </template>
 
 <script>
+import windowWidthMixin from "./mixins/windowWidthMixin.js";
+
 export default {
-  data() {
-    return {
-      width: window.innerWidth,
-    };
-  },
+  mixins: [windowWidthMixin],
 
   watch: {
     $route(routeInstance) {
       this.createTitleDesc(routeInstance);
     },
 
+    //windowWidthMixinの変数
     width() {
       this.setProperty();
     },
@@ -30,18 +29,9 @@ export default {
   mounted() {
     let routeInstance = this.$route;
     this.createTitleDesc(routeInstance);
-    window.addEventListener("resize", this.handleResize);
-  },
-
-  beforeDestroy() {
-    window.removeEventListener("resize", this.handleResize);
   },
 
   methods: {
-    handleResize() {
-      this.width = window.innerWidth;
-    },
-
     setProperty() {
       let height = window.innerHeight;
       document.documentElement.style.setProperty("--vh", height / 100 + "px");
@@ -250,6 +240,10 @@ li {
   list-style: none;
 }
 
+html, body {
+  background-color: aliceblue;
+}
+
 #background {
   background-color: aliceblue;
 }
@@ -309,6 +303,15 @@ h1 {
 @media screen and (min-width: 600px) {
   .data-table-header {
     margin-top: 0px;
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .responsive-wrapper {
+    height: calc(var(--vh) * 100 - 64px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 </style>
