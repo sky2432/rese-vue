@@ -240,6 +240,10 @@ li {
   list-style: none;
 }
 
+html, body {
+  background-color: aliceblue;
+}
+
 #background {
   background-color: aliceblue;
 }
