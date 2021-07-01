@@ -3,10 +3,10 @@
     <v-app-bar app class="amber" light>
       <v-container>
         <v-row class="align-center">
-          <v-col cols="2">
+          <v-col cols="2" class="header-txt" @click="$router.push('/home')">
             <div class="d-flex">
               <v-icon class="mr-1" large>mdi-silverware-variant</v-icon>
-              <h1 class="header-txt" @click="$router.push('/home')">Rese</h1>
+              <h1>Rese</h1>
             </div>
           </v-col>
           <v-spacer></v-spacer>
@@ -32,6 +32,20 @@
                   <v-list-item-group color="primary">
                     <v-list-item
                       class="menu-item"
+                      v-if="$route.name !== 'Home'"
+                      @click="$router.push('/home')"
+                    >
+                      <v-list-item-icon class="mr-2">
+                        <v-icon>mdi-store</v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-content>
+                        <v-list-item-title>店舗一覧</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+
+                    <v-list-item
+                      class="menu-item"
+                      v-if="$route.name !== 'Mypage'"
                       @click="
                         $helpers.$_movePageWithPram('Mypage', 'tabIndex', 0)
                       "
@@ -43,8 +57,10 @@
                         <v-list-item-title>マイページ</v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
+
                     <v-list-item
                       class="menu-item"
+                      v-if="$route.name !== 'Setting'"
                       @click="$router.push('/setting')"
                     >
                       <v-list-item-icon class="mr-2">
@@ -81,6 +97,19 @@
       <v-list nav dense>
         <v-list-item-group color="amber">
           <v-list-item
+            v-if="$route.name !== 'Home'"
+            @click="$router.push('/home')"
+          >
+            <v-list-item-icon class="mr-2">
+              <v-icon>mdi-store</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>店舗一覧</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item
+            v-if="$route.name !== 'Mypage'"
             @click="$helpers.$_movePageWithPram('Mypage', 'tabIndex', 0)"
           >
             <v-list-item-icon class="mr-2">
@@ -89,7 +118,10 @@
             <v-list-item-title>マイページ</v-list-item-title>
           </v-list-item>
 
-          <v-list-item @click="$router.push('/setting')">
+          <v-list-item
+            v-if="$route.name !== 'Setting'"
+            @click="$router.push('/setting')"
+          >
             <v-list-item-icon class="mr-2">
               <v-icon>mdi-cog</v-icon>
             </v-list-item-icon>
