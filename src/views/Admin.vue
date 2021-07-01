@@ -67,7 +67,7 @@
 
           <v-divider></v-divider>
 
-          <v-list-item @click="currentComponent = 'OwnerAccount'">
+          <v-list-item @click="currentComponent = 'SettingAccount'">
             <v-list-item-icon>
               <v-icon>mdi-cog</v-icon>
             </v-list-item-icon>
@@ -104,9 +104,8 @@ import AdminUserList from "../components/AdminUserList";
 import AdminShopList from "../components/AdminShopList";
 import AdminList from "../components/AdminList";
 import AdminMail from "../components/AdminMail";
-import OwnerAccount from "../components/OwnerAccount";
+import SettingAccount from "../components/SettingAccount";
 import AppBar from "../components/AppBar";
-
 
 export default {
   components: {
@@ -115,8 +114,8 @@ export default {
     AdminUserList,
     AdminList,
     AdminMail,
-    OwnerAccount,
-    AppBar
+    SettingAccount,
+    AppBar,
   },
 
   mixins: [windowWidthMixin],

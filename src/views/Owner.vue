@@ -39,7 +39,7 @@
 
           <v-divider></v-divider>
 
-          <v-list-item @click="currentComponent = 'OwnerAccount'">
+          <v-list-item @click="currentComponent = 'SettingAccount'">
             <v-list-item-icon>
               <v-icon>mdi-cog</v-icon>
             </v-list-item-icon>
@@ -90,14 +90,14 @@ import ownersRepository from "../repositories/ownersRepository.js";
 import windowWidthMixin from "../mixins/windowWidthMixin.js";
 import OwnerReservation from "../components/OwnerReservation";
 import OwnerShop from "../components/OwnerShop";
-import OwnerAccount from "../components/OwnerAccount";
+import SettingAccount from "../components/SettingAccount";
 import AppBar from "../components/AppBar";
 
 export default {
   components: {
     OwnerReservation,
     OwnerShop,
-    OwnerAccount,
+    SettingAccount,
     AppBar,
   },
 
