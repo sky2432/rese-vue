@@ -19,7 +19,7 @@
       <template #title>
         <span v-if="ownerType" class="data-table-header">予約一覧</span>
         <v-switch
-          class="pa-3"
+          class="pr-2 mt-7 mt-sm-4"
           label="本日の予約"
           :value="showTodayReservations"
           v-if="detailType"

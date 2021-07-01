@@ -14,7 +14,7 @@
       @open-delete-dialog="openDeleteDialog"
     >
       <template #title>
-        <sapn class="data-table-header">管理者リスト</sapn>
+        <span class="data-table-header">管理者リスト</span>
       </template>
       <template #addButton>
         <v-btn class="data-table-header" @click="registerDialog = true">

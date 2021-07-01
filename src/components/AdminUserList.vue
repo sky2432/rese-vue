@@ -15,7 +15,7 @@
       @open-delete-dialog="openDeleteDialog"
     >
       <template #title>
-        <sapn class="data-table-header">ユーザーリスト</sapn>
+        <span class="data-table-header">ユーザーリスト</span>
       </template>
       <template #addButton>
         <v-btn class="data-table-header ml-2" @click="getUsers">
