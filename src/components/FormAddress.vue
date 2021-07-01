@@ -5,7 +5,7 @@
     </p>
 
     <v-row class="ma-0 ml-6 align-center">
-      <v-col cols="3" class="pl-0">
+      <v-col cols="3" class="pl-0 pb-0">
         <BaseTextField
           name="郵便番号"
           rules="required|postCodeRegex:^[0-9]*$|length:7"
@@ -15,7 +15,7 @@
           @input="$emit('setPostCode', $event)"
         ></BaseTextField>
       </v-col>
-      <v-col cols="9">
+      <v-col cols="12" sm="9" class="pl-0 pt-0 pt-sm-3">
         <v-btn @click="searchAdress">郵便番号から住所を検索</v-btn>
       </v-col>
     </v-row>

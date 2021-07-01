@@ -4,7 +4,7 @@
       <slot name="title"></slot>
       <v-spacer></v-spacer>
       <v-text-field
-        class="pt-0 mr-4"
+        class="mt-3 mt-sm-0 mr-4 pt-0"
         append-icon="mdi-magnify"
         hide-details
         :label="label"

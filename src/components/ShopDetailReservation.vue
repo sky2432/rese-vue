@@ -2,7 +2,7 @@
   <ReservationList
     ref="reservationList"
     titleColor="white"
-    v-bind="{ ownerType: false, detailType: true }"
+    v-bind="{ ownerType: false, detailType: true, shopId: shopId }"
   ></ReservationList>
 </template>
 

@@ -12,13 +12,13 @@
       @move-page="moveOwnerDetail"
     >
       <template #title>
-        オーナーリスト
+        <span class="data-table-header">オーナーリスト</span>
       </template>
       <template #addButton>
-        <v-btn @click="registerDialog = true">
+        <v-btn class="data-table-header" @click="registerDialog = true">
           オーナー登録
         </v-btn>
-        <v-btn class="ml-2" @click="getOwners">
+        <v-btn class="data-table-header ml-2" @click="getOwners">
           <v-icon>mdi-autorenew</v-icon>
         </v-btn>
       </template>

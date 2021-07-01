@@ -1,15 +1,14 @@
 <template>
   <div>
     <div
-      class="d-flex justify-center align-center"
-      style="height: calc(100vh - 118px)"
+      class="wrapper"
       v-if="loading"
     >
       <v-progress-circular indeterminate color="amber"></v-progress-circular>
     </div>
     <div v-if="loaded">
       <v-row class="ma-0">
-        <v-col cols="6" class="pl-0">
+        <v-col cols="12" md="6" class="pl-0 pr-0 pr-md-3">
           <v-card>
             <v-hover>
               <template #default="{ hover }">
@@ -31,7 +30,7 @@
             </v-hover>
           </v-card>
         </v-col>
-        <v-col cols="6" class="pr-0">
+        <v-col cols="12" md="6" class="pr-0 pl-0 pl-md-3">
           <v-card>
             <v-card-title class="amber">{{ shop.name }}</v-card-title>
             <v-card-text>
@@ -77,7 +76,7 @@
         </v-col>
       </v-row>
       <v-card>
-        <div id="map" style="height:500px;width:100%;"></div>
+        <div id="map"></div>
       </v-card>
     </div>
 
@@ -239,7 +238,12 @@ export default {
 </script>
 
 <style scoped>
+.wrapper {
+  height: calc(var(--vh) * 100 - 136px);
+}
+
 .image {
   border-radius: 5px;
 }
+
 </style>

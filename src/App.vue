@@ -301,4 +301,14 @@ h1 {
     height: 300px;
   }
 }
+
+.data-table-header {
+  margin-top: 12px;
+}
+
+@media screen and (min-width: 600px) {
+  .data-table-header {
+    margin-top: 0px;
+  }
+}
 </style>

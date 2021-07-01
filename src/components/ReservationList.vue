@@ -17,9 +17,9 @@
       @open-edit-dialog="openEditDialog"
     >
       <template #title>
-        <span v-if="ownerType">予約一覧</span>
+        <span v-if="ownerType" class="data-table-header">予約一覧</span>
         <v-switch
-          class="pa-3"
+          class="pr-2 mt-7 mt-sm-4"
           label="本日の予約"
           :value="showTodayReservations"
           v-if="detailType"
@@ -39,7 +39,7 @@
         </v-row>
       </template>
       <template #addButton>
-        <v-btn class="reload-btn" @click="getShopReservations(shopId)">
+        <v-btn class="data-table-header" @click="getShopReservations(shopId)">
           <v-icon>mdi-autorenew</v-icon>
         </v-btn>
       </template>
@@ -243,15 +243,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.reload-btn {
-  margin-top: 12px;
-}
-
-@media screen and (min-width: 436px) {
-  .reload-btn {
-    margin-top: 0px;
-  }
-}
-</style>

@@ -1,15 +1,6 @@
 <template>
   <div>
-    <v-app-bar color="amber" dense light app>
-      <v-app-bar-nav-icon
-        @click.stop="drawer = !drawer"
-        class="drawer-icon align-self-center"
-      ></v-app-bar-nav-icon>
-      <div class="d-flex">
-        <v-icon class="mr-1" medium>mdi-silverware-variant</v-icon>
-        <h2 class="header-txt" @click="$router.push('/home')">Rese</h2>
-      </div>
-    </v-app-bar>
+    <AppBar :drawer="drawer" @change-drawer="drawer = $event"></AppBar>
 
     <v-navigation-drawer app mobile-breakpoint="960" v-model="drawer">
       <v-sheet class="pa-8" color="amber">
@@ -26,7 +17,7 @@
       <v-divider></v-divider>
 
       <v-list>
-        <v-list-item-group color="amber" v-model="navItem">
+        <v-list-item-group color="amber" v-model="drawerItem">
           <v-list-item @click="currentComponent = 'OwnerReservation'">
             <v-list-item-icon>
               <v-icon>mdi-format-list-bulleted</v-icon>
@@ -48,7 +39,7 @@
 
           <v-divider></v-divider>
 
-          <v-list-item @click="currentComponent = 'OwnerAccount'">
+          <v-list-item @click="currentComponent = 'SettingAccount'">
             <v-list-item-icon>
               <v-icon>mdi-cog</v-icon>
             </v-list-item-icon>
@@ -96,16 +87,18 @@
 <script>
 import { mapGetters } from "vuex";
 import ownersRepository from "../repositories/ownersRepository.js";
+import windowWidthMixin from "../mixins/windowWidthMixin.js";
 import OwnerReservation from "../components/OwnerReservation";
 import OwnerShop from "../components/OwnerShop";
-import OwnerAccount from "../components/OwnerAccount";
-import windowWidthMixin from "../mixins/windowWidthMixin.js";
+import SettingAccount from "../components/SettingAccount";
+import AppBar from "../components/AppBar";
 
 export default {
   components: {
     OwnerReservation,
     OwnerShop,
-    OwnerAccount,
+    SettingAccount,
+    AppBar,
   },
 
   mixins: [windowWidthMixin],
@@ -113,7 +106,7 @@ export default {
   data() {
     return {
       drawer: null,
-      navItem: 0,
+      drawerItem: 0,
       shop: "",
       shopGenre: "",
       loading: null,
@@ -123,7 +116,7 @@ export default {
   },
 
   watch: {
-    navItem() {
+    drawerItem() {
       //this.widthはwindowWidthMixinの変数
       if (this.width < 960) {
         this.drawer = false;

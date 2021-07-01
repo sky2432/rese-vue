@@ -2,9 +2,9 @@
   <v-container class="py-4 px-6" fluid>
     <v-card>
       <v-card-title class="amber">
-        メール送信
-        <v-spacer> </v-spacer>
-        <v-btn @click="resetData">
+        <span class="data-table-header">メール送信</span>
+        <v-spacer></v-spacer>
+        <v-btn class="data-table-header" @click="resetData">
           フォームクリア
         </v-btn>
       </v-card-title>
