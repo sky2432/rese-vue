@@ -14,13 +14,13 @@
       @open-delete-dialog="openDeleteDialog"
     >
       <template #title>
-        管理者リスト
+        <sapn class="data-table-header">管理者リスト</sapn>
       </template>
       <template #addButton>
-        <v-btn @click="registerDialog = true">
+        <v-btn class="data-table-header" @click="registerDialog = true">
           管理者登録
         </v-btn>
-        <v-btn class="ml-2" @click="getAdmins">
+        <v-btn class="data-table-header ml-2" @click="getAdmins">
           <v-icon>mdi-autorenew</v-icon>
         </v-btn>
       </template>

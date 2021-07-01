@@ -15,10 +15,10 @@
       @move-page="moveShopDetail"
     >
       <template #title>
-        店舗リスト
+        <span class="data-table-header">店舗リスト</span>
       </template>
       <template #addButton>
-        <v-btn @click="getShops">
+        <v-btn class="data-table-header" @click="getShops">
           <v-icon>mdi-autorenew</v-icon>
         </v-btn>
       </template>

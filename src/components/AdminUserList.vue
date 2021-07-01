@@ -15,10 +15,10 @@
       @open-delete-dialog="openDeleteDialog"
     >
       <template #title>
-        ユーザーリスト
+        <sapn class="data-table-header">ユーザーリスト</sapn>
       </template>
       <template #addButton>
-        <v-btn class="ml-2" @click="getUsers">
+        <v-btn class="data-table-header ml-2" @click="getUsers">
           <v-icon>mdi-autorenew</v-icon>
         </v-btn>
       </template>
