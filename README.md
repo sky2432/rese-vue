@@ -1,24 +1,84 @@
-# rese-vue
+# Rese
 
-## Project setup
-```
-yarn install
-```
+飲食店予約アプリケーションです。レスポンシブ対応しているためPC・タブレット・スマートフォンにて利用できます。このアプリはフロントエンドとバックエンドでリポジトリが分かれています。こちらフロントエンドのリポジトリであり、バックエンドは下記のリポジトリになります。
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+https://github.com/sky2432/rese-laravel
 
-### Compiles and minifies for production
-```
-yarn build
-```
+## 作成した目的
+プログラミングスクールの課題にて自身のスキル向上を目的に作成しました。
 
-### Lints and fixes files
-```
-yarn lint
-```
+## URL
+https://rese-vue.netlify.app
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+ログイン画面の「ゲストログイン」ボタンからご確認ください。
+
+## 使い方
+
+### 店舗一覧画面
+---
+<img width="1280" alt="スクリーンショット 2021-07-02 12 45 09" src="https://user-images.githubusercontent.com/55875685/124218214-c6802000-db34-11eb-8bab-6ec2d895d35f.png">
+詳細ボタンから店舗の詳細情報が載った予約画面に遷移します。ハートマークを押すことでその店舗をお気に入り追加・削除することができます。ヘッダーにある検索バーよりエリア・ジャンル・店舗名で店舗を検索することができます。
+
+### 予約画面
+---
+![localhost_8080_detail_2](https://user-images.githubusercontent.com/55875685/124219788-c03f7300-db37-11eb-812b-6b2ca19fd087.png)
+店舗の詳細情報の確認と予約を行うことができます。
+店舗の住所を示したグーグルマップも表示されています。
+
+### お気に入り店舗画面
+---
+<img width="1280" alt="スクリーンショット 2021-07-02 12 46 15" src="https://user-images.githubusercontent.com/55875685/124218297-eca5c000-db34-11eb-9696-43434c2c6dd1.png">
+お気に入りに追加した店舗が一覧で表示されています。ハートマークを押すことでお気に入りから削除することもできます。
+
+### 予約一覧画面
+---
+<img width="1280" alt="スクリーンショット 2021-07-02 12 46 39" src="https://user-images.githubusercontent.com/55875685/124218349-034c1700-db35-11eb-861c-9c8bc163dcd7.png">
+全ての予約が一覧で表示されています。「予約中」ステータスの予約は予約の変更・キャンセルが可能です。「来店済み」ステータスの予約ではその店舗を評価することができます。
+
+### 店舗オーナー画面
+---
+<img width="1280" alt="スクリーンショット 2021-07-02 12 47 53" src="https://user-images.githubusercontent.com/55875685/124218387-12cb6000-db35-11eb-8fb7-e93718a5c663.png">
+オーナーアカウントでログインした際の画面です。予約一覧の確認と店舗の登録・更新が可能です。
+
+### 管理者画面
+---
+<img width="1280" alt="スクリーンショット 2021-07-02 12 48 10" src="https://user-images.githubusercontent.com/55875685/124218398-165ee700-db35-11eb-8eaa-ec4298d13461.png">
+管理者アカウントでログインした際の画面です。管理者画面では以下の機能があります。
+
+- 店舗・オーナー・ユーザー・管理者の一覧を確認
+- 店舗とオーナーの詳細情報の確認
+- オーナーと管理者の作成
+- ユーザーとオーナーに対してのメール送信
+
+## 機能一覧
+- アカウント登録/ログイン機能
+- アカウント・店舗・予約のCRUD
+- グーグルマップの表示
+- 店舗の検索
+- 画像のCRUD
+- メール送信・通知
+
+## 使用技術
+フロントエンド
+- HTML/CSS
+- JavaScript
+- Vue.js 2.6.11
+- Vuetify 2.4.0
+- Netlify
+
+バックエンド
+- PHP 7.3
+- Laravel 8.12
+- AWS S3
+- Heroku
+
+API
+- Google Maps API
+- PostcodeJP API
+
+## ER図
+![ReseER図](https://user-images.githubusercontent.com/55875685/124217053-7dc76780-db32-11eb-893c-7a322858aff9.png)
+
+
+
+
