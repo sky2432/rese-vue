@@ -282,7 +282,7 @@ export default {
         if (status === "cancelled") {
           return "grey";
         }
-        if (status === "noVisited") {
+        if (status === "notVisited") {
           return "red";
         }
       };
@@ -299,7 +299,7 @@ export default {
         if (status === "cancelled") {
           return "キャンセル";
         }
-        if (status === "noVisited") {
+        if (status === "notVisited") {
           return "非来店";
         }
       };
@@ -340,7 +340,7 @@ export default {
 
     showButtonInCancelled() {
       return function(reservationStatus) {
-        if (reservationStatus === "cancelled") {
+        if (reservationStatus === "cancelled" || reservationStatus === "notVisited") {
           return true;
         }
         return false;
@@ -392,7 +392,7 @@ export default {
       }
     },
 
-    //予約中の昇順、その後に来店済みとキャンセルの降順で配列を並び替え
+    //予約中の昇順、その後に来店済みとキャンセル、非来店の降順で配列を並び替え
     sortReservations(reservations) {
       let reserving = [];
       for (let i in reservations) {
@@ -402,9 +402,11 @@ export default {
       }
       let visitedAndCancelled = [];
       for (let i in reservations) {
+        let status = reservations[i].reservation.status;
         if (
-          reservations[i].reservation.status === "visited" ||
-          reservations[i].reservation.status === "cancelled"
+          status === "visited" ||
+          status === "cancelled" ||
+          status === "notVisited"
         ) {
           visitedAndCancelled.push(reservations[i]);
         }
