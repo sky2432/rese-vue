@@ -21,6 +21,8 @@ https://rese-vue.netlify.app
 レスポンシブに対応していますが、ここではPC画面での説明になります。
 
 ### ログイン画面
+<img width="1280" alt="スクリーンショット 2021-07-18 13 24 06" src="https://user-images.githubusercontent.com/55875685/126055656-3d53ccc0-855c-4e3f-999a-394a14bc0857.png">
+
 ![Animated GIF-downsized](https://user-images.githubusercontent.com/55875685/126055308-a467d410-0b0e-4290-81f7-d166adeb6880.gif)
 
 アカウントの種類によってログインフォームが分かれております。上部のタブからログインフォームを切り替えることができます。
@@ -57,11 +59,17 @@ https://rese-vue.netlify.app
 
 ### 店舗オーナー画面
 <img width="1280" alt="スクリーンショット 2021-07-02 12 47 53" src="https://user-images.githubusercontent.com/55875685/124218387-12cb6000-db35-11eb-8fb7-e93718a5c663.png">
+
+![Animated GIF-downsized (1)](https://user-images.githubusercontent.com/55875685/126055674-00499ea9-105d-418a-b895-34c7de99e90a.gif)
+
 オーナーアカウントでログインした際の画面です。予約一覧の確認と店舗の登録・更新が可能です。
 
 ### 管理者画面
 <img width="1280" alt="スクリーンショット 2021-07-02 12 48 10" src="https://user-images.githubusercontent.com/55875685/124218398-165ee700-db35-11eb-8eaa-ec4298d13461.png">
-<img width="1280" alt="スクリーンショット 2021-07-18 12 21 00" src="https://user-images.githubusercontent.com/55875685/126054542-2f8b62b1-8f51-4b4c-8aab-ea3a5bb0409a.png">
+
+![Animated GIF-downsized2](https://user-images.githubusercontent.com/55875685/126055925-3ddb6f10-36f8-4b5f-99ae-7048c47eb12a.gif)
+
+
 管理者アカウントでログインした際の画面です。管理者画面では以下の機能があります。
 
 - 店舗・オーナー・ユーザー・管理者の管理
