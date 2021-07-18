@@ -52,7 +52,6 @@ export default {
       name: "",
       email: "",
       formValid: false,
-      showPassword: false,
     };
   },
 
