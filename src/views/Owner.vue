@@ -87,7 +87,7 @@
 <script>
 import { mapGetters } from "vuex";
 import ownersRepository from "../repositories/ownersRepository.js";
-import windowWidthMixin from "../mixins/windowWidthMixin.js";
+import windowWidthHeightMixin from "../mixins/windowWidthHeightMixin.js";
 import OwnerReservation from "../components/OwnerReservation";
 import OwnerShop from "../components/OwnerShop";
 import SettingAccount from "../components/SettingAccount";
@@ -101,7 +101,7 @@ export default {
     AppBar,
   },
 
-  mixins: [windowWidthMixin],
+  mixins: [windowWidthHeightMixin],
 
   data() {
     return {
@@ -117,7 +117,7 @@ export default {
 
   watch: {
     drawerItem() {
-      //this.widthはwindowWidthMixinの変数
+      //this.widthはwindowWidthHeightMixinの変数
       if (this.width < 960) {
         this.drawer = false;
       }
