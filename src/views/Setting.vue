@@ -69,18 +69,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-/* .responsive-wrapper {
-  margin-top: 64px;
-}
-
-@media screen and (min-width: 600px) {
-  .responsive-wrapper {
-    height: calc(var(--vh) * 100 - 64px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-} */
-</style>
