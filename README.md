@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/f44e3ce3-044b-41f0-b1da-ab7152caaf02/deploy-status)](https://app.netlify.com/sites/rese-vue/deploys)
+
 # Rese
 
 飲食店予約アプリケーションです。飲食店の検索・お気に入り・予約をすることができます。ユーザーの他に飲食店のオーナー、このアプリを管理する管理者のアカウントも用意されています。
